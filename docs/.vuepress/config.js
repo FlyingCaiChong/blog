@@ -14,5 +14,13 @@ module.exports = {
   themeConfig: {
     nav,
     sidebar,
+    lastUpdated: "Last Updated",
+    repo: "FlyingCaiChong/blog",
+    repoLabel: "查看源码",
+    docsDir: "docs",
+    docsBranch: "master",
+    editLinks: true,
+    editLinkText: "改善此页面",
+    smoothScroll: true
   },
 };
