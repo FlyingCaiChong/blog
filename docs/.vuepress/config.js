@@ -1,3 +1,6 @@
+const nav = require("./config/nav/nav");
+const sidebar = require("./config/sidebar/sidebar");
+
 module.exports = {
   title: "Blog", // 网站的标题
   description: "Just a Blog", // 网站的描述
@@ -8,5 +11,8 @@ module.exports = {
       lang: "zh-CN",
     },
   },
-  theme: "vdoing",
+  themeConfig: {
+    nav,
+    sidebar,
+  },
 };
