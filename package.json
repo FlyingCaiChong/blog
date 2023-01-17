@@ -7,9 +7,11 @@
   "license": "MIT",
   "scripts": {
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 2"
   },
   "devDependencies": {
+    "conventional-changelog-cli": "^2.2.2",
     "vuepress": "^1.9.8"
   },
   "dependencies": {}
