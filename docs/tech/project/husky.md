@@ -1,3 +1,11 @@
+---
+title: "Husky的使用"
+author: "菜虫"
+date: "2023-01-17"
+---
+
+# Husky 的使用
+
 虽然我们已经要求项目使用`eslint`了, 但是不能保证组员提交代码之前都将`eslint`中的问题解决掉:
 
 - 也就是我们希望保证代码仓库中的代码都是符合`eslint`规范的;
@@ -19,15 +27,15 @@ npx husky-init && npm install
 2. 在项目目录下创建`.husky`文件夹:
    ![](/assets//husky_02.jpg)
 3. 在 package.json 中添加一个脚本:
-    ![](/assets//husky_04.jpg)
+   ![](/assets//husky_04.jpg)
 
 接下来需要去完成一个操作, 在进行`commit`时, 执行`lint`脚本
- ![](/assets//husky_04.jpg)
+![](/assets//husky_04.jpg)
 
 #### 代码提交风格
 
 通常我们的`git commit`会按照统一的风格来提交, 这样可以快速定位每次提交的内容, 方便之后对版本进行控制
- ![](/assets//husky_05.jpg)
+![](/assets//husky_05.jpg)
 但是如果每次手动来编写这些事比较麻烦的事情, 我们可以使用一个工具: `Commitizen`
 
 > `Commitizen`是一个帮助我们编写规范`commit message`的工具
@@ -41,9 +49,9 @@ npx husky-init && npm install
     npx commitizen init cz-conventional-changelog --save-dev --save-exact
    ```
    这个命令会帮助我们安装`cz-conventional-changelog`:
-    ![](/assets//husky_06.jpg)
+   ![](/assets//husky_06.jpg)
    并且在 package.json 中进行配置:
-    ![](/assets//husky_07.jpg)
+   ![](/assets//husky_07.jpg)
 
 这个时候我们提交代码需要使用`npx cz`
 第一步选择 type, 本次更新的类型

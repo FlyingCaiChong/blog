@@ -1,22 +1,19 @@
 module.exports = {
   "/iOS/Objective-C/": [
     {
-      title: "Runtime",
+      title: "运行时技术",
       collapsable: false,
-      children: [
-        { title: "Runtime学习", path: "runtime" },
-        { title: "Runtime学习", path: "runtime" },
-      ],
-    },
-    {
-      title: "Runloop",
-      path: "/iOS/Objective-C/runloop",
+      children: ["", "runtime", "runloop"],
     },
   ],
   "/tech/project/": [
     {
-      title: 'Husky相关',
+      title: "介绍",
+      path: "/tech/project/",
+    },
+    {
+      title: 'Husky的使用',
       path: '/tech/project/husky'
     }
-  ]
+  ],
 };
