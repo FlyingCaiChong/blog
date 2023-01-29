@@ -24,6 +24,7 @@ module.exports = [
       { text: "前端项目搭建规范", link: "/tech/project/" },
       { text: "前端包管理工具", link: "/tech/package/" },
       { text: "常用工具", link: "/tech/navigator/" },
+      { text: "正则表达式", link: "/tech/regexp/" },
     ],
   },
 ];
