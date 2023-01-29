@@ -16,6 +16,10 @@ module.exports = {
       path: "/tech/project/editorconfig",
     },
     {
+      title: "使用prettier工具",
+      path: "/tech/project/prettier",
+    },
+    {
       title: "Husky的使用",
       path: "/tech/project/husky",
     },
