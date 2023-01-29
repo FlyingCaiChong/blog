@@ -8,13 +8,13 @@ date: "2023-01-29"
 
 > prettier 是一款强大的代码格式化工具,支持 javascript、typescript、CSS、SCSS、Less、JSX、Angular、Vue、GraphQL、JSON、Markdown 等语言, 基本上前端能用到的文件格式它都可以搞定, 是当下最流行的代码格式化工具
 
-## 1. 安装 prettier
+#### 1. 安装 prettier
 
 ```sh
 npm install prettier -D
 ```
 
-## 2. 配置 prettier 文件
+#### 2. 配置 prettier 文件
 
 ```json
 {
@@ -34,7 +34,7 @@ npm install prettier -D
 - trailingComma: 在多行输入的尾逗号是否添加, 设置为 none;
 - semi: 语句末尾是否要加分号, 默认值 true, 选择 false 表示不加
 
-## 3. 创建.prettierignore 忽略文件
+#### 3. 创建.prettierignore 忽略文件
 
 ```ignore
   /dist/*
@@ -48,9 +48,9 @@ npm install prettier -D
   /public/*
 ```
 
-## 4. VSCode 需要安装 [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) 插件
+#### 4. VSCode 需要安装 [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) 插件
 
-## 5. 测试 prettier 是否生效
+#### 5. 测试 prettier 是否生效
 
 1. 测试一: 在代码中保存代码;
 2. 测试二: 配置一次性修改的命令, 在`package.json`中配置一个`script`:

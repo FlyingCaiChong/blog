@@ -19,7 +19,10 @@ module.exports = [
     ],
   },
   {
-    text: "技术",
-    items: [{ text: "前端项目搭建规范", link: "/tech/project/" }],
+    text: "其他",
+    items: [
+      { text: "前端项目搭建规范", link: "/tech/project/" },
+      { text: "前端包管理工具", link: "/tech/package/" },
+    ],
   },
 ];

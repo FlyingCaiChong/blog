@@ -28,4 +28,22 @@ module.exports = {
       path: "/tech/project/husky",
     },
   ],
+  "/tech/package": [
+    {
+      title: "介绍",
+      path: "/tech/package/",
+    },
+    {
+      title: "npm的使用",
+      path: "/tech/package/npm",
+    },
+    {
+      title: "yarn的使用",
+      path: "/tech/package/yarn",
+    },
+    {
+      title: "pnpm的使用",
+      path: "/tech/package/pnpm",
+    },
+  ],
 };
