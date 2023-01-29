@@ -4,7 +4,7 @@ author: "菜虫"
 date: "2023-01-29"
 ---
 
-# 使用 prettier 工具
+# 使用 prettier 工具 :telescope:
 
 > prettier 是一款强大的代码格式化工具,支持 javascript、typescript、CSS、SCSS、Less、JSX、Angular、Vue、GraphQL、JSON、Markdown 等语言, 基本上前端能用到的文件格式它都可以搞定, 是当下最流行的代码格式化工具
 

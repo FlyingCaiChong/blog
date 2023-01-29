@@ -20,6 +20,10 @@ module.exports = {
       path: "/tech/project/prettier",
     },
     {
+      title: "使用ESLint检测",
+      path: "/tech/project/eslint",
+    },
+    {
       title: "Husky的使用",
       path: "/tech/project/husky",
     },

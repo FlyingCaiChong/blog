@@ -4,7 +4,7 @@ author: "菜虫"
 date: "2023-01-29"
 ---
 
-# 集成 editorconfig 配置
+# 集成 editorconfig 配置 :hamburger:
 
 > EditorConfig 有助于为不同 IDE 编辑器上处理同一个项目的多个开发人员维护一致的编码风格
 

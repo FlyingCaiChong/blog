@@ -4,7 +4,7 @@ author: "菜虫"
 date: "2023-01-17"
 ---
 
-# Husky 的使用
+# Husky 的使用 :syringe:
 
 虽然我们已经要求项目使用`eslint`了, 但是不能保证组员提交代码之前都将`eslint`中的问题解决掉:
 

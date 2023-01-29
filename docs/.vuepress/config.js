@@ -21,6 +21,9 @@ module.exports = {
     docsBranch: "master",
     editLinks: true,
     editLinkText: "改善此页面",
-    smoothScroll: true
+    smoothScroll: true,
+  },
+  markdown: {
+    lineNumbers: true,
   },
 };
