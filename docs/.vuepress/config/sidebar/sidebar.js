@@ -12,8 +12,12 @@ module.exports = {
       path: "/tech/project/",
     },
     {
-      title: 'Husky的使用',
-      path: '/tech/project/husky'
-    }
+      title: "集成Editorconfig配置",
+      path: "/tech/project/editorconfig",
+    },
+    {
+      title: "Husky的使用",
+      path: "/tech/project/husky",
+    },
   ],
 };
