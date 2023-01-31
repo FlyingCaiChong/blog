@@ -28,7 +28,7 @@ module.exports = {
       path: "/tech/project/husky",
     },
   ],
-  "/tech/package": [
+  "/tech/package/": [
     {
       title: "介绍",
       path: "/tech/package/",
@@ -44,6 +44,12 @@ module.exports = {
     {
       title: "pnpm的使用",
       path: "/tech/package/pnpm",
+    },
+  ],
+  "/web/javascript/": [
+    {
+      title: "JavaScript内存管理",
+      path: "/web/javascript/memory",
     },
   ],
 };
