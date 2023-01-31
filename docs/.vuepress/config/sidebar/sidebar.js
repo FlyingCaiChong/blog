@@ -48,6 +48,10 @@ module.exports = {
   ],
   "/web/javascript/": [
     {
+      title: "介绍",
+      path: "/web/javascript/",
+    },
+    {
       title: "JavaScript内存管理",
       path: "/web/javascript/memory",
     },
