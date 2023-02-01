@@ -55,5 +55,9 @@ module.exports = {
       title: "JavaScript内存管理",
       path: "/web/javascript/memory",
     },
+    {
+      title: "JavaScript重点概念",
+      path: "/web/javascript/concept",
+    },
   ],
 };
