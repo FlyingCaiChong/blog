@@ -1511,6 +1511,14 @@
     "@vuepress/types" "1.9.8"
     lodash.debounce "^4.0.8"
 
+"@vuepress/plugin-back-to-top@^1.9.8":
+  version "1.9.8"
+  resolved "https://registry.npmmirror.com/@vuepress/plugin-back-to-top/-/plugin-back-to-top-1.9.8.tgz#670f4502cccada08981b7dbcf4ec613897ba1c2f"
+  integrity sha512-Unl8HMVPsqyt4q/1TIcaMH1XkQri43rjVdXKpPbC1nWTKVi1nvJpxbLfscInodX9Jlniju4Xo/uKxmugfFF1Dg==
+  dependencies:
+    "@vuepress/types" "1.9.8"
+    lodash.debounce "^4.0.8"
+
 "@vuepress/plugin-last-updated@1.9.8":
   version "1.9.8"
   resolved "https://registry.npmmirror.com/@vuepress/plugin-last-updated/-/plugin-last-updated-1.9.8.tgz"

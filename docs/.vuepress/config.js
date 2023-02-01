@@ -29,4 +29,5 @@ module.exports = {
       includeLevel: [2, 3, 4],
     },
   },
+  plugins: ['@vuepress/back-to-top']
 };
