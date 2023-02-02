@@ -14,7 +14,7 @@ date: "2023-01-31"
 - 引用数据类型有: `Object`、`Function`、`Array`、`Date` 等
   :::
 
-## JavaScript 的基本数据类型
+## 基本数据类型
 
 ### Undefined 类型
 

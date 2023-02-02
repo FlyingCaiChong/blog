@@ -59,5 +59,9 @@ module.exports = {
       title: "JavaScript重点概念",
       path: "/web/javascript/concept",
     },
+    {
+      title: "JavaScript函数",
+      path: "/web/javascript/function",
+    },
   ],
 };
