@@ -63,5 +63,9 @@ module.exports = {
       title: "JavaScript函数",
       path: "/web/javascript/function",
     },
+    {
+      title: "ES6 相关",
+      path: "/web/javascript/es6",
+    },
   ],
 };
