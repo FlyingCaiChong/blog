@@ -68,4 +68,10 @@ module.exports = {
       path: "/web/javascript/es6",
     },
   ],
+  "/web/typescript/": [
+    {
+      title: "TypeScript",
+      children: ["", "built_in_tool_type"],
+    },
+  ],
 };
