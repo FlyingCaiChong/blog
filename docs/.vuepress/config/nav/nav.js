@@ -17,6 +17,7 @@ module.exports = [
       { text: "TypeScript", link: "/web/typescript/" },
       { text: "Vue", link: "/web/vue/" },
       { text: "Webpack", link: "/web/webpack/" },
+      { text: "CSS", link: "/web/css/" },
     ],
   },
   {

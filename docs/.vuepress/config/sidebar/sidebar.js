@@ -74,4 +74,10 @@ module.exports = {
       children: ["", "built_in_tool_type"],
     },
   ],
+  "/web/css/": [
+    {
+      title: "CSS",
+      children: ["", "base"],
+    },
+  ],
 };
