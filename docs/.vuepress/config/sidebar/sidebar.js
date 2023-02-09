@@ -77,7 +77,7 @@ module.exports = {
   "/web/css/": [
     {
       title: "CSS",
-      children: ["", "base"],
+      children: ["", "base", "box"],
     },
   ],
 };
