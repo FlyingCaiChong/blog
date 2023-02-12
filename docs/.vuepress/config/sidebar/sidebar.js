@@ -77,7 +77,7 @@ module.exports = {
   "/web/css/": [
     {
       title: "CSS",
-      children: ["", "base", "box", "bfc", "flex"],
+      children: ["", "base", "box", "bfc", "flex", "containing_block"],
     },
   ],
 };
