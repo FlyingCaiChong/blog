@@ -132,3 +132,15 @@ npm ls
 ```sh
 npm cache clear
 ```
+
+### 查看模块的文档
+
+```sh
+npm docs <package_name>
+```
+
+### 在浏览器中打开模块的代码仓库页
+
+```sh
+npm repo <package_name>
+```
