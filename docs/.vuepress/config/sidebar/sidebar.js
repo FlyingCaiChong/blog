@@ -77,7 +77,21 @@ module.exports = {
   "/web/css/": [
     {
       title: "CSS",
-      children: ["", "base", "box", "bfc", "flex", "containing_block", "v-bind"],
+      children: [
+        "",
+        "base",
+        "box",
+        "bfc",
+        "flex",
+        "containing_block",
+        "v-bind",
+      ],
+    },
+  ],
+  "/web/vue/": [
+    {
+      title: "Vue",
+      children: ["", "encapsulate_comp"],
     },
   ],
 };
