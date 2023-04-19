@@ -6,6 +6,13 @@ module.exports = {
       children: ["", "runtime", "runloop"],
     },
   ],
+  "/iOS/Swift/": [
+    {
+      title: "Swift文档翻译",
+      collapsable: false,
+      children: ["", "about_swift"],
+    },
+  ],
   "/tech/project/": [
     {
       title: "介绍",
