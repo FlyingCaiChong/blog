@@ -12,6 +12,23 @@ module.exports = {
       collapsable: false,
       children: ["", "about_swift"],
     },
+    {
+      title: "常见概念",
+      collapsable: true,
+      children: [
+        "optional",
+        "array",
+        "dictionary",
+        "set",
+        "range",
+        "func",
+        "class",
+        "struct",
+        "enum",
+        "protocol",
+        "generic",
+      ],
+    },
   ],
   "/tech/project/": [
     {
