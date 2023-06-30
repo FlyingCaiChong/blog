@@ -8,6 +8,10 @@ module.exports = [
         text: "Swift",
         link: "/iOS/Swift/",
       },
+      {
+        text: "SwiftUI",
+        link: "/iOS/SwiftUI/",
+      },
     ],
   },
   {
@@ -16,6 +20,7 @@ module.exports = [
       { text: "JavaScript", link: "/web/javascript/" },
       { text: "TypeScript", link: "/web/typescript/" },
       { text: "Vue", link: "/web/vue/" },
+      { text: "React", link: "/web/react/" },
       { text: "Webpack", link: "/web/webpack/" },
       { text: "CSS", link: "/web/css/" },
     ],

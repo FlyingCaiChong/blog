@@ -30,6 +30,12 @@ module.exports = {
       ],
     },
   ],
+  "/iOS/SwiftUI/": [
+    {
+      title: "SwiftUI",
+      children: [""],
+    },
+  ],
   "/tech/project/": [
     {
       title: "介绍",
@@ -116,6 +122,12 @@ module.exports = {
     {
       title: "Vue",
       children: ["", "encapsulate_comp"],
+    },
+  ],
+  "/web/react/": [
+    {
+      title: "React",
+      children: [""],
     },
   ],
 };
