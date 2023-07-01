@@ -24,6 +24,7 @@ module.exports = {
         "func",
         "class",
         "struct",
+        "property",
         "enum",
         "protocol",
         "generic",
