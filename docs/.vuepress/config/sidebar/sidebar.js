@@ -7,8 +7,7 @@ module.exports = {
     },
     {
       title: "蓝牙CoreBluetooth",
-      collapsable: false,
-      children: ["corebluetooth"],
+      path: "/iOS/Objective-C/corebluetooth",
     },
   ],
   "/iOS/Swift/": [
