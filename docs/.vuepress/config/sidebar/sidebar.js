@@ -5,6 +5,11 @@ module.exports = {
       collapsable: false,
       children: ["", "runtime", "runloop"],
     },
+    {
+      title: "蓝牙CoreBluetooth",
+      collapsable: false,
+      children: ["corebluetooth"],
+    },
   ],
   "/iOS/Swift/": [
     {
