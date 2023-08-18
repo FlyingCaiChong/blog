@@ -4,7 +4,7 @@ const sidebar = require("./config/sidebar/sidebar");
 module.exports = {
   title: "Blog", // 网站的标题
   description: "Just a Blog", // 网站的描述
-  base: "/", // 部署站点的基础路径
+  base: "/blog/", // 部署站点的基础路径
   locales: {
     // 提供多语言支持的语言配置
     "/": {
@@ -29,5 +29,5 @@ module.exports = {
       includeLevel: [2, 3, 4],
     },
   },
-  plugins: ['@vuepress/back-to-top']
+  plugins: ["@vuepress/back-to-top"],
 };
