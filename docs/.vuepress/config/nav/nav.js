@@ -32,6 +32,7 @@ module.exports = [
       { text: "前端包管理工具", link: "/tech/package/" },
       { text: "常用工具", link: "/tech/navigator/" },
       { text: "正则表达式", link: "/tech/regexp/" },
+      { text: "MySQL Cheat Sheet", link: "/tech/mysql/" },
     ],
   },
 ];
