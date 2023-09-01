@@ -33,6 +33,7 @@ module.exports = [
       { text: "常用工具", link: "/tech/navigator/" },
       { text: "正则表达式", link: "/tech/regexp/" },
       { text: "MySQL Cheat Sheet", link: "/tech/mysql/" },
+      { text: "Nginx", link: "/tech/nginx/" },
     ],
   },
 ];
