@@ -1,4 +1,36 @@
-# 更新日志
+
+  #  更新日志
+  
+## [1.2.0](https://github.com/FlyingCaiChong/blog/compare/v1.1.2...v1.2.0) (2023-09-01)
+
+
+### ✏️ Documentation | 文档
+
+* update changelog ([fcdc30d](https://github.com/FlyingCaiChong/blog/commit/fcdc30dbdc596159d642a87575facbadfef115a0))
+
+
+### 👷 Continuous Integration | CI 配置
+
+* update deploy.sh ([bf7b2b0](https://github.com/FlyingCaiChong/blog/commit/bf7b2b02674e5b006466fac56b1b75ae4c7f613d))
+
+
+### ✨ Features | 新功能
+
+* add corebluetooth md ([e821242](https://github.com/FlyingCaiChong/blog/commit/e821242128c1dd4cc415d39724b9b482c966249a))
+* add nginx md ([f42173f](https://github.com/FlyingCaiChong/blog/commit/f42173f48ec3a63fac61eb80314f89da493ab21a))
+* add optional md ([a5dc266](https://github.com/FlyingCaiChong/blog/commit/a5dc266dda9731d10bf95c026d94f3c23373d0ce))
+* add run loop md ([7f145dd](https://github.com/FlyingCaiChong/blog/commit/7f145dd8524da3c8eee5ae904a9e62024837cc55))
+* add runtime encoding md ([e05d4f6](https://github.com/FlyingCaiChong/blog/commit/e05d4f6908aa3f206d67ee48b61f4a171bb34000))
+* add runtime forward md ([34406b5](https://github.com/FlyingCaiChong/blog/commit/34406b5ca083041cdeb3be146f65750546ca6eb4))
+* add runtime interact md ([46a96f4](https://github.com/FlyingCaiChong/blog/commit/46a96f4d402a3ff2574d3b65474197995fc9afea))
+* add runtime introduction md ([82824fc](https://github.com/FlyingCaiChong/blog/commit/82824fc0064a3afbf9071a59e30b9dd4bb10c041))
+* add runtime message md ([382a523](https://github.com/FlyingCaiChong/blog/commit/382a523be763e88bac86caf99ab4317567aff578))
+* add runtime property md ([d4d80e7](https://github.com/FlyingCaiChong/blog/commit/d4d80e70557685b8b2cf4c4c134e2de449b2a530))
+* add runtime version md ([b46f3f8](https://github.com/FlyingCaiChong/blog/commit/b46f3f8afd452d18708f90a71520d40d790e7b6f))
+* add swift property md ([8efabcf](https://github.com/FlyingCaiChong/blog/commit/8efabcf694a67117c5acc6164b5c126cfb16ebc0))
+* add swift property wrapper md ([99e1d29](https://github.com/FlyingCaiChong/blog/commit/99e1d291b58fc8dde6feaa0a2f476115993d495c))
+* add swift struct md ([ee2f9e6](https://github.com/FlyingCaiChong/blog/commit/ee2f9e65a3ea26909ffa9260925b3eb1a6e4b354))
+* change corebluetooth sidebar ([26d2e44](https://github.com/FlyingCaiChong/blog/commit/26d2e4437fea4a5fcc6b4a82284fe279828f8c11))
 
 ### [1.1.2](https://github.com/FlyingCaiChong/blog/compare/v1.1.0...v1.1.2) (2023-06-29)
 
