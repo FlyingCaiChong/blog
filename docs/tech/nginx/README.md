@@ -56,7 +56,10 @@ sudo systemctl nginx start
 ## 3. 设置开机自启动 Nginx
 
 ```sh
+# 开机自启动
 sudo systemctl enable nginx.service
+# 关闭开启自启动
+sudo systemctl disable nginx.service
 ```
 
 ## 4. Nginx 配置信息
