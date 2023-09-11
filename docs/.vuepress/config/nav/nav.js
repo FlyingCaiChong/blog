@@ -35,6 +35,7 @@ module.exports = [
       { text: "MySQL Cheat Sheet", link: "/tech/mysql/" },
       { text: "Nginx", link: "/tech/nginx/" },
       { text: "Docker", link: "/tech/docker/" },
+      { text: "tar", link: "/tech/tar/" },
     ],
   },
 ];
