@@ -131,6 +131,7 @@ module.exports = {
         "box",
         "bfc",
         "flex",
+        "grid",
         "containing_block",
         "v-bind",
       ],
