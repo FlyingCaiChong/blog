@@ -1,6 +1,14 @@
 
   #  更新日志
   
+### [1.2.2](https://github.com/FlyingCaiChong/blog/compare/v1.2.1...v1.2.2) (2023-10-16)
+
+
+### ✨ Features | 新功能
+
+* add css grid md ([7e63530](https://github.com/FlyingCaiChong/blog/commit/7e63530d795ab2861b8c38d646cf6c55b998b1f1))
+* add tar md ([19f7810](https://github.com/FlyingCaiChong/blog/commit/19f78102777e9eabefcd51d89bbc74cb974b7f72))
+
 ### [1.2.1](https://github.com/FlyingCaiChong/blog/compare/v1.2.0...v1.2.1) (2023-09-02)
 
 
