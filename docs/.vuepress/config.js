@@ -2,8 +2,8 @@ const nav = require("./config/nav/nav");
 const sidebar = require("./config/sidebar/sidebar");
 
 module.exports = {
-  title: "Blog", // 网站的标题
-  description: "Just a Blog", // 网站的描述
+  title: "知识库", // 网站的标题
+  description: "菜虫的知识库", // 网站的描述
   base: "/blog/", // 部署站点的基础路径
   locales: {
     // 提供多语言支持的语言配置

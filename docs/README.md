@@ -1,7 +1,7 @@
 ---
 home: true
-heroText: caichong's blog
-tagline: 菜虫的技术博客
+heroText: Repository
+tagline: 菜虫的知识库
 actionText: 立刻进入
 actionLink: /iOS/Objective-C/index/
 features:
