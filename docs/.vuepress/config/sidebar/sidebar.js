@@ -115,6 +115,11 @@ module.exports = {
       title: "ES6 相关",
       path: "/web/javascript/es6",
     },
+    {
+      title: "JavaScript权威指南学习",
+      collapsable: true,
+      children: ["Chapter-10-Modules"],
+    },
   ],
   "/web/typescript/": [
     {
