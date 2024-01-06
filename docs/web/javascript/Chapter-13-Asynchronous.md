@@ -599,7 +599,7 @@ We are now ready to discuss the final detail that you need to understand to real
 Let’s bring this back to our URL-fetching example. When `c1` returns `p4`, `p2` is `resolved`. But being `resolved` is not the same as being `fulfilled`, so task 3 does not begin yet. When the full body of the HTTP response becomes available, then the `.json()` method can parse it and use that parsed value to fulfill `p4`. When `p4` is `fulfilled`, `p2` is automatically `fulfilled` as well, with the same parsed JSON value. At this point, the parsed JSON object is passed to `c2`, and task 3 begins.
 
 ::: tip 翻译
-让我们回到我们的 URL 获取示例。 当“c1”返回“p4”时，“p2”是`resolved`。 但`resolved`并不等于`fulfilled`，所以任务3还没有开始。 当 HTTP 响应的完整正文可用时，`.json() `方法可以解析它并使用解析后的值来使“p4” `fulfilled`。 当“p4”是`fulfilled`时，“p2”也会自动`fulfilled`，并具有相同的解析 JSON 值。 此时，解析后的 JSON 对象被传递给 `c2`，任务 3 开始。
+让我们回到我们的 URL 获取示例。 当“c1”返回“p4”时，“p2”是`resolved`。 但`resolved`并不等于`fulfilled`，所以任务 3 还没有开始。 当 HTTP 响应的完整正文可用时，`.json() `方法可以解析它并使用解析后的值来使“p4” `fulfilled`。 当“p4”是`fulfilled`时，“p2”也会自动`fulfilled`，并具有相同的解析 JSON 值。 此时，解析后的 JSON 对象被传递给 `c2`，任务 3 开始。
 :::
 
 This can be one of the trickiest parts of JavaScript to understand, and you may need to read this section more than once. **Figure 13-1** presents the process in visual form and may help clarify it for you.
@@ -613,7 +613,11 @@ Figure 13-1. Fetching a URL with Promises
 
 ### 有关 Promise 和错误的更多信息
 
-Earlier in the chapter, we saw that you can pass a second callback function to the `.then()` method and that this second function will be invoked if the Promise is rejected. When that happens, the argument to this second callback function is a value —typically an Error object—that represents the reason for the rejection. We also learned that it is uncommon (and even unidiomatic) to pass two callbacks to a `.then()` method. Instead, Promise-related errors are typically handled by adding a `.catch()` method invocation to a Promise chain. Now that we have examined Promise chains, we can return to error handling and discuss it in more detail. To preface the discussion, I’d like to stress that careful error handling is really important when doing asynchronous programming. With synchronous code, if you leave out error-handling code, you’ll at least get an exception and a stack trace that you can use to figure out what is going wrong. With asynchronous code, unhandled exceptions will often go unreported, and errors can occur silently, making them much harder to debug. The good news is that the `.catch()` method makes it easy to handle errors when working with Promises.
+Earlier in the chapter, we saw that you can pass a second callback function to the `.then()` method and that this second function will be invoked if the Promise is `rejected`. When that happens, the argument to this second callback function is a value —typically an Error object—that represents the reason for the rejection. We also learned that it is uncommon (and even unidiomatic) to pass two callbacks to a `.then()` method. Instead, Promise-related errors are typically handled by adding a `.catch()` method invocation to a Promise chain. Now that we have examined Promise chains, we can return to error handling and discuss it in more detail. To preface the discussion, I’d like to stress that careful error handling is really important when doing asynchronous programming. With synchronous code, if you leave out error-handling code, you’ll at least get an exception and a stack trace that you can use to figure out what is going wrong. With asynchronous code, unhandled exceptions will often go unreported, and errors can occur silently, making them much harder to debug. The good news is that the `.catch()` method makes it easy to handle errors when working with Promises.
+
+::: tip 翻译
+在本章前面，我们看到您可以将第二个回调函数传递给 `.then()` 方法，并且如果 Promise 是 `rejected`，将调用第二个函数。 发生这种情况时，第二个回调函数的参数是一个值（通常是一个 Error 对象），它表示拒绝的原因。 我们还了解到，将两个回调传递给`.then()` 方法是不常见的（甚至是不惯用的）。 相反，与 Promise 相关的错误通常通过向 Promise 链添加 `.catch()` 方法调用来处理。 现在我们已经研究了 Promise 链，我们可以回到错误处理并更详细地讨论它。 作为讨论的序言，我想强调，在进行异步编程时，仔细的错误处理非常重要。 对于同步代码，如果省略错误处理代码，您至少会得到一个异常和一个堆栈跟踪，您可以使用它来找出问题所在。 对于异步代码，未处理的异常通常不会被报告，并且错误可能会悄无声息地发生，从而使调试变得更加困难。 好消息是，使用 Promise 时，`.catch()` 方法可以轻松处理错误。
+:::
 
 #### catch 和 finally 方法
 
