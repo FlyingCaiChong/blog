@@ -623,6 +623,10 @@ Earlier in the chapter, we saw that you can pass a second callback function to t
 
 The `.catch()` method of a Promise is simply a shorthand way to call `.then()` with null as the first argument and an error-handling callback as the second argument. Given any Promise p and a callback c, the following two lines are equivalent:
 
+::: tip 翻译
+Promise 的 `.catch()` 方法只是调用 `.then()` 的一种简写方法，其中第一个参数为 null，第二个参数为错误处理回调。 给定任何 Promise `p` 和回调 `c`，以下两行是等效的：
+:::
+
 ```js
 p.then(null, c);
 p.catch(c);
