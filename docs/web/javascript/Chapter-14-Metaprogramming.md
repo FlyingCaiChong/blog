@@ -44,20 +44,51 @@ The properties of a JavaScript object have names and values, of course, but each
 
 - The `writable` attribute specifies whether or not the value of a property can change.
 - The `enumerable` attribute specifies whether the property is enumerated by the `for/in` loop and the `Object.keys()` method.
-- The configurable attribute specifies whether a property can be deleted and also whether the property’s attributes can be changed.
+- The `configurable` attribute specifies whether a property can be deleted and also whether the property’s attributes can be changed.
+
+::: tip 翻译
+当然，JavaScript 对象的属性具有名称和值，但每个属性还具有三个关联的属性，用于指定该属性的行为方式，以及可以使用它执行的操作：
+
+- `writable` 属性指定属性的值是否可以更改。
+- `enumerable` 属性指定该属性是否由 `for/in` 循环和 `Object.keys()` 方法枚举。
+- `configurable` 属性指定是否可以删除属性，以及是否可以更改属性的属性。
+  :::
 
 Properties defined in object literals or by ordinary assignment to an object are writable, enumerable, and configurable. But many of the properties defined by the JavaScript standard library are not.
 
+::: tip 翻译
+在对象字面量中定义的属性，或通过对对象的普通赋值定义的属性，是可写、可枚举和可配置的。 但 JavaScript 标准库定义的许多属性并非如此。
+:::
+
 This section explains the API for querying and setting property attributes. This API is particularly important to library authors because:
 
-- It allows them to add methods to prototype objects and make them nonenumerable, like built-in methods.
+- It allows them to add methods to prototype objects and make them non enumerable, like built-in methods.
 - It allows them to “lock down” their objects, defining properties that cannot be changed or deleted.
 
-Recall from §6.10.6 that, while “data properties” have a value, “accessor properties” have a getter and/or a setter method instead. For the purposes of this section, we are going to consider the getter and setter methods of an accessor property to be property attributes. Following this logic, we’ll even say that the value of a data property is an attribute as well. Thus, we can say that a property has a name and four attributes. The four attributes of a data property are _value_, _writable_, _enumerable_, and _configurable_. Accessor properties don’t have a _value_ attribute or a _writable_ attribute: their writability is determined by the presence or absence of a setter. So the four attributes of an accessor property are _get_, _set_, _enumerable_, and _configurable_.
+::: tip 翻译
+本节介绍查询和设置属性属性的 API。 此 API 对于库作者特别重要，因为：
 
-The JavaScript methods for querying and setting the attributes of a property use an object called a _property descriptor_ to represent the set of four attributes. A property descriptor object has properties with the same names as the attributes of the property it describes. Thus, the property descriptor object of a data property has properties named _value_, _writable_, _enumerable_, and _configurable_. And the descriptor for an accessor property has get and set properties instead of _value_ and _writable_. The _writable_, _enumerable_, and _configurable_ properties are boolean values, and the _get_ and _set_ properties are function values.
+- 它允许他们向原型对象添加方法并使它们不可枚举，就像内置方法一样。
+- 它允许他们“锁定”他们的对象，定义不能更改或删除的属性。
+  :::
+
+Recall from §6.10.6 that, while “data properties” have a value, “accessor properties” have a `getter` and/or a `setter` method instead. For the purposes of this section, we are going to consider the `getter` and `setter` methods of an accessor property to be property attributes. Following this logic, we’ll even say that the value of a data property is an attribute as well. Thus, we can say that a property has a name and four attributes. The four attributes of a data property are _value_, _writable_, _enumerable_, and _configurable_. Accessor properties don’t have a _value_ attribute or a _writable_ attribute: their writability is determined by the presence or absence of a setter. So the four attributes of an accessor property are _get_, _set_, _enumerable_, and _configurable_.
+
+::: tip 翻译
+回想一下第 6.10.6 节，虽然“数据属性”有一个值，但“访问器属性”有一个 `getter` 和/或 `setter` 方法。 出于本节的目的，我们将把访问器属性的 `getter` 和 `setter` 方法视为属性的属性。 按照这个逻辑，我们甚至可以说数据属性的值也是一个属性。 因此，我们可以说属性有一个名称和四个属性。 数据属性的四个属性是 _value_、_writable_、_enumerable_ 和 _configurable_。 访问器属性没有 _value_ 属性或 _writable_ 属性：它们的可写性由 `setter` 的存在或不存在决定。 因此，访问器属性的四个属性是 _get_、_set_、_enumerable_ 和 _configurable_。
+:::
+
+The JavaScript methods for querying and setting the attributes of a property use an object called a _property descriptor_ to represent the set of four attributes. A property descriptor object has properties with the same names as the attributes of the property it describes. Thus, the property descriptor object of a data property has properties named _value_, _writable_, _enumerable_, and _configurable_. And the descriptor for an accessor property has `get` and `set` properties instead of _value_ and _writable_. The _writable_, _enumerable_, and _configurable_ properties are boolean values, and the _get_ and _set_ properties are function values.
+
+::: tip 翻译
+用于查询和设置属性特性的 JavaScript 方法使用称为“属性描述符”的对象来表示四个特性的集合。 属性描述符对象具有与其所描述的属性的特性同名的属性。 因此，数据属性的属性描述符对象具有名为 _value_、_writable_、_enumerable_ 和 _configurable_ 的属性。 访问器属性的描述符具有 `get` 和 `set` 属性，而不是 _value_ 和 _writable_。 _writable_、_enumerable_ 和 _configurable_ 属性是布尔值，_get_ 和 _set_ 属性是函数值。
+:::
 
 To obtain the property descriptor for a named property of a specified object, call `Object.getOwnPropertyDescriptor()`:
+
+::: tip 翻译
+要获取指定对象的命名属性的属性描述符，请调用 `Object.getOwnPropertyDescriptor()`：
+:::
 
 ```js
 // Returns { value: 1, writable: true, enumerable: true, configurable: true }
@@ -80,7 +111,15 @@ Object.getOwnPropertyDescriptor({}, "toString"); // => undefined; inherited
 
 As its name implies, `Object.getOwnPropertyDescriptor()` works only for own properties. To query the attributes of inherited properties, you must explicitly traverse the prototype chain. (See `Object.getPrototypeOf()` in §14.3); see also the similar `Reflect.getOwnPropertyDescriptor()` function in §14.6.)
 
+::: tip 翻译
+顾名思义，`Object.getOwnPropertyDescriptor()` 仅适用于自己的属性。 要查询继承属性的属性，必须显式遍历原型链。 （参见第 14.3 节中的 `Object.getPrototypeOf()`）； 另请参见第 14.6 节中类似的 `Reflect.getOwnPropertyDescriptor()` 函数。）
+:::
+
 To set the attributes of a property or to create a new property with the specified attributes, call `Object.defineProperty()`, passing the object to be modified, the name of the property to be created or altered, and the property descriptor object:
+
+::: tip 翻译
+要设置属性的属性，或创建具有指定属性的新属性，请调用 `Object.defineProperty()`，传递要修改的对象、要创建或更改的属性的名称、以及属性描述符对象 :
+:::
 
 ```js
 let o = {}; // Start with no properties at all
@@ -118,7 +157,15 @@ o.x; // => 0
 
 The property descriptor you pass to `Object.defineProperty()` does not have to include all four attributes. If you’re creating a new property, then omitted attributes are taken to be `false` or `undefined`. If you’re modifying an existing property, then the attributes you omit are simply left unchanged. Note that this method alters an existing own property or creates a new own property, but it will not alter an inherited property. See also the very similar function `Reflect.defineProperty()` in §14.6.
 
+::: tip 翻译
+您传递给 `Object.defineProperty()` 的属性描述符不必包含所有四个属性。 如果您要创建新属性，则省略的属性将被视为 `false` 或`undefined`。 如果您要修改现有属性，则省略的属性将保持不变。 请注意，此方法会更改现有的自有属性或创建新的自有属性，但不会更改继承的属性。 另请参见第 14.6 节中非常相似的函数 `Reflect.defineProperty()`。
+:::
+
 If you want to create or modify more than one property at a time, use `Object.defineProperties()`. The first argument is the object that is to be modified. The second argument is an object that maps the names of the properties to be created or modified to the property descriptors for those properties. For example:
+
+::: tip 翻译
+如果您想一次创建或修改多个属性，请使用 `Object.defineProperties()`。 第一个参数是要修改的对象。 第二个参数是一个对象，它将要创建或修改的属性名称映射到这些属性的属性描述符。 例如：
+:::
 
 ```js
 let p = Object.defineProperties(
@@ -138,21 +185,43 @@ let p = Object.defineProperties(
 p.r; // => Math.SQRT2
 ```
 
-This code starts with an empty object, then adds two data properties and one readonly accessor property to it. It relies on the fact that `Object.defineProperties()` returns the modified object (as does `Object.defineProperty()`).
+This code starts with an empty object, then adds two data properties and one read only accessor property to it. It relies on the fact that `Object.defineProperties()` returns the modified object (as does `Object.defineProperty()`).
+
+::: tip 翻译
+此代码从一个空对象开始，然后向其中添加两个数据属性和一个只读访问器属性。 它依赖于 `Object.defineProperties()` 返回修改后的对象这一事实（ `Object.defineProperty()` 也是如此）。
+:::
 
 The `Object.create()` method was introduced in §6.2. We learned there that the first argument to that method is the prototype object for the newly created object. This method also accepts a second optional argument, which is the same as the second argument to `Object.defineProperties()`. If you pass a set of property descriptors to `Object.create()`, then they are used to add properties to the newly created object.
 
-`Object.defineProperty()` and `Object.defineProperties()` throw TypeError if the attempt to create or modify a property is not allowed. This happens if you attempt to add a new property to a non-extensible (see §14.2) object. The other reasons that these methods might throw TypeError have to do with the attributes themselves. The
-_writable_ attribute governs attempts to change the _value_ attribute. And the _configurable_ attribute governs attempts to change the other attributes (and also specifies whether a property can be deleted). The rules are not completely straightforward, however. It is possible to change the value of a nonwritable property if that property is configurable, for example. Also, it is possible to change a property from writable to nonwritable even if that property is nonconfigurable. Here are the complete rules. Calls to `Object.defineProperty()` or `Object.defineProperties()` that attempt to violate them throw a TypeError:
+::: tip 翻译
+`Object.create()` 方法在第 6.2 节中引入。 我们在那里了解到该方法的第一个参数是新创建的对象的原型对象。 此方法还接受第二个可选参数，该参数与 `Object.defineProperties()` 的第二个参数相同。 如果将一组属性描述符传递给 `Object.create()`，那么它们将用于向新创建的对象添加属性。
+:::
+
+`Object.defineProperty()` and `Object.defineProperties()` throw TypeError if the attempt to create or modify a property is not allowed. This happens if you attempt to add a new property to a non-extensible (see §14.2) object. The other reasons that these methods might throw TypeError have to do with the attributes themselves. The _writable_ attribute governs attempts to change the _value_ attribute. And the _configurable_ attribute governs attempts to change the other attributes (and also specifies whether a property can be deleted). The rules are not completely straightforward, however. It is possible to change the value of a nonwritable property if that property is configurable, for example. Also, it is possible to change a property from writable to nonwritable even if that property is nonconfigurable. Here are the complete rules. Calls to `Object.defineProperty()` or `Object.defineProperties()` that attempt to violate them throw a TypeError:
 
 - If an object is not extensible, you can edit its existing own properties, but you cannot add new properties to it.
 - If a property is not configurable, you cannot change its configurable or enumerable attributes.
 - If an accessor property is not configurable, you cannot change its getter or setter method, and you cannot change it to a data property.
 - If a data property is not configurable, you cannot change it to an accessor property.
-- If a data property is not configurable, you cannot change its _writable_ attribute from false to true, but you can change it from `true` to `false`.
+- If a data property is not configurable, you cannot change its _writable_ attribute from `false` to `true`, but you can change it from `true` to `false`.
 - If a data property is not configurable and not writable, you cannot change its value. You can change the value of a property that is configurable but nonwritable, however (because that would be the same as making it writable, then changing the value, then converting it back to nonwritable).
 
+::: tip 翻译
+如果不允许尝试创建或修改属性，则 `Object.defineProperty()` 和 `Object.defineProperties()` 会抛出 TypeError。 如果您尝试向不可扩展（请参阅第 14.2 节）对象添加新属性，则会发生这种情况。 这些方法可能抛出 TypeError 的其他原因与属性本身有关。 _writable_ 属性控制尝试更改 _value_ 属性。 _configurable_ 属性控制尝试更改其他属性（并且还指定是否可以删除属性）。 然而，规则并不完全简单。 例如，如果不可写属性是可配置的，则可以更改该属性的值。 此外，即使属性不可配置，也可以将属性从可写更改为不可写。 这是完整的规则。 尝试违反它们的调用 `Object.defineProperty()` 或 `Object.defineProperties()` 会抛出 TypeError：
+
+- 如果对象不可扩展，您可以编辑其现有的属性，但不能向其添加新属性。
+- 如果属性不可配置，则无法更改其可配置或可枚举属性。
+- 如果访问器属性不可配置，则无法更改其 getter 或 setter 方法，也无法将其更改为数据属性。
+- 如果数据属性不可配置，则无法将其更改为访问器属性。
+- 如果数据属性不可配置，则无法将其 _writable_ 属性从 `false` 更改为 `true` ，但可以将其从 `true` 更改为 `false` 。
+- 如果数据属性不可配置且不可写，则无法更改其值。 但是，您可以更改可配置但不可写的属性的值（因为这与使其可写，然后更改值，然后将其转换回不可写相同）。
+  :::
+
 §6.7 described the `Object.assign()` function that copies property values from one or more source objects into a target object. `Object.assign()` only copies enumerable properties, and property values, not property attributes. This is normally what we want, but it does mean, for example, that if one of the source objects has an accessor property, it is the value returned by the getter function that is copied to the target object, not the getter function itself. **Example 14-1** demonstrates how we can use `Object.getOwnPropertyDescriptor()` and `Object.defineProperty()` to create a variant of `Object.assign()` that copies entire property descriptors rather than just copying property values.
+
+::: tip 翻译
+第 6.7 节 描述了 `Object.assign()` 函数，该函数将属性值从一个或多个源对象复制到目标对象中。 `Object.assign()` 仅复制可枚举属性和属性值，而不复制属性属性。 这通常是我们想要的，但它确实意味着，例如，如果源对象之一具有访问器属性，则复制到目标对象的是 `getter` 函数返回的值，而不是 `getter` 函数本身。 **示例 14-1** 演示了如何使用 `Object.getOwnPropertyDescriptor()` 和 `Object.defineProperty()` 来创建 `Object.assign()` 的变体，该变体复制整个属性描述符而不仅仅是复制属性的值。
+:::
 
 _Example 14-1. Copying properties and their attributes from one object to another_
 
