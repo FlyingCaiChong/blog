@@ -348,9 +348,21 @@ If you are writing a JavaScript library that passes objects to callback function
 
 An object’s prototype attribute specifies the object from which it inherits properties. (Review §6.2.3 and §6.3.2 for more on prototypes and property inheritance.) This is such an important attribute that we usually simply say “the prototype of o" rather than “the `prototype` attribute of `o`.” Remember also that when `prototype` appears in code font, it refers to an ordinary object property, not to the `prototype` attribute: **Chapter 9** explained that the `prototype` property of a constructor function specifies the `prototype` attribute of the objects created with that constructor.
 
+::: tip 翻译
+对象的原型属性指定它继承属性的对象。（有关原型和属性继承的更多信息，请参阅第 6.2.3 节和第 6.3.2 节。）这是一个非常重要的属性，因此我们通常简单地说“o 的原型”而不是“o”的“原型”属性。” 还要记住，当 `prototype` 以代码字体出现时，它指的是普通对象属性，而不是 `prototype` 属性：**第 9 章** 解释了构造函数的 `prototype` 属性指定了 `prototype` 使用该构造函数创建的对象的属性。
+:::
+
 The `prototype` attribute is set when an object is created. Objects created from object literals use `Object.prototype` as their prototype. Objects created with `new` use the value of the prototype property of their constructor function as their prototype. And objects created with `Object.create()` use the first argument to that function (which may be `null`) as their prototype.
 
+::: tip 翻译
+`prototype` 属性是在创建对象时设置的。 从对象字面量创建的对象使用 `Object.prototype` 作为其原型。 使用 `new` 创建的对象使用其构造函数的原型属性的值作为其原型。 使用 `Object.create()` 创建的对象使用该函数的第一个参数（可能是 `null`）作为其原型。
+:::
+
 You can query the prototype of any object by passing that object to `Object.getPrototypeOf()`:
+
+::: tip 翻译
+您可以通过将对象传递给 `Object.getPrototypeOf()` 来查询任何对象的原型：
+:::
 
 ```js
 Object.getPrototypeOf({}); // => Object.prototype
@@ -360,7 +372,15 @@ Object.getPrototypeOf(() => {}); // => Function.prototype
 
 A very similar function, `Reflect.getPrototypeOf()`, is described in §14.6.
 
+::: tip 翻译
+第 14.6 节中描述了一个非常相似的函数 `Reflect.getPrototypeOf()`。
+:::
+
 To determine whether one object is the prototype of (or is part of the prototype chain of) another object, use the `isPrototypeOf()` method:
+
+::: tip 翻译
+要确定一个对象是否是另一个对象的原型（或者是其原型链的一部分），请使用 `isPrototypeOf()` 方法：
+:::
 
 ```js
 let p = { x: 1 }; // Define a prototype object.
@@ -372,7 +392,15 @@ Object.prototype.isPrototypeOf(o); // => true: o does too
 
 Note that `isPrototypeOf()` performs a function similar to the `instanceof` operator(see §4.9.4).
 
+::: tip 翻译
+请注意，`isPrototypeOf()` 执行与 `instanceof` 运算符类似的功能（请参阅第 4.9.4 节）。
+:::
+
 The `prototype` attribute of an object is set when the object is created and normally remains fixed. You can, however, change the `prototype` of an object with `Object.setPrototypeOf()`:
+
+::: tip 翻译
+对象的 `prototype` 属性是在创建对象时设置的，并且通常保持固定。 但是，您可以使用 `Object.setPrototypeOf()` 更改对象的`prototype`：
+:::
 
 ```js
 let o = { x: 1 };
@@ -386,9 +414,21 @@ a.join; // => undefined: a no longer has a join() method
 
 There is generally no need to ever use `Object.setPrototypeOf()`. JavaScript implementations may make aggressive optimizations based on the assumption that the prototype of an object is fixed and unchanging. This means that if you ever call `Object.setPrototypeOf()`, any code that uses the altered objects may run much slower than it would normally.
 
+::: tip 翻译
+通常不需要使用 `Object.setPrototypeOf()`。 JavaScript 实现可能会基于对象的原型是固定且不变的假设来进行积极的优化。 这意味着，如果您调用 `Object.setPrototypeOf()`，任何使用更改后的对象的代码的运行速度可能会比正常情况下慢得多。
+:::
+
 A similar function, `Reflect.setPrototypeOf()`, is described in §14.6.
 
+::: tip 翻译
+第 14.6 节中描述了类似的函数 `Reflect.setPrototypeOf()`。
+:::
+
 Some early browser implementations of JavaScript exposed the `prototype` attribute of an object through the `__proto__` property (written with two underscores at the start and end). This has long since been deprecated, but enough existing code on the web depends on `__proto__` that the ECMAScript standard mandates it for all JavaScript implementations that run in web browsers. (Node supports it, too, though the standard does not require it for Node.) In modern JavaScript, `__proto__` is readable and writeable, and you can (though you shouldn’t) use it as an alternative to `Object.getPrototypeOf()` and `Object.setPrototypeOf()`. One interesting use of `__proto__`, however, is to define the prototype of an object literal:
+
+::: tip 翻译
+一些早期的 JavaScript 浏览器实现通过 `__proto__` 属性（在开头和结尾处用两个下划线编写）公开了对象的 `prototype` 属性。 这早已被弃用，但网络上足够多的现有代码依赖于 `__proto__`，ECMAScript 标准要求所有在网络浏览器中运行的 JavaScript 实现都必须使用它。 （Node 也支持它，尽管标准并不要求 Node 使用它。）在现代 JavaScript 中，`__proto__` 是可读可写的，您可以（尽管不应该）使用它作为 `Object.getPrototypeOf()` 和 `Object.setPrototypeOf()` 的替代品。 然而，`__proto__` 的一个有趣的用途是定义对象字面量的原型：
+:::
 
 ```js
 let p = { z: 3 };
