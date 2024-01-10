@@ -285,20 +285,51 @@ q.count; // => 3: ...but we copied the getter method so it increments.
 
 The _extensible_ attribute of an object specifies whether new properties can be added to the object or not. Ordinary JavaScript objects are extensible by default, but you can change that with the functions described in this section.
 
+::: tip 翻译
+对象的 _extensible_ 属性指定是否可以将新属性添加到该对象。 默认情况下，普通 JavaScript 对象是可扩展的，但您可以使用本节中描述的函数更改它。
+:::
+
 To determine whether an object is extensible, pass it to `Object.isExtensible()`. To make an object non-extensible, pass it to `Object.preventExtensions()`. Once you have done this, any attempt to add a new property to the object will throw a TypeError in strict mode and simply fail silently without an error in non-strict mode. In addition, attempting to change the prototype (see §14.3) of a non-extensible object will always throw a TypeError.
 
-Note that there is no way to make an object extensible again once you have made it non-extensible. Also note that calling `Object.preventExtensions()` only affects the extensibility of the object itself. If new properties are added to the prototype of a nonextensible object, the non-extensible object will inherit those new properties.
+::: tip 翻译
+要确定对象是否可扩展，请将其传递给 `Object.isExtensible()`。 要使对象不可扩展，请将其传递给 `Object.preventExtensions()`。 完成此操作后，任何向对象添加新属性的尝试都将在严格模式下抛出 TypeError ，并在非严格模式下简单地失败而不会出现错误。 此外，尝试更改不可扩展对象的原型（请参阅第 14.3 节）将始终抛出 TypeError。
+:::
+
+Note that there is no way to make an object extensible again once you have made it non-extensible. Also note that calling `Object.preventExtensions()` only affects the extensibility of the object itself. If new properties are added to the prototype of a non extensible object, the non-extensible object will inherit those new properties.
+
+::: tip 翻译
+请注意，一旦将对象设置为不可扩展，就无法再次使其可扩展。 另请注意，调用 `Object.preventExtensions()` 仅影响对象本身的可扩展性。 如果将新属性添加到不可扩展对象的原型中，则不可扩展对象将继承这些新属性。
+:::
 
 Two similar functions, `Reflect.isExtensible()` and `Reflect.preventExtensions()`, are described in §14.6.
+
+::: tip 翻译
+第 14.6 节中描述了两个类似的函数 `Reflect.isExtensible()` 和 `Reflect.preventExtensions()`。
+:::
 
 The purpose of the _extensible_ attribute is to be able to “lock down” objects into a known state and prevent outside tampering. The _extensible_ attribute of objects is often used in conjunction with the _configurable_ and _writable_ attributes of properties, and JavaScript defines functions that make it easy to set these attributes together:
 
 - `Object.seal()` works like `Object.preventExtensions()`, but in addition to making the object non-extensible, it also makes all of the own properties of that object nonconfigurable. This means that new properties cannot be added to the object, and existing properties cannot be deleted or configured. Existing properties that are writable can still be set, however. There is no way to unseal a sealed object. You can use `Object.isSealed()` to determine whether an object is sealed.
-- `Object.freeze()` locks objects down even more tightly. In addition to making the object non-extensible and its properties nonconfigurable, it also makes all of the object’s own data properties read-only. (If the object has accessor properties with setter methods, these are not affected and can still be invoked by assignment to the property.) Use `Object.isFrozen()` to determine if an object is frozen.
+- `Object.freeze()` locks objects down even more tightly. In addition to making the object non-extensible and its properties nonconfigurable, it also makes all of the object’s own data properties read-only. (If the object has accessor properties with `setter` methods, these are not affected and can still be invoked by assignment to the property.) Use `Object.isFrozen()` to determine if an object is frozen.
+
+::: tip 翻译
+_extensible_ 属性的目的是能够将对象“锁定”到已知状态并防止外部篡改。 对象的 _extensible_ 属性通常与属性的 _configurable_ 和 _writable_ 属性结合使用，JavaScript 定义了可以轻松将这些属性设置在一起的函数：
+
+- `Object.seal()` 的工作方式与 `Object.preventExtensions()` 类似，但除了使对象不可扩展之外，它还使该对象的所有自身属性不可配置。 这意味着无法将新属性添加到对象，并且无法删除或配置现有属性。 但是，仍然可以设置现有的可写属性。 没有办法解封密封的物体。 您可以使用 `Object.isSealed()` 来确定对象是否被密封。
+- `Object.freeze()` 可以更紧密地锁定对象。 除了使对象不可扩展及其属性不可配置之外，它还使对象自己的所有数据属性变为只读。 （如果对象具有带有 `setter` 方法的访问器属性，则这些属性不受影响，并且仍然可以通过分配给属性来调用。）使用 `Object.isFrozen()` 来确定对象是否被冻结。
+  :::
 
 It is important to understand that `Object.seal()` and `Object.freeze()` affect only the object they are passed: they have no effect on the prototype of that object. If you want to thoroughly lock down an object, you probably need to seal or freeze the objects in the prototype chain as well.
 
+::: tip 翻译
+重要的是要理解 `Object.seal()` 和 `Object.freeze()` 仅影响它们传递的对象：它们对该对象的原型没有影响。 如果你想彻底锁定一个对象，你可能还需要密封或冻结原型链中的对象。
+:::
+
 `Object.preventExtensions()`, `Object.seal()`, and `Object.freeze()` all return the object that they are passed, which means that you can use them in nested function invocations:
+
+::: tip 翻译
+`Object.preventExtensions()`、`Object.seal()` 和 `Object.freeze()` 都返回它们传递的对象，这意味着您可以在嵌套函数调用中使用它们：
+:::
 
 ```js
 // Create a sealed object with a frozen prototype and a non-enumerable property
@@ -308,6 +339,10 @@ let o = Object.seal(
 ```
 
 If you are writing a JavaScript library that passes objects to callback functions written by the users of your library, you might use `Object.freeze()` on those objects to prevent the user’s code from modifying them. This is easy and convenient to do, but there are trade-offs: frozen objects can interfere with common JavaScript testing strategies, for example.
+
+::: tip 翻译
+如果您正在编写一个 JavaScript 库，将对象传递给库用户编写的回调函数，则可以对这些对象使用 `Object.freeze()` 以防止用户的代码修改它们。 这样做既简单又方便，但也需要权衡：例如，冻结对象可能会干扰常见的 JavaScript 测试策略。
+:::
 
 ## 原型属性
 
