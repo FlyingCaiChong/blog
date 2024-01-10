@@ -926,50 +926,114 @@ One of the features mentioned in passing in §3.3.4 is the <code>String.raw\`\`<
 
 ## The Reflect API
 
-The Reflect object is not a class; like the Math object, its properties simply define a collection of related functions. These functions, added in ES6, define an API for “reflecting upon” objects and their properties. There is little new functionality here: the Reflect object defines a convenient set of functions, all in a single namespace, that mimic the behavior of core language syntax and duplicate the features of various preexisting Object functions.
+The Reflect object is not a class; like the Math object, its properties simply define a collection of related functions. These functions, added in ES6, define an API for “reflecting upon” objects and their properties. There is little new functionality here: the Reflect object defines a convenient set of functions, all in a single namespace, that mimic the behavior of core language syntax and duplicate the features of various pre existing Object functions.
+
+::: tip 翻译
+Reflect 对象不是一个类； 与 Math 对象一样，它的属性只是定义相关函数的集合。 ES6 中添加的这些函数定义了用于“反映”对象及其属性的 API。 这里几乎没有什么新功能：Reflect 对象定义了一组方便的函数，所有这些函数都在一个命名空间中，模仿核心语言语法的行为并复制各种预先存在的对象函数的功能。
+:::
 
 Although the `Reflect` functions do not provide any new features, they do group the features together in one convenient API. And, importantly, the set of `Reflect` functions maps one-to-one with the set of Proxy handler methods that we’ll learn about in §14.7.
 
+::: tip 翻译
+尽管 `Reflect` 函数不提供任何新功能，但它们确实将这些功能组合到一个方便的 API 中。 而且，重要的是，`Reflect` 函数集与我们将在第 14.7 节中了解的代理处理程序方法集一对一映射。
+:::
+
 The Reflect API consists of the following functions:
 
+::: tip 翻译
+Reflect API 由以下函数组成：
+:::
+
 **`Reflect.apply(f, o, args)`**
-This function invokes the function f as a method of o (or invokes it as a function with no this value if o is `null`) and passes the values in the args array as arguments. It is equivalent to `f.apply(o, args)`.
+This function invokes the function f as a method of o (or invokes it as a function with no `this` value if o is `null`) and passes the values in the args array as arguments. It is equivalent to `f.apply(o, args)`.
+
+::: tip 翻译
+该函数将函数 `f` 作为 `o` 的方法调用（或者如果 o 为 `null`，则将其作为没有 `this` 值的函数调用），并将 `args` 数组中的值作为参数传递。 它相当于 `f.apply(o, args)` 。
+:::
 
 **`Reflect.construct(c, args, newTarget)`**
-This function invokes the constructor `c` as if the new keyword had been used and passes the elements of the array `args` as arguments. If the optional `newTarget` argument is specified, it is used as the value of `new.target` within the constructor invocation. If not specified, then the `new.target` value will be `c`.
+This function invokes the constructor `c` as if the `new` keyword had been used and passes the elements of the array `args` as arguments. If the optional `newTarget` argument is specified, it is used as the value of `new.target` within the constructor invocation. If not specified, then the `new.target` value will be `c`.
+
+::: tip 翻译
+该函数调用构造函数 `c`，就像使用了 new 关键字一样，并将数组 `args` 的元素作为参数传递。 如果指定了可选的 `newTarget` 参数，它将用作构造函数调用中 `new.target` 的值。 如果未指定，则 `new.target`值将为 `c`。
+:::
 
 **`Reflect.defineProperty(o, name, descriptor)`**
 This function defines a property on the object `o`, using `name` (a string or symbol) as the name of the property. The Descriptor object should define the value (or getter and/or setter) and attributes of the property. `Reflect.defineProperty()` is very similar to `Object.defineProperty()` but returns true on success and false on failures. (`Object.defineProperty()` returns o on success and throws TypeError on failure.)
 
+::: tip 翻译
+该函数定义对象 `o` 的属性，使用 `name`（字符串或符号）作为属性的名称。 Descriptor 对象应该定义属性的值（或 `getter` 和/或 `setter` ）和属性。 `Reflect.defineProperty()` 与 `Object.defineProperty()` 非常相似，但成功时返回 true，失败时返回 false。 （`Object.defineProperty()` 成功时返回 `o`，失败时抛出 TypeError。）
+:::
+
 **`Reflect.deleteProperty(o, name)`**
 This function deletes the property with the specified string or symbolic name from the object `o`, returning `true` if successful (or if no such property existed) and `false` if the property could not be deleted. Calling this function is similar to writing `delete o[name]`.
 
+::: tip 翻译
+此函数从对象 `o` 中删除具有指定字符串或符号名称的属性，如果成功（或者不存在此类属性）则返回 `true`，如果无法删除该属性则返回`false`。 调用此函数类似于编写 `delete o[name]`。
+:::
+
 **`Reflect.get(o, name, receiver)`**
-This function returns the value of the property of `o` with the specified name (a string or symbol). If the property is an accessor method with a getter, and if the optional `receiver` argument is specified, then the getter function is called as a method of `receiver` instead of as a method of `o`. Calling this function is similar to evaluating `o[name]`.
+This function returns the value of the property of `o` with the specified name (a string or symbol). If the property is an accessor method with a `getter`, and if the optional `receiver` argument is specified, then the `getter` function is called as a method of `receiver` instead of as a method of `o`. Calling this function is similar to evaluating `o[name]`.
+
+::: tip 翻译
+此函数返回具有指定名称（字符串或符号）的 `o` 属性的值。 如果属性是带有 `getter` 的访问器方法，并且指定了可选的 `receiver` 参数，则 `getter` 函数将作为 `receiver` 的方法调用，而不是作为 `o` 的方法。 调用此函数类似于评估 `o[name]`。
+:::
 
 **`Reflect.getOwnPropertyDescriptor(o, name)`**
 This function returns a property descriptor object that describes the attributes of the property named `name` of the object `o`, or returns `undefined` if no such property exists. This function is nearly identical to `Object.getOwnPropertyDescriptor()`, except that the Reflect API version of the function requires that the first argument be an object and throws TypeError if it is not.
 
+::: tip 翻译
+该函数返回一个属性描述符对象，该对象描述对象 `o` 的名为 `name` 的属性的属性，如果不存在此类属性，则返回 `undefined` 。 此函数与 `Object.getOwnPropertyDescriptor()` 几乎相同，只是该函数的 Reflect API 版本要求第一个参数是对象，如果不是则抛出 TypeError。
+:::
+
 **`Reflect.getPrototypeOf(o)`**
 This function returns the prototype of object o or `null` if the object has no prototype. It throws a TypeError if o is a primitive value instead of an object. This function is almost identical to `Object.getPrototypeOf()` except that `Object.getPrototypeOf()` only throws a TypeError for `null` and `undefined` arguments and coerces other primitive values to their wrapper objects.
+
+::: tip 翻译
+该函数返回对象 `o` 的原型，如果该对象没有原型，则返回 `null`。 如果 `o` 是原始值而不是对象，则会抛出 TypeError。 该函数与`Object.getPrototypeOf()` 几乎相同，只是 `Object.getPrototypeOf()` 仅针对 `null` 和 `undefined` 参数抛出 TypeError，并将其他原始值强制为其包装对象。
+:::
 
 **`Reflect.has(o, name)`**
 This function returns `true` if the object o has a property with the specified `name` (which must be a string or a symbol). Calling this function is similar to evaluating `name in o`.
 
+::: tip 翻译
+如果对象 `o` 具有指定 `name`（必须是字符串或符号）的属性，则此函数返回 `true`。 调用此函数类似于评估 `name in o` 。
+:::
+
 **`Reflect.isExtensible(o)`**
 This function returns `true` if the object `o` is extensible (§14.2) and `false` if it is not. It throws a TypeError if o is not an object. `Object.isExtensible()` is similar but simply returns `false` when passed an argument that is not an object.
+
+::: tip 翻译
+如果对象 `o` 可扩展（第 14.2 节），则此函数返回 `true`，否则返回 `false`。 如果 `o` 不是对象，它会抛出 TypeError。 与`Object.isExtensible()` 类似，但在传递一个不是对象的参数时只是返回 `false`。
+:::
 
 **`Reflect.ownKeys(o)`**
 This function returns an array of the names of the properties of the object `o` or throws a TypeError if o is not an object. The names in the returned array will be strings and/or symbols. Calling this function is similar to calling `Object.getOwnPropertyNames()` and `Object.getOwnPropertySymbols()` and combining their results.
 
+::: tip 翻译
+此函数返回对象 `o` 的属性名称数组，如果 `o` 不是对象，则抛出 TypeError。 返回数组中的名称将是字符串或符号。 调用此函数类似于调用 `Object.getOwnPropertyNames()` 和 `Object.getOwnPropertySymbols()` 并将其结果组合起来。
+:::
+
 **`Reflect.preventExtensions(o)`**
 This function sets the _extensible_ attribute (§14.2) of the object o to `false` and returns `true` to indicate success. It throws a TypeError if o is not an object. `Object.preventExtensions()` has the same effect but returns o instead of `true` and does not throw TypeError for nonobject arguments.
 
+::: tip 翻译
+该函数将对象 `o` 的 _extensible_ 属性（第 14.2 节）设置为 `false` 并返回 `true` 以指示成功。 如果 `o` 不是对象，它会抛出 TypeError。 `Object.preventExtensions()` 具有相同的效果，但返回 `o` 而不是 `true`，并且不会为非对象参数抛出 TypeError。
+:::
+
 **`Reflect.set(o, name, value, receiver)`**
-This function sets the property with the specified `name` of the object `o` to the specified `value`. It returns `true` on success and `false` on failure (which can happen if the property is read-only). It throws TypeError if `o` is not an object. If the specified property is an accessor property with a setter function, and if the optional `receiver` argument is passed, then the setter will be invoked as a method of receiver instead of being invoked as a method of `o`. Calling this function is usually the same as evaluating `o[name] = value`.
+This function sets the property with the specified `name` of the object `o` to the specified `value`. It returns `true` on success and `false` on failure (which can happen if the property is read-only). It throws TypeError if `o` is not an object. If the specified property is an accessor property with a `setter` function, and if the optional `receiver` argument is passed, then the `setter` will be invoked as a method of `receiver` instead of being invoked as a method of `o`. Calling this function is usually the same as evaluating `o[name] = value`.
+
+::: tip 翻译
+该函数将对象 `o` 的指定 `name` 属性设置为指定的 `value`。 成功时返回 `true`，失败时返回 `false`（如果属性是只读的，则可能会发生这种情况）。 如果 `o` 不是一个对象，它会抛出 TypeError。 如果指定的属性是具有 `setter` 函数的访问器属性，并且传递了可选的 `receiver` 参数，则 `setter` 将作为 `receiver` 的方法调用，而不是作为 `o` 的方法调用。 调用此函数通常与评估 `o[name] = value` 相同。
+:::
 
 **`Reflect.setPrototypeOf(o, p)`**
-This function sets the prototype of the object `o` to `p`, returning `true` on success and `false` on failure (which can occur if `o` is not extensible or if the operation would cause a circular prototype chain). It throws a TypeError if `o` is not an object or if `p` is neither an object nor `null`. `Object.setPrototypeOf()` is similar, but returns o on success and throws TypeError on failure. Remember that calling either of these functions is likely to make your code slower by disrupting JavaScript interpreter optimizations.
+This function sets the prototype of the object `o` to `p`, returning `true` on success and `false` on failure (which can occur if `o` is not extensible or if the operation would cause a circular prototype chain). It throws a TypeError if `o` is not an object or if `p` is neither an object nor `null`. `Object.setPrototypeOf()` is similar, but returns `o` on success and throws TypeError on failure. Remember that calling either of these functions is likely to make your code slower by disrupting JavaScript interpreter optimizations.
+
+::: tip 翻译
+该函数将对象 `o` 的原型设置为 `p`，成功时返回 `true`，失败时返回 `false`（如果 `o` 不可扩展或操作会导致循环原型链，则可能会发生这种情况） 。 如果`o` 不是对象或者 `p` 既不是对象也不是 `null`，则会抛出 TypeError。 `Object.setPrototypeOf()` 类似，但成功时返回 `o`，失败时抛出 TypeError。 请记住，调用这些函数中的任何一个都可能会破坏 JavaScript 解释器优化，从而使代码变慢。
+:::
 
 ## Proxy 对象
 
