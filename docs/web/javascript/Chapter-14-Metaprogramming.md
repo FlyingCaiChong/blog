@@ -442,19 +442,39 @@ o.z; // => 3: o inherits from p
 
 ## 著名的 Symbols
 
-The Symbol type was added to JavaScript in ES6, and one of the primary reasons for doing so was to safely add extensions to the language without breaking compatibility with code already deployed on the web. We saw an example of this in **Chapter 12**, where we learned that you can make a class iterable by implementing a method whose “name” is the Symbol `Symbol.iterator`.
+The Symbol type was added to JavaScript in ES6, and one of the primary reasons for doing so was to safely add extensions to the language without breaking compatibility with code already deployed on the web. We saw an example of this in [Chapter 12](./Chapter-12-Iterators_Generators.md), where we learned that you can make a class iterable by implementing a method whose “name” is the Symbol `Symbol.iterator`.
+
+::: tip 翻译
+在 ES6 中，Symbol 类型被添加到 JavaScript 中，这样做的主要原因之一是安全地向该语言添加扩展，而不会破坏与已部署在 Web 上的代码的兼容性。 我们在[第 12 章](./Chapter-12-Iterators_Generators.md)中看到了一个这样的例子，我们了解到可以通过实现一个“名称”为符号 `Symbol.iterator` 的方法来使类可迭代。
+:::
 
 `Symbol.iterator` is the best-known example of the “well-known Symbols.” These are a set of Symbol values stored as properties of the `Symbol()` factory function that are used to allow JavaScript code to control certain low-level behaviors of objects and classes. The subsections that follow describe each of these well-known Symbols and explain how they can be used.
 
-### Symbol.iterator and Symbol.asyncIterator
+::: tip 翻译
+`Symbol.iterator` 是“众所周知的符号”中最著名的例子。 这些是作为 `Symbol()` 工厂函数的属性存储的一组符号值，用于允许 JavaScript 代码控制对象和类的某些低级行为。 接下来的小节描述了这些众所周知的符号，并解释了如何使用它们。
+:::
 
-The `Symbol.iterator` and `Symbol.asyncIterator` Symbols allow objects or classes to make themselves iterable or asynchronously iterable. They were covered in detail in **Chapter 12** and §13.4.2, respectively, and are mentioned again here only for completeness.
+### Symbol.iterator 和 Symbol.asyncIterator
+
+The `Symbol.iterator` and `Symbol.asyncIterator` Symbols allow objects or classes to make themselves iterable or asynchronously iterable. They were covered in detail in [Chapter 12](./Chapter-12-Iterators_Generators.md) and §13.4.2, respectively, and are mentioned again here only for completeness.
+
+::: tip 翻译
+`Symbol.iterator` 和 `Symbol.asyncIterator` 符号允许对象或类使其自身可迭代或异步可迭代。 它们分别在[第 12 章](./Chapter-12-Iterators_Generators.md)和第 13.4.2 节中进行了详细介绍，此处再次提及只是为了完整性。
+:::
 
 ### Symbol.hasInstance
 
-When the `instanceof` operator was described in §4.9.4, we said that the righthand side must be a constructor function and that the expression `o` `instanceof` `f` was evaluated by looking for the value `f.prototype` within the prototype chain of `o`. That is still true, but in ES6 and beyond, `Symbol.hasInstance` provides an alternative. In ES6, if the righthand side of `instanceof` is any object with a `[Symbol.hasInstance]` method, then that method is invoked with the lefthand side value as its argument, and the return value of the method, converted to a boolean, becomes the value of the `instanceof` operator. And, of course, if the value on the righthand side does not have a `[Symbol.hasInstance]` method but is a function, then the `instanceof` operator behaves in its ordinary way.
+When the `instanceof` operator was described in §4.9.4, we said that the righthand side must be a constructor function and that the expression `o instanceof f` was evaluated by looking for the value `f.prototype` within the prototype chain of `o`. That is still true, but in ES6 and beyond, `Symbol.hasInstance` provides an alternative. In ES6, if the righthand side of `instanceof` is any object with a `[Symbol.hasInstance]` method, then that method is invoked with the lefthand side value as its argument, and the return value of the method, converted to a boolean, becomes the value of the `instanceof` operator. And, of course, if the value on the righthand side does not have a `[Symbol.hasInstance]` method but is a function, then the `instanceof` operator behaves in its ordinary way.
+
+::: tip 翻译
+当第 4.9.4 节描述 `instanceof` 运算符时，我们说右侧必须是构造函数，并且通过查找值 `f.prototype`来评估表达式`o instanceof f` 在 `o` 的原型链中。 这仍然是事实，但在 ES6 及更高版本中，`Symbol.hasInstance` 提供了一种替代方案。 在 ES6 中，如果 `instanceof` 的右侧是任何具有 `[Symbol.hasInstance]` 方法的对象，则使用左侧值作为参数来调用该方法，并将该方法的返回值转换为布尔值，成为 `instanceof` 运算符的值。 当然，如果右侧的值没有 `[Symbol.hasInstance]` 方法，而是一个函数，则 `instanceof` 运算符将以普通方式运行。
+:::
 
 `Symbol.hasInstance` means that we can use the `instanceof` operator to do generic type checking with suitably defined pseudotype objects. For example:
+
+::: tip 翻译
+`Symbol.hasInstance` 意味着我们可以使用 `instanceof` 运算符对适当定义的伪类型对象进行泛型类型检查。 例如：
+:::
 
 ```js
 // Define an object as a "type" we can use with instanceof
@@ -470,15 +490,27 @@ Math.PI instanceof uint8    // => false: not an integer
 
 Note that this example is clever but confusing because it uses a nonclass object where a class would normally be expected. It would be just as easy—and clearer to readers of your code—to write a `isUint8()` function instead of relying on this `Symbol.hasInstance` behavior.
 
+::: tip 翻译
+请注意，这个示例很聪明，但令人困惑，因为它使用了通常需要类的非类对象。 编写 `isUint8()` 函数而不是依赖此 `Symbol.hasInstance` 行为同样容易，并且对于代码的读者来说更清晰。
+:::
+
 ### Symbol.toStringTag
 
 If you invoke the `toString()` method of a basic JavaScript object, you get the string “`[object Object]`”:
+
+::: tip 翻译
+如果调用基本 JavaScript 对象的 `toString()` 方法，您将得到字符串“`[object Object]`”：
+:::
 
 ```js
 {}.toString()   // => "[object Object]"
 ```
 
 If you invoke this same `Object.prototype.toString()` function as a method of instances of built-in types, you get some interesting results:
+
+::: tip 翻译
+如果您调用相同的 `Object.prototype.toString()` 函数作为内置类型实例的方法，您会得到一些有趣的结果：
+:::
 
 ```js
 Object.prototype.toString.call([]); // => "[object Array]"
@@ -490,6 +522,10 @@ Object.prototype.toString.call(false); // => "[object Boolean]"
 ```
 
 It turns out that you can use this `Object.prototype.toString().call()` technique with any JavaScript value to obtain the “class attribute” of an object that contains type information that is not otherwise available. The following `classof()` function is arguably more useful than the `typeof` operator, which makes no distinction between types of objects:
+
+::: tip 翻译
+事实证明，您可以将 `Object.prototype.toString().call()` 技术与任何 JavaScript 值一起使用，以获取包含无法通过其他方式获得的类型信息的对象的“类属性”。 下面的 `classof()` 函数可以说比 `typeof` 运算符更有用，后者不区分对象的类型：
+:::
 
 ```js
 function classof(o) {
@@ -514,6 +550,10 @@ classof(new Date()); // => "Date"
 
 Prior to ES6, this special behavior of the `Object.prototype.toString()` method was available only to instances of built-in types, and if you called this `classof()` function on an instance of a class you had defined yourself, it would simply return “Object”. In ES6, however, `Object.prototype.toString()` looks for a property with the symbolic name `Symbol.toStringTag` on its argument, and if such a property exists, it uses the property value in its output. This means that if you define a class of your own, you can easily make it work with functions like `classof()`:
 
+::: tip 翻译
+在 ES6 之前，`Object.prototype.toString()` 方法的这种特殊行为仅适用于内置类型的实例，并且如果您在你自己已定义的类的实例上调用此`classof()`函数，它只会返回 `Object`。 然而，在 ES6 中，`Object.prototype.toString()` 在其参数上查找具有符号名称 `Symbol.toStringTag` 的属性，如果存在这样的属性，它将在其输出中使用该属性值。 这意味着如果您定义自己的类，您可以轻松地使其与 `classof()` 等函数一起使用：
+:::
+
 ```js
 class Range {
   get [Symbol.toStringTag]() {
@@ -529,6 +569,10 @@ classof(r); // => "Range"
 ### Symbol.species
 
 Prior to ES6, JavaScript did not provide any real way to create robust subclasses of built-in classes like Array. In ES6, however, you can extend any built-in class simply by using the `class` and `extends` keywords. §9.5.2 demonstrated that with this simple subclass of Array:
+
+::: tip 翻译
+在 ES6 之前，JavaScript 没有提供任何真正的方法来创建内置类（如 Array）的健壮子类。 然而，在 ES6 中，您只需使用 `class` 和`extends` 关键字即可扩展任何内置类。 第 9.5.2 节通过这个简单的 Array 子类证明了这一点：
+:::
 
 ```js
 // A trivial Array subclass that adds getters for the first and last elements.
@@ -549,21 +593,45 @@ f.last; // => 9: f is also an EZArray with a last property
 
 Array defines methods `concat()`, `filter()`, `map()`, `slice()`, and `splice()`, which return arrays. When we create an array subclass like EZArray that inherits these methods, should the inherited method return instances of Array or instances of EZArray? Good arguments can be made for either choice, but the ES6 specification says that (by default) the five array-returning methods will return instances of the subclass.
 
+::: tip 翻译
+Array 定义了返回数组的方法 `concat()`、`filter()`、`map()`、`slice()` 和 `splice()`。 当我们创建像 EZArray 这样继承这些方法的数组子类时，继承的方法应该返回 Array 的实例还是 EZArray 的实例？ 对于这两种选择都可以提出很好的论据，但 ES6 规范表示（默认情况下）五个数组返回方法将返回子类的实例。
+:::
+
 Here’s how it works:
 
 - In ES6 and later, the `Array()` constructor has a property with the symbolic name `Symbol.species`. (Note that this Symbol is used as the name of a property of the constructor function. Most of the other well-known Symbols described here are used as the name of methods of a prototype object.)
 - When we create a subclass with `extends`, the resulting subclass constructor inherits properties from the superclass constructor. (This is in addition to the normal kind of inheritance, where instances of the subclass inherit methods of the superclass.) This means that the constructor for every subclass of Array also has an inherited property with name `Symbol.species`. (Or a subclass can define its own property with this name, if it wants.)
 - Methods like `map()` and `slice()` that create and return new arrays are tweaked slightly in ES6 and later. Instead of just creating a regular Array, they (in effect) invoke `new this.constructor[Symbol.species]()` to create the new array.
 
+::: tip 翻译
+它的工作原理如下：
+
+- 在 ES6 及更高版本中，`Array()`构造函数有一个符号名称为 `Symbol.species` 的属性。 （请注意，此 Symbol 用作构造函数的属性名称。这里描述的大多数其他众所周知的 Symbol 都用作原型对象的方法名称。）
+- 当我们使用 `extends` 创建子类时，生成的子类构造函数会继承超类构造函数的属性。 （这是对正常继承的补充，其中子类的实例继承超类的方法。）这意味着 Array 的每个子类的构造函数也有一个名为 `Symbol.species` 的继承属性。（或者，如果需要，子类可以使用此名称定义自己的属性。）
+- 在 ES6 及更高版本中，创建和返回新数组的 `map()` 和 `slice()` 等方法略有调整。 他们（实际上）调用 `new this.constructor[Symbol.species]()` 来创建新数组，而不是仅仅创建常规数组。
+  :::
+
 Now here’s the interesting part. Suppose that `Array[Symbol.species]` was just a regular data property, defined like this:
+
+::: tip 翻译
+现在这是有趣的部分。 假设 `Array[Symbol.species]` 只是一个常规数据属性，定义如下：
+:::
 
 ```js
 Array[Symbol.species] = Array;
 ```
 
-In that case, then subclass constructors would inherit the `Array()` constructor as their “species,” and invoking `map()` on an array subclass would return an instance of the superclass rather than an instance of the subclass. That is not how ES6 actually behaves, however. The reason is that `Array[Symbol.species]` is a read-only accessor property whose getter function simply returns this. Subclass constructors inherit this getter function, which means that by default, every subclass constructor is its own “species.”
+In that case, then subclass constructors would inherit the `Array()` constructor as their “species,” and invoking `map()` on an array subclass would return an instance of the superclass rather than an instance of the subclass. That is not how ES6 actually behaves, however. The reason is that `Array[Symbol.species]` is a read-only accessor property whose `getter` function simply returns this. Subclass constructors inherit this getter function, which means that by default, every subclass constructor is its own “species.”
 
-Sometimes this default behavior is not what you want, however. If you wanted the array-returning methods of EZArray to return regular Array objects, you just need to set `EZArray[Symbol.species]` to `Array`. But since the inherited property is a readonly accessor, you can’t just set it with an assignment operator. You can use `defineProperty()`, however:
+::: tip 翻译
+在这种情况下，子类构造函数将继承 `Array()` 构造函数作为它们的“`species`”，并且在数组子类上调用 `map()` 将返回超类的实例而不是子类的实例。 然而，ES6 的实际行为并非如此。 原因是 `Array[Symbol.species]` 是一个只读访问器属性，其 `getter` 函数仅返回 `this` 。 子类构造函数继承了这个 `getter` 函数，这意味着默认情况下，每个子类构造函数都是它自己的“`species`”。
+:::
+
+Sometimes this default behavior is not what you want, however. If you wanted the array-returning methods of EZArray to return regular Array objects, you just need to set `EZArray[Symbol.species]` to `Array`. But since the inherited property is a read only accessor, you can’t just set it with an assignment operator. You can use `defineProperty()`, however:
+
+::: tip 翻译
+然而，有时这种默认行为并不是您想要的。 如果您希望 EZArray 的数组返回方法返回常规 Array 对象，只需将 `EZArray[Symbol.species]` 设置为 `Array` 即可。 但由于继承的属性是只读访问器，因此不能仅使用赋值运算符来设置它。 但是，您可以使用`defineProperty()` ：
+:::
 
 ```js
 EZArray[Symbol.species] = Array; // Attempt to set a read-only property fails
@@ -573,6 +641,10 @@ Object.defineProperty(EZArray, Symbol.species, { value: Array });
 ```
 
 The simplest option is probably to explicitly define your own `Symbol.species` getter when creating the subclass in the first place:
+
+::: tip 翻译
+最简单的选择可能是在首先创建子类时显式定义您自己的 `Symbol.species` getter：
+:::
 
 ```js
 class EZArray extends Array {
@@ -593,13 +665,25 @@ e.last; // => 3
 f.last; // => undefined: f is a regular array with no last getter
 ```
 
-Creating useful subclasses of Array was the primary use case that motivated the introduction of `Symbol.species`, but it is not the only place that this well-known Symbol is used. Typed array classes use the Symbol in the same way that the Array class does. Similarly, the `slice()` method of ArrayBuffer looks at the `Symbol.species` property of `this.constructor` instead of simply creating a new ArrayBuffer. And Promise methods like `then()` that return new Promise objects create those objects via this species protocol as well. Finally, if you find yourself subclassing Map (for example) and defining methods that return new Map objects, you might want to use `Symbol.species` yourself for the benefit of subclasses of your subclass.
+Creating useful subclasses of Array was the primary use case that motivated the introduction of `Symbol.species`, but it is not the only place that this well-known Symbol is used. Typed array classes use the Symbol in the same way that the Array class does. Similarly, the `slice()` method of `ArrayBuffer` looks at the `Symbol.species` property of `this.constructor` instead of simply creating a new `ArrayBuffer`. And Promise methods like `then()` that return new Promise objects create those objects via this species protocol as well. Finally, if you find yourself subclassing Map (for example) and defining methods that return new Map objects, you might want to use `Symbol.species` yourself for the benefit of subclasses of your subclass.
+
+::: tip 翻译
+创建有用的 Array 子类是推动引入 `Symbol.species` 的主要用例，但这并不是使用这个众所周知的 Symbol 的唯一地方。 类型化数组类使用 Symbol 的方式与 Array 类相同。 类似地，`ArrayBuffer` 的 `slice()` 方法查看 `this.constructor` 的 `Symbol.species` 属性，而不是简单地创建一个新的 `ArrayBuffer`。 像 `then()` 这样返回新 Promise 对象的 Promise 方法也通过这个物种协议创建这些对象。 最后，如果您发现自己对 Map 进行了子类化（例如）并定义了返回新 Map 对象的方法，那么您可能希望自己使用 `Symbol.species` 来为您的子类的子类带来好处。
+:::
 
 ### Symbol.isConcatSpreadable
 
-The Array method `concat()` is one of the methods described in the previous section that uses `Symbol.species` to determine what constructor to use for the returned array. But `concat()` also uses `Symbol.isConcatSpreadable`. Recall from §7.8.3 that the `concat()` method of an array treats its this value and its array arguments differently than its nonarray arguments: nonarray arguments are simply appended to the new array, but the this array and any array arguments are flattened or “spread” so that the elements of the array are concatenated rather than the array argument itself.
+The Array method `concat()` is one of the methods described in the previous section that uses `Symbol.species` to determine what constructor to use for the returned array. But `concat()` also uses `Symbol.isConcatSpreadable`. Recall from §7.8.3 that the `concat()` method of an array treats its `this` value and its array arguments differently than its nonarray arguments: nonarray arguments are simply appended to the new array, but the this array and any array arguments are flattened or “spread” so that the elements of the array are concatenated rather than the array argument itself.
+
+::: tip 翻译
+数组方法 `concat()` 是上一节中描述的方法之一，它使用 `Symbol.species` 来确定返回数组使用哪个构造函数。 但是 `concat()` 也使用 `Symbol.isConcatSpread`。 回想一下第 7.8.3 节，数组的 `concat()` 方法对待它的 `this` 值和它的数组参数与它的非数组参数不同：非数组参数只是简单地附加到新数组，但 `this` 数组和任何数组参数都是展平或“展开”，以便连接数组的元素而不是数组参数本身。
+:::
 
 Before ES6, `concat()` just used `Array.isArray()` to determine whether to treat a value as an array or not. In ES6, the algorithm is changed slightly: if the argument (or the `this` value) to `concat()` is an object and has a property with the symbolic name `Symbol.isConcatSpreadable`, then the boolean value of that property is used to determine whether the argument should be “spread.” If no such property exists, then `Array.isArray()` is used as in previous versions of the language.
+
+::: tip 翻译
+在 ES6 之前，`concat()` 仅使用 `Array.isArray()` 来确定是否将值视为数组。 在 ES6 中，算法略有改变：如果 `concat()` 的参数（或 `this` 值）是一个对象，并且具有符号名称为 `Symbol.isConcatSpread` 的属性，则该属性的布尔值是用于确定参数是否应该“传播”。 如果不存在这样的属性，则像该语言的早期版本一样使用 `Array.isArray()` 。
+:::
 
 There are two cases when you might want to use this Symbol:
 
@@ -612,7 +696,7 @@ There are two cases when you might want to use this Symbol:
   };
   [].concat(arraylike); // => [1]: (would be [[1]] if not spread)
   ```
-- Array subclasses are spreadable by default, so if you are defining an array subclass that you do not want to act like an array when used with `concat()`, then you can add a getter like this to your subclass:
+- Array subclasses are spreadable by default, so if you are defining an array subclass that you do not want to act like an array when used with `concat()`, then you can add a `getter` like this to your subclass:
   ```js
   class NonSpreadableArray extends Array {
     get [Symbol.isConcatSpreadable]() {
@@ -623,13 +707,32 @@ There are two cases when you might want to use this Symbol:
   [].concat(a).length; // => 1; (would be 3 elements long if a was spread)
   ```
 
-### Pattern-Matching Symbols
+::: tip 翻译
+在两种情况下您可能需要使用此符号：
 
-§11.3.2 documented the String methods that perform pattern-matching operations using a RegExp argument. In ES6 and later, these methods have been generalized to work with RegExp objects or any object that defines pattern-matching behavior via properties with symbolic names. For each of the string methods `match()`, match `All()`, `search()`, `replace()`, and `split()`, there is a corresponding well-known Symbol: `Symbol.match`, `Symbol.search`, and so on.
+- 如果您创建一个类似数组（参见第 7.9 节）的对象，并希望它在传递给 `concat()` 时表现得像一个真正的数组，您可以简单地将符号属性添加到您的对象中：
+- 数组子类默认是可扩展的，因此，如果您正在定义一个数组子类，并且不想在与 `concat()` 一起使用时表现得像数组一样，那么您可以向您的子类添加如下所示的 `getter` ：
+  :::
 
-RegExps are a general and very powerful way to describe textual patterns, but they can be complicated and not well suited to fuzzy matching. With the generalized string methods, you can define your own pattern classes using the well-known Symbol methods to provide custom matching. For example, you could perform string comparisons using Intl.Collator (see §11.7.3) to ignore accents when matching. Or you could define a pattern class based on the _Soundex_ algorithm to match words based on their approximate sounds or to loosely match strings up to a given Levenshtein distance.
+### 模式匹配 Symbols
+
+§11.3.2 documented the String methods that perform pattern-matching operations using a RegExp argument. In ES6 and later, these methods have been generalized to work with RegExp objects or any object that defines pattern-matching behavior via properties with symbolic names. For each of the string methods `match()`, `matchAll()`, `search()`, `replace()`, and `split()`, there is a corresponding well-known Symbol: `Symbol.match`, `Symbol.search`, and so on.
+
+::: tip 翻译
+第 11.3.2 节记录了使用 RegExp 参数执行模式匹配操作的 String 方法。 在 ES6 及更高版本中，这些方法已被推广到与 RegExp 对象或任何通过具有符号名称的属性定义模式匹配行为的对象一起使用。 对于每个字符串方法 `match()`、 `matchAll()`、`search()`、`replace()` 和 `split()`，都有一个相应的众所周知的 Symbol：`Symbol.match`、`Symbol.search` 等。
+:::
+
+RegExps are a general and very powerful way to describe textual patterns, but they can be complicated and not well suited to fuzzy matching. With the generalized string methods, you can define your own pattern classes using the well-known Symbol methods to provide custom matching. For example, you could perform string comparisons using `Intl.Collator` (see §11.7.3) to ignore accents when matching. Or you could define a pattern class based on the _Soundex_ algorithm to match words based on their approximate sounds or to loosely match strings up to a given _Levenshtein_ distance.
+
+::: tip 翻译
+正则表达式是描述文本模式的通用且非常强大的方法，但它们可能很复杂并且不太适合模糊匹配。 通过通用字符串方法，您可以使用众所周知的 Symbol 方法来定义自己的模式类，以提供自定义匹配。 例如，您可以使用 `Intl.Collator`（请参阅第 11.7.3 节）执行字符串比较，以在匹配时忽略重音符号。 或者，您可以基于 _Soundex_ 算法定义一个模式类，以根据单词的近似发音来匹配单词，或者松散地匹配字符串直至给定的 _Levenshtein_ 距离。
+:::
 
 In general, when you invoke one of these five String methods on a pattern object like this:
+
+::: tip 翻译
+一般来说，当您在模式对象上调用这五个 String 方法之一时，如下所示：
+:::
 
 ```js
 string.method(pattern, arg);
@@ -637,11 +740,19 @@ string.method(pattern, arg);
 
 that invocation turns into an invocation of a symbolically named method on your pattern object:
 
+::: tip 翻译
+该调用变成对模式对象上的符号命名方法的调用：
+:::
+
 ```js
 pattern[symbol](string, arg);
 ```
 
-As an example, consider the pattern-matching class in the next example, which implements pattern matching using the simple * and ? wildcards that you are probably familar with from filesystems. This style of pattern matching dates back to the very early days of the Unix operating system, and the patterns are often called *globs\*:
+As an example, consider the pattern-matching class in the next example, which implements pattern matching using the simple `*` and `?` wildcards that you are probably familar with from filesystems. This style of pattern matching dates back to the very early days of the Unix operating system, and the patterns are often called _globs_:
+
+::: tip 翻译
+作为示例，请考虑下一个示例中的模式匹配类，该类使用简单的 `*` 和 `?` 实现模式匹配。您可能熟悉文件系统中的通配符。 这种模式匹配风格可以追溯到 Unix 操作系统的早期，这些模式通常称为 _globs_：
+:::
 
 ```js
 class Glob {
@@ -689,17 +800,37 @@ match.index; // => 0
 
 §3.9.3 explained that JavaScript has three slightly different algorithms for converting objects to primitive values. Loosely speaking, for conversions where a string value is expected or preferred, JavaScript invokes an object’s `toString()` method first and falls back on the `valueOf()` method if `toString()` is not defined or does not return a primitive value. For conversions where a numeric value is preferred, JavaScript tries the `valueOf()` method first and falls back on `toString()` if `valueOf()` is not defined or if it does not return a primitive value. And finally, in cases where there is no preference, it lets the class decide how to do the conversion. Date objects convert using `toString()` first, and all other types try `valueOf()` first.
 
+::: tip 翻译
+第 3.9.3 节解释了 JavaScript 具有三种略有不同的算法来将对象转换为原始值。 宽松地说，对于需要或首选字符串值的转换，JavaScript 首先调用对象的 `toString()` 方法，如果 `toString()` 未定义或不返回一个原始值，则退回到 `valueOf()` 方法。。 对于首选数值的转换，JavaScript 首先尝试 `valueOf()` 方法，如果未定义 `valueOf()` 或它不返回原始值，则使用 `toString()` 方法。 最后，在没有偏好的情况下，它让类决定如何进行转换。 日期对象首先使用 `toString()` 进行转换，所有其他类型首先尝试 `valueOf()`。
+:::
+
 In ES6, the well-known Symbol `Symbol.toPrimitive` allows you to override this default object-to-primitive behavior and gives you complete control over how instances of your own classes will be converted to primitive values. To do this, define a method with this symbolic name. The method must return a primitive value that somehow represents the object. The method you define will be invoked with a single string argument that tells you what kind of conversion JavaScript is trying to do on your object:
 
 - If the argument is "`string`", it means that JavaScript is doing the conversion in a context where it would expect or prefer (but not require) a string. This happens when you interpolate the object into a template literal, for example.
 - If the argument is "`number`", it means that JavaScript is doing the conversion in a context where it would expect or prefer (but not require) a numeric value. This happens when you use the object with a `<` or `>` operator or with arithmetic operators like `-` and `*`.
 - If the argument is "`default`", it means that JavaScript is converting your object in a context where either a numeric or string value could work. This happens with the `+`, `==`, and `!=` operators.
 
+::: tip 翻译
+在 ES6 中，众所周知的符号 `Symbol.toPrimitive` 允许您覆盖此默认的对象到原始值行为，并让您完全控制自己的类的实例如何转换为原始值。 为此，请使用此符号名称定义一个方法。 该方法必须返回一个以某种方式表示该对象的原始值。 您定义的方法将使用单个字符串参数来调用，该参数告诉您 JavaScript 尝试对您的对象执行哪种类型的转换：
+
+- 如果参数是 `string`，则意味着 JavaScript 正在期望或更喜欢（但不要求）字符串的上下文中进行转换。 例如，当您将对象插入模板文字时，就会发生这种情况。
+- 如果参数是 `number`，则意味着 JavaScript 正在期望或更喜欢（但不要求）数值的上下文中进行转换。 当您将对象与 `<` 或 `>` 运算符或与 `-` 和 `*` 等算术运算符一起使用时，就会发生这种情况。
+- 如果参数是 `default`，则意味着 JavaScript 正在数字或字符串值可以工作的上下文中转换您的对象。 这种情况发生在 `+`、`==` 和`!=` 运算符上。
+  :::
+
 Many classes can ignore the argument and simply return the same primitive value in all cases. If you want instances of your class to be comparable and sortable with `<` and `>`, then that is a good reason to define a `[Symbol.toPrimitive]` method.
+
+::: tip 翻译
+许多类可以忽略该参数，并在所有情况下简单地返回相同的原始值。 如果您希望类的实例可以使用 `<` 和 `>` 进行比较和排序，那么这是定义`[Symbol.toPrimitive]` 方法的一个很好的理由。
+:::
 
 ### Symbol.unscopables
 
 The final well-known Symbol that we’ll cover here is an obscure one that was introduced as a workaround for compatibility issues caused by the deprecated `with` statement. Recall that the `with` statement takes an object and executes its statement body as if it were in a scope where the properties of that object were variables. This caused compatibility problems when new methods were added to the Array class, and it broke some existing code. `Symbol.unscopables` is the result. In ES6 and later, the `with` statement has been slightly modified. When used with an object `o`, a `with` statement computes `Object.keys(o[Symbol.unscopables]||{})` and ignores properties whose names are in the resulting array when creating the simulated scope in which to execute its body. ES6 uses this to add new methods to `Array.prototype` without breaking existing code on the web. This means that you can find a list of the newest Array methods by evaluating:
+
+::: tip 翻译
+我们将在这里介绍的最后一个众所周知的符号是一个不起眼的符号，它是作为因已弃用的 `with` 语句引起的兼容性问题的解决方法而引入的。 回想一下，`with` 语句接受一个对象并执行其语句主体，就好像它处于该对象的属性是变量的作用域中一样。 当向 Array 类添加新方法时，这会导致兼容性问题，并且会破坏一些现有代码。 结果是 `Symbol.unscopables`。 在 ES6 及更高版本中，`with` 语句已稍作修改。 当与对象 `o` 一起使用时，`with` 语句会计算 `Object.keys(o[Symbol.unscopables]||{})`，并在创建模拟作用域时忽略名称位于结果数组中的属性。 执行它的主体。 ES6 使用它向 `Array.prototype` 添加新方法，而不会破坏网络上的现有代码。 这意味着您可以通过评估找到最新 Array 方法的列表：
+:::
 
 ```js
 let newArrayMethods = Object.keys(Array.prototype[Symbol.unscopables]);
@@ -709,13 +840,33 @@ let newArrayMethods = Object.keys(Array.prototype[Symbol.unscopables]);
 
 Strings within backticks are known as “template literals” and were covered in §3.3.4. When an expression whose value is a function is followed by a template literal, it turns into a function invocation, and we call it a “tagged template literal.” Defining a new tag function for use with tagged template literals can be thought of as metaprogramming, because tagged templates are often used to define DSLs—domain-specific languages—and defining a new tag function is like adding new syntax to JavaScript. Tagged template literals have been adopted by a number of frontend JavaScript packages. The GraphQL query language uses a <code>gql\`\`</code> tag function to allow queries to be embedded within JavaScript code. And the Emotion library uses a <code>css\`\`</code> tag function to enable CSS styles to be embedded in JavaScript. This section demonstrates how to write your own tag functions like these.
 
+::: tip 翻译
+反引号内的字符串称为“模板文字”，并在第 3.3.4 节中进行了介绍。 当一个值为函数的表达式后面跟着一个模板文字时，它就变成了一个函数调用，我们称之为“标记模板文字”。 定义与标记模板文字一起使用的新标记函数可以被视为元编程，因为标记模板通常用于定义 DSL（特定于域的语言），并且定义新标记函数就像向 JavaScript 添加新语法一样。 标记模板文字已被许多前端 JavaScript 包采用。 GraphQL 查询语言使用 <code>gql\`\`</code> 标签函数来允许将查询嵌入到 JavaScript 代码中。 Emotion 库使用 <code>css\`\`</code> 标签功能使 CSS 样式能够嵌入到 JavaScript 中。 本节演示如何编写您自己的此类标记函数。
+:::
+
 There is nothing special about tag functions: they are ordinary JavaScript functions, and no special syntax is required to define them. When a function expression is followed by a template literal, the function is invoked. The first argument is an array of strings, and this is followed by zero or more additional arguments, which can have values of any type.
+
+::: tip 翻译
+标签函数没有什么特别之处：它们是普通的 JavaScript 函数，不需要特殊的语法来定义它们。 当函数表达式后跟模板文字时，将调用该函数。 第一个参数是一个字符串数组，后面跟着零个或多个附加参数，这些参数可以具有任何类型的值。
+:::
 
 The number of arguments depends on the number of values that are interpolated into the template literal. If the template literal is simply a constant string with no interpolations, then the tag function will be called with an array of that one string and no additional arguments. If the template literal includes one interpolated value, then the tag function is called with two arguments. The first is an array of two strings, and the second is the interpolated value. The strings in that initial array are the string to the left of the interpolated value and the string to its right, and either one of them may be the empty string. If the template literal includes two interpolated values, then the tag function is invoked with three arguments: an array of three strings and the two interpolated values. The three strings (any or all of which may be empty) are the text to the left of the first value, the text between the two values, and the text to the right of the second value. In the general case, if the template literal has `n` interpolated values, then the tag function will be invoked with `n+1` arguments. The first argument will be an array of `n+1` strings, and the remaining arguments are the `n` interpolated values, in the order that they appear in the template literal.
 
+::: tip 翻译
+参数的数量取决于插入到模板文字中的值的数量。 如果模板文字只是一个没有插值的常量字符串，那么将使用该字符串的数组来调用标记函数，并且没有其他参数。 如果模板文字包含一个内插值，则使用两个参数调用标记函数。 第一个是两个字符串的数组，第二个是插值。 该初始数组中的字符串是插值左侧的字符串和右侧的字符串，其中任一字符串都可能是空字符串。 如果模板文字包含两个内插值，则使用三个参数调用标记函数：三个字符串的数组和两个内插值。 这三个字符串（其中任何或全部可能为空）是第一个值左侧的文本、两个值之间的文本以及第二个值右侧的文本。 在一般情况下，如果模板文字具有 `n` 内插值，则将使用 `n+1` 参数调用标记函数。 第一个参数将是一个由 `n+1` 字符串组成的数组，其余参数是 `n` 插值，按照它们在模板文字中出现的顺序排列。
+:::
+
 The value of a template literal is always a string. But the value of a tagged template literal is whatever value the tag function returns. This may be a string, but when the tag function is used to implement a DSL, the return value is typically a non-string data structure that is a parsed representation of the string.
 
+::: tip 翻译
+模板文字的值始终是字符串。 但标记模板文字的值是标记函数返回的任何值。 这可能是一个字符串，但是当标签函数用于实现 DSL 时，返回值通常是一个非字符串数据结构，它是字符串的解析表示。
+:::
+
 As an example of a template tag function that returns a string, consider the following <code>html\`\`</code> template, which is useful when you want to safely interpolate values into a string of HTML. The tag performs HTML escaping on each of the values before using it to build the final string:
+
+::: tip 翻译
+作为返回字符串的模板标记函数的示例，请考虑以下 <code>html\`\`</code> 模板，当您想要安全地将值插入 HTML 字符串时，该模板非常有用。 该标签在使用每个值构建最终字符串之前对每个值执行 HTML 转义：
+:::
 
 ```js
 function html(strings, ...values) {
@@ -747,6 +898,10 @@ html`<div class="${kind}">${name}</div>`; // => '<div class="game">D&amp;D</div>
 
 For an example of a tag function that does not return a string but instead a parsed representation of a string, think back to the Glob pattern class defined in §14.4.6. Since the `Glob()` constructor takes a single string argument, we can define a tag function for creating new Glob objects:
 
+::: tip 翻译
+对于不返回字符串而是返回字符串的解析表示形式的标记函数的示例，请回想一下第 14.4.6 节中定义的 Glob 模式类。 由于 `Glob()` 构造函数采用单个字符串参数，因此我们可以定义一个标签函数来创建新的 Glob 对象：
+:::
+
 ```js
 function glob(strings, ...values) {
   // Assemble the strings and values into a single string
@@ -763,7 +918,11 @@ let filePattern = glob`${root}/*.html`; // A RegExp alternative
 "/tmp/test.html".match(filePattern)[1]; // => "test"
 ```
 
-One of the features mentioned in passing in §3.3.4 is the <code>String.raw\`\`</code> tag function that returns a string in its “raw” form without interpreting any of the backslash escape sequences. This is implemented using a feature of tag function invocation that we have not discussed yet. When a tag function is invoked, we’ve seen that its first argument is an array of strings. But this array also has a property named raw, and the value of that property is another array of strings, with the same number of elements. The argument array includes strings that have had escape sequences interpreted as usual. And the raw array includes strings in which escape sequences are not interpreted. This obscure feature is important if you want to define a DSL with a grammar that uses backslashes. For example, if we wanted our <code>glob\`\`</code> tag function to support pattern matching on Windows-style paths (which use backslashes instead of forward slashes) and we did not want users of the tag to have to double every backslash, we could rewrite that function to use `strings.raw[]` instead of `strings[]`. The downside, of course, would be that we could no longer use escapes like `\u` in our glob literals.
+One of the features mentioned in passing in §3.3.4 is the <code>String.raw\`\`</code> tag function that returns a string in its “raw” form without interpreting any of the backslash escape sequences. This is implemented using a feature of tag function invocation that we have not discussed yet. When a tag function is invoked, we’ve seen that its first argument is an array of strings. But this array also has a property named `raw`, and the value of that property is another array of strings, with the same number of elements. The argument array includes strings that have had escape sequences interpreted as usual. And the raw array includes strings in which escape sequences are not interpreted. This obscure feature is important if you want to define a DSL with a grammar that uses backslashes. For example, if we wanted our <code>glob\`\`</code> tag function to support pattern matching on Windows-style paths (which use backslashes instead of forward slashes) and we did not want users of the tag to have to double every backslash, we could rewrite that function to use `strings.raw[]` instead of `strings[]`. The downside, of course, would be that we could no longer use escapes like `\u` in our glob literals.
+
+::: tip 翻译
+第 3.3.4 节中提到的功能之一是 <code>String.raw\`\`</code> 标记函数，它返回“原始”形式的字符串，而不解释任何反斜杠转义序列。 这是使用我们尚未讨论的标签函数调用功能来实现的。 当调用标签函数时，我们看到它的第一个参数是一个字符串数组。 但是这个数组还有一个名为 `raw` 的属性，该属性的值是另一个字符串数组，具有相同数量的元素。 参数数组包含已像平常一样解释转义序列的字符串。 原始数组包含不解释转义序列的字符串。 如果您想要使用反斜杠的语法来定义 DSL，那么这个晦涩的功能就很重要。 例如，如果我们希望我们的 <code>glob\`\`</code> 标记函数支持 Windows 样式路径（使用反斜杠而不是正斜杠）上的模式匹配，并且我们不希望标记的用户必须使用两个反斜杠，我们可以重写该函数以使用 `strings.raw[]` 而不是 `strings[]`。 当然，缺点是我们不能再在全局文本中使用像 `\u` 这样的转义符。
+:::
 
 ## The Reflect API
 
