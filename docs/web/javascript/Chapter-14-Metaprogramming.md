@@ -2,7 +2,9 @@
 title: 第十四章 元编程
 ---
 
-# Chapter 14 Metaprogramming
+# 元编程
+
+[[toc]]
 
 This chapter covers a number of advanced JavaScript features that are not commonly used in day-to-day programming but that may be valuable to programmers writing reusable libraries and of interest to anyone who wants to tinker with the details about how JavaScript objects behave.
 
@@ -1039,7 +1041,15 @@ This function sets the prototype of the object `o` to `p`, returning `true` on s
 
 The Proxy class, available in ES6 and later, is JavaScript’s most powerful metaprogramming feature. It allows us to write code that alters the fundamental behavior of JavaScript objects. The Reflect API described in §14.6 is a set of functions that gives us direct access to a set of fundamental operations on JavaScript objects. What the Proxy class does is allows us a way to implement those fundamental operations ourselves and create objects that behave in ways that are not possible for ordinary objects.
 
+::: tip 翻译
+ES6 及更高版本中提供的 Proxy 类是 JavaScript 最强大的元编程功能。 它允许我们编写改变 JavaScript 对象基本行为的代码。 第 14.6 节中描述的 Reflect API 是一组函数，使我们能够直接访问 JavaScript 对象的一组基本操作。 Proxy 类的作用是让我们能够自己实现这些基本操作，并创建具有普通对象无法实现的行为方式的对象。
+:::
+
 When we create a Proxy object, we specify two other objects, the target object and the handlers object:
+
+::: tip 翻译
+当我们创建 Proxy 对象时，我们指定了另外两个对象，目标对象和处理程序对象：
+:::
 
 ```js
 let proxy = new Proxy(target, handlers);
@@ -1047,9 +1057,21 @@ let proxy = new Proxy(target, handlers);
 
 The resulting Proxy object has no state or behavior of its own. Whenever you perform an operation on it (read a property, write a property, define a new property, look up the prototype, invoke it as a function), it dispatches those operations to the handlers object or to the target object.
 
+::: tip 翻译
+生成的 Proxy 对象没有自己的状态或行为。 每当您对其执行操作（读取属性、写入属性、定义新属性、查找原型、将其作为函数调用）时，它都会将这些操作分派到处理程序对象或目标对象。
+:::
+
 The operations supported by Proxy objects are the same as those defined by the Reflect API. Suppose that p is a Proxy object and you write `delete p.x`. The `Reflect.deleteProperty()` function has the same behavior as the `delete` operator. And when you use the `delete` operator to delete a property of a Proxy object, it looks for a `deleteProperty()` method on the handlers object. If such a method exists, it invokes it. And if no such method exists, then the Proxy object performs the property deletion on the target object instead.
 
+::: tip 翻译
+Proxy 对象支持的操作与 Reflect API 定义的操作相同。 假设 `p` 是一个 Proxy 对象，并且您编写 `delete p.x`。 `Reflect.deleteProperty()` 函数与 `delete` 运算符具有相同的行为。 当您使用 `delete` 运算符删除 Proxy 对象的属性时，它会在处理程序对象上查找 `deleteProperty()` 方法。 如果存在这样的方法，则会调用它。 如果不存在这样的方法，则 Proxy 对象将对目标对象执行属性删除。
+:::
+
 Proxies work this way for all of the fundamental operations: if an appropriate method exists on the handlers object, it invokes that method to perform the operation. (The method names and signatures are the same as those of the Reflect functions covered in §14.6.) And if that method does not exist on the handlers object, then the Proxy performs the fundamental operation on the target object. This means that a Proxy can obtain its behavior from the target object or from the handlers object. If the handlers object is empty, then the proxy is essentially a transparent wrapper around the target object:
+
+::: tip 翻译
+代理对于所有基本操作都以这种方式工作：如果处理程序对象上存在适当的方法，它将调用该方法来执行操作。 （方法名称和签名与第 14.6 节中介绍的 Reflect 函数的名称和签名相同。）如果处理程序对象上不存在该方法，则代理将对目标对象执行基本操作。 这意味着代理可以从目标对象或处理程序对象获取其行为。 如果处理程序对象为空，则代理本质上是目标对象的透明包装器：
+:::
 
 ```js
 let t = { x: 1, y: 2 };
@@ -1062,6 +1084,10 @@ t.z; // => 3: defines the property on the target
 ```
 
 This kind of transparent wrapper proxy is essentially equivalent to the underlying target object, which means that there really isn’t a reason to use it instead of the wrapped object. Transparent wrappers can be useful, however, when created as “revocable proxies.” Instead of creating a Proxy with the `Proxy()` constructor, you can use the `Proxy.revocable()` factory function. This function returns an object that includes a Proxy object and also a `revoke()` function. Once you call the `revoke()` function, the proxy immediately stops working:
+
+::: tip 翻译
+这种透明包装代理本质上等同于底层目标对象，这意味着确实没有理由使用它来代替包装对象。 然而，当创建为“可撤销代理”时，透明包装器可能会很有用。 您可以使用 `Proxy.revocable()` 工厂函数，而不是使用 `Proxy()` 构造函数创建代理。 该函数返回一个对象，其中包含一个 Proxy 对象和一个 `revoke()` 函数。 一旦调用 `revoke()` 函数，代理就会立即停止工作：
+:::
 
 ```js
 function accessTheDatabase() {
@@ -1076,9 +1102,21 @@ proxy(); // !TypeError: we can no longer call this function
 
 Note that in addition to demonstrating revocable proxies, the preceding code also demonstrates that proxies can work with target functions as well as target objects. But the main point here is that revocable proxies are a building block for a kind of code isolation, and you might use them when dealing with untrusted third-party libraries, for example. If you have to pass a function to a library that you don’t control, you can pass a revocable proxy instead and then revoke the proxy when you are finished with the library. This prevents the library from keeping a reference to your function and calling it at unexpected times. This kind of defensive programming is not typical in JavaScript programs, but the Proxy class at least makes it possible.
 
+::: tip 翻译
+请注意，除了演示可撤销代理之外，前面的代码还演示了代理可以与目标函数和目标对象一样使用。 但这里的要点是，可撤销代理是一种代码隔离的构建块，例如，您可以在处理不受信任的第三方库时使用它们。 如果您必须将函数传递给您无法控制的库，则可以传递可撤销代理，然后在使用完该库后撤销该代理。 这可以防止库保留对您的函数的引用并在意外的时间调用它。 这种防御性编程在 JavaScript 程序中并不常见，但 Proxy 类至少使之成为可能。
+:::
+
 If we pass a non-empty handlers object to the `Proxy()` constructor, then we are no longer defining a transparent wrapper object and are instead implementing custom behavior for our proxy. With the right set of handlers, the underlying target object essentially becomes irrelevant.
 
+::: tip 翻译
+如果我们将非空处理程序对象传递给 `Proxy()` 构造函数，那么我们不再定义透明包装对象，而是为代理实现自定义行为。 有了正确的处理程序集，底层目标对象基本上就变得无关紧要了。
+:::
+
 In the following code, for example, is how we could implement an object that appears to have an infinite number of read-only properties, where the value of each property is the same as the name of the property:
+
+::: tip 翻译
+例如，在下面的代码中，是我们如何实现一个看起来具有无限数量只读属性的对象，其中每个属性的值与属性的名称相同：
+:::
 
 ```js
 // We use Proxy to create an object that appears to have every
@@ -1148,7 +1186,15 @@ for (let p of identity); // !RangeError
 
 Proxy objects can derive their behavior from the target object and from the handlers object, and the examples we have seen so far have used one object or the other. But it is typically more useful to define proxies that use both objects.
 
+::: tip 翻译
+代理对象可以从目标对象和处理程序对象派生其行为，到目前为止我们看到的示例使用了其中一个对象。 但定义使用这两个对象的代理通常更有用。
+:::
+
 The following code, for example, uses Proxy to create a read-only wrapper for a target object. When code tries to read values from the object, those reads are forwarded to the target object normally. But if any code tries to modify the object or its properties, methods of the handler object throw a TypeError. A proxy like this might be helpful for writing tests: suppose you’ve written a function that takes an object argument and want to ensure that your function does not make any attempt to modify the input argument. If your test passes in a read-only wrapper object, then any writes will throw exceptions that cause the test to fail:
+
+::: tip 翻译
+例如，以下代码使用 Proxy 为目标对象创建只读包装器。 当代码尝试从对象读取值时，这些读取通常会转发到目标对象。 但是，如果任何代码尝试修改该对象或其属性，则处理程序对象的方法会抛出 TypeError。 像这样的代理可能有助于编写测试：假设您编写了一个接受对象参数的函数，并且希望确保您的函数不会尝试修改输入参数。 如果您的测试传入只读包装对象，则任何写入都会引发导致测试失败的异常：
+:::
 
 ```js
 function readOnlyProxy(o) {
@@ -1174,7 +1220,15 @@ p.__proto__ = {}; // !TypeError: can't change the prototype
 
 Another technique when writing proxies is to define handler methods that intercept operations on an object but still delegate the operations to the target object. The functions of the Reflect API (§14.6) have exactly the same signatures as the handler methods, so they make it easy to do that kind of delegation.
 
+::: tip 翻译
+编写代理时的另一种技术是定义处理程序方法，该方法拦截对象上的操作，但仍将操作委托给目标对象。 Reflect API（第 14.6 节）的函数与处理程序方法具有完全相同的签名，因此它们可以轻松执行此类委托。
+:::
+
 Here, for example, is a proxy that delegates all operations to the target object but uses handler methods to log the operations:
+
+::: tip 翻译
+例如，这里是一个代理，它将所有操作委托给目标对象，但使用处理程序方法来记录操作：
+:::
 
 ```js
 /**
@@ -1250,7 +1304,15 @@ function loggingProxy(o, objname) {
 
 The `loggingProxy()` function defined earlier creates proxies that log all of the ways they are used. If you are trying to understand how an undocumented function uses the objects you pass it, using a logging proxy can help.
 
+::: tip 翻译
+前面定义的 `loggingProxy()` 函数创建记录其所有使用方式的代理。 如果您试图了解未记录的函数如何使用您传递给它的对象，那么使用日志记录代理会有所帮助。
+:::
+
 Consider the following examples, which result in some genuine insights about array iteration:
+
+::: tip 翻译
+考虑以下示例，这些示例可以得出有关数组迭代的一些真正见解：
+:::
 
 ```js
 // Define an array of data and an object with a function property
@@ -1295,19 +1357,43 @@ for (let x of proxyData) console.log("Datum", x);
 // Handler get(data,length)
 ```
 
-From the first chunk of logging output, we learn that the `Array.map()` method explicitly checks for the existence of each array element (causing the `has()` handler to be invoked) before actually reading the element value (which triggers the `get()` handler). This is presumably so that it can distinguish nonexistent array elements from elements that exist but are undefined.
+From the first chunk of logging output, we learn that the `Array.map()` method explicitly checks for the existence of each array element (causing the `has()` handler to be invoked) before actually reading the element value (which triggers the `get()` handler). This is presumably so that it can distinguish nonexistent array elements from elements that exist but are `undefined`.
+
+::: tip 翻译
+从日志输出的第一块中，我们了解到 `Array.map()` 方法在实际读取元素值（这触发 `get()` 处理程序）之前显式检查每个数组元素是否存在（导致调用 `has()` 处理程序）。 这大概是为了它可以区分不存在的数组元素和存在但是`undefined`的元素。
+:::
 
 The second chunk of logging output might remind us that the function we pass to `Array.map()` is invoked with three arguments: the element’s value, the element’s index, and the array itself. (There is a problem in our logging output: the `Array.toString()` method does not include square brackets in its output, and the log messages would be clearer if they were included in the argument list `(10,0, [10,20])`.)
 
+::: tip 翻译
+日志输出的第二块可能会提醒我们，传递给 `Array.map()` 的函数是用三个参数调用的：元素的值、元素的索引和数组本身。（我们的日志输出存在一个问题：`Array.toString()`方法的输出中不包含方括号，如果将它们包含在参数列表中`(10,0, [ 10,20])` 这样会更清晰.)
+:::
+
 The third chunk of logging output shows us that the `for/of` loop works by looking for a method with symbolic name `[Symbol.iterator]`. It also demonstrates that the Array class’s implementation of this iterator method is careful to check the array length at every iteration and does not assume that the array length remains constant during the iteration.
 
-### Proxy Invariants
+::: tip 翻译
+日志输出的第三块向我们展示了 `for/of` 循环通过查找具有符号名称 `[Symbol.iterator]` 的方法来工作。 它还表明 Array 类对此迭代器方法的实现，会在每次迭代时仔细检查数组长度，并且不会假设数组长度在迭代期间保持不变。
+:::
+
+### Proxy 不变量
 
 The `readOnlyProxy()` function defined earlier creates Proxy objects that are effectively frozen: any attempt to alter a property value or property attribute or to add or remove properties will throw an exception. But as long as the target object is not frozen, we’ll find that if we can query the proxy with `Reflect.isExtensible()` and `Reflect.getOwnPropertyDescriptor()`, and it will tell us that we should be able to set, add, and delete properties. So `readOnlyProxy()` creates objects in an inconsistent state. We could fix this by adding `isExtensible()` and `getOwnPropertyDescriptor()` handlers, or we can just live with this kind of minor inconsistency.
 
+::: tip 翻译
+前面定义的 `readOnlyProxy()` 函数创建有效冻结的 Proxy 对象：任何更改属性值或属性属性或添加或删除属性的尝试都会引发异常。 但是只要目标对象没有被冻结，我们就会发现，如果我们可以使用 `Reflect.isExtensible()` 和 `Reflect.getOwnPropertyDescriptor()` 查询代理，它会告诉我们应该能够设置、添加和删除属性。 因此 `readOnlyProxy()` 创建的对象处于不一致的状态。 我们可以通过添加 `isExtensible()` 和 `getOwnPropertyDescriptor()` 处理程序来解决这个问题，或者我们可以忍受这种轻微的不一致。
+:::
+
 The Proxy handler API allows us to define objects with major inconsistencies, however, and in this case, the Proxy class itself will prevent us from creating Proxy objects that are inconsistent in a bad way. At the start of this section, we described proxies as objects with no behavior of their own because they simply forward all operations to the handlers object and the target object. But this is not entirely true: after forwarding an operation, the Proxy class performs some sanity checks on the result to ensure important JavaScript invariants are not being violated. If it detects a violation, the proxy will throw a TypeError instead of letting the operation proceed.
 
+::: tip 翻译
+Proxy 处理程序 API 允许我们定义存在严重不一致的对象，但是，在这种情况下，Proxy 类本身将阻止我们创建不一致的 Proxy 对象。 在本节的开头，我们将代理描述为没有自己行为的对象，因为它们只是将所有操作转发到处理程序对象和目标对象。 但这并不完全正确：转发操作后，Proxy 类会对结果执行一些健全性检查，以确保不违反重要的 JavaScript 不变量。 如果检测到违规，代理将抛出 TypeError 而不是让操作继续进行。
+:::
+
 As an example, if you create a proxy for a non-extensible object, the proxy will throw a TypeError if the `isExtensible()` handler ever returns true:
+
+::: tip 翻译
+举个例子，如果你为一个不可扩展的对象创建一个代理，如果 `isExtensible()` 处理程序返回 true，代理将抛出一个 TypeError：
+:::
 
 ```js
 let target = Object.preventExtensions({});
@@ -1321,6 +1407,10 @@ Reflect.isExtensible(proxy); // !TypeError: invariant violation
 
 Relatedly, proxy objects for non-extensible targets may not have a `getPrototypeOf()` handler that returns anything other than the real prototype object of the target. Also, if the target object has nonwritable, nonconfigurable properties, then the Proxy class will throw a TypeError if the `get()` handler returns anything other than the actual value:
 
+::: tip 翻译
+相关地，不可扩展目标的代理对象可能没有 `getPrototypeOf()` 处理程序，该处理程序返回除目标的真实原型对象之外的任何内容。 另外，如果目标对象具有不可写、不可配置的属性，那么如果 `get()` 处理程序返回实际值以外的任何内容，则 Proxy 类将抛出 TypeError：
+:::
+
 ```js
 let target = Object.freeze({ x: 1 });
 let proxy = new Proxy(target, {
@@ -1333,7 +1423,11 @@ proxy.x; // !TypeError: value returned by get() doesn't match target
 
 Proxy enforces a number of additional invariants, almost all of them having to do with non-extensible target objects and nonconfigurable properties on the target object.
 
-## Summary
+::: tip 翻译
+代理强制执行许多附加的不变量，几乎所有这些都与不可扩展的目标对象和目标对象上的不可配置的属性有关。
+:::
+
+## 总结
 
 In this chapter, you have learned:
 
@@ -1342,3 +1436,13 @@ In this chapter, you have learned:
 - The properties of the `Symbol` object have values that are “well-known Symbols,” which you can use as property or method names for the objects and classes that you define. Doing so allows you to control how your object interacts with JavaScript language features and with the core library. For example, well-known Symbols allow you to make your classes iterable and control the string that is displayed when an instance is passed to `Object.prototype.toString()`. Prior to ES6, this kind of customization was available only to the native classes that were built in to an implementation.
 - Tagged template literals are a function invocation syntax, and defining a new tag function is kind of like adding a new literal syntax to the language. Defining a tag function that parses its template string argument allows you to embed DSLs within JavaScript code. Tag functions also provide access to a raw, unescaped form of string literals where backslashes have no special meaning.
 - The Proxy class and the related Reflect API allow low-level control over the fundamental behaviors of JavaScript objects. Proxy objects can be used as optionally revocable wrappers to improve code encapsulation, and they can also be used to implement nonstandard object behaviors (like some of the special case APIs defined by early web browsers).
+
+::: tip 翻译
+在本章中，您学习了：
+
+- JavaScript 对象具有 _extensible_ 属性，对象属性具有 _writable_、_enumerable_ 和 _configurable_ 属性，以及值和 `getter` 和/或 `setter` 属性。 您可以使用这些属性以各种方式“锁定”对象，包括创建“密封”和“冻结”对象。
+- JavaScript 定义的函数允许您遍历对象的原型链，甚至可以更改对象的原型（尽管这样做会使您的代码变慢）。
+- `Symbol` 对象的属性具有“众所周知的符号”值，您可以将其用作您定义的对象和类的属性或方法名称。 这样做可以让您控制对象如何与 JavaScript 语言功能和核心库交互。 例如，众所周知的符号允许您使您的类可迭代并控制将实例传递给 `Object.prototype.toString()` 时显示的字符串。 在 ES6 之前，这种自定义仅适用于内置于实现中的本机类。
+- 带标签的模板文字是一种函数调用语法，定义新的标签函数有点像向语言添加新的文字语法。 定义解析其模板字符串参数的标记函数允许您将 DSL 嵌入 JavaScript 代码中。 标签函数还提供对原始、未转义形式的字符串文字的访问，其中反斜杠没有特殊含义。
+- Proxy 类和相关的 Reflect API 允许对 JavaScript 对象的基本行为进行低级控制。 代理对象可以用作可选的可撤销包装器以改进代码封装，它们还可以用于实现非标准对象行为（如早期 Web 浏览器定义的一些特殊情况 API）。
+  :::
