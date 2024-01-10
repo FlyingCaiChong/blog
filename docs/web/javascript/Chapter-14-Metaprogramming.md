@@ -6,7 +6,15 @@ title: 第十四章 元编程
 
 This chapter covers a number of advanced JavaScript features that are not commonly used in day-to-day programming but that may be valuable to programmers writing reusable libraries and of interest to anyone who wants to tinker with the details about how JavaScript objects behave.
 
+::: tip 翻译
+本章涵盖了许多高级 JavaScript 功能，这些功能在日常编程中并不常用，但对于编写可重用库的程序员可能很有价值，并且对于任何想要修改 JavaScript 对象行为细节的人来说可能很有价值。
+:::
+
 Many of the features described here can loosely be described as “metaprogramming”: if regular programming is writing code to manipulate data, then metaprogramming is writing code to manipulate other code. In a dynamic language like JavaScript, the lines between programming and metaprogramming are blurry—even the simple ability to iterate over the properties of an object with a `for/in` loop might be considered “meta” by programmers accustomed to more static languages.
+
+::: tip 翻译
+这里描述的许多功能可以粗略地描述为“元编程”：如果常规编程是编写代码来操作数据，那么元编程就是编写代码来操作其他代码。 在像 JavaScript 这样的动态语言中，编程和元编程之间的界限是模糊的——即使是使用 `for/in` 循环迭代对象属性的简单能力也可能被习惯于静态语言的程序员视为“元”。
+:::
 
 The metaprogramming topics covered in this chapter include:
 
@@ -18,7 +26,19 @@ The metaprogramming topics covered in this chapter include:
 - §14.6 Probing objects with `reflect` methods
 - §14.7 Controlling object behavior with Proxy
 
-## Property Attributes
+::: tip 翻译
+本章涵盖的元编程主题包括：
+
+- [§14.1](#属性特性) 控制对象属性的可枚举性、可删除性和可配置性
+- [§14.2](#对象可扩展性) 控制对象的扩展性，创建 `sealed` 和 `frozen` 对象
+- [§14.3](#原型属性) 查询和设置对象的原型
+- [§14.4](#著名的-symbols) 使用众所周知的符号微调类型的行为
+- [§14.5](#模板标签) 使用模板标签函数创建 DSL（特定领域语言）
+- [§14.6](#the-reflect-api) 使用 `reflect` 方法探测对象
+- [§14.7](#proxy-对象) 使用代理控制对象行为
+  :::
+
+## 属性特性
 
 The properties of a JavaScript object have names and values, of course, but each property also has three associated attributes that specify how that property behaves and what you can do with it:
 
@@ -192,7 +212,7 @@ q.count; // => 2: Incremented once when we copied it the first time,
 q.count; // => 3: ...but we copied the getter method so it increments.
 ```
 
-## Object Extensibility
+## 对象可扩展性
 
 The _extensible_ attribute of an object specifies whether new properties can be added to the object or not. Ordinary JavaScript objects are extensible by default, but you can change that with the functions described in this section.
 
@@ -220,7 +240,7 @@ let o = Object.seal(
 
 If you are writing a JavaScript library that passes objects to callback functions written by the users of your library, you might use `Object.freeze()` on those objects to prevent the user’s code from modifying them. This is easy and convenient to do, but there are trade-offs: frozen objects can interfere with common JavaScript testing strategies, for example.
 
-## The prototype Attribute
+## 原型属性
 
 An object’s prototype attribute specifies the object from which it inherits properties. (Review §6.2.3 and §6.3.2 for more on prototypes and property inheritance.) This is such an important attribute that we usually simply say “the prototype of o" rather than “the `prototype` attribute of `o`.” Remember also that when `prototype` appears in code font, it refers to an ordinary object property, not to the `prototype` attribute: **Chapter 9** explained that the `prototype` property of a constructor function specifies the `prototype` attribute of the objects created with that constructor.
 
@@ -276,7 +296,7 @@ let o = {
 o.z; // => 3: o inherits from p
 ```
 
-## Well-Known Symbols
+## 著名的 Symbols
 
 The Symbol type was added to JavaScript in ES6, and one of the primary reasons for doing so was to safely add extensions to the language without breaking compatibility with code already deployed on the web. We saw an example of this in **Chapter 12**, where we learned that you can make a class iterable by implementing a method whose “name” is the Symbol `Symbol.iterator`.
 
@@ -541,7 +561,7 @@ The final well-known Symbol that we’ll cover here is an obscure one that was i
 let newArrayMethods = Object.keys(Array.prototype[Symbol.unscopables]);
 ```
 
-## Template Tags
+## 模板标签
 
 Strings within backticks are known as “template literals” and were covered in §3.3.4. When an expression whose value is a function is followed by a template literal, it turns into a function invocation, and we call it a “tagged template literal.” Defining a new tag function for use with tagged template literals can be thought of as metaprogramming, because tagged templates are often used to define DSLs—domain-specific languages—and defining a new tag function is like adding new syntax to JavaScript. Tagged template literals have been adopted by a number of frontend JavaScript packages. The GraphQL query language uses a <code>gql\`\`</code> tag function to allow queries to be embedded within JavaScript code. And the Emotion library uses a <code>css\`\`</code> tag function to enable CSS styles to be embedded in JavaScript. This section demonstrates how to write your own tag functions like these.
 
@@ -648,7 +668,7 @@ This function sets the property with the specified `name` of the object `o` to t
 **`Reflect.setPrototypeOf(o, p)`**
 This function sets the prototype of the object `o` to `p`, returning `true` on success and `false` on failure (which can occur if `o` is not extensible or if the operation would cause a circular prototype chain). It throws a TypeError if `o` is not an object or if `p` is neither an object nor `null`. `Object.setPrototypeOf()` is similar, but returns o on success and throws TypeError on failure. Remember that calling either of these functions is likely to make your code slower by disrupting JavaScript interpreter optimizations.
 
-## Proxy Objects
+## Proxy 对象
 
 The Proxy class, available in ES6 and later, is JavaScript’s most powerful metaprogramming feature. It allows us to write code that alters the fundamental behavior of JavaScript objects. The Reflect API described in §14.6 is a set of functions that gives us direct access to a set of fundamental operations on JavaScript objects. What the Proxy class does is allows us a way to implement those fundamental operations ourselves and create objects that behave in ways that are not possible for ordinary objects.
 
