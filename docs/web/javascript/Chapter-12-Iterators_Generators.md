@@ -315,7 +315,15 @@ The `for/of` loop and the spread operator are really useful features of JavaScri
 
 A _generator_ is a kind of iterator defined with powerful new ES6 syntax; it’s particularly useful when the values to be iterated are not the elements of a data structure, but the result of a computation.
 
+::: tip 翻译
+_generator_ 是一种用强大的新 ES6 语法定义的迭代器； 当要迭代的值不是数据结构的元素而是计算的结果时，它特别有用。
+:::
+
 To create a generator, you must first define a _generator function_. A generator function is syntactically like a regular JavaScript function but is defined with the keyword `function*` rather than `function`. (Technically, this is not a new keyword, just a `*` after the keyword `function` and before the function name.) When you invoke a generator function, it does not actually execute the function body, but instead returns a generator object. This generator object is an iterator. Calling its `next()` method causes the body of the generator function to run from the start (or whatever its current position is) until it reaches a `yield` statement. `yield` is new in ES6 and is something like a `return` statement. The value of the `yield` statement becomes the value returned by the `next()` call on the iterator. An example makes this clearer:
+
+::: tip 翻译
+要创建生成器，您必须首先定义 _generator function_。 生成器函数在语法上类似于常规 JavaScript 函数，但使用关键字 `function*` 而不是 `function` 定义。 （从技术上讲，这不是一个新的关键字，只是关键字 `function` 后面和函数名称之前的一个`*`。）当您调用生成器函数时，它实际上并不执行函数体，而是返回一个生成器对象 。 该生成器对象是一个迭代器。 调用其 `next()` 方法会导致生成器函数的主体从头开始运行（或无论其当前位置是什么），直到到达 `yield` 语句。 `yield` 是 ES6 中的新增内容，类似于 `return` 语句。 `yield` 语句的值成为迭代器上的 `next()` 调用返回的值。 一个例子可以让这一点更清楚：
+:::
 
 ```js
 // A generator function that yields the set of one digit (base-10) primes.
@@ -351,6 +359,10 @@ sum; // => 17
 
 In this example, we used a `function*` statement to define a generator. Like regular functions, however, we can also define generators in expression form. Once again, we just put an asterisk after the `function` keyword:
 
+::: tip 翻译
+在此示例中，我们使用 `function*` 语句来定义生成器。 然而，像常规函数一样，我们也可以以表达式形式定义生成器。 再一次，我们只是在 `function` 关键字后面加了一个星号：
+:::
+
 ```js
 const seq = function* (from, to) {
   for (let i = from; i <= to; i++) {
@@ -361,6 +373,10 @@ const seq = function* (from, to) {
 ```
 
 In classes and object literals, we can use shorthand notation to omit the `function` keyword entirely when we define methods. To define a generator in this context, we simply use an asterisk before the method name where the `function` keyword would have been, had we used it:
+
+::: tip 翻译
+在类和对象字面量中，我们在定义方法时可以使用速记符号完全省略 `function` 关键字。 要在这种情况下定义生成器，我们只需在方法名称之前使用一个星号，如果我们使用了它，那么 `function` 关键字就在该位置：
+:::
 
 ```js
 let o = {
@@ -379,7 +395,15 @@ let o = {
 
 Note that there is no way to write a generator function using arrow function syntax.
 
+::: tip 翻译
+请注意，无法使用箭头函数语法编写生成器函数。
+:::
+
 Generators often make it particularly easy to define iterable classes. We can replace the `[Symbol.iterator]()` method show in Example 12-1 with a much shorter `*[Symbol.iterator]()` generator function that looks like this:
+
+::: tip 翻译
+生成器通常使定义可迭代类变得特别容易。 我们可以用更短的 `*[Symbol.iterator]()` 生成器函数替换示例 12-1 中显示的 `[Symbol.iterator]()` 方法，如下所示：
+:::
 
 ```js
 *[Symbol.iterator]() {
@@ -391,9 +415,17 @@ Generators often make it particularly easy to define iterable classes. We can re
 
 See Example 9-3 in **Chapter 9** to see this generator-based iterator function in context.
 
-### Generator Examples
+::: tip 翻译
+请参阅**第 9 章**中的示例 9-3，了解上下文中这个基于生成器的迭代器函数。
+:::
+
+### 生成器示例
 
 Generators are more interesting if they actually _generate_ the values they yield by doing some kind of computation. Here, for example, is a generator function that yields Fibonacci numbers:
+
+::: tip 翻译
+如果生成器实际上通过某种计算生成它们产生的值，那么它们会更有趣。 例如，这里是一个生成斐波那契数的生成器函数：
+:::
 
 ```js
 function* fibonacciSequence() {
@@ -408,6 +440,10 @@ function* fibonacciSequence() {
 
 Note that the `fibonacciSequence()` generator function here has an infinite loop and yields values forever without returning. If this generator is used with the `...` spread operator, it will loop until memory is exhausted and the program crashes. With care, it is possible to use it in a `for/of` loop, however:
 
+::: tip 翻译
+请注意，此处的 `fibonacciSequence()` 生成器函数具有无限循环，并且永远生成值而不返回。 如果该生成器与 `...` 扩展运算符一起使用，它将循环直到内存耗尽并且程序崩溃。 不过，只要小心，就可以在 `for/of` 循环中使用它：
+:::
+
 ```js
 // Return the nth Fibonacci number
 function fibonacci(n) {
@@ -421,6 +457,10 @@ fibonacci(20); // => 10946
 ```
 
 This kind of infinite generator becomes more useful with a `take()` generator like this:
+
+::: tip 翻译
+这种无限生成器通过像这样的 `take()` 生成器变得更加有用：
+:::
 
 ```js
 // Yield the first n elements of the specified iterable object
@@ -438,6 +478,10 @@ function* take(n, iterable) {
 ```
 
 Here is another useful generator function that interleaves the elements of multiple iterable objects:
+
+::: tip 翻译
+这是另一个有用的生成器函数，它交错多个可迭代对象的元素：
+:::
 
 ```js
 // Given an array of iterables, yield their elements in interleaved order.
@@ -471,6 +515,10 @@ function* zip(...iterables) {
 
 In addition to the `zip()` generator defined in the preceding example, it might be useful to have a similar generator function that yields the elements of multiple iterable objects sequentially rather than interleaving them. We could write that generator like this:
 
+::: tip 翻译
+除了前面示例中定义的 `zip()` 生成器之外，拥有一个类似的生成器函数可能会很有用，该函数可以顺序生成多个可迭代对象的元素，而不是交错排列它们。 我们可以这样编写生成器：
+:::
+
 ```js
 function* sequence(...iterables) {
   for (let iterable of iterables) {
@@ -485,6 +533,10 @@ function* sequence(...iterables) {
 
 This process of yielding the elements of some other iterable object is common enough in generator functions that ES6 has special syntax for it. The `yield*` keyword is like `yield` except that, rather than yielding a single value, it iterates an iterable object and yields each of the resulting values. The `sequence()` generator function that we’ve used can be simplified with `yield*` like this:
 
+::: tip 翻译
+这种生成其他可迭代对象的元素的过程在生成器函数中很常见，ES6 对此有特殊的语法。 `yield*` 关键字与 `yield` 类似，只不过它不是生成单个值，而是迭代一个可迭代对象并生成每个结果值。 我们使用的 `sequence()` 生成器函数可以使用 `yield*` 来简化，如下所示：
+:::
+
 ```js
 function* sequence(...iterables) {
   for (let iterable of iterables) {
@@ -497,6 +549,10 @@ function* sequence(...iterables) {
 
 The array `forEach()` method is often an elegant way to loop over the elements of an array, so you might be tempted to write the `sequence()` function like this:
 
+::: tip 翻译
+数组 `forEach()` 方法通常是一种循环遍历数组元素的优雅方法，因此您可能会想像这样编写 `sequence()` 函数：
+:::
+
 ```js
 function* sequence(...iterables) {
   iterables.forEach((iterable) => yield * iterable); // Error
@@ -505,9 +561,17 @@ function* sequence(...iterables) {
 
 This does not work, however. `yield` and `yield*` can only be used within generator functions, but the nested arrow function in this code is a regular function, not a `function*` generator function, so `yield` is not allowed.
 
-`yield*` can be used with any kind of iterable object, including iterables implemented with generators. This means that yield\* allows us to define recursive generators, and you might use this feature to allow simple non-recursive iteration over a recursively defined tree structure, for example.
+::: tip 翻译
+然而，这不起作用。 `yield` 和 `yield*` 只能在生成器函数内使用，但是此代码中的嵌套箭头函数是常规函数，而不是 `function*` 生成器函数，因此不允许使用 `yield`。
+:::
 
-## Advanced Generator Features
+`yield*` can be used with any kind of iterable object, including iterables implemented with generators. This means that `yield *` allows us to define recursive generators, and you might use this feature to allow simple non-recursive iteration over a recursively defined tree structure, for example.
+
+::: tip 翻译
+`yield*` 可以与任何类型的可迭代对象一起使用，包括使用生成器实现的可迭代对象。 这意味着，`yield *` 允许我们定义递归生成器，并且您可以使用此功能来允许在递归定义的树结构上进行简单的非递归迭代。
+:::
+
+## 高级生成器功能
 
 The most common use of generator functions is to create iterators, but the fundamental feature of generators is that they allow us to pause a computation, yield intermediate results, and then resume the computation later. This means that generators have features beyond those of iterators, and we explore those features in the following sections.
 
