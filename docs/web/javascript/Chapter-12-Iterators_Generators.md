@@ -4,6 +4,8 @@ title: 第十二章 迭代器和生成器
 
 # 迭代器和生成器
 
+[[toc]]
+
 Iterable objects and their associated iterators are a feature of ES6 that we’ve seen several times throughout this book. Arrays (including TypedArrays) are iterable, as are strings and Set and Map objects. This means that the contents of these data structures can be iterated—looped over—with the `for/of` loop, as we saw in §5.4.4:
 
 ::: tip 翻译
@@ -86,7 +88,7 @@ This chapter explains how iterators work and demonstrates how to create your own
 本章解释了迭代器的工作原理，并演示了如何创建您自己的可迭代数据结构。 在解释了基本的迭代器之后，本章介绍了生成器，这是 ES6 的一个强大的新功能，主要用作创建迭代器的一种特别简单的方法。
 :::
 
-## How Iterators Work
+## 迭代器如何工作
 
 The `for/of` loop and spread operator work seamlessly with iterable objects, but it is worth understanding what is actually happening to make the iteration work. There are three separate types that you need to understand to understand iteration in JavaScript. First, there are the _iterable_ objects: these are types like Array, Set, and Map that can be iterated. Second, there is the _iterator_ object itself, which performs the iteration. And third, there is the _iteration_ _result_ object that holds the result of each step of the iteration.
 
@@ -121,7 +123,7 @@ let head = iter.next().value; // head == 1
 let tail = [...iter]; // tail == [2, 3, 4, 5]
 ```
 
-## Implementing Iterable Objects
+## 实现可迭代对象
 
 Iterable objects are so useful in ES6 that you should consider making your own datatypes iterable whenever they represent something that can be iterated. The Range classes shown in Examples 9-2 and 9-3 in **Chapter 9** were iterable. Those classes used generator functions to make themselves iterable. We’ll document generators later in this chapter, but first, we will implement the Range class one more time, making it iterable without relying on a generator.
 
@@ -285,7 +287,7 @@ function words(s) {
 [...words(" abc def  ghi! ")]; // => ["abc", "def", "ghi!"]
 ```
 
-### "Closing" an Iterator: The Return Method
+### “关闭”迭代器：返回方法
 
 Imagine a (server-side) JavaScript variant of the `words()` iterator that, instead of taking a source string as its argument, takes the name of a file, opens the file, reads lines from it, and iterates the words from those lines. In most operating systems, programs that open files to read from them need to remember to close those files when they are done reading, so this hypothetical iterator would be sure to close the file after the `next()` method returns the last word in it.
 
@@ -311,7 +313,7 @@ The `for/of` loop and the spread operator are really useful features of JavaScri
 `for/of` 循环和展开运算符是 JavaScript 中非常有用的功能，因此当您创建 API 时，最好尽可能使用它们。 但是必须使用可迭代对象、其迭代器对象以及迭代器的结果对象使得该过程有些复杂。 幸运的是，生成器可以极大地简化自定义迭代器的创建，正如我们将在本章的其余部分中看到的那样。
 :::
 
-## Generators
+## 生成器
 
 A _generator_ is a kind of iterator defined with powerful new ES6 syntax; it’s particularly useful when the values to be iterated are not the elements of a data structure, but the result of a computation.
 
@@ -511,7 +513,7 @@ function* zip(...iterables) {
 [...zip(oneDigitPrimes(), "ab", [0])]; // => [2, 'a', 0, 3, 'b', 5, 7]
 ```
 
-### yield\* and Recursive Generators
+### yield \* 和 递归生成器
 
 In addition to the `zip()` generator defined in the preceding example, it might be useful to have a similar generator function that yields the elements of multiple iterable objects sequentially rather than interleaving them. We could write that generator like this:
 
