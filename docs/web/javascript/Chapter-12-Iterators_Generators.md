@@ -125,7 +125,15 @@ let tail = [...iter]; // tail == [2, 3, 4, 5]
 
 Iterable objects are so useful in ES6 that you should consider making your own datatypes iterable whenever they represent something that can be iterated. The Range classes shown in Examples 9-2 and 9-3 in **Chapter 9** were iterable. Those classes used generator functions to make themselves iterable. We’ll document generators later in this chapter, but first, we will implement the Range class one more time, making it iterable without relying on a generator.
 
+::: tip 翻译
+可迭代对象在 ES6 中非常有用，因此只要您自己的数据类型表示可迭代的内容，您就应该考虑将它们设为可迭代。 **第 9 章**中的示例 9-2 和 9-3 所示的 `Range` 类是可迭代的。 这些类使用生成器函数来使其自身可迭代。 我们将在本章稍后介绍生成器，但首先，我们将再次实现 `Range` 类，使其无需依赖生成器即可迭代。
+:::
+
 In order to make a class iterable, you must implement a method whose name is the Symbol `Symbol.iterator`. That method must return an iterator object that has a `next()` method. And the `next()` method must return an iteration result object that has a `value` property and/or a boolean `done` property. Example 12-1 implements an iterable Range class and demonstrates how to create iterable, iterator, and iteration result objects.
+
+::: tip 翻译
+为了使类可迭代，您必须实现一个名为 `Symbol.iterator` 的方法。 该方法必须返回一个具有 `next()` 方法的迭代器对象。 并且 `next()` 方法必须返回一个迭代结果对象，该对象具有 `value` 属性和/或布尔 `done` 属性。 示例 12-1 实现了一个可迭代的 `Range` 类，并演示了如何创建 `iterable`、`iterator` 和 `iteration result` 对象。
+:::
 
 _Example 12-1. An iterable numeric Range class_
 
@@ -186,6 +194,10 @@ for (let x of new Range(1, 10)) {
 
 In addition to making your classes iterable, it can be quite useful to define functions that return iterable values. Consider these iterable-based alternatives to the `map()` and `filter()` methods of JavaScript arrays:
 
+::: tip 翻译
+除了使类可迭代之外，定义返回可迭代值的函数也非常有用。 考虑 JavaScript 数组的 `map()` 和 `filter()` 方法的这些基于可迭代的替代方法：
+:::
+
 ```js
 // Return an iterable object that iterates the result of applying f()
 // to each value from the source iterable
@@ -238,6 +250,10 @@ function filter(iterable, predicate) {
 
 One key feature of iterable objects and iterators is that they are inherently lazy: when computation is required to compute the next value, that computation can be deferred until the value is actually needed. Suppose, for example, that you have a very long string of text that you want to tokenize into space-separated words. You could simply use the `split()` method of your string, but if you do this, then the entire string has to be processed before you can use even the first word. And you end up allocating lots of memory for the returned array and all of the strings within it. Here is a function that allows you to lazily iterate the words of a string without keeping them all in memory at once (in ES2020, this function would be much easier to implement using the iterator-returning `matchAll()` method described in §11.3.2):
 
+::: tip 翻译
+可迭代对象和迭代器的一个关键特征是它们本质上是惰性的：当需要计算来计算下一个值时，可以推迟该计算，直到实际需要该值为止。 例如，假设您有一个很长的文本字符串，您想要将其标记为空格分隔的单词。 您可以简单地使用字符串的 `split()` 方法，但如果这样做，则必须先处理整个字符串，然后才能使用第一个单词。 最终您会为返回的数组及其中的所有字符串分配大量内存。 这是一个函数，允许您延迟迭代字符串中的单词，而无需将它们一次全部保留在内存中（在 ES2020 中，使用第 11.3.2 节中描述的迭代器返回 `matchAll()` 方法可以更容易地实现该函数):
+:::
+
 ```js
 function words(s) {
   var r = /\s+|$/g; // Match one or more spaces or end
@@ -273,11 +289,27 @@ function words(s) {
 
 Imagine a (server-side) JavaScript variant of the `words()` iterator that, instead of taking a source string as its argument, takes the name of a file, opens the file, reads lines from it, and iterates the words from those lines. In most operating systems, programs that open files to read from them need to remember to close those files when they are done reading, so this hypothetical iterator would be sure to close the file after the `next()` method returns the last word in it.
 
+::: tip 翻译
+想象一下 `words()` 迭代器的（服务器端）JavaScript 变体，它不采用源字符串作为参数，而是采用文件名，打开文件，从中读取行，然后从那些行中迭代其中的单词。 在大多数操作系统中，打开文件进行读取的程序需要记住在完成读取后关闭这些文件，因此这个假设的迭代器一定会在 `next()` 方法返回最后一个单词后关闭文件。
+:::
+
 But iterators don’t always run all the way to the end: a `for/of` loop might be terminated with a `break` or `return` or by an exception. Similarly, when an iterator is used with destructuring assignment, the `next()` method is only called enough times to obtain values for each of the specified variables. The iterator may have many more values it could return, but they will never be requested.
+
+::: tip 翻译
+但迭代器并不总是一直运行到最后：`for/of` 循环可能会因 `break` 或 `return` 或异常而终止。 类似地，当迭代器与解构赋值一起使用时，`next()`方法仅被调用足够的次数来获取每个指定变量的值。 迭代器可能有更多的值可以返回，但它们永远不会被请求。
+:::
 
 If our hypothetical words-in-a-file iterator never runs all the way to the end, it still needs to close the file it opened. For this reason, iterator objects may implement a `return()` method to go along with the `next()` method. If iteration stops before `next()` has returned an iteration result with the done property set to true (most commonly because you left a `for/of` loop early via a `break` statement), then the interpreter will check to see if the iterator object has a `return()` method. If this method exists, the interpreter will invoke it with no arguments, giving the iterator the chance to close files, release memory, and otherwise clean up after itself. The `return()` method must return an iterator result object. The properties of the object are ignored, but it is an error to return a non-object value.
 
+::: tip 翻译
+如果我们假设的文件中单词迭代器从未运行到最后，它仍然需要关闭它打开的文件。 因此，迭代器对象可以实现 `return()` 方法来配合 `next()` 方法。 如果迭代在 `next()` 返回迭代结果之前停止，并且 `done` 属性设置为 `true`（最常见的是因为您通过 `break` 语句提前离开了 `for/of` 循环），如果迭代器对象有一个 `return()` 方法那么解释器将检查以查看。 如果此方法存在，解释器将不带参数地调用它，从而使迭代器有机会关闭文件、释放内存以及在自身之后进行清理。 `return()` 方法必须返回一个迭代器结果对象。 对象的属性被忽略，但返回非对象值是错误的。
+:::
+
 The `for/of` loop and the spread operator are really useful features of JavaScript, so when you are creating APIs, it is a good idea to use them when possible. But having to work with an iterable object, its iterator object, and the iterator’s result objects makes the process somewhat complicated. Fortunately, generators can dramatically simplify the creation of custom iterators, as we’ll see in the rest of this chapter.
+
+::: tip 翻译
+`for/of` 循环和展开运算符是 JavaScript 中非常有用的功能，因此当您创建 API 时，最好尽可能使用它们。 但是必须使用可迭代对象、其迭代器对象以及迭代器的结果对象使得该过程有些复杂。 幸运的是，生成器可以极大地简化自定义迭代器的创建，正如我们将在本章的其余部分中看到的那样。
+:::
 
 ## Generators
 
