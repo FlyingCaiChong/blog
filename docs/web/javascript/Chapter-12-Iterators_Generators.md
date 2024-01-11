@@ -90,7 +90,15 @@ This chapter explains how iterators work and demonstrates how to create your own
 
 The `for/of` loop and spread operator work seamlessly with iterable objects, but it is worth understanding what is actually happening to make the iteration work. There are three separate types that you need to understand to understand iteration in JavaScript. First, there are the _iterable_ objects: these are types like Array, Set, and Map that can be iterated. Second, there is the _iterator_ object itself, which performs the iteration. And third, there is the _iteration_ _result_ object that holds the result of each step of the iteration.
 
-An _iterable_ object is any object with a special iterator method that returns an iterator object. An _iterator_ is any object with a `next()` method that returns an iteration result object. And an _iteration result_ object is an object with properties named `value` and `done`. To iterate an iterable object, you first call its iterator method to get an iterator object. Then, you call the `next()` method of the iterator object repeatedly until the returned value has its `done` property set to `true`. The tricky thing about this is that the iterator method of an iterable object does not have a conventional name but uses the Symbol `Symbol.iterator` as its name. So a simple `for/of` loop over an iterable object iterable could also be written the hard way, like this:
+::: tip 翻译
+`for/of` 循环和扩展运算符与可迭代对象无缝协作，但值得了解实际发生的情况以使迭代工作。 要理解 JavaScript 中的迭代，您需要了解三种不同的类型。 首先，有 _iterable_ 对象：这些是可以迭代的类型，例如 `Array`、`Set` 和 `Map`。 其次，是 _iterator_ 对象本身，它执行迭代。 第三，有 _iteration_ _result_ 对象，它保存迭代每个步骤的结果。
+:::
+
+An _iterable_ object is any object with a special iterator method that returns an iterator object. An _iterator_ is any object with a `next()` method that returns an _iteration result_ object. And an _iteration result_ object is an object with properties named `value` and `done`. To iterate an iterable object, you first call its iterator method to get an iterator object. Then, you call the `next()` method of the iterator object repeatedly until the returned value has its `done` property set to `true`. The tricky thing about this is that the iterator method of an iterable object does not have a conventional name but uses the Symbol `Symbol.iterator` as its name. So a simple `for/of` loop over an iterable object iterable could also be written the hard way, like this:
+
+::: tip 翻译
+_iterable_ 对象是具有返回迭代器对象的特殊迭代器方法的任何对象。 _iterator_ 是具有返回 _iteration result_ 对象的 `next()` 方法的任何对象。 _iteration result_ 对象是一个具有名为 `value` 和 `done` 属性的对象。 要迭代一个可迭代对象，首先调用它的迭代器方法来获取迭代器对象。 然后，重复调用迭代器对象的 `next()` 方法，直到返回值的 `done` 属性设置为 `true`。 棘手的是，可迭代对象的迭代器方法没有常规名称，而是使用符号 `Symbol.iterator` 作为名称。 因此，对可迭代对象 `iterable` 进行简单的 `for/of` 循环也可以用困难的方式编写，如下所示：
+:::
 
 ```js
 let iterable = [99];
@@ -101,6 +109,10 @@ for (let result = iterator.next(); !result.done; result = iterator.next()) {
 ```
 
 The iterator object of the built-in iterable datatypes is itself iterable. (That is, it has a method named `Symbol.iterator` that just returns itself.) This is occasionally useful in code like the following when you want to iterate though a “partially used” iterator:
+
+::: tip 翻译
+内置可迭代数据类型的迭代器对象本身是可迭代的。 （也就是说，它有一个名为 `Symbol.iterator` 的方法，该方法仅返回自身。）当您想要迭代“部分使用”迭代器时，这在如下代码中有时很有用：
+:::
 
 ```js
 let list = [1, 2, 3, 4, 5];
