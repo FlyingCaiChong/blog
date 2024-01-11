@@ -2,9 +2,13 @@
 title: 第十二章 迭代器和生成器
 ---
 
-# Chapter 12 Iterators and Generators
+# 迭代器和生成器
 
 Iterable objects and their associated iterators are a feature of ES6 that we’ve seen several times throughout this book. Arrays (including TypedArrays) are iterable, as are strings and Set and Map objects. This means that the contents of these data structures can be iterated—looped over—with the `for/of` loop, as we saw in §5.4.4:
+
+::: tip 翻译
+可迭代对象及其关联的迭代器是 ES6 的一个特性，我们在本书中多次看到过它。 数组（包括 TypedArray）是可迭代的，字符串以及 Set 和 Map 对象也是如此。 这意味着这些数据结构的内容可以使用 `for/of` 循环进行迭代（循环），如我们在第 5.4.4 节中看到的：
+:::
 
 ```js
 let sum = 0;
@@ -17,6 +21,10 @@ sum; // => 6
 
 Iterators can also be used with the `...` operator to expand or “spread” an iterable object into an array initializer or function invocation, as we saw in §7.1.2:
 
+::: tip 翻译
+迭代器还可以与 `...` 运算符一起使用，将可迭代对象扩展或“传播”到数组初始值设定项或函数调用中，如我们在第 7.1.2 节中看到的：
+:::
+
 ```js
 let chars = [..."abcd"]; // chars = ["a", "b", "c", "d"]
 let data = [1, 2, 3, 4, 5];
@@ -25,12 +33,20 @@ Math.max(...data); // => 5
 
 Iterators can be used with destructuring assignment:
 
+::: tip 翻译
+迭代器可以与解构赋值一起使用：
+:::
+
 ```js
 let purpleHaze = Uint8Array.of(255, 0, 255, 128);
 let [r, g, b, a] = purpleHaze; // a == 128
 ```
 
 When you iterate a Map object, the returned values are `[key, value]` pairs, which work well with destructuring assignment in a `for/of` loop:
+
+::: tip 翻译
+当您迭代 Map 对象时，返回的值是 `[key, value]` 对，这与 `for/of` 循环中的解构赋值配合良好：
+:::
 
 ```js
 let m = new Map([
@@ -42,6 +58,10 @@ for (let [k, v] of m) console.log(k, v); // Logs 'one 1' and 'two 2'
 
 If you want to iterate just the keys or just the values rather than the pairs, you can use the `keys()` and `values()` methods:
 
+::: tip 翻译
+如果您只想迭代键或仅迭代值而不是对，可以使用 `keys()` 和 `values()` 方法：
+:::
+
 ```js
 [...m] // => [["one", 1], ["two", 2]]: default iteration
 [...m.entries()] // => [["one", 1], ["two", 2]]: entries() method is the same
@@ -51,12 +71,20 @@ If you want to iterate just the keys or just the values rather than the pairs, y
 
 Finally, a number of built-in functions and constructors that are commonly used with Array objects are actually written (in ES6 and later) to accept arbitrary iterators instead. The `Set()` constructor is one such API:
 
+::: tip 翻译
+最后，一些常用于 Array 对象的内置函数和构造函数实际上（在 ES6 及更高版本中）被编写为接受任意迭代器。 `Set()` 构造函数就是这样一种 API：
+:::
+
 ```js
 // Strings are iterable, so the two sets are the same
 new Set("abc"); // => new Set(["a", "b", "c"])
 ```
 
 This chapter explains how iterators work and demonstrates how to create your own data structures that are iterable. After explaining basic iterators, this chapter covers generators, a powerful new feature of ES6 that is primarily used as a particularly easy way to create iterators.
+
+::: tip 翻译
+本章解释了迭代器的工作原理，并演示了如何创建您自己的可迭代数据结构。 在解释了基本的迭代器之后，本章介绍了生成器，这是 ES6 的一个强大的新功能，主要用作创建迭代器的一种特别简单的方法。
+:::
 
 ## How Iterators Work
 
