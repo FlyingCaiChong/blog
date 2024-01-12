@@ -4,15 +4,35 @@ title: 第九章 类
 
 # Chapter 09 Classes
 
-JavaScript objects were covered in **Chapter 6**. That chapter treated each object as a unique set of properties, different from every other object. It is often useful, however, to define a _class_ of objects that share certain properties. Members, or _instances_, of the class have their own properties to hold or define their state, but they also have methods that define their behavior. These methods are defined by the class and shared by all instances. Imagine a class named Complex that represents and performs arithmetic on complex numbers, for example. A Complex instance would have properties to hold the real and imaginary parts (the state) of the complex number. And the Complex class would define methods to perform addition and multiplication (the behavior) of those numbers.
+JavaScript objects were covered in [Chapter 6](./Chapter-06-Objects.md). That chapter treated each object as a unique set of properties, different from every other object. It is often useful, however, to define a _class_ of objects that share certain properties. Members, or _instances_, of the class have their own properties to hold or define their state, but they also have methods that define their behavior. These methods are defined by the class and shared by all instances. Imagine a class named Complex that represents and performs arithmetic on complex numbers, for example. A Complex instance would have properties to hold the real and imaginary parts (the state) of the complex number. And the Complex class would define methods to perform addition and multiplication (the behavior) of those numbers.
+
+::: tip 翻译
+[第 6 章](./Chapter-06-Objects.md) 介绍了 JavaScript 对象。 该章将每个对象视为一组独特的属性，与其他对象不同。 然而，定义共享某些属性的对象 _class_ 通常很有用。 类的成员（或 _instances_）有自己的属性来保存或定义其状态，但它们也有定义其行为的方法。 这些方法由类定义并由所有实例共享。 例如，想象一个名为 Complex 的类，它表示复数并对其执行算术运算。 Complex 实例将具有保存复数的实部和虚部（状态）的属性。 Complex 类将定义执行这些数字的加法和乘法（行为）的方法。
+:::
 
 In JavaScript, classes use prototype-based inheritance: if two objects inherit properties (generally function-valued properties, or methods) from the same prototype, then we say that those objects are instances of the same class. That, in a nutshell, is how JavaScript classes work. JavaScript prototypes and inheritance were covered in §6.2.3 and §6.3.2, and you will need to be familiar with the material in those sections to understand this chapter. This chapter covers prototypes in §9.1.
 
+::: tip 翻译
+在 JavaScript 中，类使用基于原型的继承：如果两个对象从同一原型继承属性（通常是函数值属性或方法），那么我们就说这些对象是同一类的实例。 简而言之，这就是 JavaScript 类的工作原理。 JavaScript 原型和继承已在第 6.2.3 节和第 6.3.2 节中介绍，您需要熟悉这些部分中的材料才能理解本章。 本章涵盖第 9.1 节中的原型。
+:::
+
 If two objects inherit from the same prototype, this typically (but not necessarily) means that they were created and initialized by the same constructor function or factory function. Constructors have been covered in §4.6, §6.2.2, and §8.2.3, and this chapter has more in §9.2.
 
-JavaScript has always allowed the definition of classes. ES6 introduced a brand-new syntax (including a class keyword) that makes it even easier to create classes. These new JavaScript classes work in the same way that old-style classes do, and this chapter starts by explaining the old way of creating classes because that demonstrates more clearly what is going on behind the scenes to make classes work. Once we’ve explained those fundamentals, we’ll shift and start using the new, simplified class definition syntax.
+::: tip 翻译
+如果两个对象继承自相同的原型，这通常（但不一定）意味着它们是由相同的构造函数或工厂函数创建和初始化的。 构造函数已在第 4.6 节、第 6.2.2 节和第 8.2.3 节中介绍，本章第 9.2 节中有更多内容。
+:::
+
+JavaScript has always allowed the definition of classes. ES6 introduced a brand-new syntax (including a `class` keyword) that makes it even easier to create classes. These new JavaScript classes work in the same way that old-style classes do, and this chapter starts by explaining the old way of creating classes because that demonstrates more clearly what is going on behind the scenes to make classes work. Once we’ve explained those fundamentals, we’ll shift and start using the new, simplified class definition syntax.
+
+::: tip 翻译
+JavaScript 一直允许类的定义。 ES6 引入了全新的语法（包括 `class` 关键字），使创建类变得更加容易。 这些新的 JavaScript 类的工作方式与旧式类的工作方式相同，本章首先解释创建类的旧方式，因为这样可以更清楚地演示使类工作的幕后工作。 一旦我们解释了这些基础知识，我们将转向并开始使用新的、简化的类定义语法。
+:::
 
 If you’re familiar with strongly typed object-oriented programming languages like Java or C++, you’ll notice that JavaScript classes are quite different from classes in those languages. There are some syntactic similarities, and you can emulate many features of “classical” classes in JavaScript, but it is best to understand up front that JavaScript’s classes and prototype-based inheritance mechanism are substantially different from the classes and class-based inheritance mechanism of Java and similar languages.
+
+::: tip 翻译
+如果您熟悉 Java 或 C++ 等强类型面向对象编程语言，您会注意到 JavaScript 类与这些语言中的类有很大不同。 有一些语法相似之处，您可以在 JavaScript 中模拟“经典”类的许多功能，但最好预先了解 JavaScript 的类和基于原型的继承机制与 Java 和类似的语言 的类和基于类的继承机制有本质上的不同。
+:::
 
 ## Classes and Prototypes
 
