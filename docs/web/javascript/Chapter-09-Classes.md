@@ -759,11 +759,19 @@ Complex.product(c, d); // => new Complex(0, 13); a static method
 Complex.ZERO.toString(); // => '{0,0}'; a static property
 ```
 
-## Adding Methods to Existing Classes
+## 向现有类添加方法
 
 JavaScript’s prototype-based inheritance mechanism is dynamic: an object inherits properties from its prototype, even if the properties of the prototype change after the object is created. This means that we can augment JavaScript classes simply by adding new methods to their prototype objects.
 
+::: tip 翻译
+JavaScript 基于原型的继承机制是动态的：对象从其原型继承属性，即使原型的属性在对象创建后发生变化。 这意味着我们只需向 JavaScript 类的原型对象添加新方法即可对其进行扩充。
+:::
+
 Here, for example, is code that adds a method for computing the complex conjugate to the Complex class of Example 9-4:
+
+::: tip 翻译
+例如，下面的代码将计算复数共轭的方法添加到示例 9-4 的 Complex 类中：
+:::
 
 ```js
 // Return a complex number that is the complex conjugate of this one.
@@ -773,6 +781,10 @@ Complex.prototype.conj = function () {
 ```
 
 The prototype object of built-in JavaScript classes is also open like this, which means that we can add methods to numbers, strings, arrays, functions, and so on. This is useful for implementing new language features in older versions of the language:
+
+::: tip 翻译
+内置 JavaScript 类的原型对象也是这样开放的，这意味着我们可以为数字、字符串、数组、函数等添加方法。 这对于在旧版本的语言中实现新的语言功能非常有用：
+:::
 
 ```js
 // If the new String method startsWith() is not already defined...
@@ -785,6 +797,10 @@ if (!String.prototype.startsWith) {
 ```
 
 Here is another example:
+
+::: tip 翻译
+这里是另一个例子：
+:::
 
 ```js
 // Invoke the function f this many times, passing the iteration number
@@ -800,6 +816,10 @@ Number.prototype.times = function (f, context) {
 ```
 
 Adding methods to the prototypes of built-in types like this is generally considered to be a bad idea because it will cause confusion and compatibility problems in the future if a new version of JavaScript defines a method with the same name. It is even possible to add methods to `Object.prototype`, making them available for all objects. But this is never a good thing to do because properties added to `Object.prototype` are visible to `for/in` loops (though you can avoid this by using `Object.defineProperty()` [§14.1] to make the new property non-enumerable).
+
+::: tip 翻译
+像这样向内置类型的原型添加方法通常被认为是一个坏主意，因为如果新版本的 JavaScript 定义了同名的方法，将来会导致混乱和兼容性问题。 甚至可以将方法添加到 `Object.prototype`，使它们可用于所有对象。 但这从来都不是一件好事，因为添加到 `Object.prototype` 的属性对于 `for/in` 循环是可见的（尽管你可以通过使用 `Object.defineProperty()` [§14.1] 来创建新的不可枚举属性来避免这种情况）。
+:::
 
 ## Subclasses
 
