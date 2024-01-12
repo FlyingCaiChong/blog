@@ -2,7 +2,9 @@
 title: 第九章 类
 ---
 
-# Chapter 09 Classes
+# 类
+
+[[toc]]
 
 JavaScript objects were covered in [Chapter 6](./Chapter-06-Objects.md). That chapter treated each object as a unique set of properties, different from every other object. It is often useful, however, to define a _class_ of objects that share certain properties. Members, or _instances_, of the class have their own properties to hold or define their state, but they also have methods that define their behavior. These methods are defined by the class and shared by all instances. Imagine a class named Complex that represents and performs arithmetic on complex numbers, for example. A Complex instance would have properties to hold the real and imaginary parts (the state) of the complex number. And the Complex class would define methods to perform addition and multiplication (the behavior) of those numbers.
 
@@ -173,7 +175,7 @@ Next, notice that the `Range()` constructor is invoked (at the end of the exampl
 接下来，请注意，`Range()` 构造函数是使用 `new` 关键字调用的（在示例的末尾），而 `range()` 工厂函数是在没有它的情况下调用的。 示例 9-1 使用常规函数调用（第 8.2.1 节）来创建新对象，示例 9-2 使用构造函数调用（第 8.2.3 节）。 因为 `Range()` 构造函数是通过 `new` 调用的，所以它不必调用 `Object.create()` 或采取任何操作来创建新对象。 新对象在调用构造函数之前自动创建，并且可以通过 `this` 值进行访问。 `Range()` 构造函数只需初始化它。 构造函数甚至不必返回新创建的对象。 构造函数调用会自动创建一个新对象，将构造函数作为该对象的方法调用，然后返回新对象。 构造函数调用与常规函数调用如此不同，这是我们为构造函数命名以大写字母开头的另一个原因。 构造函数被编写为使用 `new` 关键字作为构造函数调用，如果作为常规函数调用，它们通常无法正常工作。 使构造函数与常规函数不同的命名约定可以帮助程序员知道何时使用 `new`。
 :::
 
-> #### Constructors and new.target
+> **Constructors and new.target**
 >
 > Within a function body, you can tell whether the function has been invoked as a constructor with the special expression `new.target`. If the value of that expression is defined, then you know that the function was invoked as a constructor, with the `new` keyword. When we discuss subclasses in §9.5, we’ll see that `new.target` is not always a reference to the constructor it is used in: it might also refer to the constructor function of a subclass.
 >
@@ -190,7 +192,7 @@ Next, notice that the `Range()` constructor is invoked (at the end of the exampl
 
 ::: tip 翻译
 
-#### 构造函数和 new.target
+**构造函数和 new.target**
 
 在函数体内，您可以使用特殊表达式 `new.target` 判断该函数是否作为构造函数被调用。 如果定义了该表达式的值，那么您就知道该函数是使用 `new` 关键字作为构造函数调用的。 当我们在第 9.5 节中讨论子类时，我们会看到 `new.target` 并不总是对其所使用的构造函数的引用：它也可能引用子类的构造函数。
 
@@ -307,7 +309,7 @@ Figure 9-1 illustrates this relationship between the constructor function, its p
 图 9-1 说明了构造函数、其原型对象、从原型到构造函数的反向引用以及使用构造函数创建的实例之间的关系。
 :::
 
-![iShot_2024-01-11_14.07.19](media/17049499051851/iShot_2024-01-11_14.07.19.png)
+![class_constructor](/assets/class_constructor.png)
 _Figure 9-1. A constructor function, its prototype, and instances_
 
 Notice that Figure 9-1 uses our `Range()` constructor as an example. In fact, however, the Range class defined in Example 9-2 overwrites the predefined `Range.prototype` object with an object of its own. And the new prototype object it defines does not have a `constructor` property. So instances of the Range class, as defined, do not have a `constructor` property. We can remedy this problem by explicitly adding a constructor to the prototype:
