@@ -34,9 +34,13 @@ If you’re familiar with strongly typed object-oriented programming languages l
 如果您熟悉 Java 或 C++ 等强类型面向对象编程语言，您会注意到 JavaScript 类与这些语言中的类有很大不同。 有一些语法相似之处，您可以在 JavaScript 中模拟“经典”类的许多功能，但最好预先了解 JavaScript 的类和基于原型的继承机制与 Java 和类似的语言 的类和基于类的继承机制有本质上的不同。
 :::
 
-## Classes and Prototypes
+## 类和原型
 
-In JavaScript, a class is a set of objects that inherit properties from the same prototype object. The prototype object, therefore, is the central feature of a class. **Chapter 6** covered the `Object.create()` function that returns a newly created object that inherits from a specified prototype object. If we define a prototype object and then use `Object.create()` to create objects that inherit from it, we have defined a JavaScript class. Usually, the instances of a class require further initialization, and it is common to define a function that creates and initializes the new object. Example 9-1 demonstrates this: it defines a prototype object for a class that represents a range of values and also defines a _factory function_ that creates and initializes a new instance of the class.
+In JavaScript, a class is a set of objects that inherit properties from the same prototype object. The prototype object, therefore, is the central feature of a class. [Chapter 6](./Chapter-06-Objects.md) covered the `Object.create()` function that returns a newly created object that inherits from a specified prototype object. If we define a prototype object and then use `Object.create()` to create objects that inherit from it, we have defined a JavaScript class. Usually, the instances of a class require further initialization, and it is common to define a function that creates and initializes the new object. Example 9-1 demonstrates this: it defines a prototype object for a class that represents a range of values and also defines a _factory function_ that creates and initializes a new instance of the class.
+
+::: tip 翻译
+在 JavaScript 中，类是一组从同一原型对象继承属性的对象。 因此，原型对象是类的核心特征。 [第 6 章](./Chapter-06-Objects.md) 介绍了 `Object.create()` 函数，该函数返回一个新创建的对象，该对象继承自指定的原型对象。 如果我们定义了一个原型对象，然后使用 `Object.create()` 来创建继承它的对象，我们就定义了一个 JavaScript 类。 通常，类的实例需要进一步初始化，并且通常定义一个创建和初始化新对象的函数。 示例 9-1 演示了这一点：它为表示一系列值的类定义了一个原型对象，还定义了一个用于创建和初始化该类的新实例的*工厂函数*。
+:::
 
 _Example 9-1. A simple JavaScript class_
 
@@ -90,13 +94,24 @@ r.toString(); // => "(1...3)"
 There are a few things worth noting in the code of Example 9-1:
 
 - This code defines a factory function `range()` for creating new Range objects.
-- It uses the methods property of this `range()` function as a convenient place to store the prototype object that defines the class. There is nothing special or idiomatic about putting the prototype object here.
+- It uses the `methods` property of this `range()` function as a convenient place to store the prototype object that defines the class. There is nothing special or idiomatic about putting the prototype object here.
 - The `range()` function defines `from` and `to` properties on each Range object. These are the unshared, non-inherited properties that define the unique state of each individual Range object.
 - The `range.methods` object uses the ES6 shorthand syntax for defining methods, which is why you don’t see the `function` keyword anywhere. (See §6.10.5 to review object literal shorthand method syntax.)
-- One of the methods in the prototype has the computed name (§6.10.2) `Symbol.iterator`, which means that it is defining an iterator for Range objects. The name of this method is prefixed with `*`, which indicates that it is a generator function instead of a regular function. Iterators and generators are covered in detail in **Chapter 12**. For now, the upshot is that instances of this Range class can be used with the `for/of` loop and with the `...` spread operator.
+- One of the methods in the prototype has the computed name (§6.10.2) `Symbol.iterator`, which means that it is defining an iterator for Range objects. The name of this method is prefixed with `*`, which indicates that it is a generator function instead of a regular function. Iterators and generators are covered in detail in [Chapter 12](./Chapter-12-Iterators_Generators.md). For now, the upshot is that instances of this Range class can be used with the `for/of` loop and with the `...` spread operator.
 - The shared, inherited methods defined in `range.methods` all use the `from` and `to` properties that were initialized in the `range()` factory function. In order to refer to them, they use the `this` keyword to refer to the object through which they were invoked. This use of `this` is a fundamental characteristic of the methods of any class.
 
-## Classes and Constructors
+::: tip 翻译
+示例 9-1 的代码中有一些值得注意的地方:
+
+- 这段代码定义了一个工厂函数 `range()` 来创建新的 Range 对象。
+- 它使用此 `range()` 函数的 `methods` 属性作为存储定义类的原型对象的方便位置。 将原型对象放在这里并没有什么特别或惯用的地方。
+- `range()` 函数在每个 Range 对象上定义 `from` 和 `to` 属性。 这些是非共享、非继承的属性，定义每个单独的 Range 对象的唯一状态。
+- `range.methods` 对象使用 ES6 简写语法来定义方法，这就是为什么你在任何地方都看不到 `function` 关键字。 （请参阅第 6.10.5 节来查看对象文字简写语法。）
+- 原型中的方法之一具有计算名称（第 6.10.2 节）`Symbol.iterator`，这意味着它正在为 Range 对象定义一个迭代器。 该方法的名称带有 `*` 前缀，表明它是一个生成器函数而不是常规函数。 [第 12 章](./Chapter-12-Iterators_Generators.md)详细介绍了迭代器和生成器。 目前，结果是该 Range 类的实例可以与 `for/of` 循环和 `...`扩展运算符一起使用。
+- `range.methods` 中定义的共享继承方法都使用在 `range()` 工厂函数中初始化的 `from` 和 `to` 属性。 为了引用它们，它们使用 `this` 关键字来引用调用它们的对象。 `this` 的这种使用是任何类的方法的基本特征。
+  :::
+
+## 类和构造函数
 
 Example 9-1 demonstrates a simple way to define a JavaScript class. It is not the idiomatic way to do so, however, because it did not define a _constructor_. A constructor is a function designed for the initialization of newly created objects. Constructors are invoked using the `new` keyword as described in §8.2.3. Constructor invocations using `new` automatically create the new object, so the constructor itself only needs to initialize the state of that new object. The critical feature of constructor invocations is that the `prototype` property of the constructor is used as the prototype of the new object. §6.2.3 introduced prototypes and emphasized that while almost all objects have a prototype, only a few objects have a `prototype` property. Finally, we can clarify this: it is function objects that have a `prototype` property. This means that all objects created with the same constructor function inherit from the same object and are therefore members of the same class. Example 9-2 shows how we could alter the Range class of Example 9-1 to use a constructor function instead of a factory function. Example 9-2 demonstrates the idiomatic way to create a class in versions of JavaScript that do not support the ES6 `class` keyword. Even though `class` is well supported now, there is still lots of older JavaScript code around that defines classes like this, and you should be familiar with the idiom so that you can read old code and so that you understand what is going on “under the hood” when you use the `class` keyword.
 
