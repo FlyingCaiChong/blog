@@ -341,9 +341,13 @@ Range.prototype.toString = function () {
 };
 ```
 
-## Classes with the class Keyword
+## 类和 class 关键字
 
 Classes have been part of JavaScript since the very first version of the language, but in ES6, they finally got their own syntax with the introduction of the `class` keyword. Example 9-3 shows what our Range class looks like when written with this new syntax.
+
+::: tip 翻译
+从 JavaScript 的第一个版本开始，类就一直是 JavaScript 的一部分，但在 ES6 中，通过引入 `class` 关键字，类最终获得了自己的语法。 例 9-3 展示了使用这种新语法编写的 `Range` 类的样子。
+:::
 
 _Example 9-3. The Range class rewritten using class_
 
@@ -385,14 +389,31 @@ r.toString(); // => "(1...3)"
 
 It is important to understand that the classes defined in Examples 9-2 and 9-3 work in exactly the same way. The introduction of the `class` keyword to the language does not alter the fundamental nature of JavaScript’s prototype-based classes. And although Example 9-3 uses the `class` keyword, the resulting Range object is a constructor function, just like the version defined in Example 9-2. The new `class` syntax is clean and convenient but is best thought of as “syntactic sugar” for the more fundamental class definition mechanism shown in Example 9-2.
 
-Note the following things about the class syntax in Example 9-3:
+::: tip 翻译
+重要的是要了解示例 9-2 和 9-3 中定义的类以完全相同的方式工作。 将 `class` 关键字引入语言不会改变 JavaScript 基于原型类的基本性质。 尽管示例 9-3 使用 `class` 关键字，但结果 Range 对象是 `constructor` 函数，就像示例 9-2 中定义的版本一样。 新的 `class` 语法是干净和方便的，但最好将其视为“句法糖”，用于示例 9-2 中显示的更基本的类定义机制。
+:::
+
+Note the following things about the `class` syntax in Example 9-3:
 
 - The class is declared with the `class` keyword, which is followed by the name of class and a class body in curly braces.
-- The class body includes method definitions that use object literal method shorthand (which we also used in Example 9-1), where the `function` keyword is omitted. Unlike object literals, however, no commas are used to separate the methods from each other. (Although class bodies are superficially similar to object literals, they are not the same thing. In particular, they do not support the definition of properties with name/value pairs.)
+- The class body includes method definitions that use object literal method shorthand (which we also used in Example 9-1), where the `function` keyword is omitted. Unlike object literals, however, no commas are used to separate the methods from each other. (Although class bodies are superficially similar to object literals, they are not the same thing. In particular, they do not support the definition of properties with `name/value` pairs.)
 - The keyword `constructor` is used to define the constructor function for the class. The function defined is not actually named “constructor”, however. The `class` declaration statement defines a new variable `Range` and assigns the value of this special `constructor` function to that variable.
 - If your class does not need to do any initialization, you can omit the `constructor` keyword and its body, and an empty constructor function will be implicitly created for you.
 
+::: tip 翻译
+请注意示例 9-3 中的 `class` 语法的以下事项：
+
+- 类是用 `class` 关键字声明的，后面是类的名称和花括号中的类体。
+- 类体包含使用对象字面量方法简写（我们也在示例 9-1 中使用）的方法定义，其中省略了 `function` 关键字。 然而，与对象字面量不同，方法之间不使用逗号分隔。 （虽然类体表面上与对象字面量相似，但它们不是同一件事。特别是，它们不支持使用 `name/value` 对定义属性。）
+- 关键字 `constructor` 用于定义类的构造函数。 然而，定义的函数实际上并不被命名为“构造函数”。 `class` 声明语句定义了一个新变量 `Range`，并将这个特殊 `constructor` 函数的值分配给该变量。
+- 如果你的类不需要做任何初始化，你可以省略 `constructor` 关键字及其主体，并且会隐式地为你创建一个空的构造函数。
+  :::
+
 If you want to define a class that subclasses—or _inherits from_—another class, you can use the `extends` keyword with the `class` keyword:
+
+::: tip 翻译
+如果要定义一个子类或继承另一个类的类，可以将 `extends` 关键字与 `class` 关键字一起使用：
+:::
 
 ```js
 // A Span is like a Range, but instead of initializing it with
@@ -410,7 +431,15 @@ class Span extends Range {
 
 Creating subclasses is a whole topic of its own. We’ll return to it, and explain the `extends` and `super` keywords shown here, in §9.5.
 
+::: tip 翻译
+创建子类本身就是一个完整的主题。 我们将返回它，并解释第 9.5 节中显示的 `extends` 和 `super`关键字。
+:::
+
 Like function declarations, class declarations have both statement and expression forms. Just as we can write:
+
+::: tip 翻译
+与函数声明一样，类声明也有语句和表达式两种形式。 正如我们可以写的：
+:::
 
 ```js
 let square = function (x) {
@@ -420,6 +449,10 @@ square(3); // => 9
 ```
 
 we can also write:
+
+::: tip 翻译
+我们也可以写成：
+:::
 
 ```js
 let Square = class {
@@ -432,18 +465,41 @@ new Square(3).area; // => 9
 
 As with function definition expressions, class definition expressions can include an optional class name. If you provide such a name, that name is only defined within the class body itself.
 
+::: tip 翻译
+与函数定义表达式一样，类定义表达式可以包含可选的类名。 如果您提供这样的名称，则该名称仅在类主体本身内定义。
+:::
+
 Although function expressions are quite common (particularly with the arrow function shorthand), in JavaScript programming, class definition expressions are not something that you are likely to use much unless you find yourself writing a function that takes a class as its argument and returns a subclass.
+
+::: tip 翻译
+尽管函数表达式很常见（特别是箭头函数简写），但在 JavaScript 编程中，类定义表达式并不是您可能会经常使用的东西，除非您发现自己编写了一个将类作为其参数并返回子类的函数 。
+:::
 
 We’ll conclude this introduction to the `class` keyword by mentioning a couple of important things you should know that are not apparent from `class` syntax:
 
 - All code within the body of a `class` declaration is implicitly in strict mode (§5.6.3), even if no "`use strict`" directive appears. This means, for example, that you can’t use octal integer literals or the `with` statement within class bodies and that you are more likely to get syntax errors if you forget to declare a variable before using it.
 - Unlike function declarations, class declarations are not “hoisted.” Recall from §8.1.1 that function definitions behave as if they had been moved to the top of the enclosing file or enclosing function, meaning that you can invoke a function in code that comes before the actual definition of the function. Although class declarations are like function declarations in some ways, they do not share this hoisting behavior: you cannot instantiate a class before you declare it.
 
-### Static Methods
+::: tip 翻译
+我们将通过提到一些您应该知道的重要事情来结束对 `class` 关键字的介绍，这些事情在 `class` 语法中并不明显：
+
+- 即使没有出现“`use strict`”指令，`class` 声明体内的所有代码都隐式处于严格模式（第 5.6.3 节）。 例如，这意味着您不能在类体内使用八进制整数文字或 `with` 语句，并且如果您在使用变量之前忘记声明变量，则更有可能出现语法错误。
+- 与函数声明不同，类声明不是“提升”的。 回想一下第 8.1.1 节，函数定义的行为就好像它们已移动到封闭文件或封闭函数的顶部，这意味着您可以在函数实际定义之前的代码中调用函数。 尽管类声明在某些方面类似于函数声明，但它们不共享这种提升行为：在声明类之前无法实例化它。
+  :::
+
+### 静态方法
 
 You can define a static method within a `class` body by prefixing the method declaration with the `static` keyword. Static methods are defined as properties of the constructor function rather than properties of the prototype object.
 
+::: tip 翻译
+您可以通过在方法声明前加上 `static` 关键字作为前缀，在 `class` 主体中定义静态方法。 静态方法被定义为构造函数的属性，而不是原型对象的属性。
+:::
+
 For example, suppose we added the following code to Example 9-3:
+
+::: tip 翻译
+例如，假设我们将以下代码添加到示例 9-3 中：
+:::
 
 ```js
   static parse(s) {
@@ -457,6 +513,10 @@ For example, suppose we added the following code to Example 9-3:
 
 The method defined by this code is `Range.parse()`, not `Range.prototype.parse()`, and you must invoke it through the constructor, not through an instance:
 
+::: tip 翻译
+此代码定义的方法是 `Range.parse()` ，而不是 `Range.prototype.parse()`，并且您必须通过构造函数而不是通过实例调用它：
+:::
+
 ```js
 let r = Range.parse("(1...10)"); // Returns a new Range object
 r.parse("(1...10)"); // TypeError: r.parse is not a function
@@ -464,13 +524,29 @@ r.parse("(1...10)"); // TypeError: r.parse is not a function
 
 You’ll sometimes see static methods called _class methods_ because they are invoked using the name of the class/constructor. When this term is used, it is to contrast class methods with the regular _instance methods_ that are invoked on instances of the class. Because static methods are invoked on the constructor rather than on any particular instance, it almost never makes sense to use the `this` keyword in a static method.
 
+::: tip 翻译
+有时您会看到称为 _类方法_ 的静态方法，因为它们是使用类/构造函数的名称调用的。 使用该术语时，是将类方法与在类实例上调用的常规 _实例方法_ 进行对比。 由于静态方法是在构造函数上调用的，而不是在任何特定实例上调用的，因此在静态方法中使用 `this` 关键字几乎没有任何意义。
+:::
+
 We’ll see examples of static methods in Example 9-4.
 
-### Getters, Setters, and other Method Forms
+::: tip 翻译
+我们将在示例 9-4 中看到静态方法的例子。
+:::
+
+### Getters、 Setters 和其他方法形式
 
 Within a class body, you can define `getter` and `setter` methods (§6.10.6) just as you can in object literals. The only difference is that in class bodies, you don’t put a comma after the `getter` or `setter`. Example 9-4 includes a practical example of a `getter` method in a class.
 
+::: tip 翻译
+在类主体中，您可以定义 `getter` 和 `setter` 方法（第 6.10.6 节），就像在对象文本中一样。 唯一的区别是，在类体中，不要在 `getter` 或 `setter` 之后放置逗号。 示例 9-4 包含类中 `getter` 方法的实际示例。
+:::
+
 In general, all of the shorthand method definition syntaxes allowed in object literals are also allowed in class bodies. This includes generator methods (marked with `*`) and methods whose names are the value of an expression in square brackets. In fact, you’ve already seen (in Example 9-3) a generator method with a computed name that makes the Range class iterable:
+
+::: tip 翻译
+一般来说，对象字面量中允许的所有简写方法定义语法也允许在类体中。 这包括生成器方法（用 `*` 标记）和名称为方括号中表达式的值的方法。 事实上，您已经（在示例 9-3 中）看到了一个具有计算名称的生成器方法，该方法使 `Range` 类可迭代：
+:::
 
 ```js
   *[Symbol.iterator]() {
@@ -480,13 +556,25 @@ In general, all of the shorthand method definition syntaxes allowed in object li
   }
 ```
 
-### Public, Private, and Static Fields
+### Public、Private 和 Static 字段
 
 In the discussion here of classes defined with the `class` keyword, we have only described the definition of methods within the class body. The ES6 standard only allows the creation of methods (including getters, setters, and generators) and static methods; it does not include syntax for defining fields. If you want to define a field (which is just an object-oriented synonym for “property”) on a class instance, you must do that in the constructor function or in one of the methods. And if you want to define a static field for a class, you must do that outside the class body, after the class has been defined. Example 9-4 includes examples of both kinds of fields.
 
+::: tip 翻译
+在这里讨论使用 `class` 关键字定义的类时，我们只描述了类体内方法的定义。 ES6 标准只允许创建方法（包括 `getters`、`setters`和`generators`）和静态方法； 它不包括定义字段的语法。 如果要在类实例上定义字段（它只是“属性”的面向对象同义词），则必须在构造函数或其中一个方法中执行此操作。 如果要为类定义静态字段，则必须在定义类之后在类主体之外执行此操作。 示例 9-4 包括两种字段的示例。
+:::
+
 Standardization is underway, however, for extended class syntax that allows the definition of instance and static fields, in both public and private forms. The code shown in the rest of this section is not yet standard JavaScript as of early 2020 but is already supported in Chrome and partially supported (public instance fields only) in Firefox. The syntax for public instance fields is in common use by JavaScript programmers using the React framework and the Babel transpiler.
 
+::: tip 翻译
+然而，扩展类语法的标准化正在进行中，该语法允许以公共和私有形式定义实例和静态字段。 截至 2020 年初，本节其余部分中显示的代码还不是标准 JavaScript，但已在 Chrome 中受支持，并在 Firefox 中部分受支持（仅限公共实例字段）。 使用 React 框架和 Babel 转译器的 JavaScript 程序员通常使用公共实例字段的语法。
+:::
+
 Suppose you’re writing a class like this one, with a constructor that initializes three fields:
+
+::: tip 翻译
+假设您正在编写一个像这样的类，其中的构造函数初始化三个字段：
+:::
 
 ```js
 class Buffer {
@@ -500,6 +588,10 @@ class Buffer {
 
 With the new instance field syntax that is likely to be standardized, you could instead write:
 
+::: tip 翻译
+使用可能标准化的新实例字段语法，您可以改为编写：
+:::
+
 ```js
 class Buffer {
   size = 0;
@@ -510,9 +602,21 @@ class Buffer {
 
 The field initialization code has moved out of the constructor and now appears directly in the class body. (That code is still run as part of the constructor, of course. If you do not define a constructor, the fields are initialized as part of the implicitly created constructor.) The `this.` prefixes that appeared on the lefthand side of the assignments are gone, but note that you still must use `this.` to refer to these fields, even on the righthand side of the initializer assignments. The advantage of initializing your instance fields in this way is that this syntax allows (but does not require) you to put the initializers up at the top of the class definition, making it clear to readers exactly what fields will hold the state of each instance. You can declare fields without an initializer by just writing the name of the field followed by a semicolon. If you do that, the initial value of the field will be `undefined`. It is better style to always make the initial value explicit for all of your class fields.
 
+::: tip 翻译
+字段初始化代码已移出构造函数，现在直接出现在类主体中。 （当然，该代码仍然作为构造函数的一部分运行。如果您没有定义构造函数，则这些字段将作为隐式创建的构造函数的一部分进行初始化。）出现在左侧的 `this.` 前缀赋值已经消失，但请注意，您仍然必须使用 `this.` 来引用这些字段，即使在初始化器赋值的右侧也是如此。 以这种方式初始化实例字段的优点是，此语法允许（但不要求）您将初始化器放在类定义的顶部，使读者清楚哪些字段将保存每个实例的状态 。 您可以声明不带初始值设定项的字段，只需编写字段名称，后跟分号即可。 如果这样做，该字段的初始值将为 `undefined`。 最好始终为所有类字段明确指定初始值。
+:::
+
 Before the addition of this field syntax, class bodies looked a lot like object literals using shortcut method syntax, except that the commas had been removed. This field syntax—with equals signs and semicolons instead of colons and commas—makes it clear that class bodies are not at all the same as object literals.
 
-The same proposal that seeks to standardize these instance fields also defines private instance fields. If you use the instance field initialization syntax shown in the previous example to define a field whose name begins with `#` (which is not normally a legal character in JavaScript identifiers), that field will be usable (with the `#` prefix) within the class body but will be invisible and inaccessible (and therefore immutable) to any code outside of the class body. If, for the preceding hypothetical Buffer class, you wanted to ensure that users of the class could not inadvertently modify the size field of an instance, you could use a private `#size` field instead, then define a getter function to provide read-only access to the value:
+::: tip 翻译
+在添加此字段语法之前，类体看起来很像使用快捷方法语法的对象文字，只是逗号已被删除。 这种字段语法（使用等号和分号而不是冒号和逗号）清楚地表明类体与对象文字完全不同。
+:::
+
+The same proposal that seeks to standardize these instance fields also defines private instance fields. If you use the instance field initialization syntax shown in the previous example to define a field whose name begins with `#` (which is not normally a legal character in JavaScript identifiers), that field will be usable (with the `#` prefix) within the class body but will be invisible and inaccessible (and therefore immutable) to any code outside of the class body. If, for the preceding hypothetical Buffer class, you wanted to ensure that users of the class could not inadvertently modify the `size` field of an instance, you could use a private `#size` field instead, then define a getter function to provide read-only access to the value:
+
+::: tip 翻译
+寻求标准化这些实例字段的同一提案还定义了私有实例字段。 如果您使用上例中所示的实例字段初始化语法来定义名称以 `#` 开头的字段（通常不是 JavaScript 标识符中的合法字符），则该字段将可用（带有 `#` 前缀） 在类主体内，但对于类主体外部的任何代码来说是不可见和不可访问的（因此是不可变的）。 对于前面假设的 `Buffer` 类，如果您希望确保该类的用户不会无意中修改实例的 `size` 字段，则可以使用私有 `#size` 字段，然后定义一个 `getter` 函数来提供读取功能只能访问该值：
+:::
 
 ```js
 class Buffer {
@@ -525,7 +629,15 @@ class Buffer {
 
 Note that private fields must be declared using this new field syntax before they can be used. You can’t just write `this.#size = 0`; in the constructor of a class unless you include a “declaration” of the field directly in the class body.
 
-Finally, a related proposal seeks to standardize the use of the `static` keyword for fields. If you add static before a public or private field declaration, those fields will be created as properties of the constructor function instead of properties of instances. Consider the static `Range.parse()` method we’ve defined. It included a fairly complex regular expression that might be good to factor out into its own static field. With the proposed new static field syntax, we could do that like this:
+::: tip 翻译
+请注意，私有字段必须先使用此新字段语法进行声明，然后才能使用。 你不能只写 `this.#size = 0`； 在类的构造函数中，除非您直接在类主体中包含字段的“声明”。
+:::
+
+Finally, a related proposal seeks to standardize the use of the `static` keyword for fields. If you add static before a public or private field declaration, those fields will be created as properties of the constructor function instead of properties of instances. Consider the static `Range.parse()` method we’ve defined. It included a fairly complex regular expression that might be good to factor out into its own static field. With the proposed new `static` field syntax, we could do that like this:
+
+::: tip 翻译
+最后，一项相关提案旨在标准化字段 `static` 关键字的使用。 如果在公共或私有字段声明之前添加 static，这些字段将被创建为构造函数的属性而不是实例的属性。 考虑一下我们定义的静态 `Range.parse()` 方法。 它包含一个相当复杂的正则表达式，可以将其分解到自己的静态字段中。 使用建议的新 `static` 字段语法，我们可以这样做：
+:::
 
 ```js
   static integerRangePattern = /^\((\d+)\.\.\.(\d+)\)$/;
@@ -540,9 +652,17 @@ Finally, a related proposal seeks to standardize the use of the `static` keyword
 
 If we wanted this static field to be accessible only within the class, we could make it private using a name like `#pattern`.
 
-### Example: A Complex Number Class
+::: tip 翻译
+如果我们希望这个静态字段只能在类中访问，我们可以使用 `#pattern` 之类的名称将其设为私有。
+:::
+
+### 示例：复数类
 
 Example 9-4 defines a class to represent complex numbers. The class is a relatively simple one, but it includes instance methods (including getters), static methods, instance fields, and static fields. It includes some commented-out code demonstrating how we might use the not-yet-standard syntax for defining instance fields and static fields within the class body.
+
+::: tip 翻译
+示例 9-4 定义了一个类来表示复数。 类是一个相对简单的类，但它包含实例方法（包括 `getters`）、静态方法、实例字段和静态字段。 它包括一些注释掉的代码，演示我们如何使用尚未标准的语法来定义类主体中的实例字段和静态字段。
+:::
 
 _Example 9-4. Complex.js: a complex number class_
 
@@ -625,6 +745,10 @@ Complex.I = new Complex(0, 1);
 ```
 
 With the Complex class of Example 9-4 defined, we can use the constructor, instance fields, instance methods, class fields, and class methods with code like this:
+
+::: tip 翻译
+定义了示例 9-4 中的 `Complex` 类后，我们可以使用构造函数、实例字段、实例方法、类字段和类方法，代码如下：
+:::
 
 ```js
 let c = new Complex(2, 3); // Create a new object with the constructor
