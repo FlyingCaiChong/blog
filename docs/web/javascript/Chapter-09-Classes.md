@@ -821,15 +821,27 @@ Adding methods to the prototypes of built-in types like this is generally consid
 像这样向内置类型的原型添加方法通常被认为是一个坏主意，因为如果新版本的 JavaScript 定义了同名的方法，将来会导致混乱和兼容性问题。 甚至可以将方法添加到 `Object.prototype`，使它们可用于所有对象。 但这从来都不是一件好事，因为添加到 `Object.prototype` 的属性对于 `for/in` 循环是可见的（尽管你可以通过使用 `Object.defineProperty()` [§14.1] 来创建新的不可枚举属性来避免这种情况）。
 :::
 
-## Subclasses
+## 子类
 
 In object-oriented programming, a class B can _extend_ or _subclass_ another class A. We say that A is the _superclass_ and B is the _subclass_. Instances of B inherit the methods of A. The class B can define its own methods, some of which may _override_ methods of the same name defined by class A. If a method of B overrides a method of A, the overriding method in B often needs to invoke the overridden method in A. Similarly, the subclass constructor `B()` must typically invoke the superclass constructor `A()` in order to ensure that instances are completely initialized.
 
+::: tip 翻译
+在面向对象编程中，类 B 可以 _扩展_ 或 _子类_ 另一个类 A。我们说 A 是 _超类_，B 是 _子类_。 B 的实例继承 A 的方法。B 类可以定义自己的方法，其中一些方法可能会覆盖 A 类定义的同名方法。如果 B 的方法覆盖 A 的方法，则 B 中的覆盖方法通常需要调用 A 中被覆盖的方法。类似地，子类构造函数 `B()` 通常必须调用超类构造函数 `A()`，以确保实例完全初始化。
+:::
+
 This section starts by showing how to define subclasses the old, pre-ES6 way, and then quickly moves on to demonstrate subclassing using the `class` and `extends` keywords and superclass constructor method invocation with the `super` keyword. Next is a subsection about avoiding subclasses and relying on object composition instead of inheritance. The section ends with an extended example that defines a hierarchy of Set classes and demonstrates how abstract classes can be used to separate interface from implementation.
 
-### Subclasses and Prototypes
+::: tip 翻译
+本节首先展示如何以 ES6 之前的旧方式定义子类，然后快速演示如何使用 `class` 和 `extends` 关键字进行子类化，以及如何使用`super` 关键字调用超类构造函数方法。 接下来是关于避免子类和依赖对象组合而不是继承的小节。 本节以一个扩展示例结尾，该示例定义了 Set 类的层次结构，并演示了如何使用抽象类将接口与实现分开。
+:::
+
+### 子类和原型
 
 Suppose we wanted to define a Span subclass of the Range class from Example 9-2. This subclass will work just like a Range, but instead of initializing it with a start and an end, we’ll instead specify a start and a distance, or span. An instance of this Span class is also an instance of the Range superclass. A span instance inherits a customized `toString()` method from `Span.prototype`, but in order to be a subclass of Range, it must also inherit methods (such as `includes()`) from `Range.prototype`.
+
+::: tip 翻译
+假设我们想要定义例 9-2 中 `Range` 类的 `Span` 子类。 这个子类的工作方式就像 `Range` 一样，但我们不是用起点和终点来初始化它，而是指定起点和距离或跨度。 此 `Span` 类的实例也是 `Range` 超类的实例。 `Span` 实例从 `Span.prototype` 继承了自定义的 `toString()` 方法，但为了成为 `Range` 的子类，它还必须从 `Range.prototype` 继承方法（例如 `includes()`）。
+:::
 
 _Example 9-5. Span.js: a simple subclass of Range_
 
@@ -861,19 +873,39 @@ Span.prototype.toString = function () {
 
 In order to make Span a subclass of Range, we need to arrange for `Span.prototype` to inherit from `Range.prototype`. The key line of code in the preceding example is this one, and if it makes sense to you, you understand how subclasses work in JavaScript:
 
+::: tip 翻译
+为了使 `Span` 成为 `Range` 的子类，我们需要安排 `Span.prototype` 继承自 `Range.prototype`。 上一示例中的关键代码行就是这一行，如果它对您有意义，您就了解了子类在 JavaScript 中的工作原理：
+:::
+
 ```js
 Span.prototype = Object.create(Range.prototype);
 ```
 
 Objects created with the `Span()` constructor will inherit from the `Span.prototype` object. But we created that object to inherit from `Range.prototype`, so Span objects will inherit from both `Span.prototype` and `Range.prototype`.
 
-You may notice that our `Span()` constructor sets the same from and to properties that the `Range()` constructor does and so does not need to invoke the `Range()` constructor to initialize the new object. Similarly, Span’s `toString()` method completely reimplements the string conversion without needing to call Range’s version of `toString()`. This makes Span a special case, and we can only really get away with this kind of subclassing because we know the implementation details of the superclass. A robust subclassing mechanism needs to allow classes to invoke the methods and constructor of their superclass, but prior to ES6, JavaScript did not have a simple way to do these things.
+::: tip 翻译
+使用 `Span()` 构造函数创建的对象将从 `Span.prototype` 对象继承。 但是我们创建该对象是为了继承 `Range.prototype`，因此 `Span` 对象将从 `Span.prototype` 和 `Range.prototype` 继承。
+:::
+
+You may notice that our `Span()` constructor sets the same `from` and `to` properties that the `Range()` constructor does and so does not need to invoke the `Range()` constructor to initialize the new object. Similarly, Span’s `toString()` method completely re-implements the string conversion without needing to call Range’s version of `toString()`. This makes Span a special case, and we can only really get away with this kind of subclassing because we know the implementation details of the superclass. A robust subclassing mechanism needs to allow classes to invoke the methods and constructor of their superclass, but prior to ES6, JavaScript did not have a simple way to do these things.
+
+::: tip 翻译
+您可能会注意到，我们的 `Span()` 构造函数设置了与 `Range()` 构造函数相同的 `from` 和 `to` 属性，因此不需要调用 `Range()` 构造函数来初始化新对象。 `同样，Span` 的 `toString()` 方法完全重新实现了字符串转换，而不需要调用 `Range` 版本的 `toString()` 。 这使得 `Span` 成为一个特例，我们只能真正摆脱这种子类化，因为我们知道超类的实现细节。 一个健壮的子类化机制需要允许该类调用其超类的方法和构造函数，但在 ES6 之前，JavaScript 没有一种简单的方法来完成这些事情。
+:::
 
 Fortunately, ES6 solves these problems with the `super` keyword as part of the `class` syntax. The next section demonstrates how it works.
 
-### Subclasses with extends and super
+::: tip 翻译
+幸运的是，ES6 通过将 `super` 关键字作为 `class` 语法的一部分解决了这些问题。 下一节将演示它是如何工作的。
+:::
+
+### 带有 extends 和 super 的子类
 
 In ES6 and later, you can create a superclass simply by adding an `extends` clause to a class declaration, and you can do this even for built-in classes:
+
+::: tip 翻译
+在 ES6 及更高版本中，您只需在类声明中添加 `extends` 子句即可创建超类，甚至对于内置类也可以执行此操作：
+:::
 
 ```js
 // A trivial Array subclass that adds getters for the first and last elements.
@@ -898,7 +930,11 @@ Array.isArray(a); // => true: subclass instance really is an array
 EZArray.isArray(a); // => true: subclass inherits static methods, too!
 ```
 
-This EZArray subclass defines two simple getter methods. Instances of EZArray behave like ordinary arrays, and we can use inherited methods and properties like `push()`, `pop()`, and length. But we can also use the first and last getters defined in the subclass. Not only are instance methods like `pop()` inherited, but static methods like `Array.isArray` are also inherited. This is a new feature enabled by ES6 class syntax: `EZArray()` is a function, but it inherits from `Array()`:
+This EZArray subclass defines two simple `getter` methods. Instances of EZArray behave like ordinary arrays, and we can use inherited methods and properties like `push()`, `pop()`, and `length`. But we can also use the `first` and `last` getters defined in the subclass. Not only are instance methods like `pop()` inherited, but static methods like `Array.isArray` are also inherited. This is a new feature enabled by ES6 class syntax: `EZArray()` is a function, but it inherits from `Array()`:
+
+::: tip 翻译
+这个 EZArray 子类定义了两个简单的 `getter` 方法。 EZArray 实例的行为与普通数组类似，我们可以使用继承的方法和属性，如 `push()`、`pop()` 和 `length`。 但我们也可以使用子类中定义的 `first` 和 `last` `getter`。 不仅像 `pop()` 这样的实例方法被继承，像 `Array.isArray` 这样的静态方法也被继承。 这是 ES6 类语法启用的新功能：`EZArray()` 是一个函数，但它继承自 `Array()`：
+:::
 
 ```js
 // EZArray inherits instance methods because EZArray.prototype
@@ -911,7 +947,11 @@ Array.prototype.isPrototypeOf(EZArray.prototype); // => true
 Array.isPrototypeOf(EZArray); // => true
 ```
 
-Our EZArray subclass is too simple to be very instructive. Example 9-6 is a more fully fleshed-out example. It defines a TypedMap subclass of the built-in Map class that adds type checking to ensure that the keys and values of the map are of the specified types (according to `typeof`). Importantly, this example demonstrates the use of the super keyword to invoke the constructor and methods of the superclass.
+Our EZArray subclass is too simple to be very instructive. Example 9-6 is a more fully fleshed-out example. It defines a TypedMap subclass of the built-in Map class that adds type checking to ensure that the keys and values of the map are of the specified types (according to `typeof`). Importantly, this example demonstrates the use of the `super` keyword to invoke the constructor and methods of the superclass.
+
+::: tip 翻译
+我们的 EZArray 子类太简单，没有太多指导意义。 例 9-6 是一个更加充实的例子。 它定义了内置 `Map` 类的 `TypedMap` 子类，该子类添加类型检查以确保映射的键和值属于指定类型（根据 `typeof` ）。 重要的是，此示例演示了如何使用 `super` 关键字来调用超类的构造函数和方法。
+:::
 
 _Example 9-6. TypedMap.js: a subclass of Map that checks key and value types_
 
@@ -954,30 +994,71 @@ class TypeMap extends Map {
 }
 ```
 
-The first two arguments to the `TypedMap()` constructor are the desired key and value types. These should be strings, such as “number” and “boolean”, that the `typeof` operator returns. You can also specify a third argument: an array (or any iterable object) of `[key,value]` arrays that specify the initial entries in the map. If you specify any initial entries, then the first thing the constructor does is verify that their types are correct. Next, the constructor invokes the superclass constructor, using the `super` keyword as if it was a function name. The `Map()` constructor takes one optional argument: an iterable object of `[key,value]` arrays. So the optional third argument of the `TypedMap()` constructor is the optional first argument to the `Map()` constructor, and we pass it to that superclass constructor with `super`(`entries`).
+The first two arguments to the `TypedMap()` constructor are the desired key and value types. These should be strings, such as “number” and “boolean”, that the `typeof` operator returns. You can also specify a third argument: an array (or any iterable object) of `[key,value]` arrays that specify the initial entries in the map. If you specify any initial entries, then the first thing the constructor does is verify that their types are correct. Next, the constructor invokes the superclass constructor, using the `super` keyword as if it was a function name. The `Map()` constructor takes one optional argument: an iterable object of `[key,value]` arrays. So the optional third argument of the `TypedMap()` constructor is the optional first argument to the `Map()` constructor, and we pass it to that superclass constructor with `super(entries)`.
+
+::: tip 翻译
+`TypedMap()` 构造函数的前两个参数是所需的键和值类型。 这些应该是 `typeof` 运算符返回的字符串，例如“number”和“boolean”。 您还可以指定第三个参数：“`[key,value]`”数组的数组（或任何可迭代对象），用于指定映射中的初始条目。 如果您指定任何初始条目，那么构造函数要做的第一件事就是验证它们的类型是否正确。 接下来，构造函数调用超类构造函数，使用 `super` 关键字，就像它是函数名称一样。 `Map()` 构造函数采用一个可选参数：“`[key,value]`”数组的可迭代对象。 因此，`TypedMap()` 构造函数的可选第三个参数是`Map()`构造函数的可选第一个参数，我们使用 `super(entries)` 将其传递给超类构造函数。
+:::
 
 After invoking the superclass constructor to initialize superclass state, the `TypedMap()` constructor next initializes its own subclass state by setting `this.keyType` and `this.valueType` to the specified types. It needs to set these properties so that it can use them again in the `set()` method.
+
+::: tip 翻译
+在调用超类构造函数初始化超类状态后，`TypedMap()` 构造函数接下来通过将 `this.keyType` 和 `this.valueType` 设置为指定类型来初始化自己的子类状态。 它需要设置这些属性，以便可以在 `set()` 方法中再次使用它们。
+:::
 
 There are a few important rules that you will need to know about using `super()` in constructors:
 
 - If you define a class with the `extends` keyword, then the constructor for your class must use `super()` to invoke the superclass constructor.
 - If you don’t define a constructor in your subclass, one will be defined automatically for you. This implicitly defined constructor simply takes whatever values are passed to it and passes those values to `super()`.
 - You may not use the `this` keyword in your constructor until after you have invoked the superclass constructor with `super()`. This enforces a rule that superclasses get to initialize themselves before subclasses do.
-- The special expression `new.target` is `undefined` in functions that are invoked without the `new` keyword. In constructor functions, however, `new.target` is a reference to the constructor that was invoked. When a subclass constructor is invoked and uses `super()` to invoke the superclass constructor, that superclass constructor will see the subclass constructor as the value of `new.target`. A welldesigned superclass should not need to know whether it has been subclassed, but it might be useful to be able to use `new.target.name` in logging messages, for example.
+- The special expression `new.target` is `undefined` in functions that are invoked without the `new` keyword. In constructor functions, however, `new.target` is a reference to the constructor that was invoked. When a subclass constructor is invoked and uses `super()` to invoke the superclass constructor, that superclass constructor will see the subclass constructor as the value of `new.target`. A well designed superclass should not need to know whether it has been subclassed, but it might be useful to be able to use `new.target.name` in logging messages, for example.
+
+::: tip 翻译
+关于在构造函数中使用 `super()`，您需要了解一些重要规则：
+
+- 如果您使用 `extends` 关键字定义类，则该类的构造函数必须使用 `super()` 来调用超类构造函数。
+- 如果您没有在子类中定义构造函数，系统会自动为您定义一个构造函数。 这个隐式定义的构造函数只是接受传递给它的任何值并将这些值传递给`super()`。
+- 在使用 `super()` 调用超类构造函数之前，您不能在构造函数中使用 `this` 关键字。 这强制了超类在子类之前初始化自身的规则。
+- 在不使用 `new` 关键字调用的函数中，特殊表达式 `new.target` 是 `undefined`。 然而，在构造函数中，`new.target` 是对被调用的构造函数的引用。 当调用子类构造函数并使用 `super()` 调用超类构造函数时，该超类构造函数会将子类构造函数视为 `new.target` 的值。 设计良好的超类不需要知道它是否已被子类化，但例如，能够在日志消息中使用 `new.target.name` 可能会很有用。
+  :::
 
 After the constructor, the next part of Example 9-6 is a method named `set()`. The Map superclass defines a method named `set()` to add a new entry to the map. We say that this `set()` method in TypedMap _overrides_ the `set()` method of its superclass. This simple TypedMap subclass doesn’t know anything about adding new entries to map, but it does know how to check types, so that is what it does first, verifying that the key and value to be added to the map have the correct types and throwing an error if they do not. This `set()` method doesn’t have any way to add the key and value to the map itself, but that is what the superclass `set()` method is for. So we use the `super` keyword again to invoke the superclass’s version of the method. In this context, `super` works much like the `this` keyword does: it refers to the current object but allows access to overridden methods defined in the superclass.
 
+::: tip 翻译
+在构造函数之后，示例 9-6 的下一部分是一个名为 `set()` 的方法。 `Map` 超类定义了一个名为 `set()` 的方法来向 `map` 添加新条目。 我们说 `TypedMap` 中的 `set()` 方法覆盖了其超类的 `set()` 方法。 这个简单的 `TypedMap` 子类不知道有关向 `map` 添加新条目的任何信息，但它确实知道如何检查类型，因此这就是它首先要做的事情，验证要添加到 `map` 的键和值是否具有正确的类型，并且如果不是，则会抛出错误。 这个 `set()` 方法没有任何方法将键和值添加到 `map` 本身，但这就是超类 `set()` 方法的用途。 因此，我们再次使用 `super` 关键字来调用该方法的超类版本。 在这种情况下，`super` 的工作方式与 `this` 关键字非常相似：它引用当前对象，但允许访问超类中定义的重写方法。
+:::
+
 In constructors, you are required to invoke the superclass constructor before you can access `this` and initialize the new object yourself. There are no such rules when you override a method. A method that overrides a superclass method is not required to invoke the superclass method. If it does use `super` to invoke the overridden method (or any method) in the superclass, it can do that at the beginning or the middle or the end of the overriding method.
+
+::: tip 翻译
+在构造函数中，您需要先调用超类构造函数，然后才能访问 `this` 并自己初始化新对象。 当您重写方法时，没有这样的规则。 重写超类方法的方法不需要调用超类方法。 如果它确实使用 `super` 来调用超类中的重写方法（或任何方法），则它可以在重写方法的开头、中间或末尾执行此操作。
+:::
 
 Finally, before we leave the TypedMap example behind, it is worth noting that this class is an ideal candidate for the use of private fields. As the class is written now, a user could change the `keyType` or `valueType` properties to subvert the type checking.
 
+::: tip 翻译
+最后，在我们离开 `TypedMap` 示例之前，值得注意的是，此类是使用私有字段的理想候选类。 现在编写该类时，用户可以更改 `keyType` 或 `valueType` 属性来破坏类型检查。
+:::
+
 Once private fields are supported, we could change these properties to `#keyType` and `#valueType` so that they could not be altered from the outside.
 
-### Delegation Instead of Inheritance
+::: tip 翻译
+一旦支持私有字段，我们就可以将这些属性更改为 `#keyType` 和 `#valueType`，这样它们就无法从外部更改。
+:::
+
+### 委托代替继承
 
 The `extends` keyword makes it easy to create subclasses. But that does not mean that you should create lots of subclasses. If you want to write a class that shares the behavior of some other class, you can try to inherit that behavior by creating a subclass. But it is often easier and more flexible to get that desired behavior into your class by having your class create an instance of the other class and simply delegating to that instance as needed. You create a new class not by subclassing, but instead by wrapping or “composing” other classes. This delegation approach is often called “composition,” and it is an oft-quoted maxim of object-oriented programming that one should “favor composition over inheritance.”
 
+::: tip 翻译
+`extends` 关键字可以轻松创建子类。 但这并不意味着您应该创建大量子类。 如果您想编写一个共享其他类行为的类，您可以尝试通过创建子类来继承该行为。 但是，通过让您的类创建另一个类的实例并根据需要简单地委托给该实例，将所需的行为引入到您的类中通常更容易、更灵活。 您不是通过子类化来创建新类，而是通过包装或“组合”其他类来创建新类。 这种委托方法通常被称为“组合”，这是经常被引用的面向对象编程的格言：人们应该“优先考虑组合而不是继承”。
+:::
+
 Suppose, for example, we wanted a Histogram class that behaves something like JavaScript’s Set class, except that instead of just keeping track of whether a value has been added to set or not, it instead maintains a count of the number of times the value has been added. Because the API for this Histogram class is similar to Set, we might consider subclassing Set and adding a `count()` method. On the other hand, once we start thinking about how we might implement this `count()` method, we might realize that the Histogram class is more like a Map than a Set because it needs to maintain a mapping between values and the number of times they have been added. So instead of subclassing Set, we can create a class that defines a Set-like API but implements those methods by delegating to an internal Map object. Example 9-7 shows how we could do this.
+
+::: tip 翻译
+例如，假设我们想要一个 `Histogram` 类，它的行为类似于 JavaScript 的 Set 类，不同之处在于它不仅仅跟踪某个值是否已添加到 set 中，而是维护该值已添加出现的次数。 因为这个 `Histogram` 类的 API 与 Set 类似，所以我们可以考虑子类化 Set 并添加一个 `count()` 方法。 另一方面，一旦我们开始考虑如何实现这个 `count()` 方法，我们可能会意识到 Histogram 类更像是 Map 而不是 Set，因为它需要维护值和添加次数之间的映射。 因此，我们可以创建一个定义类似 Set 的 API 的类，但通过委托给内部 Map 对象来实现这些方法，而不是子类化 Set。 例 9-7 展示了我们如何做到这一点。
+:::
 
 _Example 9-7. Histogram.js: a Set-like class implemented with delegation_
 
@@ -1049,15 +1130,35 @@ class Histogram {
 
 All the `Histogram()` constructor does in Example 9-7 is create a Map object. And most of the methods are one-liners that just delegate to a method of the map, making the implementation quite simple. Because we used delegation rather than inheritance, a Histogram object is not an instance of Set or Map. But Histogram implements a number of commonly used Set methods, and in an untyped language like JavaScript, that is often good enough: a formal inheritance relationship is sometimes nice, but often optional.
 
-### Class Hierarchies and Abstract Classes
+::: tip 翻译
+例 9-7 中的 `Histogram()` 构造函数所做的就是创建一个 Map 对象。 而且大多数方法都是单行的，只是委托给映射的方法，使得实现非常简单。 因为我们使用委托而不是继承，所以 `Histogram` 对象不是 Set 或 Map 的实例。 但是 `Histogram` 实现了许多常用的 Set 方法，并且在像 JavaScript 这样的非类型语言中，这通常就足够了：正式的继承关系有时很好，但通常是可选的。
+:::
+
+### 类层次结构和抽象类
 
 Example 9-6 demonstrated how we can subclass Map. Example 9-7 demonstrated how we can instead delegate to a Map object without actually subclassing anything. Using JavaScript classes to encapsulate data and modularize your code is often a great technique, and you may find yourself using the `class` keyword frequently. But you may find that you prefer composition to inheritance and that you rarely need to use `extends` (except when you’re using a library or framework that requires you to extend its base classes).
 
+::: tip 翻译
+例 9-6 演示了如何对 Map 进行子类化。 示例 9-7 演示了如何委托给 Map 对象，而无需实际子类化任何内容。 使用 JavaScript 类来封装数据和模块化代码通常是一项很棒的技术，您可能会发现自己经常使用 `class` 关键字。 但是您可能会发现您更喜欢组合而不是继承，并且很少需要使用 `extends`（除非您使用的库或框架需要您扩展其基类）。
+:::
+
 There are some circumstances when multiple levels of subclassing are appropriate, however, and we’ll end this chapter with an extended example that demonstrates a hierarchy of classes representing different kinds of sets. (The set classes defined in Example 9-8 are similar to, but not completely compatible with, JavaScript’s built-in Set class.)
+
+::: tip 翻译
+然而，在某些情况下，多个级别的子类化是合适的，我们将以一个扩展示例来结束本章，该示例演示了表示不同类型集合的类的层次结构。 （示例 9-8 中定义的 Set 类与 JavaScript 的内置 Set 类类似，但不完全兼容。）
+:::
 
 Example 9-8 defines lots of subclasses, but it also demonstrates how you can define _abstract classes_—classes that do not include a complete implementation—to serve as a common superclass for a group of related subclasses. An abstract superclass can define a partial implementation that all subclasses inherit and share. The subclasses, then, only need to define their own unique behavior by implementing the abstract methods defined—but not implemented—by the superclass. Note that JavaScript does not have any formal definition of abstract methods or abstract classes; I’m simply using that name here for unimplemented methods and incompletely implemented classes.
 
+::: tip 翻译
+示例 9-8 定义了许多子类，但它还演示了如何定义 _抽象类_（不包含完整实现的类）以充当一组相关子类的公共超类。 抽象超类可以定义所有子类继承和共享的部分实现。 那么，子类只需要通过实现超类定义（但未实现）的抽象方法来定义自己的独特行为。 请注意，JavaScript 没有抽象方法或抽象类的任何正式定义； 我在这里只是将这个名称用于未实现的方法和未完全实现的类。
+:::
+
 Example 9-8 is well commented and stands on its own. I encourage you to read it as a capstone example for this chapter on classes. The final class in Example 9-8 does a lot of bit manipulation with the `&`, `|`, and `~` operators, which you can review in §4.8.3.
+
+::: tip 翻译
+例 9-8 得到了很好的注释并且是独立的。 我鼓励您将其作为本章课程的顶点示例来阅读。 示例 9-8 中的最后一个类使用 `&`、`|`和 `~` 运算符进行了大量位操作，您可以在第 4.8.3 节中查看这些操作。
+:::
 
 _Example 9-8. Sets.js: a hierarchy of abstract and concrete set classes_
 
@@ -1311,12 +1412,22 @@ BitSet.bits = new Uint8Array([1, 2, 4, 8, 16, 32, 64, 128]);
 BitSet.masks = new Uint8Array([~1, ~2, ~4, ~8, ~16, ~32, ~64, ~128]);
 ```
 
-## Summary
+## 总结
 
 This chapter has explained the key features of JavaScript classes:
 
 - Objects that are members of the same class inherit properties from the same prototype object. The prototype object is the key feature of JavaScript classes, and it is possible to define classes with nothing more than the `Object.create()` method.
-- Prior to ES6, classes were more typically defined by first defining a constructor function. Functions created with the `function` keyword have a `prototype` property, and the value of this property is an object that is used as the prototype of all objects created when the function is invoked with `new` as a constructor. By initializing this prototype object, you can define the shared methods of your class. Although the prototype object is the key feature of the class, the constructor function is the public identity of the class.
+- Prior to ES6, classes were more typically defined by first defining a constructor function. Functions created with the `function` keyword have a `prototype` property, and the value of this property is an object that is used as the prototype of all objects created when the function is invoked with `new` as a constructor. By initializing this prototype object, you can define the shared methods of your class. Although the prototype object is the key feature of the class, the `constructor` function is the public identity of the class.
 - ES6 introduces a `class` keyword that makes it easier to define classes, but under the hood, constructor and prototype mechanism remains the same.
 - Subclasses are defined using the `extends` keyword in a class declaration.
 - Subclasses can invoke the constructor of their superclass or overridden methods of their superclass with the `super` keyword.
+
+::: tip 翻译
+本章解释了 JavaScript 类的主要特性：
+
+- 作为同一类成员的对象从同一原型对象继承属性。 原型对象是 JavaScript 类的关键特性，只需使用 `Object.create()` 方法就可以定义类。
+- 在 ES6 之前，类通常是通过首先定义构造函数来定义的。 使用 `function` 关键字创建的函数具有 `prototype` 属性，该属性的值是一个对象，该对象用作使用 `new` 作为构造函数调用该函数时创建的所有对象的原型。 通过初始化这个原型对象，您可以定义类的共享方法。 虽然原型对象是类的关键特征，但构造函数是类的公共标识。
+- ES6 引入了 `class` 关键字，可以更轻松地定义类，但在底层，构造函数和原型机制保持不变。
+- 子类是在类声明中使用 `extends` 关键字定义的。
+- 子类可以使用 `super` 关键字调用其超类的构造函数或重写其超类的方法。
+  :::
