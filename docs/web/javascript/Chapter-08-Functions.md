@@ -632,3 +632,30 @@ function drawCircle({ x, y, radius, color: [r, g, b] }) {
 ```
 
 If function argument destructuring is any more complicated than this, I find that the code becomes harder to read, rather than simpler. Sometimes, it is clearer to be explicit about your object property access and array indexing.
+
+### Argument Types
+
+JavaScript method parameters have no declared types, and no type checking is performed on the values you pass to a function. You can help make your code self documenting by choosing descriptive names for function arguments and by documenting them carefully in the comments for each function. (Alternatively, see §17.8 for a language extension that allows you to layer type checking on top of regular JavaScript.)
+
+As described in §3.9, JavaScript performs liberal type conversion as needed. So if you write a function that expects a string argument and then call that function with a value of some other type, the value you passed will simply be converted to a string when the function tries to use it as a string. All primitive types can be converted to strings, and all objects have `toString()` methods (if not necessarily useful ones), so an error never occurs in this case.
+
+This is not always true, however. Consider again the `arraycopy()` method shown earlier. It expects one or two array arguments and will fail if these arguments are of the wrong type. Unless you are writing a private function that will only be called from nearby parts of your code, it may be worth adding code to check the types of arguments like this. It is better for a function to fail immediately and predictably when passed bad values than to begin executing and fail later with an error message that is likely to be unclear. Here is an example function that performs type-checking:
+
+```js
+// Return the sum of the elements an iterable object a.
+// The elements of a must all be numbers.
+function sum(a) {
+  let total = 0;
+  for (let element of a) {
+    // Throws TypeError if a is not iterable
+    if (typeof element !== "number") {
+      throw new TypeError("sum(): elements must be numbers");
+    }
+    total += element;
+  }
+  return total;
+}
+sum([1, 2, 3]); // => 6
+sum(1, 2, 3); // !TypeError: 1 is not iterable
+sum([1, 2, "3"]); // !TypeError: element 2 is not a number
+```
