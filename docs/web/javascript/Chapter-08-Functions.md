@@ -523,3 +523,112 @@ function benchmark(n) {
 // Now invoke the timed version of that test function
 timed(benchmark)(1000000); // => 500000500000; this is the sum of the numbers
 ```
+
+### Destructuring Function Arguments into Parameters
+
+When you invoke a function with a list of argument values, those values end up being assigned to the parameters declared in the function definition. This initial phase of function invocation is a lot like variable assignment. So it should not be surprising that we can use the techniques of destructuring assignment (see §3.10.3) with functions.
+
+If you define a function that has parameter names within square brackets, you are telling the function to expect an array value to be passed for each pair of square brackets. As part of the invocation process, the array arguments will be unpacked into the individually named parameters. As an example, suppose we are representing 2D vectors as arrays of two numbers, where the first element is the X coordinate and the second element is the Y coordinate. With this simple data structure, we could write the following function to add two vectors:
+
+```js
+function vectorAdd(v1, v2) {
+  return [v1[0] + v2[0], v1[1] + v2[1]];
+}
+vectorAdd([1, 2], [3, 4]); // => [4,6]
+```
+
+The code would be easier to understand if we destructured the two vector arguments into more clearly named parameters:
+
+```js
+function vectorAdd([x1, y1], [x2, y2]) {
+  // Unpack 2 arguments into 4 parameters
+  return [x1 + x2, y1 + y2];
+}
+vectorAdd([1, 2], [3, 4]); // => [4,6]
+```
+
+Similarly, if you are defining a function that expects an object argument, you can destructure parameters of that object. Let’s use a vector example again, except this time, let’s suppose that we represent vectors as objects with x and y parameters:
+
+```js
+// Multiply the vector {x,y} by a scalar value
+function vectorMultiply({ x, y }, scalar) {
+  return { x: x * scalar, y: y * scalar };
+}
+vectorMultiply({ x: 1, y: 2 }, 2); // => {x: 2, y: 4}
+```
+
+This example of destructuring a single object argument into two parameters is a fairly clear one because the parameter names we use match the property names of the incoming object. The syntax is more verbose and more confusing when you need to destructure properties with one name into parameters with different names. Here’s the vector addition example, implemented for object-based vectors:
+
+```js
+function vectorAdd(
+  { x: x1, y: y1 }, // Unpack 1st object into x1 and y1 params
+  { x: x2, y: y2 } // Unpack 2nd object into x2 and y2 params
+) {
+  return { x: x1 + x2, y: y1 + y2 };
+}
+vectorAdd({ x: 1, y: 2 }, { x: 3, y: 4 }); // => {x: 4, y: 6}
+```
+
+The tricky thing about destructuring syntax like `{x:x1, y:y1}` is remembering which are the property names and which are the parameter names. The rule to keep in mind for destructuring assignment and destructuring function calls is that the variables or parameters being declared go in the spots where you’d expect values to go in an object literal. So property names are always on the lefthand side of the colon, and the parameter (or variable) names are on the right.
+
+You can define parameter defaults with destructured parameters. Here’s vector multiplication that works with 2D or 3D vectors:
+
+```js
+// Multiply the vector {x,y} or {x,y,z} by a scalar value
+function vectorMultiply({ x, y, z = 0 }, scalar) {
+  return { x: x * scalar, y: y * scalar, z: z * scalar };
+}
+vectorMultiply({ x: 1, y: 2 }, 2); // => {x: 2, y: 4, z: 0}
+```
+
+Some languages (like Python) allow the caller of a function to invoke a function with arguments specified in `name=value` form, which is convenient when there are many optional arguments or when the parameter list is long enough that it is hard to remember the correct order. JavaScript does not allow this directly, but you can approximate it by destructuring an object argument into your function parameters. Consider a function that copies a specified number of elements from one array into another array with optionally specified starting offsets for each array. Since there are five possible parameters, some of which have defaults, and it would be hard for a caller to remember which order to pass the arguments in, we can define and invoke the `arraycopy()` function like this:
+
+```js
+function arraycopy({
+  from,
+  to = from,
+  n = from.length,
+  fromIndex = 0,
+  toIndex = 0,
+}) {
+  let valuesToCopy = from.slice(fromIndex, fromIndex + n);
+  to.splice(toIndex, 0, ...valuesToCopy);
+  return to;
+}
+let a = [1, 2, 3, 4, 5],
+  b = [9, 8, 7, 6, 5];
+arraycopy({ from: a, n: 3, to: b, toIndex: 4 }); // => [9,8,7,6,1,2,3,5]
+```
+
+When you destructure an array, you can define a rest parameter for extra values within the array that is being unpacked. That rest parameter within the square brackets is completely different than the true rest parameter for the function:
+
+```js
+// This function expects an array argument. The first two elements of that
+// array are unpacked into the x and y parameters. Any remaining elements
+// are stored in the coords array. And any arguments after the first array
+// are packed into the rest array.
+function f([x, y, ...coords], ...rest) {
+  return [x + y, ...rest, ...coords]; // Note: spread operator here
+}
+f([1, 2, 3, 4], 5, 6); // => [3, 5, 6, 3, 4]
+```
+
+In ES2018, you can also use a rest parameter when you destructure an object. The value of that rest parameter will be an object that has any properties that did not get destructured. Object rest parameters are often useful with the object spread operator, which is also a new feature of ES2018:
+
+```js
+// Multiply the vector {x,y} or {x,y,z} by a scalar value, retain other props
+function vectorMultiply({ x, y, z = 0, ...props }, scalar) {
+  return { x: x * scalar, y: y * scalar, z: z * scalar, ...props };
+}
+vectorMultiply({ x: 1, y: 2, w: -1 }, 2); // => {x: 2, y: 4, z: 0, w: -1}
+```
+
+Finally, keep in mind that, in addition to destructuring argument objects and arrays, you can also destructure arrays of objects, objects that have array properties, and objects that have object properties, to essentially any depth. Consider graphics code that represents circles as objects with `x`, `y`, `radius`, and `color` properties, where the `color` property is an array of red, green, and blue color components. You might define a function that expects a single circle object to be passed to it but destructures that circle object into six separate parameters:
+
+```js
+function drawCircle({ x, y, radius, color: [r, g, b] }) {
+  // Not yet implemented
+}
+```
+
+If function argument destructuring is any more complicated than this, I find that the code becomes harder to read, rather than simpler. Sometimes, it is clearer to be explicit about your object property access and array indexing.
