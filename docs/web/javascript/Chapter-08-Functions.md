@@ -1155,3 +1155,280 @@ There are a few points that are important to understand about the `Function()` c
   ```
 
 The `Function()` constructor is best thought of as a globally scoped version of `eval()` (see §4.12.2) that defines new variables and functions in its own private scope. You will probably never need to use this constructor in your code.
+
+## Functional Programming
+
+JavaScript is not a functional programming language like Lisp or Haskell, but the fact that JavaScript can manipulate functions as objects means that we can use functional programming techniques in JavaScript. Array methods such as `map()` and `reduce()` lend themselves particularly well to a functional programming style. The sections that follow demonstrate techniques for functional programming in JavaScript. They are intended as a mind-expanding exploration of the power of JavaScript’s functions, not as a prescription for good programming style.
+
+### Processing Arrays with Functions
+
+Suppose we have an array of numbers and we want to compute the mean and standard deviation of those values. We might do that in nonfunctional style like this:
+
+```js
+let data = [1, 1, 3, 5, 5]; // This is our array of numbers
+
+// The mean is the sum of the elements divided by the number of elements
+let total = 0;
+for (let i = 0; i < data.length; i++) total += data[i];
+let mean = total / data.length; // mean == 3; The mean of our data is 3
+
+// To compute the standard deviation, we first sum the squares of
+// the deviation of each element from the mean.
+total = 0;
+for (let i = 0; i < data.length; i++) {
+  let deviation = data[i] - mean;
+  total += deviation * deviation;
+}
+let stddev = Math.sqrt(total / (data.length - 1)); // stddev == 2
+```
+
+We can perform these same computations in concise functional style using the array methods `map()` and `reduce()` like this (see §7.8.1 to review these methods):
+
+```js
+// First, define two simple functions
+const sum = (x, y) => x + y;
+const square = (x) => x * x;
+
+// Then use those functions with Array methods to compute mean and stddev
+let data = [1, 1, 3, 5, 5];
+let mean = data.reduce(sum) / data.length; // mean == 3
+let deviations = data.map((x) => x - mean);
+let stddev = Math.sqrt(deviations.map(square).reduce(sum) / (data.length - 1));
+stddev; // => 2
+```
+
+This new version of the code looks quite different than the first one, but it is still invoking methods on objects, so it has some object-oriented conventions remaining. Let’s write functional versions of the `map()` and `reduce()` methods:
+
+```js
+const map = function (a, ...args) {
+  return a.map(...args);
+};
+const reduce = function (a, ...args) {
+  return a.reduce(...args);
+};
+```
+
+With these `map()` and `reduce()` functions defined, our code to compute the mean and standard deviation now looks like this:
+
+```js
+const sum = (x, y) => x + y;
+const square = (x) => x * x;
+
+let data = [1, 1, 3, 5, 5];
+let mean = reduce(data, sum) / data.length;
+let deviations = map(data, (x) => x - mean);
+let stddev = Math.sqrt(
+  reduce(map(deviations, square), sum) / (data.length - 1)
+);
+stddev; // => 2
+```
+
+### Higher-Order Functions
+
+A _higher-order function_ is a function that operates on functions, taking one or more functions as arguments and returning a new function. Here is an example:
+
+```js
+// This higher-order function returns a new function that passes its
+// arguments to f and returns the logical negation of f's return value;
+function not(f) {
+  return function (...args) {
+    // Return a new function
+    let result = f.apply(this, args); // that calls f
+    return !result; // and negates its result.
+  };
+}
+
+const even = (x) => x % 2 === 0; // A function to determine if a number is even
+const odd = not(even); // A new function that does the opposite
+[1, 1, 3, 5, 5].every(odd); // => true: every element of the array is odd
+```
+
+This `not()` function is a higher-order function because it takes a function argument and returns a new function. As another example, consider the `mapper()` function that follows. It takes a function argument and returns a new function that maps one array to another using that function. This function uses the `map()` function defined earlier, and it is important that you understand how the two functions are different:
+
+```js
+// Return a function that expects an array argument and applies f to
+// each element, returning the array of return values.
+// Contrast this with the map() function from earlier.
+function mapper(f) {
+  return (a) => map(a, f);
+}
+
+const increment = (x) => x + 1;
+const incrementAll = mapper(increment);
+incrementAll([1, 2, 3]); // => [2,3,4]
+```
+
+Here is another, more general, example that takes two functions, `f` and `g`, and returns a new function that computes `f(g())`:
+
+```js
+// Return a new function that computes f(g(...)).
+// The returned function h passes all of its arguments to g, then passes
+// the return value of g to f, then returns the return value of f.
+// Both f and g are invoked with the same this value as h was invoked with.
+function compose(f, g) {
+  return function (...args) {
+    // We use call for f because we're passing a single value and
+    // apply for g because we're passing an array of values.
+    return f.call(this, g.apply(this, args));
+  };
+}
+
+const sum = (x, y) => x + y;
+const square = (x) => x * x;
+compose(square, sum)(2, 3); // => 25; the square of the sum
+```
+
+The `partial()` and `memoize()` functions defined in the sections that follow are two more important higher-order functions.
+
+### Partial Application of Functions
+
+The `bind()` method of a function `f` (see §8.7.5) returns a new function that invokes `f` in a specified context and with a specified set of arguments. We say that it binds the function to an object and partially applies the arguments. The `bind()` method partially applies arguments on the left—that is, the arguments you pass to `bind()` are placed at the start of the argument list that is passed to the original function. But it is also possible to partially apply arguments on the right:
+
+```js
+// The arguments to this function are passed on the left
+function partialLeft(f, ...outerArgs) {
+  return function (...innerArgs) {
+    // Return this function
+    let args = [...outerArgs, ...innerArgs]; // Build the argument list
+    return f.apply(this, args); // Then invoke f with it
+  };
+}
+
+// The arguments to this function are passed on the right
+function partialRight(f, ...outerArgs) {
+  return function (...innerArgs) {
+    // Return this function
+    let args = [...innerArgs, ...outerArgs]; // Build the argument list
+    return f.apply(this, args); // Then invoke f with it
+  };
+}
+
+// The arguments to this function serve as a template. Undefined values
+// in the argument list are filled in with values from the inner set.
+function partial(f, ...outerArgs) {
+  return function (...innerArgs) {
+    let args = [...outerArgs]; // local copy of outer args template
+    let innerIndex = 0; // which inner arg is next
+    // Loop through the args, filling in undefined values from inner args
+    for (let i = 0; i < args.length; i++) {
+      if (args[i] === undefined) args[i] = innerArgs[innerIndex++];
+    }
+    // Now append any remaining inner arguments
+    args.push(...innerArgs.slice(innerIndex));
+    return f.apply(this, args);
+  };
+}
+
+// Here is a function with three arguments
+const f = function (x, y, z) {
+  return x * (y - z);
+};
+// Notice how these three partial applications differ
+partialLeft(f, 2)(3, 4); // => -2: Bind first argument: 2 * (3 - 4)
+partialRight(f, 2)(3, 4); // => 6: Bind last argument: 3 * (4 - 2)
+partial(f, undefined, 2)(3, 4); // => -6: Bind middle argument: 3 * (2 - 4)
+```
+
+These partial application functions allow us to easily define interesting functions out of functions we already have defined. Here are some examples:
+
+```js
+const increment = partialLeft(sum, 1);
+const cuberoot = partialRight(Math.pow, 1 / 3);
+cuberoot(increment(26)); // => 3
+```
+
+Partial application becomes even more interesting when we combine it with other higher-order functions. Here, for example, is a way to define the preceding `not()` function just shown using composition and partial application:
+
+```js
+const not = partialLeft(compose, (x) => !x);
+const even = (x) => x % 2 === 0;
+const odd = not(even);
+const isNumber = not(isNaN);
+odd(3) && isNumber(2); // => true
+```
+
+We can also use composition and partial application to redo our mean and standard deviation calculations in extreme functional style:
+
+```js
+// sum() and square() functions are defined above. Here are some more:
+const product = (x, y) => x * y;
+const neg = partial(product, -1);
+const sqrt = partial(Math.pow, undefined, 0.5);
+const reciprocal = partial(Math.pow, undefined, neg(1));
+
+// Now compute the mean and standard deviation.
+let data = [1, 1, 3, 5, 5]; // Our data
+let mean = product(reduce(data, sum), reciprocal(data.length));
+let stddev = sqrt(
+  product(
+    reduce(map(data, compose(square, partial(sum, neg(mean)))), sum),
+    reciprocal(sum(data.length, neg(1)))
+  )
+);
+[mean, stddev]; // => [3, 2]
+```
+
+Notice that this code to compute mean and standard deviation is entirely function invocations; there are no operators involved, and the number of parentheses has grown so large that this JavaScript is beginning to look like Lisp code. Again, this is not a style that I advocate for JavaScript programming, but it is an interesting exercise to see how deeply functional JavaScript code can be.
+
+### Memoization
+
+In §8.4.1, we defined a factorial function that cached its previously computed results. In functional programming, this kind of caching is called _memoization_. The code that follows shows a higher-order function, `memoize()`, that accepts a function as its argument and returns a memoized version of the function:
+
+```js
+// Return a memoized version of f.
+// It only works if arguments to f all have distinct string representations.
+function memoize(f) {
+  const cache = new Map(); // Value cache stored in the closure.
+  return function (...args) {
+    // Create a string version of the arguments to use as a cache key.
+    let key = args.length + args.join("+");
+    if (cache.has(key)) {
+      return cache.get(key);
+    } else {
+      let result = f.apply(this, args);
+      cache.set(key, result);
+      return result;
+    }
+  };
+}
+```
+
+The `memoize()` function creates a new object to use as the cache and assigns this object to a local variable so that it is private to (in the closure of) the returned function. The returned function converts its arguments array to a string and uses that string as a property name for the cache object. If a value exists in the cache, it returns it directly. Otherwise, it calls the specified function to compute the value for these arguments, caches that value, and returns it. Here is how we might use `memoize()`:
+
+```js
+// Return the Greatest Common Divisor of two integers using the Euclidian
+// algorithm: http://en.wikipedia.org/wiki/Euclidean_algorithm
+function gcd(a, b) {
+  // Type checking for a and b has been omitted
+  if (a < b) {
+    // Ensure that a >= b when we start
+    [a, b] = [b, a]; // Destructuring assignment to swap variables
+  }
+  while (b !== 0) {
+    // This is Euclid's algorithm for GCD
+    [a, b] = [b, a % b];
+  }
+  return a;
+}
+
+const gcdmemo = memoize(gcd);
+gcdmemo(85, 187); // => 17
+
+// Note that when we write a recursive function that we will be memoizing,
+// we typically want to recurse to the memoized version, not the original.
+const factorial = memoize(function (n) {
+  return n <= 1 ? 1 : n * factorial(n - 1);
+});
+factorial(5); // => 120: also caches values for 4, 3, 2 and 1.
+```
+
+## Summary
+
+Some key points to remember about this chapter are as follows:
+
+- You can define functions with the function keyword and with the ES6 `=>` arrow syntax.
+- You can invoke functions, which can be used as methods and constructors.
+- Some ES6 features allow you to define default values for optional function parameters, to gather multiple arguments into an array using a rest parameter, and to destructure object and array arguments into function parameters.
+- You can use the `...` spread operator to pass the elements of an array or other iterable object as arguments in a function invocation.
+- A function defined inside of and returned by an enclosing function retains access to its lexical scope and can therefore read and write the variables defined inside the outer function. Functions used in this way are called closures, and this is a technique that is worth understanding.
+- Functions are objects that can be manipulated by JavaScript, and this enables a functional style of programming.
