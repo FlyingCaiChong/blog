@@ -659,3 +659,92 @@ sum([1, 2, 3]); // => 6
 sum(1, 2, 3); // !TypeError: 1 is not iterable
 sum([1, 2, "3"]); // !TypeError: element 2 is not a number
 ```
+
+## Functions as Values
+
+The most important features of functions are that they can be defined and invoked. Function definition and invocation are syntactic features of JavaScript and of most other programming languages. In JavaScript, however, functions are not only syntax but also values, which means they can be assigned to variables, stored in the properties of objects or the elements of arrays, passed as arguments to functions, and so on.
+
+To understand how functions can be JavaScript data as well as JavaScript syntax, consider this function definition:
+
+```js
+function square(x) {
+  return x * x;
+}
+```
+
+This definition creates a new function object and assigns it to the variable square. The name of a function is really immaterial; it is simply the name of a variable that refers to the function object. The function can be assigned to another variable and still work the same way:
+
+```js
+let s = square; // Now s refers to the same function that square does
+square(4); // => 16
+s(4); // => 16
+```
+
+Functions can also be assigned to object properties rather than variables. As we’ve already discussed, we call the functions “methods” when we do this:
+
+```js
+let o = {
+  square: function (x) {
+    return x * x;
+  },
+}; // An object literal
+let y = o.square(16); // y == 256
+```
+
+Functions don’t even require names at all, as when they’re assigned to array elements:
+
+```js
+let a = [(x) => x * x, 20]; // An array literal
+a[0](a[1]); // => 400
+```
+
+The syntax of this last example looks strange, but it is still a legal function invocation expression!
+
+As an example of how useful it is to treat functions as values, consider the `Array.sort()` method. This method sorts the elements of an array. Because there are many possible orders to sort by (numerical order, alphabetical order, date order, ascending, descending, and so on), the `sort()` method optionally takes a function as an argument to tell it how to perform the sort. This function has a simple job: for any two values it is passed, it returns a value that specifies which element would come first in a sorted array. This function argument makes `Array.sort()` perfectly general and infinitely flexible; it can sort any type of data into any conceivable order. Examples are shown in §7.8.6.
+
+Example 8-1 demonstrates the kinds of things that can be done when functions are used as values. This example may be a little tricky, but the comments explain what is going on.
+
+_Example 8-1. Using functions as data_
+
+```js
+// We define some simple functions here
+function add(x, y) {
+  return x + y;
+}
+function subtract(x, y) {
+  return x - y;
+}
+function multiply(x, y) {
+  return x * y;
+}
+function divide(x, y) {
+  return x / y;
+}
+// Here's a function that takes one of the preceding functions
+// as an argument and invokes it on two operands
+function operate(operator, operand1, operand2) {
+  return operator(operand1, operand2);
+}
+
+// We could invoke this function like this to compute the value (2+3) + (4*5):
+let i = operate(add, operate(add, 2, 3), operate(multiply, 4, 5));
+// For the sake of the example, we implement the simple functions again,
+// this time within an object literal;
+const operators = {
+  add: (x, y) => x + y,
+  subtract: (x, y) => x - y,
+  multiply: (x, y) => x * y,
+  divide: (x, y) => x / y,
+  pow: Math.pow, // This works for predefined functions too
+};
+// This function takes the name of an operator, looks up that operator
+// in the object, and then invokes it on the supplied operands. Note
+// the syntax used to invoke the operator function.
+function operate2(operation, operand1, operand2) {
+  if (typeof operators[operation] === "function") {
+    return operators[operation](operand1, operand2);
+  } else throw "unknown operator";
+}
+operate2("add", "hello", operate2("add", " ", "world")); // => "hello world"
+operate2("pow", 10, 2); // => 100
+```
