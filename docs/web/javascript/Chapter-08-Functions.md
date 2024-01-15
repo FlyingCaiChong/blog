@@ -34,15 +34,27 @@ JavaScript function definitions can be nested within other functions, and they h
 JavaScript 函数定义可以嵌套在其他函数中，并且它们可以访问其定义作用域内的任何变量。 这意味着 JavaScript 函数是 _闭包_，并且它支持重要且强大的编程技术。
 :::
 
-## Defining Functions
+## 定义函数
 
 The most straightforward way to define a JavaScript function is with the `function` keyword, which can be used as a declaration or as an expression. ES6 defines an important new way to define functions without the `function` keyword: “arrow functions” have a particularly compact syntax and are useful when passing one function as an argument to another function. The subsections that follow cover these three ways of defining functions. Note that some details of function definition syntax involving function parameters are deferred to §8.3.
 
-In object literals and class definitions, there is a convenient shorthand syntax for defining methods. This shorthand syntax was covered in §6.10.5 and is equivalent to using a function definition expression and assigning it to an object property using the basic `name:value` object literal syntax. In another special case, you can use keywords `get` and `set` in object literals to define special property getter and setter methods. This function definition syntax was covered in §6.10.6.
+::: tip 翻译
+定义 JavaScript 函数最直接的方法是使用 `function` 关键字，它可以用作声明或表达式。 ES6 定义了一种重要的新方法来定义不使用`function` 关键字的函数：“箭头函数”具有特别紧凑的语法，并且在将一个函数作为参数传递给另一个函数时非常有用。 接下来的小节介绍了这三种定义函数的方法。 请注意，涉及函数参数的函数定义语法的一些细节被推迟到第 8.3 节。
+:::
 
-Note that functions can also be defined with the `Function()` constructor, which is the subject of §8.7.7. Also, JavaScript defines some specialized kinds of functions. `function*` defines generator functions (see Chapter 12) and `async function` defines asynchronous functions (see Chapter 13).
+In object literals and class definitions, there is a convenient shorthand syntax for defining methods. This shorthand syntax was covered in §6.10.5 and is equivalent to using a function definition expression and assigning it to an object property using the basic `name:value` object literal syntax. In another special case, you can use keywords `get` and `set` in object literals to define special property `getter` and `setter` methods. This function definition syntax was covered in §6.10.6.
 
-### Function Declarations
+::: tip 翻译
+在对象字面量和类定义中，有一种方便的简写语法来定义方法。 此简写语法已在第 6.10.5 节中介绍，相当于使用函数定义表达式并使用基本的“`name:value`”对象字面量语法将其分配给对象属性。 在另一种特殊情况下，您可以在对象字面量中使用关键字 `get` 和 `set` 来定义特殊属性的 `getter` 和 `setter` 方法。 该函数定义语法已在第 6.10.6 节中介绍。
+:::
+
+Note that functions can also be defined with the `Function()` constructor, which is the subject of §8.7.7. Also, JavaScript defines some specialized kinds of functions. `function*` defines generator functions (see [Chapter 12](./Chapter-12-Iterators_Generators.md)) and `async function` defines asynchronous functions (see [Chapter 13](./Chapter-13-Asynchronous.md)).
+
+::: tip 翻译
+请注意，函数也可以使用 `Function()` 构造函数来定义，这是第 8.7.7 节的主题。 此外，JavaScript 还定义了一些特殊类型的函数。 `function*` 定义了生成器函数（参见[第 12 章](./Chapter-12-Iterators_Generators.md)），而 `async function` 定义了异步函数（参见[第 13 章](./Chapter-13-Asynchronous.md)）。
+:::
+
+### 函数声明
 
 Function declarations consist of the `function` keyword, followed by these components:
 
@@ -50,7 +62,19 @@ Function declarations consist of the `function` keyword, followed by these compo
 - A pair of parentheses around a comma-separated list of zero or more identifiers. These identifiers are the parameter names for the function, and they behave like local variables within the body of the function.
 - A pair of curly braces with zero or more JavaScript statements inside. These statements are the body of the function: they are executed whenever the function is invoked.
 
+::: tip 翻译
+函数声明由 `function` 关键字组成，后跟以下组件：
+
+- 命名函数的标识符。 名称是函数声明的必需部分：它用作变量的名称，并将新定义的函数对象分配给该变量。
+- 一对括号括住零个或多个标识符的逗号分隔列表。 这些标识符是函数的参数名称，它们的行为类似于函数体内的局部变量。
+- 一对大括号内包含零个或多个 JavaScript 语句。 这些语句是函数的主体：每当调用函数时就会执行它们。
+  :::
+
 Here are some example function declarations:
+
+::: tip 翻译
+以下是一些函数声明示例：
+:::
 
 ```js
 // Print the name and value of each property of o. Return undefined.
@@ -79,15 +103,35 @@ function factorial(x) {
 
 One of the important things to understand about function declarations is that the name of the function becomes a variable whose value is the function itself. Function declaration statements are “hoisted” to the top of the enclosing script, function, or block so that functions defined in this way may be invoked from code that appears before the definition. Another way to say this is that all of the functions declared in a block of JavaScript code will be defined throughout that block, and they will be defined before the JavaScript interpreter begins to execute any of the code in that block.
 
+::: tip 翻译
+关于函数声明需要理解的重要事情之一是函数的名称成为一个变量，其值是函数本身。 函数声明语句被“提升”到封闭脚本、函数或块的顶部，以便可以从定义之前出现的代码调用以这种方式定义的函数。 另一种说法是，在 JavaScript 代码块中声明的所有函数都将在该块中定义，并且它们将在 JavaScript 解释器开始执行该块中的任何代码之前定义。
+:::
+
 The `distance()` and `factorial()` functions we’ve described are designed to compute a value, and they use `return` to return that value to their caller. The `return` statement causes the function to stop executing and to return the value of its expression (if any) to the caller. If the `return` statement does not have an associated expression, the return value of the function is `undefined`.
 
-The `printProps()` function is different: its job is to output the names and values of an object’s properties. No return value is necessary, and the function does not include a `return` statement. The value of an invocation of the `printProps()` function is always `undefined`. If a function does not contain a return statement, it simply executes each statement in the function body until it reaches the end, and returns the `undefined` value to the caller.
+::: tip 翻译
+我们描述的 `distance()` 和 `factorial()` 函数旨在计算一个值，它们使用 `return` 将该值返回给调用者。 `return` 语句导致函数停止执行并将其表达式的值（如果有）返回给调用者。 如果 `return` 语句没有关联的表达式，则函数的返回值为 `undefined`。
+:::
+
+The `printProps()` function is different: its job is to output the names and values of an object’s properties. No return value is necessary, and the function does not include a `return` statement. The value of an invocation of the `printProps()` function is always `undefined`. If a function does not contain a `return` statement, it simply executes each statement in the function body until it reaches the end, and returns the `undefined` value to the caller.
+
+::: tip 翻译
+`printProps()` 函数不同：它的任务是输出对象属性的名称和值。 不需要返回值，并且该函数不包含 `return` 语句。 调用 `printProps()` 函数的值始终为 `undefined`。 如果函数不包含 `return` 语句，它只会执行函数体中的每条语句，直到到达末尾，并向调用者返回`undefined` 值。
+:::
 
 Prior to ES6, function declarations were only allowed at the top level within a JavaScript file or within another function. While some implementations bent the rule, it was not technically legal to define functions inside the body of loops, conditionals, or other blocks. In the strict mode of ES6, however, function declarations are allowed within blocks. A function defined within a block only exists within that block, however, and is not visible outside the block.
 
-### Function Expressions
+::: tip 翻译
+在 ES6 之前，函数声明只允许在 JavaScript 文件或另一个函数的顶层进行。 虽然某些实现违反了规则，但在循环、条件或其他块的主体内定义函数在技术上是不合法的。 然而，在 ES6 的严格模式下，块内允许函数声明。 然而，块内定义的函数仅存在于该块内，并且在块外不可见。
+:::
+
+### 函数表达式
 
 Function expressions look a lot like function declarations, but they appear within the context of a larger expression or statement, and the name is optional. Here are some example function expressions:
+
+::: tip 翻译
+函数表达式看起来很像函数声明，但它们出现在更大的表达式或语句的上下文中，并且名称是可选的。 以下是一些函数表达式示例：
+:::
 
 ```js
 // This function expression defines a function that squares its argument.
@@ -118,13 +162,29 @@ let tensquared = (function (x) {
 
 Note that the function name is optional for functions defined as expressions, and most of the preceding function expressions we’ve shown omit it. A function declaration actually _declares_ a variable and assigns a function object to it. A function expression, on the other hand, does not declare a variable: it is up to you to assign the newly defined function object to a constant or variable if you are going to need to refer to it multiple times. It is a good practice to use `const` with function expressions so you don’t accidentally overwrite your functions by assigning new values.
 
+::: tip 翻译
+请注意，对于定义为表达式的函数，函数名称是可选的，并且我们前面展示的大多数函数表达式都省略了它。 函数声明实际上是 _声明_ 一个变量并向其分配一个函数对象。 另一方面，函数表达式不声明变量：如果您需要多次引用新定义的函数对象，则可以将其分配给常量或变量。 将 `const`与函数表达式一起使用是一个很好的做法，这样您就不会意外地通过分配新值来覆盖函数。
+:::
+
 A name is allowed for functions, like the factorial function, that need to refer to themselves. If a function expression includes a name, the local function scope for that function will include a binding of that name to the function object. In effect, the function name becomes a local variable within the function. Most functions defined as expressions do not need names, which makes their definition more compact (though not nearly as compact as arrow functions, described below).
+
+::: tip 翻译
+允许为需要引用自身的函数（例如阶乘函数）命名。 如果函数表达式包含名称，则该函数的本地函数作用域将包含该名称到函数对象的绑定。 实际上，函数名称成为函数内的局部变量。 大多数定义为表达式的函数不需要名称，这使得它们的定义更加紧凑（尽管不如箭头函数那么紧凑，如下所述）。
+:::
 
 There is an important difference between defining a function `f()` with a function declaration and assigning a function to the variable `f` after creating it as an expression. When you use the declaration form, the function objects are created before the code that contains them starts to run, and the definitions are hoisted so that you can call these functions from code that appears above the definition statement. This is not true for functions defined as expressions, however: these functions do not exist until the expression that defines them are actually evaluated. Furthermore, in order to invoke a function, you must be able to refer to it, and you can’t refer to a function defined as an expression until it is assigned to a variable, so functions defined with expressions cannot be invoked before they are defined.
 
-### Arrow Functions
+::: tip 翻译
+使用函数声明定义函数 `f()` 与将函数创建为表达式后将其分配给变量 `f` 之间存在重要区别。 当您使用声明形式时，函数对象会在包含函数对象的代码开始运行之前创建，并且定义会被提升，以便您可以从出现在定义语句上方的代码调用这些函数。 然而，对于定义为表达式的函数来说，情况并非如此：在实际计算定义它们的表达式之前，这些函数并不存在。 此外，为了调用函数，您必须能够引用它，并且在将定义为表达式的函数分配给变量之前，您不能引用它，因此用表达式定义的函数在被定义之前不能被调用。
+:::
 
-In ES6, you can define functions using a particularly compact syntax known as “arrow functions.” This syntax is reminiscent of mathematical notation and uses an `=>` “arrow” to separate the function parameters from the function body. The function keyword is not used, and, since arrow functions are expressions instead of statements, there is no need for a function name, either. The general form of an arrow function is a comma-separated list of parameters in parentheses, followed by the `=>` arrow, followed by the function body in curly braces:
+### 箭头函数
+
+In ES6, you can define functions using a particularly compact syntax known as “arrow functions.” This syntax is reminiscent of mathematical notation and uses an `=>` “arrow” to separate the function parameters from the function body. The `function` keyword is not used, and, since arrow functions are expressions instead of statements, there is no need for a function name, either. The general form of an arrow function is a comma-separated list of parameters in parentheses, followed by the `=>` arrow, followed by the function body in curly braces:
+
+::: tip 翻译
+在 ES6 中，您可以使用称为“箭头函数”的特别紧凑的语法来定义函数。 这种语法让人想起数学符号，并使用 `=>` “箭头”将函数参数与函数体分开。 不使用 `function` 关键字，并且由于箭头函数是表达式而不是语句，因此也不需要函数名称。 箭头函数的一般形式是括号中以逗号分隔的参数列表，后跟 `=>` 箭头，最后是花括号中的函数体：
+:::
 
 ```js
 const sum = (x, y) => {
@@ -132,7 +192,11 @@ const sum = (x, y) => {
 };
 ```
 
-But arrow functions support an even more compact syntax. If the body of the function is a single return statement, you can omit the `return` keyword, the semicolon that goes with it, and the curly braces, and write the body of the function as the expression whose value is to be returned:
+But arrow functions support an even more compact syntax. If the body of the function is a single `return` statement, you can omit the `return` keyword, the semicolon that goes with it, and the curly braces, and write the body of the function as the expression whose value is to be returned:
+
+::: tip 翻译
+但箭头函数支持更紧凑的语法。 如果函数体是单个 `return` 语句，则可以省略 `return` 关键字、以及与之相伴的分号和大括号，并将函数体写为要返回值的表达式：
+:::
 
 ```js
 const sum = (x, y) => x + y;
@@ -140,11 +204,19 @@ const sum = (x, y) => x + y;
 
 Furthermore, if an arrow function has exactly one parameter, you can omit the parentheses around the parameter list:
 
+::: tip 翻译
+此外，如果箭头函数只有一个参数，则可以省略参数列表两边的括号：
+:::
+
 ```js
 const polynomial = (x) => x * x + 2 * x + 3;
 ```
 
 Note, however, that an arrow function with no arguments at all must be written with an empty pair of parentheses:
+
+::: tip 翻译
+但请注意，完全没有参数的箭头函数必须用一对空括号编写：
+:::
 
 ```js
 const constantFunc = () => 42;
@@ -152,7 +224,15 @@ const constantFunc = () => 42;
 
 Note that, when writing an arrow function, you must not put a new line between the function parameters and the `=>` arrow. Otherwise, you could end up with a line like `const polynomial = x`, which is a syntactically valid assignment statement on its own.
 
+::: tip 翻译
+请注意，编写箭头函数时，不得在函数参数和 `=>` 箭头之间添加新行。 否则，您可能会得到像 `const polynomial = x` 这样的行，它本身就是一个语法上有效的赋值语句。
+:::
+
 Also, if the body of your arrow function is a single `return` statement but the expression to be returned is an object literal, then you have to put the object literal inside parentheses to avoid syntactic ambiguity between the curly braces of a function body and the curly braces of an object literal:
+
+::: tip 翻译
+另外，如果箭头函数的主体是单个 `return` 语句，但要返回的表达式是对象文字，那么您必须将对象文字放在括号内，以避免函数体的大括号和 对象字面量的大括号之间发生语法冲突。
+:::
 
 ```js
 const f = x => { return { value: x }; }; // God: f() returns an object
@@ -161,9 +241,17 @@ const h = x => { value: x }; // Bad: h() returns nothing
 const i = x => { v: x, w: x }; // Bad: Syntax Error
 ```
 
-In the third line of this code, the function `h()` is truly ambiguous: the code you intended as an object literal can be parsed as a labeled statement, so a function that returns undefined is created. On the fourth line, however, the more complicated object literal is not a valid statement, and this illegal code causes a syntax error.
+In the third line of this code, the function `h()` is truly ambiguous: the code you intended as an object literal can be parsed as a labeled statement, so a function that returns `undefined` is created. On the fourth line, however, the more complicated object literal is not a valid statement, and this illegal code causes a syntax error.
+
+::: tip 翻译
+在此代码的第三行中，函数 `h()` 确实不明确：您打算作为对象文字的代码可以被解析为带标签的语句，因此创建了一个返回 `undefined` 的函数。 然而，在第四行，更复杂的对象文字不是有效的语句，并且此非法代码会导致语法错误。
+:::
 
 The concise syntax of arrow functions makes them ideal when you need to pass one function to another function, which is a common thing to do with array methods like `map()`, `filter()`, and `reduce()` (see §7.8.1), for example:
+
+::: tip 翻译
+当您需要将一个函数传递给另一个函数时，箭头函数的简洁语法使其成为理想选择，这对于 `map()`、`filter()` 和 `reduce()` 等数组方法来说是常见的事情（ 参见第 7.8.1 节），例如：
+:::
 
 ```js
 // Make a copy of an array with null elements removed
@@ -174,9 +262,17 @@ let squares = [1, 2, 3, 4].map((x) => x * x); // squares == [1, 4, 9, 16]
 
 Arrow functions differ from functions defined in other ways in one critical way: they inherit the value of the `this` keyword from the environment in which they are defined rather than defining their own invocation context as functions defined in other ways do. This is an important and very useful feature of arrow functions, and we’ll return to it again later in this chapter. Arrow functions also differ from other functions in that they do not have a `prototype` property, which means that they cannot be used as constructor functions for new classes (see §9.2).
 
-### Nested Functions
+::: tip 翻译
+箭头函数与以其他方式定义的函数在一个关键方面有所不同：它们从定义它们的环境中继承 `this` 关键字的值，而不是像以其他方式定义的函数那样定义自己的调用上下文。 这是箭头函数的一个重要且非常有用的特性，我们将在本章后面再次讨论它。 箭头函数与其他函数的不同之处还在于它们没有 `prototype` 属性，这意味着它们不能用作新类的构造函数（参见第 9.2 节）。
+:::
+
+### 嵌套函数
 
 In JavaScript, functions may be nested within other functions. For example:
+
+::: tip 翻译
+在 JavaScript 中，函数可以嵌套在其他函数中。 例如：
+:::
 
 ```js
 function hypotenuse(a, b) {
@@ -187,7 +283,11 @@ function hypotenuse(a, b) {
 }
 ```
 
-The interesting thing about nested functions is their variable scoping rules: they can access the parameters and variables of the function (or functions) they are nested within. In the code shown here, for example, the inner function `square()` can read and write the parameters a and b defined by the outer function `hypotenuse()`. These scope rules for nested functions are very important, and we will consider them again in §8.6.
+The interesting thing about nested functions is their variable scoping rules: they can access the parameters and variables of the function (or functions) they are nested within. In the code shown here, for example, the inner function `square()` can read and write the parameters `a` and `b` defined by the outer function `hypotenuse()`. These scope rules for nested functions are very important, and we will consider them again in §8.6.
+
+::: tip 翻译
+嵌套函数的有趣之处在于它们的变量作用域规则：它们可以访问嵌套函数的参数和变量。 例如，在此处显示的代码中，内部函数 `square()` 可以读取和写入由外部函数 `hypotenuse()` 定义的参数 `a` 和 `b`。 嵌套函数的这些作用域规则非常重要，我们将在第 8.6 节中再次考虑它们。
+:::
 
 ## Invoking Functions
 
