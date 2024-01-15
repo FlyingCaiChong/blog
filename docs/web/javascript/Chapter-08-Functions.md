@@ -6,13 +6,33 @@ title: 第八章 函数
 
 This chapter covers JavaScript functions. Functions are a fundamental building block for JavaScript programs and a common feature in almost all programming languages. You may already be familiar with the concept of a function under a name such as _subroutine_ or _procedure_.
 
+::: tip 翻译
+本章介绍 JavaScript 函数。 函数是 JavaScript 程序的基本构建块，也是几乎所有编程语言的共同功能。 您可能已经熟悉 _子程序_ 或 _程序_ 等名称下的函数概念。
+:::
+
 A _function_ is a block of JavaScript code that is defined once but may be executed, or _invoked_, any number of times. JavaScript functions are _parameterized_: a function definition may include a list of identifiers, known as _parameters_, that work as local variables for the body of the function. Function invocations provide values, or _arguments_, for the function’s parameters. Functions often use their argument values to compute a _return value_ that becomes the value of the function-invocation expression. In addition to the arguments, each invocation has another value—the _invocation context_—that is the value of the `this` keyword.
 
-If a function is assigned to a property of an object, it is known as a _method_ of that object. When a function is invoked on or _through_ an object, that object is the invocation context or `this` value for the function. Functions designed to initialize a newly created object are called _constructors_. Constructors were described in §6.2 and will be covered again in **Chapter 9**.
+::: tip 翻译
+_函数_ 是 JavaScript 代码块，定义一次但可以执行或 _调用_ 任意次。 JavaScript 函数是 _参数化_：函数定义可能包括一个标识符列表，称为 _parameters_，用作函数体的局部变量。 函数调用为函数的参数提供值或 _arguments_。 函数经常使用它们的参数值来计算 _返回值_，该返回值将成为函数调用表达式的值。 除了参数之外，每个调用还有另一个值 - _调用上下文_ - 即 `this` 关键字的值。
+:::
+
+If a function is assigned to a property of an object, it is known as a _method_ of that object. When a function is invoked on or _through_ an object, that object is the invocation context or `this` value for the function. Functions designed to initialize a newly created object are called _constructors_. Constructors were described in §6.2 and will be covered again in [Chapter 9](./Chapter-09-Classes.md).
+
+::: tip 翻译
+如果将函数分配给对象的属性，则称之为该对象的 _方法_。 当在对象上或通过对象调用函数时，该对象是该函数的调用上下文或 `this`值。 设计用于初始化新创建的对象的函数称为 _构造函数_。 构造函数在第 6.2 节中进行了描述，并将在 [第 9 章](./Chapter-09-Classes.md) 中再次介绍。
+:::
 
 In JavaScript, functions are objects, and they can be manipulated by programs. JavaScript can assign functions to variables and pass them to other functions, for example. Since functions are objects, you can set properties on them and even invoke methods on them.
 
+::: tip 翻译
+在 JavaScript 中，函数是对象，它们可以由程序操作。 例如，JavaScript 可以将函数分配给变量并将它们传递给其他函数。 由于函数是对象，因此您可以设置它们的属性，甚至调用它们的方法。
+:::
+
 JavaScript function definitions can be nested within other functions, and they have access to any variables that are in scope where they are defined. This means that JavaScript functions are _closures_, and it enables important and powerful programming techniques.
+
+::: tip 翻译
+JavaScript 函数定义可以嵌套在其他函数中，并且它们可以访问其定义作用域内的任何变量。 这意味着 JavaScript 函数是 _闭包_，并且它支持重要且强大的编程技术。
+:::
 
 ## Defining Functions
 
