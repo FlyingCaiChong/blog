@@ -1065,11 +1065,19 @@ sum(1, 2, 3); // !TypeError: 1 is not iterable
 sum([1, 2, "3"]); // !TypeError: element 2 is not a number
 ```
 
-## Functions as Values
+## 函数作为值
 
 The most important features of functions are that they can be defined and invoked. Function definition and invocation are syntactic features of JavaScript and of most other programming languages. In JavaScript, however, functions are not only syntax but also values, which means they can be assigned to variables, stored in the properties of objects or the elements of arrays, passed as arguments to functions, and so on.
 
+::: tip 翻译
+函数最重要的特征是它们可以被定义和调用。 函数定义和调用是 JavaScript 和大多数其他编程语言的语法特征。 然而，在 JavaScript 中，函数不仅是语法，也是值，这意味着它们可以分配给变量、存储在对象的属性或数组的元素中、作为参数传递给函数等等。
+:::
+
 To understand how functions can be JavaScript data as well as JavaScript syntax, consider this function definition:
+
+::: tip 翻译
+要了解函数如何成为 JavaScript 数据以及 JavaScript 语法，请考虑以下函数定义：
+:::
 
 ```js
 function square(x) {
@@ -1077,7 +1085,11 @@ function square(x) {
 }
 ```
 
-This definition creates a new function object and assigns it to the variable square. The name of a function is really immaterial; it is simply the name of a variable that refers to the function object. The function can be assigned to another variable and still work the same way:
+This definition creates a new function object and assigns it to the variable `square`. The name of a function is really immaterial; it is simply the name of a variable that refers to the function object. The function can be assigned to another variable and still work the same way:
+
+::: tip 翻译
+此定义创建一个新的函数对象并将其分配给变量 `square`。 函数的名称其实并不重要； 它只是引用函数对象的变量的名称。 该函数可以分配给另一个变量并且仍然以相同的方式工作：
+:::
 
 ```js
 let s = square; // Now s refers to the same function that square does
@@ -1086,6 +1098,10 @@ s(4); // => 16
 ```
 
 Functions can also be assigned to object properties rather than variables. As we’ve already discussed, we call the functions “methods” when we do this:
+
+::: tip 翻译
+函数也可以分配给对象属性而不是变量。 正如我们已经讨论过的，当我们这样做时，我们将函数称为“方法”：
+:::
 
 ```js
 let o = {
@@ -1098,6 +1114,10 @@ let y = o.square(16); // y == 256
 
 Functions don’t even require names at all, as when they’re assigned to array elements:
 
+::: tip 翻译
+函数甚至根本不需要名称，就像将它们分配给数组元素时一样：
+:::
+
 ```js
 let a = [(x) => x * x, 20]; // An array literal
 a[0](a[1]); // => 400
@@ -1105,9 +1125,21 @@ a[0](a[1]); // => 400
 
 The syntax of this last example looks strange, but it is still a legal function invocation expression!
 
+::: tip 翻译
+最后一个例子的语法看起来很奇怪，但它仍然是一个合法的函数调用表达式！
+:::
+
 As an example of how useful it is to treat functions as values, consider the `Array.sort()` method. This method sorts the elements of an array. Because there are many possible orders to sort by (numerical order, alphabetical order, date order, ascending, descending, and so on), the `sort()` method optionally takes a function as an argument to tell it how to perform the sort. This function has a simple job: for any two values it is passed, it returns a value that specifies which element would come first in a sorted array. This function argument makes `Array.sort()` perfectly general and infinitely flexible; it can sort any type of data into any conceivable order. Examples are shown in §7.8.6.
 
+::: tip 翻译
+作为将函数视为值的有用示例，请考虑 `Array.sort()` 方法。 该方法对数组的元素进行排序。 由于有多种可能的排序顺序（数字顺序、字母顺序、日期顺序、升序、降序等），因此 `sort()` 方法可以选择将函数作为参数来告诉它如何执行排序 。 这个函数有一个简单的工作：对于传递的任何两个值，它返回一个值，指定哪个元素在排序数组中排在第一位。 这个函数参数使得 `Array.sort()` 具有完美的通用性和无限的灵活性； 它可以将任何类型的数据排序为任何可以想象的顺序。 示例如第 7.8.6 节所示。
+:::
+
 Example 8-1 demonstrates the kinds of things that can be done when functions are used as values. This example may be a little tricky, but the comments explain what is going on.
+
+::: tip 翻译
+示例 8-1 演示了当函数用作值时可以完成的各种操作。 这个例子可能有点棘手，但注释解释了发生了什么。
+:::
 
 _Example 8-1. Using functions as data_
 
@@ -1154,9 +1186,13 @@ operate2("add", "hello", operate2("add", " ", "world")); // => "hello world"
 operate2("pow", 10, 2); // => 100
 ```
 
-### Defining Your Own Function Properties
+### 定义你自己的函数属性
 
 Functions are not primitive values in JavaScript, but a specialized kind of object, which means that functions can have properties. When a function needs a “static” variable whose value persists across invocations, it is often convenient to use a property of the function itself. For example, suppose you want to write a function that returns a unique integer whenever it is invoked. The function must never return the same value twice. In order to manage this, the function needs to keep track of the values it has already returned, and this information must persist across function invocations. You could store this information in a global variable, but that is unnecessary, because the information is used only by the function itself. It is better to store the information in a property of the Function object. Here is an example that returns a unique integer whenever it is called:
+
+::: tip 翻译
+函数不是 JavaScript 中的原始值，而是一种特殊类型的对象，这意味着函数可以具有属性。 当函数需要一个其值在调用过程中保持不变的“静态”变量时，使用函数本身的属性通常很方便。 例如，假设您要编写一个函数，该函数在调用时返回唯一的整数。 该函数绝不能两次返回相同的值。 为了管理这一点，函数需要跟踪它已经返回的值，并且该信息必须在函数调用之间持续存在。 您可以将此信息存储在全局变量中，但这是不必要的，因为该信息仅由函数本身使用。 最好将信息存储在 Function 对象的属性中。 下面是一个每次调用时都会返回一个唯一整数的示例：
+:::
 
 ```js
 // Initialize the counter property of the function object.
@@ -1173,6 +1209,10 @@ uniqueInteger(); // => 1
 ```
 
 As another example, consider the following `factorial()` function that uses properties of itself (treating itself as an array) to cache previously computed results:
+
+::: tip 翻译
+作为另一个示例，请考虑以下 `factorial()` 函数，该函数使用自身的属性（将自身视为数组）来缓存先前计算的结果：
+:::
 
 ```js
 // Compute factorials and cache results as properties of the function itself.
