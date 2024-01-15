@@ -1233,11 +1233,19 @@ factorial(6); // => 720
 factorial[5]; // => 120; the call above caches this value
 ```
 
-## Functions as Namespaces
+## 函数作为命名空间
 
 Variables declared within a function are not visible outside of the function. For this reason, it is sometimes useful to define a function simply to act as a temporary namespace in which you can define variables without cluttering the global namespace.
 
+::: tip 翻译
+函数内声明的变量在函数外部不可见。 因此，有时定义一个函数作为临时命名空间很有用，您可以在其中定义变量而不会使全局命名空间混乱。
+:::
+
 Suppose, for example, you have a chunk of JavaScript code that you want to use in a number of different JavaScript programs (or, for client-side JavaScript, on a number of different web pages). Assume that this code, like most code, defines variables to store the intermediate results of its computation. The problem is that since this chunk of code will be used in many different programs, you don’t know whether the variables it creates will conflict with variables created by the programs that use it. The solution is to put the chunk of code into a function and then invoke the function. This way, variables that would have been global become local to the function:
+
+::: tip 翻译
+例如，假设您有一段 JavaScript 代码，您希望在许多不同的 JavaScript 程序中使用它（或者，对于客户端 JavaScript，在许多不同的网页上）。 假设此代码与大多数代码一样，定义变量来存储其计算的中间结果。 问题是，由于这段代码将在许多不同的程序中使用，因此您不知道它创建的变量是否会与使用它的程序创建的变量发生冲突。 解决方案是将代码块放入函数中，然后调用该函数。 这样，本来是全局的变量就变成了函数的局部变量：
+:::
 
 ```js
 function chunkNamespace() {
@@ -1250,6 +1258,10 @@ chunkNamespace(); // But don't forget to invoke the function!
 
 This code defines only a single global variable: the function name `chunkNamespace`. If defining even a single property is too much, you can define and invoke an anonymous function in a single expression:
 
+::: tip 翻译
+这段代码只定义了一个全局变量：函数名 `chunkNamespace`。 如果定义单个属性太多，您可以在单个表达式中定义和调用匿名函数：
+:::
+
 ```js
 (function () {
   // chunkNamespace() function rewritten as an unnamed expression.
@@ -1259,7 +1271,15 @@ This code defines only a single global variable: the function name `chunkNamespa
 
 This technique of defining and invoking a function in a single expression is used frequently enough that it has become idiomatic and has been given the name “immediately invoked function expression.” Note the use of parentheses in the previous code example. The open parenthesis before function is required because without it, the JavaScript interpreter tries to parse the `function` keyword as a function declaration statement. With the parenthesis, the interpreter correctly recognizes this as a function definition expression. The leading parenthesis also helps human readers recognize when a function is being defined to be immediately invoked instead of defined for later use.
 
+::: tip 翻译
+这种在单个表达式中定义和调用函数的技术使用得足够频繁，以至于它已成为惯用语，并被命名为“立即调用函数表达式”。 请注意前面的代码示例中括号的使用。 函数前面的左括号是必需的，因为如果没有它，JavaScript 解释器会尝试将 `function` 关键字解析为函数声明语句。 通过括号，解释器可以正确地将其识别为函数定义表达式。 前导括号还可以帮助人类读者识别函数何时被定义为立即调用而不是定义为稍后使用。
+:::
+
 This use of functions as namespaces becomes really useful when we define one or more functions inside the namespace function using variables within that namesapce, but then pass them back out as the return value of the namespace function. Functions like this are known as closures, and they’re the topic of the next section.
+
+::: tip 翻译
+当我们使用该命名空间中的变量在命名空间函数内定义一个或多个函数，然后将它们作为命名空间函数的返回值传回时，将函数用作命名空间变得非常有用。 像这样的函数称为闭包，它们是下一节的主题。
+:::
 
 ## Closures
 
