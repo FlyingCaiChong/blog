@@ -289,7 +289,7 @@ The interesting thing about nested functions is their variable scoping rules: th
 嵌套函数的有趣之处在于它们的变量作用域规则：它们可以访问嵌套函数的参数和变量。 例如，在此处显示的代码中，内部函数 `square()` 可以读取和写入由外部函数 `hypotenuse()` 定义的参数 `a` 和 `b`。 嵌套函数的这些作用域规则非常重要，我们将在第 8.6 节中再次考虑它们。
 :::
 
-## Invoking Functions
+## 调用函数
 
 The JavaScript code that makes up the body of a function is not executed when the function is defined, but rather when it is invoked. JavaScript functions can be invoked in five ways:
 
@@ -299,9 +299,23 @@ The JavaScript code that makes up the body of a function is not executed when th
 - Indirectly through their `call()` and `apply()` methods
 - Implicitly, via JavaScript language features that do not appear like normal function invocations
 
-### Function Invocation
+::: tip 翻译
+构成函数体的 JavaScript 代码不会在定义函数时执行，而是在调用函数时执行。 JavaScript 函数可以通过五种方式调用：
+
+- 作为函数
+- 作为方法
+- 作为构造函数
+- 直接通过 `call()` 和 `apply()` 方法调用
+- 隐式地，通过与普通函数调用不同的 JavaScript 语言功能
+  :::
+
+### 函数调用
 
 Functions are invoked as functions or as methods with an invocation expression (§4.5). An invocation expression consists of a function expression that evaluates to a function object followed by an open parenthesis, a comma-separated list of zero or more argument expressions, and a close parenthesis. If the function expression is a property-access expression—if the function is the property of an object or an element of an array—then it is a method invocation expression. That case will be explained in the following example. The following code includes a number of regular function invocation expressions:
+
+::: tip 翻译
+函数作为函数或带有调用表达式的方法来调用（第 4.5 节）。 调用表达式由一个计算结果为函数对象的函数表达式组成，后跟一个左括号、一个由零个或多个参数表达式组成的逗号分隔列表以及一个右括号。 如果函数表达式是属性访问表达式（如果函数是对象的属性或数组的元素），那么它就是方法调用表达式。 这种情况将在下面的例子中解释。 以下代码包含一些常规函数调用表达式：
+:::
 
 ```js
 printProps({ x: 1 });
@@ -311,7 +325,15 @@ let probability = factorial(5) / factorial(13);
 
 In an invocation, each argument expression (the ones between the parentheses) is evaluated, and the resulting values become the arguments to the function. These values are assigned to the parameters named in the function definition. In the body of the function, a reference to a parameter evaluates to the corresponding argument value.
 
-For regular function invocation, the return value of the function becomes the value of the invocation expression. If the function returns because the interpreter reaches the end, the `return` value is `undefined`. If the function returns because the interpreter executes a `return` statement, then the `return` value is the value of the expression that follows the `return` or is `undefined` if the return statement has no value.
+::: tip 翻译
+在调用中，每个参数表达式（括号之间的表达式）都会被求值，结果值将成为函数的参数。 这些值被分配给函数定义中指定的参数。 在函数体中，对参数的引用计算为相应的参数值。
+:::
+
+For regular function invocation, the return value of the function becomes the value of the invocation expression. If the function returns because the interpreter reaches the end, the return value is `undefined`. If the function returns because the interpreter executes a `return` statement, then the return value is the value of the expression that follows the `return` or is `undefined` if the `return` statement has no value.
+
+::: tip 翻译
+对于常规函数调用，函数的返回值将成为调用表达式的值。 如果函数因为解释器到达末尾而返回，则返回值为 `undefined`。 如果函数因为解释器执行 `return` 语句而返回，则返回值是 `return` 后面的表达式的值，如果 `return` 语句没有值，则返回值是 `undefined` 。
+:::
 
 > **Conditional Invocation**
 >
@@ -323,9 +345,27 @@ For regular function invocation, the return value of the function becomes the va
 >
 > Full details on this conditional invocation syntax are in §4.5.1.
 
+> **条件调用**
+>
+> 在 ES2020 中，您可以在函数调用中的函数表达式之后和左括号之前插入 `?.`，以便仅在函数不为 `null` 或 `undefined` 时调用该函数。 也就是说，表达式 `f?.(x)` 等价于（假设没有副作用）：
+>
+> ```js
+> f !== null && f !== undefined ? f(x) : undefined;
+> ```
+>
+> 有关此条件调用语法的完整详细信息请参见第 4.5.1 节。
+
 For function invocation in non-strict mode, the invocation context (the `this` value) is the global object. In strict mode, however, the invocation context is `undefined`. Note that functions defined using the arrow syntax behave differently: they always inherit the `this` value that is in effect where they are defined.
 
+::: tip 翻译
+对于非严格模式下的函数调用，调用上下文（ `this` 值）是全局对象。 然而，在严格模式下，调用上下文是 `undefined` 。 请注意，使用箭头语法定义的函数的行为有所不同：它们始终继承在定义它们的位置有效的 `this` 值。
+:::
+
 Functions written to be invoked as functions (and not as methods) do not typically use the `this` keyword at all. The keyword can be used, however, to determine whether strict mode is in effect:
+
+::: tip 翻译
+编写为作为函数（而不是作为方法）调用的函数通常根本不使用 `this` 关键字。 但是，可以使用关键字来确定严格模式是否有效：
+:::
 
 ```js
 // Define and invoke a function to determine if we're in strict mode.
@@ -338,15 +378,27 @@ const strict = (function () {
 >
 > A _recursive_ function is one, like the `factorial()` function at the start of this chapter, that calls itself. Some algorithms, such as those involving tree-based data structures, can be implemented particularly elegantly with recursive functions. When writing a recursive function, however, it is important to think about memory constraints. When a function A calls function B, and then function B calls function C, the JavaScript interpreter needs to keep track of the execution contexts for all three functions. When function C completes, the interpreter needs to know where to resume executing function B, and when function B completes, it needs to know where to resume executing function A. You can imagine these execution contexts as a stack. When a function calls another function, a new execution context is pushed onto the stack. When that function returns, its execution context object is popped off the stack. If a function calls itself recursively 100 times, the stack will have 100 objects pushed onto it, and then have those 100 objects popped off. This call stack takes memory. On modern hardware, it is typically fine to write recursive functions that call themselves hundreds of times. But if a function calls itself ten thousand times, it is likely to fail with an error such as “Maximum call-stack size exceeded.”
 
-### Method Invocation
+> **递归函数和堆栈**
+>
+> 递归函数是一个调用自身的函数，就像本章开头的 `factorial()` 函数一样。 某些算法，例如涉及基于树的数据结构的算法，可以使用递归函数特别优雅地实现。 然而，在编写递归函数时，考虑内存限制很重要。 当函数 A 调用函数 B，然后函数 B 调用函数 C 时，JavaScript 解释器需要跟踪所有三个函数的执行上下文。 当函数 C 完成时，解释器需要知道在哪里恢复执行函数 B，而当函数 B 完成时，它需要知道在哪里恢复执行函数 A。你可以将这些执行上下文想象成一个堆栈。 当一个函数调用另一个函数时，新的执行上下文被压入堆栈。 当该函数返回时，其执行上下文对象将从堆栈中弹出。 如果一个函数递归调用自身 100 次，堆栈中将有 100 个对象被压入其中，然后将这 100 个对象弹出。 该调用堆栈占用内存。 在现代硬件上，编写调用自身数百次的递归函数通常没问题。 但是，如果一个函数调用自身一万次，它很可能会失败并出现“超出最大调用堆栈大小”之类的错误。
+
+### 方法调用
 
 A _method_ is nothing more than a JavaScript function that is stored in a property of an object. If you have a function `f` and an object `o`, you can define a method named `m` of `o` with the following line:
+
+::: tip 翻译
+_method_ 只不过是存储在对象属性中的 JavaScript 函数。 如果您有一个函数 `f` 和一个对象 `o`，则可以使用以下行定义 `o` 的名为`m` 的方法：
+:::
 
 ```js
 o.m = f;
 ```
 
-Having defined the method `m()` of the object o, invoke it like this:
+Having defined the method `m()` of the object `o`, invoke it like this:
+
+::: tip 翻译
+定义了对象 `o` 的方法 `m()` 后，像这样调用它：
+:::
 
 ```js
 o.m();
@@ -354,13 +406,25 @@ o.m();
 
 Or, if `m()` expects two arguments, you might invoke it like this:
 
+::: tip 翻译
+或者，如果 `m()` 需要两个参数，您可以像这样调用它：
+:::
+
 ```js
 o.m(x, y);
 ```
 
 The code in this example is an invocation expression: it includes a function expression `o.m` and two argument expressions, `x` and `y`. The function expression is itself a property access expression, and this means that the function is invoked as a method rather than as a regular function.
 
-The arguments and return value of a method invocation are handled exactly as described for regular function invocation. Method invocations differ from function invocations in one important way, however: the invocation context. Property access expressions consist of two parts: an object (in this case `o`) and a property name (`m`). In a method-invocation expression like this, the object o becomes the invocation context, and the function body can refer to that object by using the keyword `this`. Here is a concrete example:
+::: tip 翻译
+此示例中的代码是一个调用表达式：它包括一个函数表达式 `o.m` 和两个参数表达式 `x` 和 `y`。 函数表达式本身就是一个属性访问表达式，这意味着该函数是作为方法而不是常规函数来调用的。
+:::
+
+The arguments and return value of a method invocation are handled exactly as described for regular function invocation. Method invocations differ from function invocations in one important way, however: the invocation context. Property access expressions consist of two parts: an object (in this case `o`) and a property name (`m`). In a method-invocation expression like this, the object `o` becomes the invocation context, and the function body can refer to that object by using the keyword `this`. Here is a concrete example:
+
+::: tip 翻译
+方法调用的参数和返回值的处理方式与常规函数调用的描述完全相同。 然而，方法调用与函数调用在一个重要方面有所不同：调用上下文。 属性访问表达式由两部分组成：对象（在本例中为 `o`）和属性名称（`m`）。 在这样的方法调用表达式中，对象 `o` 成为调用上下文，函数体可以使用关键字 `this` 引用该对象。 这是一个具体的例子：
+:::
 
 ```js
 let calculator = {
@@ -379,12 +443,20 @@ calculator.result; // => 2
 
 Most method invocations use the dot notation for property access, but property access expressions that use square brackets also cause method invocation. The following are both method invocations, for example:
 
+::: tip 翻译
+大多数方法调用使用点表示法进行属性访问，但使用方括号的属性访问表达式也会导致方法调用。 以下都是方法调用，例如：
+:::
+
 ```js
 o["m"](x, y); // Another way to write o.m(x, y).
 a[0](z); // Also a method invocation (assuming a[0] is a function).
 ```
 
 Method invocations may also involve more complex property access expressions:
+
+::: tip 翻译
+方法调用还可能涉及更复杂的属性访问表达式：
+:::
 
 ```js
 customer.surname.toUpperCase(); // Invoke method an customer.surname
@@ -393,6 +465,10 @@ f().m(); // Invoke method m() on return value of f()
 
 Methods and the `this` keyword are central to the object-oriented programming paradigm. Any function that is used as a method is effectively passed an implicit argument—the object through which it is invoked. Typically, a method performs some sort of operation on that object, and the method-invocation syntax is an elegant way to express the fact that a function is operating on an object. Compare the following two lines:
 
+::: tip 翻译
+方法和 `this` 关键字是面向对象编程范例的核心。 任何用作方法的函数都会有效地传递一个隐式参数——调用它的对象。 通常，方法对该对象执行某种操作，而方法调用语法是表达函数正在对对象进行操作这一事实的优雅方式。 比较以下两行：
+:::
+
 ```js
 rect.setSize(width, height);
 setRectSize(rect, width, height);
@@ -400,9 +476,13 @@ setRectSize(rect, width, height);
 
 The hypothetical functions invoked in these two lines of code may perform exactly the same operation on the (hypothetical) object `rect`, but the method-invocation syntax in the first line more clearly indicates the idea that it is the object `rect` that is the primary focus of the operation.
 
+::: tip 翻译
+这两行代码中调用的假设函数可能对（假设的）对象 `rect` 执行完全相同的操作，但第一行中的方法调用语法更清楚地表明了这样的想法：它是对象 `rect`` 是此次行动的首要重点。
+:::
+
 > **Method Chaining**
 >
-> When methods return objects, you can use the return value of one method invocation as part of a subsequent invocation. This results in a series (or “chain”) of method invocations as a single expression. When working with Promise-based asynchronous operations (see **Chapter 13**), for example, it is common to write code structured like this:
+> When methods return objects, you can use the return value of one method invocation as part of a subsequent invocation. This results in a series (or “chain”) of method invocations as a single expression. When working with Promise-based asynchronous operations (see [Chapter 13](./Chapter-13-Asynchronous.md)), for example, it is common to write code structured like this:
 >
 > ```js
 > // Run three asynchronous operations in sequence, handling errors.
@@ -415,9 +495,32 @@ The hypothetical functions invoked in these two lines of code may perform exactl
 > new Square().x(100).y(100).size(50).outline("red").fill("blue").draw();
 > ```
 
+> **方法链**
+>
+> 当方法返回对象时，您可以使用一个方法调用的返回值作为后续调用的一部分。 这会导致一系列（或“链”）方法调用作为单个表达式。 例如，当使用基于 Promise 的异步操作时（请参阅 [第 13 章](./Chapter-13-Asynchronous.md)），通常会编写如下结构的代码：
+>
+> ```js
+> // Run three asynchronous operations in sequence, handling errors.
+> doStepOne().then(doStepTwo).then(doStepThree).catch(handleErrors);
+> ```
+>
+> 当您编写一个没有自己的返回值的方法时，请考虑让该方法返回 `this`。 如果您在整个 API 中一致地执行此操作，您将启用一种称为 _方法链接_ 的编程风格，其中对象可以被命名一次，然后可以在其上调用多个方法：
+>
+> ```js
+> new Square().x(100).y(100).size(50).outline("red").fill("blue").draw();
+> ```
+
 Note that `this` is a keyword, not a variable or property name. JavaScript syntax does not allow you to assign a value to `this`.
 
-The `this` keyword is not scoped the way variables are, and, except for arrow functions, nested functions do not inherit the `this` value of the containing function. If a nested function is invoked as a method, its `this` value is the object it was invoked on. If a nested function (that is not an arrow function) is invoked as a function, then its this value will be either the global object (non-strict mode) or `undefined` (strict mode). It is a common mistake to assume that a nested function defined within a method and invoked as a function can use this to obtain the invocation context of the method. The following code demonstrates the problem:
+::: tip 翻译
+请注意， `this` 是关键字，而不是变量或属性名称。 JavaScript 语法不允许您为 `this` 赋值。
+:::
+
+The `this` keyword is not scoped the way variables are, and, except for arrow functions, nested functions do not inherit the `this` value of the containing function. If a nested function is invoked as a method, its `this` value is the object it was invoked on. If a nested function (that is not an arrow function) is invoked as a function, then its this value will be either the global object (non-strict mode) or `undefined` (strict mode). It is a common mistake to assume that a nested function defined within a method and invoked as a function can use `this` to obtain the invocation context of the method. The following code demonstrates the problem:
+
+::: tip 翻译
+`this` 关键字的作用域与变量不同，并且，除了箭头函数之外，嵌套函数不会继承包含函数的 `this` 值。 如果将嵌套函数作为方法调用，则其 `this` 值是调用它的对象。 如果将嵌套函数（不是箭头函数）作为函数调用，则其 `this` 值将是全局对象（非严格模式）或 `undefined`（严格模式）。 假设在方法中定义并作为函数调用的嵌套函数可以使用 `this` 来获取该方法的调用上下文，这是一个常见的错误。 下面的代码演示了这个问题：
+:::
 
 ```js
 let o = {
@@ -440,7 +543,15 @@ o.m(); // Invoke the method m on the object o.
 
 Inside the nested function `f()`, the `this` keyword is not equal to the object `o`. This is widely considered to be a flaw in the JavaScript language, and it is important to be aware of it. The code above demonstrates one common workaround. Within the method `m`, we assign the `this` value to a variable `self`, and within the nested function `f`, we can use `self` instead of `this` to refer to the containing object.
 
+::: tip 翻译
+在嵌套函数 `f()` 内，`this` 关键字不等于对象 `o`。 这被广泛认为是 JavaScript 语言的一个缺陷，意识到这一点很重要。 上面的代码演示了一种常见的解决方法。 在方法 `m` 中，我们将 `this` 值赋给变量 `self`，并且在嵌套函数 `f` 中，我们可以使用 `self` 而不是`this` 来引用包含对象。
+:::
+
 In ES6 and later, another workaround to this issue is to convert the nested function `f` into an arrow function, which will properly inherit the `this` value:
+
+::: tip 翻译
+在 ES6 及更高版本中，解决此问题的另一个方法是将嵌套函数 `f` 转换为箭头函数，它将正确继承 `this` 值：
+:::
 
 ```js
 const f = () => {
@@ -450,7 +561,15 @@ const f = () => {
 
 Functions defined as expressions instead of statements are not hoisted, so in order to make this code work, the function definition for `f` will need to be moved within the method `m` so that it appears before it is invoked.
 
+::: tip 翻译
+定义为表达式而不是语句的函数不会被提升，因此为了使此代码正常工作，`f` 的函数定义需要在方法 `m` 内移动，以便它在调用之前出现。
+:::
+
 Another workaround is to invoke the `bind()` method of the nested function to define a new function that is implicitly invoked on a specified object:
+
+::: tip 翻译
+另一种解决方法是调用嵌套函数的 `bind()` 方法来定义在指定对象上隐式调用的新函数：
+:::
 
 ```js
 const f = function () {
@@ -460,36 +579,74 @@ const f = function () {
 
 We’ll talk more about `bind()` in §8.7.5.
 
-### Constructor Invocation
+::: tip 翻译
+我们将在第 8.7.5 节中详细讨论 `bind()`。
+:::
 
-If a function or method invocation is preceded by the keyword `new`, then it is a constructor invocation. (Constructor invocations were introduced in §4.6 and §6.2.2, and constructors will be covered in more detail in **Chapter 9**.) Constructor invocations differ from regular function and method invocations in their handling of arguments, invocation context, and return value.
+### 构造函数调用
+
+If a function or method invocation is preceded by the keyword `new`, then it is a constructor invocation. (Constructor invocations were introduced in §4.6 and §6.2.2, and constructors will be covered in more detail in [Chapter 9](./Chapter-09-Classes.md).) Constructor invocations differ from regular function and method invocations in their handling of arguments, invocation context, and return value.
+
+::: tip 翻译
+如果函数或方法调用前面有关键字 `new`，则它是构造函数调用。 （构造函数调用在第 4.6 节和第 6.2.2 节中介绍，构造函数将在 [第 9 章](./Chapter-09-Classes.md) 中更详细地介绍。）构造函数调用与常规函数和方法调用的不同之处在于参数的处理、调用上下文和 返回值。
+:::
 
 If a constructor invocation includes an argument list in parentheses, those argument expressions are evaluated and passed to the function in the same way they would be for function and method invocations. It is not common practice, but you can omit a pair of empty parentheses in a constructor invocation. The following two lines, for example, are equivalent:
 
-```js
+::: tip 翻译
+如果构造函数调用在括号中包含参数列表，则这些参数表达式将以与函数和方法调用相同的方式计算并传递给函数。 这不是常见的做法，但您可以在构造函数调用中省略一对空括号。 例如，以下两行是等效的：
+:::
+
+```ts
 o = new Object();
 o = new Object();
 ```
 
 A constructor invocation creates a new, empty object that inherits from the object specified by the `prototype` property of the constructor. Constructor functions are intended to initialize objects, and this newly created object is used as the invocation context, so the constructor function can refer to it with the `this` keyword. Note that the new object is used as the invocation context even if the constructor invocation looks like a method invocation. That is, in the expression `new o.m()`, o is not used as the invocation context.
 
+::: tip 翻译
+构造函数调用创建一个新的空对象，该对象继承自构造函数的 `prototype` 属性指定的对象。 构造函数的目的是初始化对象，这个新创建的对象被用作调用上下文，因此构造函数可以使用 `this` 关键字引用它。 请注意，即使构造函数调用看起来像方法调用，新对象也会用作调用上下文。 也就是说，在表达式 `new o.m()` 中，`o` 不被用作调用上下文。
+:::
+
 Constructor functions do not normally use the `return` keyword. They typically initialize the new object and then return implicitly when they reach the end of their body. In this case, the new object is the value of the constructor invocation expression. If, however, a constructor explicitly uses the `return` statement to return an object, then that object becomes the value of the invocation expression. If the constructor uses return with no value, or if it returns a primitive value, that return value is ignored and the new object is used as the value of the invocation.
 
-### Indirect Invocation
+::: tip 翻译
+构造函数通常不使用 `return` 关键字。 它们通常初始化新对象，然后在到达主体末尾时隐式返回。 在这种情况下，新对象是构造函数调用表达式的值。 但是，如果构造函数显式使用 `return` 语句返回一个对象，则该对象将成为调用表达式的值。 如果构造函数使用没有值的返回值，或者返回原始值，则该返回值将被忽略，并且新对象将用作调用的值。
+:::
 
-JavaScript functions are objects, and like all JavaScript objects, they have methods. Two of these methods, `call()` and `apply()`, invoke the function indirectly. Both methods allow you to explicitly specify the this value for the invocation, which means you can invoke any function as a method of any object, even if it is not actually a method of that object. Both methods also allow you to specify the arguments for the invocation. The `call()` method uses its own argument list as arguments to the function, and the `apply()` method expects an array of values to be used as arguments. The `call()` and `apply()` methods are described in detail in §8.7.4.
+### 间接调用
 
-### Implicit Function Invocation
+JavaScript functions are objects, and like all JavaScript objects, they have methods. Two of these methods, `call()` and `apply()`, invoke the function indirectly. Both methods allow you to explicitly specify the `this` value for the invocation, which means you can invoke any function as a method of any object, even if it is not actually a method of that object. Both methods also allow you to specify the arguments for the invocation. The `call()` method uses its own argument list as arguments to the function, and the `apply()` method expects an array of values to be used as arguments. The `call()` and `apply()` methods are described in detail in §8.7.4.
+
+::: tip 翻译
+JavaScript 函数是对象，并且像所有 JavaScript 对象一样，它们也有方法。 其中两个方法 `call()` 和 `apply()` 间接调用该函数。 这两种方法都允许您显式指定调用的 `this` 值，这意味着您可以将任何函数作为任何对象的方法来调用，即使它实际上不是该对象的方法。 这两种方法还允许您指定调用的参数。 `call()` 方法使用自己的参数列表作为函数的参数，而 `apply()` 方法期望将值数组用作参数。 `call()` 和 `apply()` 方法在第 8.7.4 节中详细描述。
+:::
+
+### 隐式函数调用
 
 There are various JavaScript language features that do not look like function invocations but that cause functions to be invoked. Be extra careful when writing functions that may be implicitly invoked, because bugs, side effects, and performance issues in these functions are harder to diagnose and fix than in regular functions for the simple reason that it may not be obvious from a simple inspection of your code when they are being called.
 
+::: tip 翻译
+有多种 JavaScript 语言功能看起来不像函数调用，但会导致函数被调用。 在编写可能隐式调用的函数时要格外小心，因为这些函数中的错误、副作用和性能问题比常规函数更难诊断和修复，原因很简单，当你的代码被调用时通过简单检查您的代码可能并不明显。
+:::
+
 The language features that can cause implicit function invocation include:
 
-- If an object has getters or setters defined, then querying or setting the value of its properties may invoke those methods. See §6.10.6 for more information.
+- If an object has `getters` or `setters` defined, then querying or setting the value of its properties may invoke those methods. See §6.10.6 for more information.
 - When an object is used in a string context (such as when it is concatenated with a string), its `toString()` method is called. Similarly, when an object is used in a numeric context, its `valueOf()` method is invoked. See §3.9.3 for details.
-- When you loop over the elements of an iterable object, there are a number of method calls that occur. **Chapter 12** explains how iterators work at the function call level and demonstrates how to write these methods so that you can define your own iterable types.
+- When you loop over the elements of an iterable object, there are a number of method calls that occur. [Chapter 12](./Chapter-12-Iterators_Generators.md) explains how iterators work at the function call level and demonstrates how to write these methods so that you can define your own iterable types.
 - A tagged template literal is a function invocation in disguise. §14.5 demonstrates how to write functions that can be used in conjunction with template literal strings.
 - Proxy objects (described in §14.7) have their behavior completely controlled by functions. Just about any operation on one of these objects will cause a function to be invoked.
+
+::: tip 翻译
+可能导致隐式函数调用的语言特性包括：
+
+- 如果对象定义了 `getters` 或 `setters`，则查询或设置其属性的值可能会调用这些方法。 有关详细信息，请参阅第 6.10.6 节。
+- 当在字符串上下文中使用对象时（例如当它与字符串连接时），将调用其 `toString()` 方法。 类似地，当在数字上下文中使用对象时，会调用其 `valueOf()` 方法。 详细信息请参见第 3.9.3 节。
+- 当您循环遍历可迭代对象的元素时，会发生许多方法调用。 [第 12 章](./Chapter-12-Iterators_Generators.md) 解释了迭代器如何在函数调用级别工作，并演示如何编写这些方法，以便您可以定义自己的可迭代类型。
+- 带标签的模板文字是变相的函数调用。 第 14.5 节演示了如何编写可与模板文字字符串结合使用的函数。
+- 代理对象（第 14.7 节中描述）的行为完全由函数控制。 几乎对这些对象之一的任何操作都会导致调用一个函数。
+  :::
 
 ## Function Arguments and Parameters
 
