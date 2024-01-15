@@ -648,13 +648,21 @@ The language features that can cause implicit function invocation include:
 - 代理对象（第 14.7 节中描述）的行为完全由函数控制。 几乎对这些对象之一的任何操作都会导致调用一个函数。
   :::
 
-## Function Arguments and Parameters
+## 函数实参和形参
 
 JavaScript function definitions do not specify an expected type for the function parameters, and function invocations do not do any type checking on the argument values you pass. In fact, JavaScript function invocations do not even check the number of arguments being passed. The subsections that follow describe what happens when a function is invoked with fewer arguments than declared parameters or with more arguments than declared parameters. They also demonstrate how you can explicitly test the type of function arguments if you need to ensure that a function is not invoked with inappropriate arguments.
 
-### Optional Parameters and Defaults
+::: tip 翻译
+JavaScript 函数定义不会指定函数形参的预期类型，并且函数调用不会对您传递的实参值进行任何类型检查。 事实上，JavaScript 函数调用甚至不检查传递的实参数量。 下面的小节描述了当调用函数时使用的实参少于声明的形参或使用的实参多于声明的形参时会发生什么情况。 它们还演示了如果您需要确保不会使用不适当的实参调用函数，则如何显式测试函数实参的类型。
+:::
+
+### 可选形参和默认值
 
 When a function is invoked with fewer arguments than declared parameters, the additional parameters are set to their default value, which is normally `undefined`. It is often useful to write functions so that some arguments are optional. Following is an example:
+
+::: tip 翻译
+当调用函数时使用的实参少于声明的形参，附加形参将设置为其默认值，通常为 `undefined`。 编写函数以使某些实参是可选的通常很有用。 下面是一个例子：
+:::
 
 ```js
 // Append the names of the enumerable properties of object o to the
@@ -678,15 +686,31 @@ getPropertyNames(p, a); // a == ['x', 'y', 'z']; add p's properties to it
 
 Instead of using an `if` statement in the first line of this function, you can use the `||` operator in this idiomatic way:
 
+::: tip 翻译
+您可以以这种惯用的方式使用 `||` 运算符，而不是在此函数的第一行中使用 `if` 语句：
+:::
+
 ```js
 a = a || [];
 ```
 
 Recall from §4.10.2 that the `||` operator returns its first argument if that argument is truthy and otherwise returns its second argument. In this case, if any object is passed as the second argument, the function will use that object. But if the second argument is omitted (or `null` or another falsy value is passed), a newly created empty array will be used instead.
 
+::: tip 翻译
+回想一下第 4.10.2 节，如果参数为真，则 `||` 运算符返回其第一个参数，否则返回其第二个参数。 在这种情况下，如果任何对象作为第二个参数传递，则该函数将使用该对象。 但是，如果省略第二个参数（或者传递 `null` 或另一个虚假值），则将使用新创建的空数组。
+:::
+
 Note that when designing functions with optional arguments, you should be sure to put the optional ones at the end of the argument list so that they can be omitted. The programmer who calls your function cannot omit the first argument and pass the second: they would have to explicitly pass `undefined` as the first argument.
 
+::: tip 翻译
+请注意，在设计带有可选参数的函数时，应确保将可选参数放在参数列表的末尾，以便可以省略它们。 调用函数的程序员不能省略第一个参数并传递第二个参数：他们必须显式传递 `undefined` 作为第一个参数。
+:::
+
 In ES6 and later, you can define a default value for each of your function parameters directly in the parameter list of your function. Simply follow the parameter name with an equals sign and the default value to use when no argument is supplied for that parameter:
+
+::: tip 翻译
+在 ES6 及更高版本中，您可以直接在函数的参数列表中为每个函数参数定义默认值。 只需在参数名称后面加上等号以及没有为该参数提供参数时要使用的默认值：
+:::
 
 ```js
 // Append the names of the enumerable properties of object o to the
@@ -701,6 +725,10 @@ function getPropertyNames(o, a = []) {
 
 Parameter default expressions are evaluated when your function is called, not when it is defined, so each time this `getPropertyNames()` function is invoked with one argument, a new empty array is created and passed It is probably easiest to reason about functions if the parameter defaults are constants (or literal expressions like `[]` and `{}`). But this is not required: you can use variables, or function invocations, for example, to compute the default value of a parameter. One interesting case is that, for functions with multiple parameters, you can use the value of a previous parameter to define the default value of the parameters that follow it:
 
+::: tip 翻译
+参数默认表达式是在调用函数时而不是在定义函数时计算的，因此每次使用一个参数调用 `getPropertyNames()` 函数时，都会创建并传递一个新的空数组。如果满足以下条件，则可能最容易推理函数： 参数默认值是常量（或像 `[]` 和 `{}` 这样的文字表达式）。 但这不是必需的：例如，您可以使用变量或函数调用来计算参数的默认值。 一个有趣的情况是，对于具有多个参数的函数，您可以使用前一个参数的值来定义其后面的参数的默认值：
+:::
+
 ```js
 // This function returns an object representing a rectangle's dimensions.
 // If only width is supplied, make it twice as high as it is wide.
@@ -710,9 +738,17 @@ rectangle(1); // { width: 1, height: 2}
 
 This code demonstrates that parameter defaults work with arrow functions. The same is true for method shorthand functions and all other forms of function definitions.
 
-### Rest Parameters and Variable-Length Argument Lists
+::: tip 翻译
+此代码演示了参数默认值与箭头函数一起使用。 对于方法简写函数和所有其他形式的函数定义也是如此。
+:::
+
+### 剩余参数和可变长度参数列表
 
 Parameter defaults enable us to write functions that can be invoked with fewer arguments than parameters. _Rest parameters_ enable the opposite case: they allow us to write functions that can be invoked with arbitrarily more arguments than parameters. Here is an example function that expects one or more numeric arguments and returns the largest one:
+
+::: tip 翻译
+参数默认值使我们能够编写可以使用比形参更少的实参来调用的函数。 _剩余参数_ 支持相反的情况：它们允许我们编写可以使用比形参任更多的实参来调用的函数。 下面是一个示例函数，它需要一个或多个数字参数并返回最大的一个：
+:::
 
 ```js
 function max(first = -Infinity, ...rest) {
@@ -732,13 +768,29 @@ max(1, 10, 100, 2, 3, 1000, 4, 5, 6); // => 1000
 
 A rest parameter is preceded by three periods, and it must be the last parameter in a function declaration. When you invoke a function with a rest parameter, the arguments you pass are first assigned to the non-rest parameters, and then any remaining arguments (i.e., the “rest” of the arguments) are stored in an array that becomes the value of the rest parameter. This last point is important: within the body of a function, the value of a rest parameter will always be an array. The array may be empty, but a rest parameter will never be `undefined`. (It follows from this that it is never useful—and not legal—to define a parameter default for a rest parameter.)
 
+::: tip 翻译
+剩余参数前面有三个句点，并且它必须是函数声明中的最后一个参数。 当您使用剩余参数调用函数时，您传递的参数首先分配给非剩余参数，然后其他剩余参数（即参数的“剩余”）存储在一个数组中，该数组成为剩余参数的值。 最后一点很重要：在函数体内，剩余参数的值始终是一个数组。 数组可能为空，但剩余参数永远不会是 `undefined`。 （由此可见，为剩余参数定义参数默认值从来没有用，也不合法。）
+:::
+
 Functions like the previous example that can accept any number of arguments are called _variadic functions_, _variable arity functions_, or _vararg functions_. This book uses the most colloquial term, varargs, which dates to the early days of the C programming language.
+
+::: tip 翻译
+像前面的示例一样，可以接受任意数量参数的函数称为 _variadic functions_、_variable arity functions_ 或 _vararg functions_。 本书使用了最通俗的术语“可变参数”，它可以追溯到 C 编程语言的早期。
+:::
 
 Don’t confuse the `...` that defines a rest parameter in a function definition with the `...` spread operator, described in §8.3.4, which can be used in function invocations.
 
-### The Arguments Object
+::: tip 翻译
+不要将函数定义中定义剩余参数的 `...` 与第 8.3.4 节中描述的 `...`扩展运算符混淆，后者可在函数调用中使用。
+:::
+
+### 参数对象
 
 Rest parameters were introduced into JavaScript in ES6. Before that version of the language, varargs functions were written using the Arguments object: within the body of any function, the identifier `arguments` refers to the Arguments object for that invocation. The Arguments object is an array-like object (see §7.9) that allows the argument values passed to the function to be retrieved by number, rather than by name. Here is the `max()` function from earlier, rewritten to use the Arguments object instead of a rest parameter:
+
+::: tip 翻译
+剩余参数在 ES6 中被引入到 JavaScript 中。 在该版本的语言之前，可变参数函数是使用 Arguments 对象编写的：在任何函数体内，标识符 `arguments` 引用该调用的 Arguments 对象。 Arguments 对象是一个类似数组的对象（参见第 7.9 节），它允许按数字而不是按名称检索传递给函数的参数值。 这是之前的 `max()` 函数，重写为使用 Arguments 对象而不是剩余参数：
+:::
 
 ```js
 function max(x) {
@@ -758,9 +810,17 @@ max(1, 10, 100, 2, 3, 1000, 4, 5, 6); // => 1000
 
 The Arguments object dates back to the earliest days of JavaScript and carries with it some strange historical baggage that makes it inefficient and hard to optimize, especially outside of strict mode. You may still encounter code that uses the Arguments object, but you should avoid using it in any new code you write. When refactoring old code, if you encounter a function that uses `arguments`, you can often replace it with a `...args` rest parameter. Part of the unfortunate legacy of the Arguments object is that, in strict mode, `arguments` is treated as a reserved word, and you cannot declare a function parameter or a local variable with that name.
 
-### The Spread Operator for Function Calls
+::: tip 翻译
+Arguments 对象可以追溯到 JavaScript 的早期，它带有一些奇怪的历史包袱，这使得它效率低下且难以优化，尤其是在严格模式之外。 您可能仍然会遇到使用 Arguments 对象的代码，但您应该避免在编写的任何新代码中使用它。 在重构旧代码时，如果遇到使用 `arguments` 的函数，通常可以将其替换为 `...args` 剩余参数。 Arguments 对象的不幸遗产的一部分是，在严格模式下，`arguments` 被视为保留字，并且您不能使用该名称声明函数参数或局部变量。
+:::
+
+### 函数调用的展开运算符
 
 The spread operator `...` is used to unpack, or “spread out,” the elements of an array (or any other iterable object, such as strings) in a context where individual values are expected. We’ve seen the spread operator used with array literals in §7.1.2. The operator can be used, in the same way, in function invocations:
+
+::: tip 翻译
+展开运算符 `...` 用于在需要单独值的上下文中解包或“展开”数组（或任何其他可迭代对象，例如字符串）的元素。 我们在第 7.1.2 节中看到了与数组文字一起使用的扩展运算符。 可以以相同的方式在函数调用中使用运算符：
+:::
 
 ```js
 let numbers = [5, 2, 10, -1, 9, 100, 1];
@@ -769,7 +829,15 @@ Math.min(...numbers); // => -1
 
 Note that `...` is not a true operator in the sense that it cannot be evaluated to produce a value. Instead, it is a special JavaScript syntax that can be used in array literals and function invocations.
 
+::: tip 翻译
+请注意，`...` 不是一个真正的运算符，因为它无法被评估以产生值。 相反，它是一种特殊的 JavaScript 语法，可用于数组文字和函数调用。
+:::
+
 When we use the same `...` syntax in a function definition rather than a function invocation, it has the opposite effect to the spread operator. As we saw in §8.3.2, using `...` in a function definition gathers multiple function arguments into an array. Rest parameters and the spread operator are often useful together, as in the following function, which takes a function argument and returns an instrumented version of the function for testing:
+
+::: tip 翻译
+当我们在函数定义而不是函数调用中使用相同的 `...` 语法时，它与扩展运算符具有相反的效果。 正如我们在第 8.3.2 节中看到的，在函数定义中使用 `...` 将多个函数参数收集到一个数组中。 剩余参数和展开运算符通常一起使用，如以下函数所示，它接受函数参数并返回函数的检测版本以进行测试：
+:::
 
 ```js
 // This function takes a function and returns a wrapped version
@@ -801,11 +869,19 @@ function benchmark(n) {
 timed(benchmark)(1000000); // => 500000500000; this is the sum of the numbers
 ```
 
-### Destructuring Function Arguments into Parameters
+### 解构函数实参到形参
 
 When you invoke a function with a list of argument values, those values end up being assigned to the parameters declared in the function definition. This initial phase of function invocation is a lot like variable assignment. So it should not be surprising that we can use the techniques of destructuring assignment (see §3.10.3) with functions.
 
+::: tip 翻译
+当您使用实参值列表调用函数时，这些值最终会分配给函数定义中声明的形参。 函数调用的初始阶段很像变量赋值。 因此，我们可以对函数使用解构赋值技术（参见第 3.10.3 节），这并不奇怪。
+:::
+
 If you define a function that has parameter names within square brackets, you are telling the function to expect an array value to be passed for each pair of square brackets. As part of the invocation process, the array arguments will be unpacked into the individually named parameters. As an example, suppose we are representing 2D vectors as arrays of two numbers, where the first element is the X coordinate and the second element is the Y coordinate. With this simple data structure, we could write the following function to add two vectors:
+
+::: tip 翻译
+如果您定义一个在方括号内包含参数名称的函数，则您是在告诉该函数期望为每对方括号传递一个数组值。 作为调用过程的一部分，数组参数将被解包到单独命名的参数中。 例如，假设我们将 2D 向量表示为两个数字的数组，其中第一个元素是 X 坐标，第二个元素是 Y 坐标。 通过这个简单的数据结构，我们可以编写以下函数来添加两个向量：
+:::
 
 ```js
 function vectorAdd(v1, v2) {
@@ -815,6 +891,10 @@ vectorAdd([1, 2], [3, 4]); // => [4,6]
 ```
 
 The code would be easier to understand if we destructured the two vector arguments into more clearly named parameters:
+
+::: tip 翻译
+如果我们将两个向量参数解构为更清晰命名的参数，代码会更容易理解：
+:::
 
 ```js
 function vectorAdd([x1, y1], [x2, y2]) {
@@ -826,6 +906,10 @@ vectorAdd([1, 2], [3, 4]); // => [4,6]
 
 Similarly, if you are defining a function that expects an object argument, you can destructure parameters of that object. Let’s use a vector example again, except this time, let’s suppose that we represent vectors as objects with x and y parameters:
 
+::: tip 翻译
+同样，如果您定义一个需要对象参数的函数，则可以解构该对象的参数。 让我们再次使用向量示例，但这次，假设我们将向量表示为具有 `x` 和 `y` 参数的对象：
+:::
+
 ```js
 // Multiply the vector {x,y} by a scalar value
 function vectorMultiply({ x, y }, scalar) {
@@ -835,6 +919,10 @@ vectorMultiply({ x: 1, y: 2 }, 2); // => {x: 2, y: 4}
 ```
 
 This example of destructuring a single object argument into two parameters is a fairly clear one because the parameter names we use match the property names of the incoming object. The syntax is more verbose and more confusing when you need to destructure properties with one name into parameters with different names. Here’s the vector addition example, implemented for object-based vectors:
+
+::: tip 翻译
+这个将单个对象参数解构为两个参数的示例是一个相当清晰的例子，因为我们使用的参数名称与传入对象的属性名称相匹配。 当您需要将具有一个名称的属性解构为具有不同名称的参数时，语法会更加冗长且更加混乱。 这是针对基于对象的向量实现的向量加法示例：
+:::
 
 ```js
 function vectorAdd(
@@ -848,7 +936,15 @@ vectorAdd({ x: 1, y: 2 }, { x: 3, y: 4 }); // => {x: 4, y: 6}
 
 The tricky thing about destructuring syntax like `{x:x1, y:y1}` is remembering which are the property names and which are the parameter names. The rule to keep in mind for destructuring assignment and destructuring function calls is that the variables or parameters being declared go in the spots where you’d expect values to go in an object literal. So property names are always on the lefthand side of the colon, and the parameter (or variable) names are on the right.
 
+::: tip 翻译
+像 `{x:x1, y:y1}` 这样的解构语法的棘手之处在于记住哪些是属性名称，哪些是参数名称。 解构赋值和解构函数调用要记住的规则是，声明的变量或参数位于您期望值出现在对象字面量中的位置。 因此，属性名称始终位于冒号的左侧，参数（或变量）名称位于右侧。
+:::
+
 You can define parameter defaults with destructured parameters. Here’s vector multiplication that works with 2D or 3D vectors:
+
+::: tip 翻译
+您可以使用解构参数定义参数默认值。 以下是适用于 2D 或 3D 向量的向量乘法：
+:::
 
 ```js
 // Multiply the vector {x,y} or {x,y,z} by a scalar value
@@ -859,6 +955,10 @@ vectorMultiply({ x: 1, y: 2 }, 2); // => {x: 2, y: 4, z: 0}
 ```
 
 Some languages (like Python) allow the caller of a function to invoke a function with arguments specified in `name=value` form, which is convenient when there are many optional arguments or when the parameter list is long enough that it is hard to remember the correct order. JavaScript does not allow this directly, but you can approximate it by destructuring an object argument into your function parameters. Consider a function that copies a specified number of elements from one array into another array with optionally specified starting offsets for each array. Since there are five possible parameters, some of which have defaults, and it would be hard for a caller to remember which order to pass the arguments in, we can define and invoke the `arraycopy()` function like this:
+
+::: tip 翻译
+某些语言（如 Python）允许函数的调用者调用以 `name=value` 形式指定参数的函数，当有许多可选参数或参数列表足够长而难以记住正确的顺序时，这很方便。 JavaScript 不允许直接这样做，但您可以通过将对象参数解构为函数参数来近似它。 考虑一个函数，它将指定数量的元素从一个数组复制到另一个数组，并为每个数组指定可选的起始偏移量。 由于有五个可能的参数，其中一些有默认值，调用者很难记住传递参数的顺序，我们可以像这样定义和调用 `arraycopy()` 函数：
+:::
 
 ```js
 function arraycopy({
@@ -879,6 +979,10 @@ arraycopy({ from: a, n: 3, to: b, toIndex: 4 }); // => [9,8,7,6,1,2,3,5]
 
 When you destructure an array, you can define a rest parameter for extra values within the array that is being unpacked. That rest parameter within the square brackets is completely different than the true rest parameter for the function:
 
+::: tip 翻译
+解构数组时，可以为正在解包的数组中的额外值定义剩余参数。 方括号内的剩余参数与函数的真正剩余参数完全不同：
+:::
+
 ```js
 // This function expects an array argument. The first two elements of that
 // array are unpacked into the x and y parameters. Any remaining elements
@@ -892,6 +996,10 @@ f([1, 2, 3, 4], 5, 6); // => [3, 5, 6, 3, 4]
 
 In ES2018, you can also use a rest parameter when you destructure an object. The value of that rest parameter will be an object that has any properties that did not get destructured. Object rest parameters are often useful with the object spread operator, which is also a new feature of ES2018:
 
+::: tip 翻译
+在 ES2018 中，您还可以在解构对象时使用剩余参数。 该剩余参数的值将是一个具有未解构的任何属性的对象。 对象剩余参数通常与对象扩展运算符一起使用，这也是 ES2018 的新功能：
+:::
+
 ```js
 // Multiply the vector {x,y} or {x,y,z} by a scalar value, retain other props
 function vectorMultiply({ x, y, z = 0, ...props }, scalar) {
@@ -902,6 +1010,10 @@ vectorMultiply({ x: 1, y: 2, w: -1 }, 2); // => {x: 2, y: 4, z: 0, w: -1}
 
 Finally, keep in mind that, in addition to destructuring argument objects and arrays, you can also destructure arrays of objects, objects that have array properties, and objects that have object properties, to essentially any depth. Consider graphics code that represents circles as objects with `x`, `y`, `radius`, and `color` properties, where the `color` property is an array of red, green, and blue color components. You might define a function that expects a single circle object to be passed to it but destructures that circle object into six separate parameters:
 
+::: tip 翻译
+最后，请记住，除了解构参数对象和数组之外，您还可以将对象数组、具有数组属性的对象以及具有对象属性的对象解构到基本上任何深度。 考虑将圆表示为具有 `x`、`y`、`radius` 和 `color` 属性的对象的图形代码，其中 `color` 属性是红色、绿色和蓝色分量的数组。 您可以定义一个函数，该函数期望将单个圆形对象传递给它，但将该圆形对象解构为六个单独的参数：
+:::
+
 ```js
 function drawCircle({ x, y, radius, color: [r, g, b] }) {
   // Not yet implemented
@@ -910,13 +1022,29 @@ function drawCircle({ x, y, radius, color: [r, g, b] }) {
 
 If function argument destructuring is any more complicated than this, I find that the code becomes harder to read, rather than simpler. Sometimes, it is clearer to be explicit about your object property access and array indexing.
 
-### Argument Types
+::: tip 翻译
+如果函数参数解构比这更复杂，我发现代码变得更难阅读，而不是更简单。 有时，明确对象属性访问和数组索引会更清楚。
+:::
+
+### 参数类型
 
 JavaScript method parameters have no declared types, and no type checking is performed on the values you pass to a function. You can help make your code self documenting by choosing descriptive names for function arguments and by documenting them carefully in the comments for each function. (Alternatively, see §17.8 for a language extension that allows you to layer type checking on top of regular JavaScript.)
 
+::: tip 翻译
+JavaScript 方法参数没有声明类型，并且不会对传递给函数的值执行类型检查。 您可以通过为函数参数选择描述性名称并在每个函数的注释中仔细记录它们来帮助使代码自我记录。 （或者，请参阅第 17.8 节，了解允许您在常规 JavaScript 之上进行类型检查的语言扩展。）
+:::
+
 As described in §3.9, JavaScript performs liberal type conversion as needed. So if you write a function that expects a string argument and then call that function with a value of some other type, the value you passed will simply be converted to a string when the function tries to use it as a string. All primitive types can be converted to strings, and all objects have `toString()` methods (if not necessarily useful ones), so an error never occurs in this case.
 
+::: tip 翻译
+如第 3.9 节中所述，JavaScript 根据需要执行自由类型转换。 因此，如果您编写一个需要字符串参数的函数，然后使用其他类型的值调用该函数，则当该函数尝试将其用作字符串时，您传递的值将简单地转换为字符串。 所有原始类型都可以转换为字符串，并且所有对象都有 `toString()` 方法（如果不一定有用），因此在这种情况下永远不会发生错误。
+:::
+
 This is not always true, however. Consider again the `arraycopy()` method shown earlier. It expects one or two array arguments and will fail if these arguments are of the wrong type. Unless you are writing a private function that will only be called from nearby parts of your code, it may be worth adding code to check the types of arguments like this. It is better for a function to fail immediately and predictably when passed bad values than to begin executing and fail later with an error message that is likely to be unclear. Here is an example function that performs type-checking:
+
+::: tip 翻译
+然而，情况并非总是如此。 再次考虑前面显示的 `arraycopy()` 方法。 它需要一两个数组参数，如果这些参数的类型错误，则会失败。 除非您正在编写一个只能从代码的附近部分调用的私有函数，否则可能值得添加代码来检查这样的参数类型。 对于函数来说，在传递错误值时立即且可预测地失败比开始执行并稍后失败并显示可能不清楚的错误消息更好。 以下是执行类型检查的示例函数：
+:::
 
 ```js
 // Return the sum of the elements an iterable object a.
