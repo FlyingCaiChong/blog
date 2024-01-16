@@ -2,7 +2,9 @@
 title: 第八章 函数
 ---
 
-# Chapter 8 Functions
+# 函数
+
+[[toc]]
 
 This chapter covers JavaScript functions. Functions are a fundamental building block for JavaScript programs and a common feature in almost all programming languages. You may already be familiar with the concept of a function under a name such as _subroutine_ or _procedure_.
 
@@ -1781,13 +1783,21 @@ The `Function()` constructor is best thought of as a globally scoped version of 
 `Function()` 构造函数最好被认为是 `eval()` 的全局作用域版本（参见第 4.12.2 节），它在自己的私有作用域中定义新的变量和函数。 您可能永远不需要在代码中使用此构造函数。
 :::
 
-## Functional Programming
+## 函数式编程
 
 JavaScript is not a functional programming language like Lisp or Haskell, but the fact that JavaScript can manipulate functions as objects means that we can use functional programming techniques in JavaScript. Array methods such as `map()` and `reduce()` lend themselves particularly well to a functional programming style. The sections that follow demonstrate techniques for functional programming in JavaScript. They are intended as a mind-expanding exploration of the power of JavaScript’s functions, not as a prescription for good programming style.
 
-### Processing Arrays with Functions
+::: tip 翻译
+JavaScript 不是像 Lisp 或 Haskell 这样的函数式编程语言，但 JavaScript 可以将函数作为对象进行操作，这意味着我们可以在 JavaScript 中使用函数式编程技术。 诸如 `map()` 和 `reduce()` 之类的数组方法特别适合函数式编程风格。 接下来的部分演示了 JavaScript 中函数式编程的技术。 它们的目的是对 JavaScript 函数的强大功能进行拓展思维的探索，而不是作为良好编程风格的处方。
+:::
+
+### 用函数处理数组
 
 Suppose we have an array of numbers and we want to compute the mean and standard deviation of those values. We might do that in nonfunctional style like this:
+
+::: tip 翻译
+假设我们有一个数字数组，我们想要计算这些值的平均值和标准差。 我们可能会以非函数式的方式做到这一点，如下所示：
+:::
 
 ```js
 let data = [1, 1, 3, 5, 5]; // This is our array of numbers
@@ -1809,6 +1819,10 @@ let stddev = Math.sqrt(total / (data.length - 1)); // stddev == 2
 
 We can perform these same computations in concise functional style using the array methods `map()` and `reduce()` like this (see §7.8.1 to review these methods):
 
+::: tip 翻译
+我们可以使用数组方法 `map()` 和 `reduce()` 以简洁的函数式风格执行这些相同的计算，如下所示（请参阅第 7.8.1 节来回顾这些方法）：
+:::
+
 ```js
 // First, define two simple functions
 const sum = (x, y) => x + y;
@@ -1824,6 +1838,10 @@ stddev; // => 2
 
 This new version of the code looks quite different than the first one, but it is still invoking methods on objects, so it has some object-oriented conventions remaining. Let’s write functional versions of the `map()` and `reduce()` methods:
 
+::: tip 翻译
+这个新版本的代码看起来与第一个版本有很大不同，但它仍然调用对象的方法，因此它保留了一些面向对象的约定。 让我们编写 `map()` 和`reduce()` 方法的函数版本：
+:::
+
 ```js
 const map = function (a, ...args) {
   return a.map(...args);
@@ -1834,6 +1852,10 @@ const reduce = function (a, ...args) {
 ```
 
 With these `map()` and `reduce()` functions defined, our code to compute the mean and standard deviation now looks like this:
+
+::: tip 翻译
+定义了这些 `map()` 和 `reduce()` 函数后，计算平均值和标准差的代码现在如下所示：
+:::
 
 ```js
 const sum = (x, y) => x + y;
@@ -1848,9 +1870,13 @@ let stddev = Math.sqrt(
 stddev; // => 2
 ```
 
-### Higher-Order Functions
+### 高阶函数
 
 A _higher-order function_ is a function that operates on functions, taking one or more functions as arguments and returning a new function. Here is an example:
+
+::: tip 翻译
+_高阶函数_ 是一种对函数进行操作的函数，将一个或多个函数作为参数并返回一个新函数。 这是一个例子：
+:::
 
 ```js
 // This higher-order function returns a new function that passes its
@@ -1870,6 +1896,10 @@ const odd = not(even); // A new function that does the opposite
 
 This `not()` function is a higher-order function because it takes a function argument and returns a new function. As another example, consider the `mapper()` function that follows. It takes a function argument and returns a new function that maps one array to another using that function. This function uses the `map()` function defined earlier, and it is important that you understand how the two functions are different:
 
+::: tip 翻译
+这个 `not()` 函数是一个高阶函数，因为它接受一个函数参数并返回一个新函数。 作为另一个示例，请考虑下面的 `mapper()` 函数。 它接受一个函数参数并返回一个新函数，该函数使用该函数将一个数组映射到另一个数组。 该函数使用前面定义的 `map()` 函数，了解这两个函数的不同之处非常重要：
+:::
+
 ```js
 // Return a function that expects an array argument and applies f to
 // each element, returning the array of return values.
@@ -1884,6 +1914,10 @@ incrementAll([1, 2, 3]); // => [2,3,4]
 ```
 
 Here is another, more general, example that takes two functions, `f` and `g`, and returns a new function that computes `f(g())`:
+
+::: tip 翻译
+这是另一个更一般的示例，它采用两个函数 `f` 和 `g`，并返回一个计算 `f(g())` 的新函数：
+:::
 
 ```js
 // Return a new function that computes f(g(...)).
@@ -1905,9 +1939,17 @@ compose(square, sum)(2, 3); // => 25; the square of the sum
 
 The `partial()` and `memoize()` functions defined in the sections that follow are two more important higher-order functions.
 
-### Partial Application of Functions
+::: tip 翻译
+接下来的部分中定义的 `partial()` 和 `memoize()` 函数是两个更重要的高阶函数。
+:::
+
+### 偏函数
 
 The `bind()` method of a function `f` (see §8.7.5) returns a new function that invokes `f` in a specified context and with a specified set of arguments. We say that it binds the function to an object and partially applies the arguments. The `bind()` method partially applies arguments on the left—that is, the arguments you pass to `bind()` are placed at the start of the argument list that is passed to the original function. But it is also possible to partially apply arguments on the right:
+
+::: tip 翻译
+函数 `f` 的 `bind()` 方法（参见第 8.7.5 节）返回一个新函数，该函数在指定上下文中并使用指定的参数集调用 `f`。 我们说它将函数绑定到一个对象并部分应用参数。 `bind()` 方法部分应用左侧的参数，也就是说，传递给 `bind()` 的参数被放置在传递给原始函数的参数列表的开头。 但也可以部分应用右侧的参数：
+:::
 
 ```js
 // The arguments to this function are passed on the left
@@ -1956,6 +1998,10 @@ partial(f, undefined, 2)(3, 4); // => -6: Bind middle argument: 3 * (2 - 4)
 
 These partial application functions allow us to easily define interesting functions out of functions we already have defined. Here are some examples:
 
+::: tip 翻译
+这些部分应用函数使我们能够轻松地从已经定义的函数中定义有趣的函数。 这里有些例子：
+:::
+
 ```js
 const increment = partialLeft(sum, 1);
 const cuberoot = partialRight(Math.pow, 1 / 3);
@@ -1963,6 +2009,10 @@ cuberoot(increment(26)); // => 3
 ```
 
 Partial application becomes even more interesting when we combine it with other higher-order functions. Here, for example, is a way to define the preceding `not()` function just shown using composition and partial application:
+
+::: tip 翻译
+当我们将偏函数与其他高阶函数结合起来时，它会变得更加有趣。 例如，这里是使用组合和部分应用来定义前面所示的 `not()` 函数的方法：
+:::
 
 ```js
 const not = partialLeft(compose, (x) => !x);
@@ -1973,6 +2023,10 @@ odd(3) && isNumber(2); // => true
 ```
 
 We can also use composition and partial application to redo our mean and standard deviation calculations in extreme functional style:
+
+::: tip 翻译
+我们还可以使用组合和部分应用以极端函数风格重做平均值和标准差计算：
+:::
 
 ```js
 // sum() and square() functions are defined above. Here are some more:
@@ -1995,9 +2049,17 @@ let stddev = sqrt(
 
 Notice that this code to compute mean and standard deviation is entirely function invocations; there are no operators involved, and the number of parentheses has grown so large that this JavaScript is beginning to look like Lisp code. Again, this is not a style that I advocate for JavaScript programming, but it is an interesting exercise to see how deeply functional JavaScript code can be.
 
+::: tip 翻译
+请注意，计算平均值和标准差的代码完全是函数调用； 不涉及任何运算符，并且括号的数量变得如此之多，以至于这段 JavaScript 开始看起来像 Lisp 代码。 再说一次，这不是我提倡的 JavaScript 编程风格，但这是一个有趣的练习，可以了解 JavaScript 代码的功能有多深。
+:::
+
 ### Memoization
 
 In §8.4.1, we defined a factorial function that cached its previously computed results. In functional programming, this kind of caching is called _memoization_. The code that follows shows a higher-order function, `memoize()`, that accepts a function as its argument and returns a memoized version of the function:
+
+::: tip 翻译
+在第 8.4.1 节中，我们定义了一个阶乘函数来缓存其先前计算的结果。 在函数式编程中，这种缓存称为 _memoization_。 下面的代码显示了一个高阶函数 `memoize()`，它接受一个函数作为其参数并返回该函数的记忆版本：
+:::
 
 ```js
 // Return a memoized version of f.
@@ -2019,6 +2081,10 @@ function memoize(f) {
 ```
 
 The `memoize()` function creates a new object to use as the cache and assigns this object to a local variable so that it is private to (in the closure of) the returned function. The returned function converts its arguments array to a string and uses that string as a property name for the cache object. If a value exists in the cache, it returns it directly. Otherwise, it calls the specified function to compute the value for these arguments, caches that value, and returns it. Here is how we might use `memoize()`:
+
+::: tip 翻译
+`memoize()` 函数创建一个新对象用作缓存，并将该对象分配给一个局部变量，以便它对于返回的函数（在闭包中）是私有的。 返回的函数将其参数数组转换为字符串，并使用该字符串作为缓存对象的属性名称。 如果缓存中存在某个值，则直接返回该值。 否则，它调用指定的函数来计算这些参数的值，缓存该值并返回它。 以下是我们如何使用 `memoize()`：
+:::
 
 ```js
 // Return the Greatest Common Divisor of two integers using the Euclidian
@@ -2047,13 +2113,24 @@ const factorial = memoize(function (n) {
 factorial(5); // => 120: also caches values for 4, 3, 2 and 1.
 ```
 
-## Summary
+## 总结
 
 Some key points to remember about this chapter are as follows:
 
-- You can define functions with the function keyword and with the ES6 `=>` arrow syntax.
+- You can define functions with the `function` keyword and with the ES6 `=>` arrow syntax.
 - You can invoke functions, which can be used as methods and constructors.
 - Some ES6 features allow you to define default values for optional function parameters, to gather multiple arguments into an array using a rest parameter, and to destructure object and array arguments into function parameters.
 - You can use the `...` spread operator to pass the elements of an array or other iterable object as arguments in a function invocation.
 - A function defined inside of and returned by an enclosing function retains access to its lexical scope and can therefore read and write the variables defined inside the outer function. Functions used in this way are called closures, and this is a technique that is worth understanding.
 - Functions are objects that can be manipulated by JavaScript, and this enables a functional style of programming.
+
+::: tip 翻译
+关于本章需要记住的一些要点如下：
+
+- 您可以使用 `function` 关键字和 ES6 `=>` 箭头语法来定义函数。
+- 您可以调用函数，这些函数可以用作方法和构造函数。
+- 某些 ES6 功能允许您定义可选函数参数的默认值、使用剩余参数将多个参数收集到数组中，以及将对象和数组参数解构为函数参数。
+- 您可以使用 `...` 扩展运算符将数组或其他可迭代对象的元素作为函数调用中的参数传递。
+- 在封闭函数内部定义并由封闭函数返回的函数保留对其词法范围的访问，因此可以读取和写入外部函数内部定义的变量。 以这种方式使用的函数称为闭包，这是一种值得理解的技术。
+- 函数是可以由 JavaScript 操作的对象，这使得函数式编程成为可能。
+  :::
