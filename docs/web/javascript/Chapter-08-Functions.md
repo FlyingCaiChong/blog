@@ -1544,32 +1544,56 @@ Another thing to remember when writing closures is that `this` is a JavaScript k
 const self = this; // Make the this value available to nested functions
 ```
 
-## Function Properties, Methods, and Constructor
+## 函数属性、方法和构造函数
 
-We’ve seen that functions are values in JavaScript programs. The typeof operator returns the string “function” when applied to a function, but functions are really a specialized kind of JavaScript object. Since functions are objects, they can have properties and methods, just like any other object. There is even a `Function()` constructor to create new function objects. The subsections that follow document the `length`, `name`, and `prototype` properties; the `call()`, `apply()`, `bind()`, and `toString()` methods; and the `Function()` constructor.
+We’ve seen that functions are values in JavaScript programs. The `typeof` operator returns the string “function” when applied to a function, but functions are really a specialized kind of JavaScript object. Since functions are objects, they can have properties and methods, just like any other object. There is even a `Function()` constructor to create new function objects. The subsections that follow document the `length`, `name`, and `prototype` properties; the `call()`, `apply()`, `bind()`, and `toString()` methods; and the `Function()` constructor.
 
-### The length Property
+::: tip 翻译
+我们已经知道函数是 JavaScript 程序中的值。 `typeof` 运算符在应用于函数时返回字符串 `function`，但函数实际上是一种特殊类型的 JavaScript 对象。 由于函数是对象，因此它们可以具有属性和方法，就像任何其他对象一样。 甚至还有一个 `Function()` 构造函数来创建新的函数对象。 接下来的小节记录了 `length`、`name` 和 `prototype` 属性； `call()`、`apply()`、`bind()` 和 `toString()` 方法； 和 `Function()` 构造函数。
+:::
+
+### length 属性
 
 The read-only `length` property of a function specifies the _arity_ of the function—the number of parameters it declares in its parameter list, which is usually the number of arguments that the function expects. If a function has a rest parameter, that parameter is not counted for the purposes of this `length` property.
 
-### The name Property
+::: tip 翻译
+函数的只读 `length` 属性指定函数的 _arity_ ——它在参数列表中声明的参数数量，通常是函数期望的参数数量。 如果函数有剩余参数，则该参数不会计入此 `length` 属性的目的。
+:::
+
+### name 属性
 
 The read-only `name` property of a function specifies the name that was used when the function was defined, if it was defined with a name, or the name of the variable or property that an unnamed function expression was assigned to when it was first created. This property is primarily useful when writing debugging or error messages.
 
-### The prototype Property
+::: tip 翻译
+函数的只读 `name` 属性指定定义函数时使用的名称（如果使用名称定义），或者指定未命名函数表达式在第一次创建时分配给的变量或属性的名称。 该属性主要在编写调试或错误消息时有用。
+:::
 
-All functions, except arrow functions, have a `prototype` property that refers to an object known as the _prototype object_. Every function has a different prototype object. When a function is used as a constructor, the newly created object inherits properties from the prototype object. Prototypes and the `prototype` property were discussed in §6.2.3 and will be covered again in **Chapter 9**.
+### prototype 属性
 
-### The call() and apply() Methods
+All functions, except arrow functions, have a `prototype` property that refers to an object known as the _prototype object_. Every function has a different prototype object. When a function is used as a constructor, the newly created object inherits properties from the prototype object. Prototypes and the `prototype` property were discussed in §6.2.3 and will be covered again in [Chapter 9](./Chapter-09-Classes.md).
 
-`call()` and `apply()` allow you to indirectly invoke (§8.2.4) a function as if it were a method of some other object. The first argument to both `call()` and `apply()` is the object on which the function is to be invoked; this argument is the invocation context and becomes the value of the `this` keyword within the body of the function. To invoke the function `f()` as a method of the object o (passing no arguments), you could use either `call()` or `apply()`:
+::: tip 翻译
+除箭头函数外，所有函数都具有 `prototype` 属性，该属性引用称为 _原型对象_ 的对象。 每个函数都有不同的原型对象。 当函数用作构造函数时，新创建的对象会继承原型对象的属性。 原型和 `prototype` 属性已在第 6.2.3 节中讨论，并将在 [第 9 章](./Chapter-09-Classes.md) 中再次介绍。
+:::
+
+### call() 和 apply() 方法
+
+`call()` and `apply()` allow you to indirectly invoke (§8.2.4) a function as if it were a method of some other object. The first argument to both `call()` and `apply()` is the object on which the function is to be invoked; this argument is the invocation context and becomes the value of the `this` keyword within the body of the function. To invoke the function `f()` as a method of the object `o` (passing no arguments), you could use either `call()` or `apply()`:
+
+::: tip 翻译
+`call()` 和 `apply()` 允许您间接调用（第 8.2.4 节）函数，就好像它是某个其他对象的方法一样。 `call()` 和 `apply()` 的第一个参数是要调用该函数的对象； 此参数是调用上下文，并成为函数体内 `this` 关键字的值。 要将函数 `f()` 作为对象 `o` 的方法调用（不传递参数），可以使用 `call()` 或 `apply()`：
+:::
 
 ```js
 f.call(o);
 f.apply(o);
 ```
 
-Either of these lines of code are similar to the following (which assume that o does not already have a property named `m`):
+Either of these lines of code are similar to the following (which assume that `o` does not already have a property named `m`):
+
+::: tip 翻译
+这些代码行中的任何一行都类似于以下代码（假设 `o` 尚未具有名为 `m` 的属性）：
+:::
 
 ```js
 o.m = f; // Make f a temporary method of o.
@@ -1579,7 +1603,15 @@ delete o.m; // Remove the temporary method.
 
 Remember that arrow functions inherit the `this` value of the context where they are defined. This cannot be overridden with the `call()` and `apply()` methods. If you call either of those methods on an arrow function, the first argument is effectively ignored.
 
-Any arguments to `call()` after the first invocation context argument are the values that are passed to the function that is invoked (and these arguments are not ignored for arrow functions). For example, to pass two numbers to the function `f()` and invoke it as if it were a method of the object o, you could use code like this:
+::: tip 翻译
+请记住，箭头函数继承了定义它们的上下文的 `this` 值。 这不能用 `call()` 和 `apply()` 方法覆盖。 如果您在箭头函数上调用其中任何一个方法，则第一个参数将被有效忽略。
+:::
+
+Any arguments to `call()` after the first invocation context argument are the values that are passed to the function that is invoked (and these arguments are not ignored for arrow functions). For example, to pass two numbers to the function `f()` and invoke it as if it were a method of the object `o`, you could use code like this:
+
+::: tip 翻译
+第一个调用上下文参数之后的任何 `call()` 参数都是传递给被调用函数的值（并且对于箭头函数来说，这些参数不会被忽略）。 例如，要将两个数字传递给函数 `f()` 并像它是对象 `o` 的方法一样调用它，您可以使用如下代码：
+:::
 
 ```js
 f.call(o, 1, 2);
@@ -1587,17 +1619,29 @@ f.call(o, 1, 2);
 
 The `apply()` method is like the `call()` method, except that the arguments to be passed to the function are specified as an array:
 
+::: tip 翻译
+`apply()` 方法类似于 `call()` 方法，不同之处在于传递给函数的参数被指定为数组：
+:::
+
 ```js
 f.apply(o, [1, 2]);
 ```
 
 If a function is defined to accept an arbitrary number of arguments, the `apply()` method allows you to invoke that function on the contents of an array of arbitrary length. In ES6 and later, we can just use the spread operator, but you may see ES5 code that uses `apply()` instead. For example, to find the largest number in an array of numbers without using the spread operator, you could use the `apply()` method to pass the elements of the array to the `Math.max()` function:
 
+::: tip 翻译
+如果函数被定义为接受任意数量的参数，则 `apply()` 方法允许您对任意长度的数组的内容调用该函数。 在 ES6 及更高版本中，我们可以只使用展开运算符，但您可能会看到使用 `apply()` 代替的 ES5 代码。 例如，要在不使用扩展运算符的情况下查找数字数组中的最大数字，可以使用 `apply()` 方法将数组的元素传递给 `Math.max()` 函数：
+:::
+
 ```js
 let biggest = Math.max.apply(Math, arrayOfNumbers);
 ```
 
 The `trace()` function defined in the following is similar to the `timed()` function defined in §8.3.4, but it works for methods instead of functions. It uses the `apply()` method instead of a spread operator, and by doing that, it is able to invoke the wrapped method with the same arguments and the same `this` value as the wrapper method:
+
+::: tip 翻译
+下面定义的 `trace()` 函数与第 8.3.4 节中定义的 `timed()` 函数类似，但它适用于方法而不是函数。 它使用 `apply()` 方法而不是扩展运算符，通过这样做，它能够使用与包装方法相同的参数和相同的 `this` 值来调用包装方法：
+:::
 
 ```js
 // Replace the method named m of the object o with a version that logs
@@ -1614,9 +1658,13 @@ function trace(o, m) {
 }
 ```
 
-### The bind() Method
+### bind() 方法
 
 The primary purpose of `bind()` is to bind a function to an object. When you invoke the `bind()` method on a function `f` and pass an object `o`, the method returns a new function. Invoking the new function (as a function) invokes the original function `f` as a method of `o`. Any arguments you pass to the new function are passed to the original function. For example:
+
+::: tip 翻译
+`bind()` 的主要目的是将函数绑定到对象。 当您在函数 `f` 上调用 `bind()` 方法并传递对象 `o`时，该方法将返回一个新函数。 调用新函数（作为函数）会调用原始函数 `f` 作为 `o` 的方法。 传递给新函数的任何参数都将传递给原始函数。 例如：
+:::
 
 ```js
 function f(y) {
@@ -1631,7 +1679,15 @@ p.g(2); // => 3: g is still bound to o, not p.
 
 Arrow functions inherit their `this` value from the environment in which they are defined, and that value cannot be overridden with `bind()`, so if the function `f()` in the preceding code was defined as an arrow function, the binding would not work. The most common use case for calling `bind()` is to make non-arrow functions behave like arrow functions, however, so this limitation on binding arrow functions is not a problem in practice.
 
+::: tip 翻译
+箭头函数从定义它们的环境中继承它们的 `this` 值，并且该值不能用 `bind()` 覆盖，因此如果前面代码中的函数 `f()` 被定义为箭头函数， 绑定不起作用。 然而，调用 `bind()` 最常见的用例是使非箭头函数表现得像箭头函数，因此绑定箭头函数的这种限制在实践中不是问题。
+:::
+
 The `bind()` method does more than just bind a function to an object, however. It can also perform partial application: any arguments you pass to `bind()` after the first are bound along with the `this` value. This partial application feature of `bind()` does work with arrow functions. Partial application is a common technique in functional programming and is sometimes called _currying_. Here are some examples of the `bind()` method used for partial application:
+
+::: tip 翻译
+然而，`bind()` 方法不仅仅将函数绑定到对象。 它还可以执行部分应用：在第一个参数之后传递给 `bind()` 的任何参数都与 `this` 值一起绑定。 `bind()` 的部分应用功能确实可以与箭头函数一起使用。 部分应用是函数式编程中的常见技术，有时称为 _柯里化_。 以下是用于部分应用的 `bind()` 方法的一些示例：
+:::
 
 ```js
 let sum = (x, y) => x + y; // Return the sum of 2 args
@@ -1647,19 +1703,35 @@ g(3); // => 6: this.x is bound to 1, y is bound to 2 and z is 3
 
 The `name` property of the function returned by `bind()` is the name property of the function that `bind()` was called on, prefixed with the word “bound”.
 
-### The toString() Method
+::: tip 翻译
+`bind()` 返回的函数的 `name` 属性是调用 `bind()`的函数的名称属性，前缀为 `bound`。
+:::
+
+### toString() 方法
 
 Like all JavaScript objects, functions have a `toString()` method. The ECMAScript spec requires this method to return a string that follows the syntax of the function declaration statement. In practice, most (but not all) implementations of this `toString()` method return the complete source code for the function. Built-in functions typically return a string that includes something like “[native code]” as the function body.
 
-### The Function() Constructor
+::: tip 翻译
+与所有 JavaScript 对象一样，函数也有一个 `toString()` 方法。 ECMAScript 规范要求此方法返回遵循函数声明语句语法的字符串。 实际上，大多数（但不是全部）此 `toString()` 方法的实现都会返回该函数的完整源代码。 内置函数通常返回一个字符串，其中包含 `[native code]` 之类的内容作为函数体。
+:::
+
+### Function() 构造函数
 
 Because functions are objects, there is a `Function()` constructor that can be used to create new functions:
+
+::: tip 翻译
+因为函数是对象，所以有一个 `Function()` 构造函数可用于创建新函数：
+:::
 
 ```js
 const f = new Function("x", "y", "return x*y;");
 ```
 
 This line of code creates a new function that is more or less equivalent to a function defined with the familiar syntax:
+
+::: tip 翻译
+这行代码创建了一个新函数，它或多或少相当于使用熟悉的语法定义的函数：
+:::
 
 ```js
 const f = function (x, y) {
@@ -1669,7 +1741,15 @@ const f = function (x, y) {
 
 The `Function()` constructor expects any number of string arguments. The last argument is the text of the function body; it can contain arbitrary JavaScript statements, separated from each other by semicolons. All other arguments to the constructor are strings that specify the parameter names for the function. If you are defining a function that takes no arguments, you would simply pass a single string—the function body—to the constructor.
 
+::: tip 翻译
+`Function()` 构造函数需要任意数量的字符串参数。 最后一个参数是函数体的文本； 它可以包含任意 JavaScript 语句，彼此之间用分号分隔。 构造函数的所有其他参数都是指定函数参数名称的字符串。 如果您定义一个不带参数的函数，则只需将一个字符串（函数体）传递给构造函数即可。
+:::
+
 Notice that the `Function()` constructor is not passed any argument that specifies a name for the function it creates. Like function literals, the `Function()` constructor creates anonymous functions.
+
+::: tip 翻译
+请注意， `Function()` 构造函数不会传递任何为其创建的函数指定名称的参数。 与函数文字一样，`Function()` 构造函数创建匿名函数。
+:::
 
 There are a few points that are important to understand about the `Function()` constructor:
 
@@ -1687,7 +1767,19 @@ There are a few points that are important to understand about the `Function()` c
   constructFunction()(); // => "global"
   ```
 
+::: tip 翻译
+关于 `Function()` 构造函数，有几点需要理解：
+
+- `Function()` 构造函数允许在运行时动态创建和编译 JavaScript 函数。
+- `Function()` 构造函数解析函数体并在每次调用时创建一个新的函数对象。 如果对构造函数的调用出现在循环内或频繁调用的函数内，则此过程可能效率低下。 相比之下，循环中出现的嵌套函数和函数表达式在每次遇到时都不会重新编译。
+- 关于 `Function()` 构造函数的最后一个非常重要的一点是，它创建的函数不使用词法作用域； 相反，它们总是像顶级函数一样进行编译，如以下代码所示：
+  :::
+
 The `Function()` constructor is best thought of as a globally scoped version of `eval()` (see §4.12.2) that defines new variables and functions in its own private scope. You will probably never need to use this constructor in your code.
+
+::: tip 翻译
+`Function()` 构造函数最好被认为是 `eval()` 的全局作用域版本（参见第 4.12.2 节），它在自己的私有作用域中定义新的变量和函数。 您可能永远不需要在代码中使用此构造函数。
+:::
 
 ## Functional Programming
 
