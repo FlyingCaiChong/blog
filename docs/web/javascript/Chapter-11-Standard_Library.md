@@ -44,26 +44,50 @@ Some of the sections in this chapter—notably, the sections on typed arrays and
 本章中的某些部分（特别是有关类型化数组和正则表达式的部分）相当长，因为在有效使用这些类型之前，您需要了解重要的背景信息。 然而，许多其他部分都很简短：它们只是介绍了一个新的 API 并展示了它的一些使用示例。
 :::
 
-## Sets and Maps
+## Sets 和 Maps
 
-JavaScript’s Object type is a versatile data structure that can be used to map strings (the object’s property names) to arbitrary values. And when the value being mapped to is something fixed like true, then the object is effectively a set of strings.
+JavaScript’s Object type is a versatile data structure that can be used to map strings (the object’s property names) to arbitrary values. And when the value being mapped to is something fixed like `true`, then the object is effectively a set of strings.
+
+::: tip 翻译
+JavaScript 的对象类型是一种多功能数据结构，可用于将字符串（对象的属性名称）映射到任意值。 当映射到的值是固定的（如 `true`）时，该对象实际上是一组字符串。
+:::
 
 Objects are actually used as maps and sets fairly routinely in JavaScript programming, but this is limited by the restriction to strings and complicated by the fact that objects normally inherit properties with names like “toString”, which are not typically intended to be part of the map or set.
 
-For this reason, ES6 introduces true Set and Map classes, which we’ll cover in the subsections that follow.
+::: tip 翻译
+实际上，在 JavaScript 编程中，对象相当常规地用作映射和集合，但这受到字符串的限制，并且由于对象通常继承名称为 `toString` 的属性而变得复杂，这些属性通常不打算成为 `map` 或 `set` 的一部分。
+:::
 
-### The Set Class
+For this reason, ES6 introduces true `Set` and `Map` classes, which we’ll cover in the sub sections that follow.
+
+::: tip 翻译
+因此，ES6 引入了真正的 `Set` 和 `Map` 类，我们将在接下来的小节中介绍它们。
+:::
+
+### Set 类
 
 A set is a collection of values, like an array is. Unlike arrays, however, sets are not ordered or indexed, and they do not allow duplicates: a value is either a member of a set or it is not a member; it is not possible to ask how many times a value appears in a set.
 
+::: tip 翻译
+`set` 是值的集合，就像数组一样。 然而，与数组不同的是，`set` 没有排序或索引，并且不允许重复：值要么是集合的成员，要么不是成员； 不可能询问某个值在集合中出现了多少次。
+:::
+
 Create a Set object with the `Set()` constructor:
+
+::: tip 翻译
+使用 `Set()` 构造函数创建一个集合对象：
+:::
 
 ```js
 let s = new Set(); // A new, empty set
 let t = new Set([1, s]); // A new set with the members
 ```
 
-The argument to the `Set()` constructor need not be an array: any iterable object (including other Set objects) is allowed:
+The argument to the `Set()` constructor need not be an array: any iterable object (including other `Set` objects) is allowed:
+
+::: tip 翻译
+`Set()` 构造函数的参数可以不是数组:任何可迭代对象（包括其他 `Set` 对象）都是允许的。
+:::
 
 ```js
 let t = new Set(s); // A new set that copies the elements of s.
@@ -72,11 +96,19 @@ let unique = new Set("Mississippi"); // 4 elements: 'M', 'i', 's', and 'p'
 
 The `size` property of a set is like the `length` property of an array: it tells you how many values the set contains:
 
+::: tip 翻译
+`set` 的 `size` 属性像数组的 `length` 属性一样：它告诉你集合包含了多少个值。
+:::
+
 ```js
 unique.size; // => 4
 ```
 
 Sets don’t need to be initialized when you create them. You can add and remove elements at any time with `add()`, `delete()`, and `clear()`. Remember that sets cannot contain duplicates, so adding a value to a set when it already contains that value has no effect:
+
+::: tip 翻译
+创建集合时不需要对其进行初始化。 您可以随时使用 `add()`、`delete()` 和 `clear()` 方法添加和删除元素。 请记住，集合不能包含重复项，因此当集合已包含该值时，将值添加到集合中不会产生任何效果：
+:::
 
 ```js
 let s = new Set(); // Start empty
@@ -105,9 +137,23 @@ There are a few important points to note about this code:
 - The `delete()` method also only deletes a single set element at a time. Unlike `add()`, however, `delete()` returns a boolean value. If the value you specify was actually a member of the set, then `delete()` removes it and returns `true`. Otherwise, it does nothing and returns `false`.
 - Finally, it is very important to understand that set membership is based on strict equality checks, like the `===` operator performs. A set can contain both the number 1 and the string "1", because it considers them to be distinct values. When the values are objects (or arrays or functions), they are also compared as if with `===`. This is why we were unable to delete the array element from the set in this code. We added an array to the set and then tried to remove that array by passing a different array (albeit with the same elements) to the `delete()` method. In order for this to work, we would have had to pass a reference to exactly the same array.
 
+::: tip 翻译
+这段代码有几个要点需要注意：
+
+- `add()` 方法采用单个参数； 如果传递一个数组，它会将数组本身添加到集合中，而不是单个数组元素。 然而，`add()` 总是返回调用它的集合，因此如果您想将多个值添加到集合中，可以使用链式方法调用，例如 `s.add('a').add('b' ).add('c');`.
+- `delete()` 方法也一次仅删除一个集合元素。 然而，与 `add()` 不同，`delete()` 返回一个布尔值。 如果您指定的值实际上是集合的成员，则 `delete()` 将删除它并返回 `true`。 否则，它不执行任何操作并返回 `false`。
+- 最后，了解集合成员资格基于严格的相等性检查非常重要，就像 `===` 运算符执行的那样。 集合可以同时包含数字 1 和字符串“1”，因为它认为它们是不同的值。 当值是对象（或数组或函数）时，它们也会像 `===` 一样进行比较。 这就是为什么我们无法从这段代码中的集合中删除数组元素。 我们向集合中添加了一个数组，然后尝试通过将另一个数组（尽管具有相同的元素）传递给 `delete()` 方法来删除该数组。 为了使其工作，我们必须传递对完全相同的数组的引用。
+  :::
+
 > Python programmers take note: this is a significant difference between JavaScript and Python sets. Python sets compare members for equality, not identity, but the trade-off is that Python sets only allow immutable members, like tuples, and do not allow lists and dicts to be added to sets.
 
+> Python 程序员请注意：这是 JavaScript 和 Python 集合之间的显着差异。 Python 集合比较成员的相等性，而不是同一性，但权衡是 Python 集合只允许不可变成员（例如元组），并且不允许将列表和字典添加到集合中。
+
 In practice, the most important thing we do with sets is not to add and remove elements from them, but to check to see whether a specified value is a member of the set. We do this with the `has()` method:
+
+::: tip 翻译
+在实践中，我们对集合所做的最重要的事情不是添加和删除其中的元素，而是检查指定值是否是集合的成员。 我们使用 `has()` 方法来做到这一点：
+:::
 
 ```js
 let oneDigitPrimes = new Set([2, 3, 5, 7]);
@@ -119,7 +165,15 @@ oneDigitPrimes.has("5"); // => false: '5' is not even a number
 
 The most important thing to understand about sets is that they are optimized for membership testing, and no matter how many members the set has, the `has()` method will be very fast. The `includes()` method of an array also performs membership testing, but the time it takes is proportional to the size of the array, and using an array as a set can be much, much slower than using a real Set object.
 
+::: tip 翻译
+关于集合最重要的一点是，它们针对成员资格测试进行了优化，无论集合有多少个成员，`has()` 方法都会非常快。 数组的 `includes()` 方法也执行成员资格测试，但所需的时间与数组的大小成正比，并且使用数组作为集合可能比使用真正的 `Set` 对象慢得多。
+:::
+
 The Set class is iterable, which means that you can use a `for/of` loop to enumerate all of the elements of a set:
+
+::: tip 翻译
+Set 类是可迭代的，这意味着您可以使用 `for/of` 循环来枚举集合的所有元素：
+:::
 
 ```js
 let sum = 0;
@@ -132,6 +186,10 @@ sum; // => 17: 2 + 3 + 5 + 7
 
 Because Set objects are iterable, you can convert them to arrays and argument lists with the `...` spread operator:
 
+::: tip 翻译
+由于 Set 对象是可迭代的，因此您可以使用 `...` 扩展运算符将它们转换为数组和参数列表：
+:::
+
 ```js
 [...oneDigitPrimes]; // => [2, 3, 5, 7]: the set converted to an Array
 Math.max(...oneDigitPrimes); // => 7: set elements passed as function arguments
@@ -139,7 +197,15 @@ Math.max(...oneDigitPrimes); // => 7: set elements passed as function arguments
 
 Sets are often described as “unordered collections.” This isn’t exactly true for the JavaScript Set class, however. A JavaScript set is unindexed: you can’t ask for the first or third element of a set the way you can with an array. But the JavaScript Set class always remembers the order that elements were inserted in, and it always uses this order when you iterate a set: the first element inserted will be the first one iterated (assuming you haven’t deleted it first), and the most recently inserted element will be the last one iterated.
 
+::: tip 翻译
+集合通常被描述为“无序集合”。 然而，对于 JavaScript Set 类来说，情况并非如此。 JavaScript 集合是无索引的：您不能像使用数组那样请求集合的第一个或第三个元素。 但是 JavaScript Set 类始终会记住元素插入的顺序，并且在迭代集合时它始终使用此顺序：插入的第一个元素将是第一个迭代的元素（假设您没有先删除它），并且 最近插入的元素将是最后一个迭代的元素。
+:::
+
 In addition to being iterable, the Set class also implements a `forEach()` method that is similar to the array method of the same name:
+
+::: tip 翻译
+除了可迭代之外，Set 类还实现了一个类似于同名数组方法的 `forEach()` 方法：
+:::
 
 ```js
 let product = 1;
@@ -151,11 +217,23 @@ product; // => 210: 2 * 3 * 5 * 7
 
 The `forEach()` of an array passes array indexes as the second argument to the function you specify. Sets don’t have indexes, so the Set class’s version of this method simply passes the element value as both the first and second argument.
 
-### The Map Class
+::: tip 翻译
+数组的 `forEach()` 方法将数组索引作为第二个参数传递给您指定的函数。 集合没有索引，因此该方法的 Set 类版本只是将元素值作为第一个和第二个参数传递。
+:::
+
+### Map 类
 
 A Map object represents a set of values known as _keys_, where each key has another value associated with (or “mapped to”) it. In a sense, a map is like an array, but instead of using a set of sequential integers as the keys, maps allow us to use arbitrary values as “indexes.” Like arrays, maps are fast: looking up the value associated with a key will be fast (though not as fast as indexing an array) no matter how large the map is.
 
+::: tip 翻译
+`Map` 对象表示一组称为 _keys_ 的值，其中每个键都有另一个与其关联（或“映射”）的值。 从某种意义上说，`map` 就像一个数组，但 `map` 允许我们使用任意值作为“索引”，而不是使用一组连续的整数作为键。 与数组一样，`map` 速度很快：无论 `map` 有多大，查找与键关联的值都会很快（尽管不如索引数组那么快）。
+:::
+
 Create a new map with the `Map()` constructor:
+
+::: tip 翻译
+使用 `Map()` 构造函数创建一个新的 `map`:
+:::
 
 ```js
 let m = new Map(); // Create a new, empty map
@@ -168,6 +246,10 @@ let n = new Map([
 
 The optional argument to the `Map()` constructor should be an iterable object that yields two element `[key, value]` arrays. In practice, this means that if you want to initialize a map when you create it, you’ll typically write out the desired keys and associated values as an array of arrays. But you can also use the `Map()` constructor to copy other maps or to copy the property names and values from an existing object:
 
+::: tip 翻译
+`Map()` 构造函数的可选参数应该是一个可迭代对象，它生成两个元素 `[key, value]` 数组。 实际上，这意味着如果您想在创建 `map` 时对其进行初始化，通常会将所需的键和关联值写为数组的数组。 但您也可以使用 `Map()` 构造函数来复制其他 `map` 或从现有对象复制属性名称和值：
+:::
+
 ```js
 let copy = new Map(n); // A new map with the same keys and values map n
 let o = { x: 1, y: 2 }; // An object with two properties
@@ -175,6 +257,10 @@ let p = new Map(Object.entries(o)); // Same as new map([['x', 1], ['y', 2]])
 ```
 
 Once you have created a Map object, you can query the value associated with a given key with `get()` and can add a new key/value pair with `set()`. Remember, though, that a map is a set of keys, each of which has an associated value. This is not quite the same as a set of key/value pairs. If you call `set()` with a key that already exists in the map, you will change the value associated with that key, not add a new key/value mapping. In addition to `get()` and `set()`, the Map class also defines methods that are like Set methods: use `has()` to check whether a map includes the specified key; use `delete()` to remove a key (and its associated value) from the map; use `clear()` to remove all key/value pairs from the map; and use the `size` property to find out how many keys a map contains.
+
+::: tip 翻译
+创建 `Map` 对象后，您可以使用 `get()` 查询与给定键关联的值，并可以使用 `set()` 添加新的键/值对。 但请记住，`map` 是一组键，每个键都有一个关联的值。 这与一组键/值对不太一样。 如果您使用 `map` 中已存在的键调用 `set()`，您将更改与该键关联的值，而不是添加新的键/值映射。 除了 `get()` 和 `set()` 之外，`Map` 类还定义了类似于 `Set` 方法的方法：使用 `has()` 来检查 `map` 是否包含指定的键； 使用 `delete()` 从 `map` 中删除键（及其关联值）； 使用 `clear()` 从 `map` 中删除所有键/值对； 并使用 `size` 属性来找出 `map` 包含多少个键。
+:::
 
 ```js
 let m = new Map(); // Start with an empty map
@@ -196,6 +282,10 @@ m.clear(); // Remove all keys and values from the map
 
 Like the `add()` method of Set, the `set()` method of Map can be chained, which allows maps to be initialized without using arrays of arrays:
 
+::: tip 翻译
+与 `Set` 的 `add()` 方法一样，`Map` 的 `set()` 方法可以链接，这允许在不使用数组的数组的情况下初始化映射：
+:::
+
 ```js
 let m = new Map().set("one", 1).set("two", 2).set("three", 3);
 m.size; // => 3
@@ -203,6 +293,10 @@ m.get("two"); // => 2
 ```
 
 As with Set, any JavaScript value can be used as a key or a value in a Map. This includes `null`, `undefined`, and `NaN`, as well as reference types like objects and arrays. And as with the Set class, Map compares keys by identity, not by equality, so if you use an object or array as a key, it will be considered different from every other object and array, even those with exactly the same properties or elements:
+
+::: tip 翻译
+与 `Set` 一样，任何 JavaScript 值都可以用作 `Map` 中的键或值。 这包括 `null`、 `undefined` 和 `NaN`，以及对象和数组等引用类型。 与 `Set` 类一样，`Map` 通过标识而不是相等来比较键，因此如果您使用对象或数组作为键，它将被视为与其他所有对象和数组不同，即使是那些具有完全相同的属性或元素的对象和数组 :
+:::
 
 ```js
 let m = new Map(); // Start with an empty map
@@ -216,6 +310,10 @@ m.get(m); // => undefined: same value we'd get if m wasn't a key
 ```
 
 Map objects are iterable, and each iterated value is a two-element array where the first element is a key and the second element is the value associated with that key. If you use the spread operator with a Map object, you’ll get an array of arrays like the ones that we passed to the `Map()` constructor. And when iterating a map with a `for/of` loop, it is idiomatic to use destructuring assignment to assign the key and value to separate variables:
+
+::: tip 翻译
+`Map` 对象是可迭代的，每个迭代值都是一个双元素数组，其中第一个元素是键，第二个元素是与该键关联的值。 如果您将展开运算符与 `Map` 对象一起使用，您将获得一个数组数组，就像我们传递给 `Map()` 构造函数的数组一样。 当使用 `for/of` 循环迭代 `map` 时，惯用的做法是使用解构赋值将键和值分配给单独的变量：
+:::
 
 ```js
 let m = new Map([
@@ -232,7 +330,15 @@ for (let [key, value] of m) {
 
 Like the Set class, the Map class iterates in insertion order. The first key/value pair iterated will be the one least recently added to the map, and the last pair iterated will be the one most recently added.
 
+::: tip 翻译
+与 `Set` 类一样，`Map` 类按插入顺序进行迭代。 迭代的第一个键/值对将是最先添加到 `map` 中的键/值对，迭代的最后一个键/值对将是最后添加的键/值对。
+:::
+
 If you want to iterate just the keys or just the associated values of a map, use the `keys()` and `values()` methods: these return iterable objects that iterate keys and values, in insertion order. (The `entries()` method returns an iterable object that iterates key/value pairs, but this is exactly the same as iterating the map directly.)
+
+::: tip 翻译
+如果您只想迭代映射的键或关联值，请使用 `keys()` 和 `values()` 方法：这些方法返回按插入顺序迭代键和值的可迭代对象。 （`entries()`方法返回一个迭代键/值对的可迭代对象，但这与直接迭代映射完全相同。）
+:::
 
 ```js
 [...m.keys()]; // => ['x', 'y']: just the keys
@@ -241,6 +347,10 @@ If you want to iterate just the keys or just the associated values of a map, use
 ```
 
 Map objects can also be iterated using the `forEach()` method that was first implemented by the Array class.
+
+::: tip 翻译
+还可以使用 Array 类首先实现的 `forEach()` 方法来迭代 `Map` 对象。
+:::
 
 ```js
 m.forEach((value, key) => {
@@ -252,9 +362,17 @@ m.forEach((value, key) => {
 
 It may seem strange that the value parameter comes before the key parameter in the code above, since with `for/of` iteration, the key comes first. As noted at the start of this section, you can think of a map as a generalized array in which integer array indexes are replaced with arbitrary key values. The `forEach()` method of arrays passes the array element first and the array index second, so, by analogy, the `forEach()` method of a map passes the map value first and the map key second.
 
-### WeakMap and WeakSet
+::: tip 翻译
+在上面的代码中，值参数出现在键参数之前可能看起来很奇怪，因为在 `for/of` 迭代中，键首先出现。 正如本节开头所述，您可以将 `map` 视为广义数组，其中整数数组索引被任意键值替换。 数组的 `forEach()` 方法首先传递数组元素，然后传递数组索引，因此，以此类推，`map` 的 `forEach()` 方法首先传递映射值，然后传递映射键。
+:::
+
+### WeakMap 和 WeakSet
 
 The WeakMap class is a variant (but not an actual subclass) of the Map class that does not prevent its key values from being garbage collected. Garbage collection is the process by which the JavaScript interpreter reclaims the memory of objects that are no longer “reachable” and cannot be used by the program. A regular map holds “strong” references to its key values, and they remain reachable through the map, even if all other references to them are gone. The WeakMap, by contrast, keeps “weak” references to its key values so that they are not reachable through the WeakMap, and their presence in the map does not prevent their memory from being reclaimed.
+
+::: tip 翻译
+`WeakMap` 类是 `Map` 类的变体（但不是实际的子类），它不会阻止其键值被垃圾收集。 垃圾收集是 JavaScript 解释器回收不再“可达”且程序无法使用的对象内存的过程。 常规 `map` 保留对其键值的“强”引用，并且即使对它们的所有其他引用都消失了，它们仍然可以通过 `map` 访问。 相比之下，`WeakMap` 保留对其键值的“弱”引用，以便无法通过 `WeakMap` 访问它们，并且它们在 `map` 中的存在不会阻止回收它们的内存。
+:::
 
 The `WeakMap()` constructor is just like the `Map()` constructor, but there are some significant differences between WeakMap and Map:
 
@@ -262,7 +380,19 @@ The `WeakMap()` constructor is just like the `Map()` constructor, but there are 
 - WeakMap implements only the `get()`, `set()`, `has()`, and `delete()` methods. In particular, WeakMap is not iterable and does not define `keys()`, `values()`, or `forEach()`. If WeakMap was iterable, then its keys would be reachable and it wouldn’t be weak.
 - Similarly, WeakMap does not implement the `size` property because the size of a WeakMap could change at any time as objects are garbage collected.
 
+::: tip 翻译
+`WeakMap()` 构造函数就像 `Map()` 构造函数一样，但 `WeakMap` 和 `Map` 之间有一些显着差异：
+
+- `WeakMap` 键必须是对象或数组； 原始值不受垃圾回收的影响，并且不能用作键。
+- `WeakMap` 仅实现 `get()`、`set()`、`has()` 和 `delete()` 方法。 特别是，`WeakMap` 是不可迭代的，并且没有定义 `keys()`、`values()` 或 `forEach()`。 如果 `WeakMap` 是可迭代的，那么它的键将是可访问的，并且它不会是弱的。
+- 类似地，`WeakMap` 也没有实现 `size` 属性，因为当对象被垃圾回收时，`WeakMap` 的大小可能随时发生变化。
+  :::
+
 The intended use of WeakMap is to allow you to associate values with objects without causing memory leaks. Suppose, for example, that you are writing a function that takes an object argument and needs to perform some time-consuming computation on that object. For efficiency, you’d like to cache the computed value for later reuse. If you use a Map object to implement the cache, you will prevent any of the objects from ever being reclaimed, but by using a WeakMap, you avoid this problem. (You can often achieve a similar result using a private Symbol property to cache the computed value directly on the object. See §6.10.3.)
+
+::: tip 翻译
+`WeakMap` 的预期用途是允许您将值与对象关联起来，而不会导致内存泄漏。 例如，假设您正在编写一个接受对象参数的函数，并且需要对该对象执行一些耗时的计算。 为了提高效率，您希望缓存计算值以供以后重用。 如果您使用 `Map` 对象来实现缓存，您将阻止任何对象被回收，但通过使用 `WeakMap`，您可以避免这个问题。 （您通常可以使用私有 `Symbol` 属性直接在对象上缓存计算值来获得类似的结果。请参阅第 6.10.3 节。）
+:::
 
 WeakSet implements a set of objects that does not prevent those objects from being garbage collected. The `WeakSet()` constructor works like the `Set()` constructor, but WeakSet objects differ from Set objects in the same ways that WeakMap objects differ from Map objects:
 
@@ -270,7 +400,19 @@ WeakSet implements a set of objects that does not prevent those objects from bei
 - WeakSet implements only the `add()`, `has()`, and `delete()` methods and is not iterable.
 - WeakSet does not have a `size` property.
 
+::: tip 翻译
+`WeakSet` 实现了一组不会阻止其成员被垃圾收集的对象。 `WeakSet()` 构造函数就像 `Set()` 构造函数一样，但 `WeakSet` 对象与 `Set` 对象的不同之处与 `WeakMap` 对象与 `Map` 对象的不同之处相同：
+
+- `WeakSet` 不允许原始值作为成员。
+- `WeakSet` 只实现了 `add()`,`has()` 和 `delete()` 方法，并且是不可迭代的。
+- `WeakSet` 没有 `size` 属性。
+  :::
+
 WeakSet is not frequently used: its use cases are like those for WeakMap. If you want to mark (or “brand”) an object as having some special property or type, for example, you could add it to a WeakSet. Then, elsewhere, when you want to check for that property or type, you can test for membership in that WeakSet. Doing this with a regular set would prevent all marked objects from being garbage collected, but this is not a concern when using WeakSet.
+
+::: tip 翻译
+`WeakSet` 并不经常使用：它的用例与 `WeakMap` 类似。 例如，如果您想将一个对象标记（或“标记”）为具有某些特殊属性或类型，您可以将其添加到 `WeakSet` 中。 然后，在其他地方，当您想要检查该属性或类型时，可以测试该 `WeakSet` 中的成员资格。 使用常规集合执行此操作将阻止所有标记的对象被垃圾收集，但在使用 `WeakSet` 时这不是问题。
+:::
 
 ## Typed Arrays and Binary Data
 
