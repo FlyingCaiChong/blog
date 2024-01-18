@@ -2,9 +2,13 @@
 title: 第十一章 JavaScript 标准库
 ---
 
-# Chapter 11 The JavaScript Standard Library
+# JavaScript 标准库
 
-Some datatypes, such as numbers and strings (**Chapter 3**), objects (**Chapter 6**), and arrays (**Chapter 7**) are so fundamental to JavaScript that we can consider them to be part of the language itself. This chapter covers other important but less fundamental APIs that can be thought of as defining the “standard library” for JavaScript: these are useful classes and functions that are built in to JavaScript and available to all JavaScript programs in both web browsers and in Node.
+Some datatypes, such as numbers and strings ([Chapter 3](./Chapter-03-Types_Values_Variables.md)), objects ([Chapter 6](./Chapter-06-Objects.md)), and arrays ([Chapter 7](./Chapter-07-Arrays.md)) are so fundamental to JavaScript that we can consider them to be part of the language itself. This chapter covers other important but less fundamental APIs that can be thought of as defining the “standard library” for JavaScript: these are useful classes and functions that are built in to JavaScript and available to all JavaScript programs in both web browsers and in Node.
+
+::: tip 翻译
+一些数据类型，例如数字和字符串（[第 3 章](./Chapter-03-Types_Values_Variables.md)）、对象（[第 6 章](./Chapter-06-Objects.md)）和数组（[第 7 章](./Chapter-07-Arrays.md)）对于 JavaScript 来说非常基础，我们可以将它们视为 JavaScript 语言本身的一部分 。 本章涵盖了其他重要但不太基础的 API，它们可以被视为定义 JavaScript 的“标准库”：这些是内置于 JavaScript 中的有用的类和函数，可供 Web 浏览器和 Node.js 中的所有 JavaScript 程序使用。
+:::
 
 The sections of this chapter are independent of one another, and you can read them in any order. They cover:
 
@@ -19,7 +23,26 @@ The sections of this chapter are independent of one another, and you can read th
 - The URL class, which simplifies the task of parsing and manipulating URLs. This section also covers global functions for encoding and decoding URLs and their component parts.
 - `setTimeout()` and related functions for specifying code to be executed after a specified interval of time has elapsed.
 
+::: tip 翻译
+本章的各个部分是相互独立的，您可以按任意顺序阅读它们。 它们涵盖：
+
+- Set 和 Map 类用于表示值的集合和从一组值到另一组值的映射。
+- 称为 TypedArray 的类数组对象，表示二进制数据数组，以及用于从非数组二进制数据中提取值的相关类。
+- 正则表达式和 RegExp 类，它们定义文本模式并且对于文本处理很有用。 本节还详细介绍了正则表达式语法。
+- 用于表示和操作日期和时间的 Date 类。
+- Error 类及其各种子类，当 JavaScript 程序中发生错误时会抛出该类的实例。
+- JSON 对象，其方法支持由对象、数组、字符串、数字和布尔值组成的 JavaScript 数据结构的序列化和反序列化。
+- Intl 对象及其定义的类可以帮助您本地化 JavaScript 程序。
+- Console 对象，其方法以对于调试程序和记录这些程序的行为特别有用的方式输出字符串。
+- URL 类，简化了解析和操作 URL 的任务。 本节还介绍了用于编码和解码 URL 及其组成部分的全局函数。
+- `setTimeout()` 和相关函数，用于指定在指定时间间隔之后要执行的代码。
+  :::
+
 Some of the sections in this chapter—notably, the sections on typed arrays and regular expressions—are quite long because there is significant background information you need to understand before you can use those types effectively. Many of the other sections, however, are short: they simply introduce a new API and show some examples of its use.
+
+::: tip 翻译
+本章中的某些部分（特别是有关类型化数组和正则表达式的部分）相当长，因为在有效使用这些类型之前，您需要了解重要的背景信息。 然而，许多其他部分都很简短：它们只是介绍了一个新的 API 并展示了它的一些使用示例。
+:::
 
 ## Sets and Maps
 
