@@ -414,7 +414,7 @@ WeakSet is not frequently used: its use cases are like those for WeakMap. If you
 `WeakSet` 并不经常使用：它的用例与 `WeakMap` 类似。 例如，如果您想将一个对象标记（或“标记”）为具有某些特殊属性或类型，您可以将其添加到 `WeakSet` 中。 然后，在其他地方，当您想要检查该属性或类型时，可以测试该 `WeakSet` 中的成员资格。 使用常规集合执行此操作将阻止所有标记的对象被垃圾收集，但在使用 `WeakSet` 时这不是问题。
 :::
 
-## Typed Arrays and Binary Data
+## 类型化数组和二进制数据
 
 Regular JavaScript arrays can have elements of any type and can grow or shrink dynamically. JavaScript implementations perform lots of optimizations so that typical uses of JavaScript arrays are very fast. Nevertheless, they are still quite different from the array types of lower-level languages like C and Java. _Typed arrays_, which are new in ES6, are much closer to the low-level arrays of those languages. Typed arrays are not technically arrays (`Array.isArray()` returns false for them), but they implement all of the array methods described in §7.8 plus a few more of their own. They differ from regular arrays in some very important ways, however:
 
@@ -422,9 +422,21 @@ Regular JavaScript arrays can have elements of any type and can grow or shrink d
 - You must specify the length of a typed array when you create it, and that length can never change.
 - The elements of a typed array are always initialized to 0 when the array is created.
 
-### Typed Array Types
+::: tip 翻译
+常规 JavaScript 数组可以包含任何类型的元素，并且可以动态增长或收缩。 JavaScript 实现执行了大量优化，因此 JavaScript 数组的典型使用速度非常快。 尽管如此，它们与 C、Java 等低级语言的数组类型仍然有很大不同。 ES6 中新增的 _类型化数组_ 更接近这些语言的低级数组。 从技术上讲，类型化数组不是数组（`Array.isArray()` 为它们返回 false），但它们实现了第 7.8 节中描述的所有数组方法以及它们自己的一些方法。 然而，它们在一些非常重要的方面与常规数组不同：
+
+- 类型化数组的元素都是数字。 然而，与常规 JavaScript 数字不同，类型化数组允许您指定要存储在数组中的数字的类型（有符号和无符号整数以及 IEEE-754 浮点）和大小（8 位到 64 位）。
+- 创建类型化数组时必须指定其长度，并且该长度永远不能更改。
+- 创建数组时，类型化数组的元素始终初始化为 0。
+  :::
+
+### 类型化数组类型
 
 JavaScript does not define a TypedArray class. Instead, there are 11 kinds of typed arrays, each with a different element type and constructor:
+
+::: tip 翻译
+JavaScript 没有定义 TypedArray 类。 相反，有 11 种类型化数组，每种都有不同的元素类型和构造函数：
+:::
 
 | Constructor         | Numeric type                                             |
 | ------------------- | -------------------------------------------------------- |
@@ -440,15 +452,31 @@ JavaScript does not define a TypedArray class. Instead, there are 11 kinds of ty
 | Float32Array()      | 32-bit floating-point value                              |
 | Float64Array()      | 64-bit floating-point value: a regular JavaScript number |
 
-The types whose names begin with `Int` hold signed integers, of 1, 2, or 4 bytes (8, 16, or 32 bits). The types whose names begin with `Uint` hold unsigned integers of those same lengths. The “BigInt” and “BigUint” types hold 64-bit integers, represented in JavaScript as BigInt values (see §3.2.5). The types that begin with `Float` hold floatingpoint numbers. The elements of a `Float64Array` are of the same type as regular JavaScript numbers. The elements of a `Float32Array` have lower precision and a smaller range but require only half the memory. (This type is called `float` in C and Java.)
+The types whose names begin with `Int` hold signed integers, of 1, 2, or 4 bytes (8, 16, or 32 bits). The types whose names begin with `Uint` hold unsigned integers of those same lengths. The “BigInt” and “BigUint” types hold 64-bit integers, represented in JavaScript as BigInt values (see §3.2.5). The types that begin with `Float` hold floating point numbers. The elements of a `Float64Array` are of the same type as regular JavaScript numbers. The elements of a `Float32Array` have lower precision and a smaller range but require only half the memory. (This type is called `float` in C and Java.)
+
+::: tip 翻译
+名称以 `Int` 开头的类型包含 1、2 或 4 字节（8、16 或 32 位）的有符号整数。 名称以 `Uint` 开头的类型保存相同长度的无符号整数。 `BigInt` 和 `BigUint` 类型保存 64 位整数，在 JavaScript 中表示为 `BigInt` 值（请参见第 3.2.5 节）。 以 `Float` 开头的类型保存浮点数。 `Float64Array` 的元素与常规 JavaScript 数字具有相同的类型。 `Float32Array` 的元素具有较低的精度和较小的范围，但只需要一半的内存。 （这种类型在 C 和 Java 中称为 `float`。）
+:::
 
 `Uint8ClampedArray` is a special-case variant on `Uint8Array`. Both of these types hold unsigned bytes and can represent numbers between 0 and 255. With `Uint8Array`, if you store a value larger than 255 or less than zero into an array element, it “wraps around,” and you get some other value. This is how computer memory works at a low level, so this is very fast. `Uint8ClampedArray` does some extra type checking so that, if you store a value greater than 255 or less than 0, it “clamps” to 255 or 0 and does not wrap around. (This clamping behavior is required by the HTML `<canvas>` element’s low-level API for manipulating pixel colors.)
 
+::: tip 翻译
+`Uint8ClampedArray` 是 `Uint8Array` 的一个特殊变体。 这两种类型都保存无符号字节，可以表示 0 到 255 之间的数字。使用 `Uint8Array`，如果您将大于 255 或小于零的值存储到数组元素中，它会“环绕”，并且您会得到一些其他值 。 这就是计算机内存在低级别上的工作方式，因此速度非常快。 `Uint8ClampedArray` 会进行一些额外的类型检查，这样，如果您存储大于 255 或小于 0 的值，它会“钳位”到 255 或 0 并且不会回绕。 （HTML `<canvas>` 元素的低级 API 需要这种夹紧行为来操作像素颜色。）
+:::
+
 Each of the typed array constructors has a `BYTES_PER_ELEMENT` property with the value 1, 2, 4, or 8, depending on the type.
 
-### Creating Typed Arrays
+::: tip 翻译
+每个类型化数组构造函数都有一个 `BYTES_PER_ELEMENT` 属性，其值为 1、2、4 或 8，具体取决于类型。
+:::
+
+### 创建类型化数组
 
 The simplest way to create a typed array is to call the appropriate constructor with one numeric argument that specifies the number of elements you want in the array:
+
+::: tip 翻译
+创建类型化数组的最简单方法是使用一个数字参数调用适当的构造函数，该数字参数指定数组中所需元素的数量：
+:::
 
 ```js
 let bytes = new Uint8Array(1024); // 1024 bytes
@@ -460,19 +488,35 @@ let sudoku = new Int8Array(81); // A 9x9 sudoku board
 
 When you create typed arrays in this way, the array elements are all guaranteed to be initialized to `0`, `0n`, or `0.0`. But if you know the values you want in your typed array, you can also specify those values when you create the array. Each of the typed array constructors has static `from()` and `of()` factory methods that work like `Array.from()` and `Array.of()`:
 
+::: tip 翻译
+当您以这种方式创建类型化数组时，数组元素都保证被初始化为 `0`、`0n` 或 `0.0`。 但是，如果您知道类型化数组中所需的值，则也可以在创建数组时指定这些值。 每个类型化数组构造函数都有静态`from()` 和 `of()` 工厂方法，其工作方式类似于 `Array.from()` 和 `Array.of()`：
+:::
+
 ```js
 let white = Uint8ClampedArray.of(255, 255, 255, 0); // RGBA opaque white
 ```
 
-Recall that the `Array.from()` factory method expects an array-like or iterable object as its first argument. The same is `true` for the typed array variants, except that the iterable or array-like object must also have numeric elements. Strings are iterable, for example, but it would make no sense to pass them to the `from()` factory method of a typed array.
+Recall that the `Array.from()` factory method expects an array-like or iterable object as its first argument. The same is true for the typed array variants, except that the iterable or array-like object must also have numeric elements. Strings are iterable, for example, but it would make no sense to pass them to the `from()` factory method of a typed array.
+
+::: tip 翻译
+回想一下，`Array.from()` 工厂方法需要一个类似数组或可迭代的对象作为其第一个参数。 对于类型化数组变体来说，也是如此，只是可迭代或类似数组的对象也必须具有数字元素。 例如，字符串是可迭代的，但将它们传递给类型化数组的 `from()` 工厂方法是没有意义的。
+:::
 
 If you are just using the one-argument version of `from()`, you can drop the `.from` and pass your iterable or array-like object directly to the constructor function, which behaves exactly the same. Note that both the constructor and the `from()` factory method allow you to copy existing typed arrays, while possibly changing the type:
+
+::: tip 翻译
+如果您仅使用 `from()` 的单参数版本，则可以删除 `.from` 并将可迭代或类似数组的对象直接传递给构造函数，其行为完全相同。 请注意，构造函数和 `from()` 工厂方法都允许您复制现有的类型化数组，同时可能更改类型：
+:::
 
 ```js
 let ints = Uint32Array.from(white); // The same 4 numbers, but as ints
 ```
 
 When you create a new typed array from an existing array, iterable, or array-like object, the values may be truncated in order to fit the type constraints of your array. There are no warnings or errors when this happens:
+
+::: tip 翻译
+当您从现有数组、可迭代或类似数组的对象创建新的类型化数组时，这些值可能会被截断以适应数组的类型约束。 发生这种情况时不会出现警告或错误：
+:::
 
 ```js
 // Floats truncated to ints, longer ints truncated to 8 bits
@@ -481,6 +525,10 @@ Uint8Array.of(1.23, 2.99, 45000); // => new Uint8Array([1, 2, 200])
 
 Finally, there is one more way to create typed arrays that involves the ArrayBuffer type. An ArrayBuffer is an opaque reference to a chunk of memory. You can create one with the constructor; just pass in the number of bytes of memory you’d like to allocate:
 
+::: tip 翻译
+最后，还有另一种创建类型化数组的方法，涉及 `ArrayBuffer` 类型。 `ArrayBuffer` 是对内存块的不透明引用。 您可以使用构造函数创建一个； 只需传入您想要分配的内存字节数：
+:::
+
 ```js
 let buffer = new ArrayBuffer(1024 * 1024);
 buffer.byteLength; // => 1024*1024; one megabyte of memory
@@ -488,7 +536,15 @@ buffer.byteLength; // => 1024*1024; one megabyte of memory
 
 The ArrayBuffer class does not allow you to read or write any of the bytes that you have allocated. But you can create typed arrays that use the buffer’s memory and that do allow you to read and write that memory. To do this, call the typed array constructor with an ArrayBuffer as the first argument, a byte offset within the array buffer as the second argument, and the array length (in elements, not in bytes) as the third argument. The second and third arguments are optional. If you omit both, then the array will use all of the memory in the array buffer. If you omit only the length argument, then your array will use all of the available memory between the start position and the end of the array. One more thing to bear in mind about this form of the typed array constructor: arrays must be memory aligned, so if you specify a byte offset, the value should be a multiple of the size of your type. The `Int32Array()` constructor requires a multiple of four, for example, and the `Float64Array()` requires a multiple of eight.
 
+::: tip 翻译
+`ArrayBuffer` 类不允许您读取或写入已分配的任何字节。 但是您可以创建使用缓冲区内存的类型化数组，并且允许您读取和写入该内存。 为此，请使用 `ArrayBuffer` 作为第一个参数、数组缓冲区内的字节偏移量作为第二个参数以及数组长度（以元素为单位，而不是以字节为单位）作为第三个参数来调用类型化数组构造函数。 第二个和第三个参数是可选的。 如果省略两者，则数组将使用数组缓冲区中的所有内存。 如果仅省略长度参数，则数组将使用数组起始位置和末尾之间的所有可用内存。 关于这种形式的类型化数组构造函数，还要记住一件事：数组必须是内存对齐的，因此如果指定字节偏移量，则该值应该是类型大小的倍数。 例如，`Int32Array()` 构造函数需要四的倍数，而 `Float64Array()` 则需要八的倍数。
+:::
+
 Given the ArrayBuffer created earlier, you could create typed arrays like these:
+
+::: tip 翻译
+鉴于之前创建的 `ArrayBuffer`，您可以创建如下所示的类型化数组：
+:::
 
 ```js
 let asbytes = new Uint8Array(buffer); // Viewed as bytes
@@ -499,9 +555,17 @@ let ints2 = new Int32Array(buffer, 1024, 256); // 2nd kilobyte as 256 integers
 
 These four typed arrays offer four different views into the memory represented by the ArrayBuffer. It is important to understand that all typed arrays have an underlying ArrayBuffer, even if you do not explicitly specify one. If you call a typed array constructor without passing a buffer object, a buffer of the appropriate size will be automatically created. As described later, the `buffer` property of any typed array refers to its underlying ArrayBuffer object. The reason to work directly with ArrayBuffer objects is that sometimes you may want to have multiple typed array views of a single buffer.
 
-### Using Typed Arrays
+::: tip 翻译
+这四个类型化数组为 `ArrayBuffer` 所表示的内存提供了四种不同的视图。 重要的是要理解所有类型化数组都有一个底层 `ArrayBuffer`，即使您没有显式指定它也是如此。 如果调用类型化数组构造函数而不传递缓冲区对象，则会自动创建适当大小的缓冲区。 如下所述，任何类型化数组的 `buffer` 属性均指其底层 `ArrayBuffer` 对象。 直接使用 `ArrayBuffer` 对象的原因是有时您可能希望拥有单个缓冲区的多个类型化数组视图。
+:::
+
+### 使用类型化数组
 
 Once you have created a typed array, you can read and write its elements with regular square-bracket notation, just as you would with any other array-like object:
+
+::: tip 翻译
+创建类型化数组后，您可以使用常规方括号表示法读取和写入其元素，就像处理任何其他类似数组的对象一样：
+:::
 
 ```js
 // Return the largest prime smaller than n, using the sieve of Eratosthenes
@@ -524,7 +588,15 @@ function sieve(n) {
 
 The function here computes the largest prime number smaller than the number you specify. The code is exactly the same as it would be with a regular JavaScript array, but using `Uint8Array()` instead of `Array()` makes the code run more than four times faster and use eight times less memory in my testing.
 
+::: tip 翻译
+这里的函数计算小于您指定的数字的最大素数。 该代码与常规 JavaScript 数组完全相同，但在我的测试中使用 `Uint8Array()` 而不是 `Array()` 使代码运行速度提高四倍以上，并且使用的内存减少八倍。
+:::
+
 Typed arrays are not true arrays, but they re-implement most array methods, so you can use them pretty much just like you’d use regular arrays:
+
+::: tip 翻译
+类型化数组不是真正的数组，但它们重新实现了大多数数组方法，因此您可以像使用常规数组一样使用它们：
+:::
 
 ```js
 let ints = new Int16Array(10); // 10 short integers
@@ -534,11 +606,19 @@ ints
   .join(""); // => '9999999999'
 ```
 
-Remember that typed arrays have fixed lengths, so the `length` property is read-only, and methods that change the length of the array (such as `push()`, `pop()`, `unshift()`, `shift()`, and `splice()`) are not implemented for typed arrays. Methods that alter the contents of an array without changing the length (such as `sort()`, `reverse()`, and `fill()`) are implemented. Methods like `map()` and `slice()` that return new arrays return a typed array of the same type as the one they are called on
+Remember that typed arrays have fixed lengths, so the `length` property is read-only, and methods that change the length of the array (such as `push()`, `pop()`, `unshift()`, `shift()`, and `splice()`) are not implemented for typed arrays. Methods that alter the contents of an array without changing the length (such as `sort()`, `reverse()`, and `fill()`) are implemented. Methods like `map()` and `slice()` that return new arrays return a typed array of the same type as the one they are called on.
 
-### Typed Array Methods and Properties
+::: tip 翻译
+请记住，类型化数组具有固定长度，因此 `length` 属性是只读的，以及更改数组长度的方法（例如 `push()`、`pop()`、`unshift()`、`shift()` 和 `splice()`) 没有针对类型化数组实现。 实现了更改数组内容而不更改长度的方法（例如 `sort()`、`reverse()` 和 `fill()`）。 像 `map()` 和 `slice()` 这样返回新数组的方法会返回一个与调用它们的类型相同的类型化数组。
+:::
+
+### 类型化数组的方法和属性
 
 In addition to standard array methods, typed arrays also implement a few methods of their own. The `set()` method sets multiple elements of a typed array at once by copying the elements of a regular or typed array into a typed array:
+
+::: tip 翻译
+除了标准数组方法之外，类型化数组还实现了一些自己的方法。 `set()` 方法通过将常规或类型化数组的元素复制到类型化数组中来一次设置类型化数组的多个元素：
+:::
 
 ```js
 let bytes = new Uint8Array(1024); // A 1k buffer
@@ -551,7 +631,15 @@ bytes.slice(0, 12); // => new Uint8Array([0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3])
 
 The `set()` method takes an array or typed array as its first argument and an element offset as its optional second argument, which defaults to 0 if left unspecified. If you are copying values from one typed array to another, the operation will likely be extremely fast.
 
+::: tip 翻译
+`set()` 方法将数组或类型化数组作为其第一个参数，将元素偏移量作为其可选的第二个参数，如果未指定，则默认为 0。 如果将值从一个类型化数组复制到另一个类型化数组，则操作可能会非常快。
+:::
+
 Typed arrays also have a subarray method that returns a portion of the array on which it is called:
+
+::: tip 翻译
+类型化数组还有一个子数组方法，它返回调用它的数组的一部分：
+:::
 
 ```js
 let ints = new Int16Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]); // 10 short integers
@@ -561,12 +649,20 @@ last3[0]; // => 7: this is the same as ints[7]
 
 `subarray()` takes the same arguments as the `slice()` method and seems to work the same way. But there is an important difference. `slice()` returns the specified elements in a new, independent typed array that does not share memory with the original array. `subarray()` does not copy any memory; it just returns a new view of the same underlying values:
 
+::: tip 翻译
+`subarray()` 采用与 `slice()` 方法相同的参数，并且似乎以相同的方式工作。 但有一个重要的区别。 `slice()` 返回一个新的独立类型数组中的指定元素，该数组不与原始数组共享内存。 `subarray()` 不会复制任何内存； 它只是返回相同基础值的新视图：
+:::
+
 ```js
 ints[9] = -1; // Change a value in the original array and...
 last3[2]; // => -1: it also changes in the subarray
 ```
 
 The fact that the `subarray()` method returns a new view of an existing array brings us back to the topic of ArrayBuffers. Every typed array has three properties that relate to the underlying buffer:
+
+::: tip 翻译
+事实上，`subarray()` 方法返回现有数组的新视图，这让我们回到了 `ArrayBuffers` 的主题。 每个类型化数组都具有与底层缓冲区相关的三个属性：
+:::
 
 ```js
 last3.buffer; // The ArrayBuffer object for a typed array
@@ -578,11 +674,19 @@ last3.buffer.byteLength; // => 20: but the underlying buffer has 20 bytes
 
 The `buffer` property is the ArrayBuffer of the array. `byteOffset` is the starting position of the array’s data within the underlying buffer. And `byteLength` is the length of the array’s data in bytes. For any typed array, a, this invariant should always be true:
 
+::: tip 翻译
+`buffer` 属性是数组的 `ArrayBuffer`。 `byteOffset` 是底层缓冲区中数组数据的起始位置。 `byteLength` 是数组数据的长度（以字节为单位）。 对于任何类型化数组 `a`，这个不变量应该始终为 `true：`
+:::
+
 ```js
 a.length * a.BYTES_PER_ELEMENT === a.byteLength; // => true
 ```
 
 ArrayBuffers are just opaque chunks of bytes. You can access those bytes with typed arrays, but an ArrayBuffer is not itself a typed array. Be careful, however: you can use numeric array indexing with ArrayBuffers just as you can with any JavaScript object. Doing so does not give you access to the bytes in the buffer, but it can cause confusing bugs:
+
+::: tip 翻译
+`ArrayBuffers` 只是不透明的字节块。 您可以使用类型化数组访问这些字节，但 `ArrayBuffer` 本身并不是类型化数组。 但要小心：您可以将数字数组索引与 `ArrayBuffer` 一起使用，就像对任何 JavaScript 对象一样。 这样做不会让您访问缓冲区中的字节，但可能会导致令人困惑的错误：
+:::
 
 ```js
 let bytes = new Uint8Array(8);
@@ -595,15 +699,23 @@ bytes[1]; // => 0: this line above did not set the byte
 
 We saw previously that you can create an ArrayBuffer with the `ArrayBuffer()` constructor and then create typed arrays that use that buffer. Another approach is to create an initial typed array, then use the buffer of that array to create other views:
 
+::: tip 翻译
+我们之前看到，您可以使用 `ArrayBuffer()` 构造函数创建 `ArrayBuffer`，然后创建使用该缓冲区的类型化数组。 另一种方法是创建一个初始类型数组，然后使用该数组的缓冲区来创建其他视图：
+:::
+
 ```js
 let bytes = new Uint8Array(1024);
 let ints = new Uint32Array(bytes.buffer); // or 256 integers
 let floats = new Float64Array(bytes.buffer); // or 128 doubles
 ```
 
-### DataView and Endianness
+### DataView 和 字节顺序
 
 Typed arrays allow you to view the same sequence of bytes in chunks of 8, 16, 32, or 64 bits. This exposes the “endianness”: the order in which bytes are arranged into longer words. For efficiency, typed arrays use the native endianness of the underlying hardware. On little-endian systems, the bytes of a number are arranged in an ArrayBuffer from least significant to most significant. On big-endian platforms, the bytes are arranged from most significant to least significant. You can determine the endianness of the underlying platform with code like this:
+
+::: tip 翻译
+类型化数组允许您以 8、16、32 或 64 位块的形式查看相同的字节序列。 这暴露了“字节顺序”：字节排列成较长单词的顺序。 为了提高效率，类型化数组使用底层硬件的本机字节序。 在小端系统上，数字的字节按照从最低有效位到最高有效位的顺序排列在 `ArrayBuffer` 中。 在大端平台上，字节按从最高有效到最低有效的顺序排列。 您可以使用如下代码确定底层平台的字节序：
+:::
 
 ```js
 // If the integer 0x00000001 is arranged in memory as 01 00 00 00, then
@@ -613,6 +725,10 @@ let littleEndian = new Int8Array(new Int32Array([1]).buffer)[0] === 1;
 ```
 
 Today, the most common CPU architectures are little-endian. Many network protocols, and some binary file formats, require big-endian byte ordering, however. If you’re using typed arrays with data that came from the network or from a file, you can’t just assume that the platform endianness matches the byte order of the data. In general, when working with external data, you can use Int8Array and Uint8Array to view the data as an array of individual bytes, but you should not use the other typed arrays with multibyte word sizes. Instead, you can use the DataView class, which defines methods for reading and writing values from an ArrayBuffer with explicitly specified byte ordering:
+
+::: tip 翻译
+如今，最常见的 CPU 架构是小端的。 然而，许多网络协议和一些二进制文件格式需要大端字节顺序。 如果您将类型化数组与来自网络或文件的数据一起使用，则不能仅仅假设平台字节顺序与数据的字节顺序匹配。 通常，在处理外部数据时，可以使用 `Int8Array` 和 `Uint8Array` 将数据视为单个字节的数组，但不应使用具有多字节字大小的其他类型数组。 相反，您可以使用 `DataView` 类，它定义了从具有显式指定字节顺序的 `ArrayBuffer` 中读取和写入值的方法：
+:::
 
 ```js
 // Assume we have a typed array of bytes of binary data to process. First,
@@ -628,9 +744,21 @@ view.setUint32(8, int, false); // Write it back in big-endian format
 
 DataView defines 10 get methods for each of the 10 typed array classes (excluding Uint8ClampedArray). They have names like `getInt16()`, `getUint32()`, `getBigInt64()`, and `getFloat64()`. The first argument is the byte offset within the ArrayBuffer at which the value begins. All of these getter methods, other than `getInt8()` and `getUint8()`, accept an optional boolean value as their second argument. If the second argument is omitted or is `false`, big-endian byte ordering is used. If the second argument is `true`, little-endian ordering is used.
 
+::: tip 翻译
+`DataView` 为 10 个类型化数组类（不包括 `Uint8ClampedArray`）中的每一个定义了 10 个 `get` 方法。 它们的名称包括 `getInt16()`、 `getUint32()`、`getBigInt64()`和`getFloat64()`。 第一个参数是 `ArrayBuffer` 中值开始的字节偏移量。 除了 `getInt8()` 和 `getUint8()` 之外，所有这些 `getter` 方法都接受可选的布尔值作为其第二个参数。 如果第二个参数被省略或者为 `false`，则使用大端字节顺序。 如果第二个参数为 `true`，则使用小端排序。
+:::
+
 DataView also defines 10 corresponding Set methods that write values into the underlying ArrayBuffer. The first argument is the offset at which the value begins. The second argument is the value to write. Each of the methods, except `setInt8()` and `setUint8()`, accepts an optional third argument. If the argument is omitted or is `false`, the value is written in big-endian format with the most significant byte first. If the argument is `true`, the value is written in little-endian format with the least significant byte first.
 
+::: tip 翻译
+`DataView` 还定义了 10 个相应的 `Set` 方法，用于将值写入底层 `ArrayBuffer`。 第一个参数是值开始的偏移量。 第二个参数是要写入的值。 除了 `setInt8()` 和 `setUint8()` 之外，每个方法都接受可选的第三个参数。 如果参数被省略或为 `false`，则该值将以大端格式写入，最高有效字节在前。 如果参数为 `true`，则该值将以小端格式写入，最低有效字节在前。
+:::
+
 Typed arrays and the DataView class give you all the tools you need to process binary data and enable you to write JavaScript programs that do things like decompressing ZIP files or extracting metadata from JPEG files.
+
+::: tip 翻译
+类型化数组和 `DataView` 类为您提供了处理二进制数据所需的所有工具，并使您能够编写 JavaScript 程序来执行解压缩 ZIP 文件或从 JPEG 文件中提取元数据等操作。
+:::
 
 ## Pattern Matching with Regular Expressions
 
