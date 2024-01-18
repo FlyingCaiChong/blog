@@ -1216,5 +1216,555 @@ let copy = JSON.parse(s); // copy == {s: "", n: 0, a: [true, false, null]}
 If we leave out the part where serialized data is saved to a file or sent over the network, we can use this pair of functions as a somewhat inefficient way of creating a deep copy of an object:
 
 ```js
-
+// Make a deep copy of any serializable object or array
+function deepcopy(o) {
+  return JSON.parse(JSON.stringify(o));
+}
 ```
+
+> **JSON Is a Subset of JavaScript**
+>
+> When data is serialized to JSON format, the result is valid JavaScript source code for an expression that evaluates to a copy of the original data structure. If you prefix a JSON string with `var data =` and pass the result to `eval()`, you’ll get a copy of the original data structure assigned to the variable data. You should never do this, however, because it is a huge security hole—if an attacker could inject arbitrary JavaScript code into a JSON file, they could make your program run their code. It is faster and safer to just use `JSON.parse()` to decode JSON-formatted data.
+>
+> JSON is sometimes used as a human-readable configuration file format. If you find yourself hand-editing a JSON file, note that the JSON format is a very strict subset of JavaScript. Comments are not allowed and property names must be enclosed in double quotes even when JavaScript would not require this.
+
+Typically, you pass only a single argument to `JSON.stringify()` and `JSON.parse()`. Both functions accept an optional second argument that allows us to extend the JSON format, and these are described next. `JSON.stringify()` also takes an optional third argument that we’ll discuss first. If you would like your JSON-formatted string to be human-readable (if it is being used as a configuration file, for example), then you should pass null as the second argument and pass a number or string as the third argument. This third argument tells `JSON.stringify()` that it should format the data on multiple indented lines. If the third argument is a number, then it will use that number of spaces for each indentation level. If the third argument is a string of whitespace (such as '\t'), it will use that string for each level of indent.
+
+```js
+let o = {
+  s: "test",
+  n: 0,
+};
+JSON.stringify(o, null, 2); // => '{\n "s": "test",\n "n": 0\n}'
+```
+
+`JSON.parse()` ignores whitespace, so passing a third argument to `JSON.stringify()` has no impact on our ability to convert the string back into a data structure.
+
+### JSON Customizations
+
+If `JSON.stringify()` is asked to serialize a value that is not natively supported by the JSON format, it looks to see if that value has a `toJSON()` method, and if so, it calls that method and then stringifies the return value in place of the original value. Date objects implement `toJSON()`: it returns the same string that `toISOString()` method does. This means that if you serialize an object that includes a Date, the date will automatically be converted to a string for you. When you parse the serialized string, the re-created data structure will not be exactly the same as the one you started with because it will have a string where the original object had a Date.
+
+If you need to re-create Date objects (or modify the parsed object in any other way), you can pass a “reviver” function as the second argument to `JSON.parse()`. If specified, this “reviver” function is invoked once for each primitive value (but not the objects or arrays that contain those primitive values) parsed from the input string. The function is invoked with two arguments. The first is a property name—either an object property name or an array index converted to a string. The second argument is the primitive value of that object property or array element. Furthermore, the function is invoked as a method of the object or array that contains the primitive value, so you can refer to that containing object with the `this` keyword.
+
+The return value of the reviver function becomes the new value of the named property. If it returns its second argument, the property will remain unchanged. If it returns `undefined`, then the named property will be deleted from the object or array before `JSON.parse()` returns to the user.
+
+As an example, here is a call to `JSON.parse()` that uses a reviver function to filter some properties and to re-create Date objects:
+
+```js
+let data = JSON.parse(text, function (key, value) {
+  // Remove any values whose property name begins with an underscore
+  if (key[0] === "_") {
+    return undefined;
+  }
+
+  // If the value is a string in ISO 8601 date format convert it to a Date
+  if (
+    typeof value === "string" &&
+    /^\d\d\d\d-\d\dT\d\d:\d\d.\d\d\dZ$/.test(value)
+  ) {
+    return new Date(value);
+  }
+
+  // Otherwise, return the value unchanged
+  return value;
+});
+```
+
+In addition to its use of `toJSON()` described earlier, `JSON.stringify()` also allows its output to be customized by passing an array or a function as the optional second argument.
+
+If an array of strings (or numbers—they are converted to strings) is passed instead as the second argument, these are used as the names of object properties (or array elements). Any property whose name is not in the array will be omitted from stringification. Furthermore, the returned string will include properties in the same order that they appear in the array (which can be very useful when writing tests).
+
+If you pass a function, it is a replacer function—effectively the inverse of the optional reviver function you can pass to `JSON.parse()`. If specified, the replacer function is invoked for each value to be stringified. The first argument to the replacer function is the object property name or array index of the value within that object, and the second argument is the value itself. The replacer function is invoked as a method of the object or array that contains the value to be stringified. The return value of the replacer function is stringified in place of the original value. If the replacer returns `undefined` or returns nothing at all, then that value (and its array element or object property) is omitted from the stringification.
+
+```js
+// Specify what fields to serialize, and what order to serialize them in
+let text = JSON.stringify(address, ["city", "state", "country"]);
+
+// Specify a replacer function that omits RegExp-value properties.
+let json = JSON.stringify(o, (k, v) => (v instanceof RegExp ? undefined : v));
+```
+
+The two `JSON.stringify()` calls here use the second argument in a benign way, producing serialized output that can be deserialized without requiring a special reviver function. In general, though, if you define a `toJSON()` method for a type, or if you use a replacer function that actually replaces nonserializable values with serializable ones, then you will typically need to use a custom reviver function with `JSON.parse()` to get your original data structure back. If you do this, you should understand that you are defining a custom data format and sacrificing portability and compatibility with a large ecosystem of JSON-compatible tools and languages.
+
+## The Internationalization API
+
+The JavaScript internationalization API consists of the three classes Intl.NumberFormat, Intl.DateTimeFormat, and Intl.Collator that allow us to format numbers (including monetary amounts and percentages), dates, and times in locale-appropriate ways and to compare strings in locale-appropriate ways. These classes are not part of the ECMAScript standard but are defined as part of the _ECMA402 standard_ and are wellsupported by web browsers. The Intl API is also supported in Node, but at the time of this writing, prebuilt Node binaries do not ship with the localization data required to make them work with locales other than US English. So in order to use these classes with Node, you may need to download a separate data package or use a custom build of Node.
+
+One of the most important parts of internationalization is displaying text that has been translated into the user’s language. There are various ways to achieve this, but none of them are within the scope of the Intl API described here.
+
+### Formatting Numbers
+
+Users around the world expect numbers to be formatted in different ways. Decimal points can be periods or commas. Thousands separators can be commas or periods, and they aren’t used every three digits in all places. Some currencies are divided into hundredths, some into thousandths, and some have no subdivisions. Finally, although the so-called “Arabic numerals” 0 through 9 are used in many languages, this is not universal, and users in some countries will expect to see numbers written using the digits from their own scripts.
+
+The Intl.NumberFormat class defines a `format()` method that takes all of these formatting possibilities into account. The constructor takes two arguments. The first argument specifies the locale that the number should be formatted for and the second is an object that specifies more details about how the number should be formatted. If the first argument is omitted or `undefined`, then the system locale (which we assume to be the user’s preferred locale) will be used. If the first argument is a string, it specifies a desired locale, such as "`en-US`" (English as used in the United States), "`fr`" (French), or "`zh-Hans-CN`" (Chinese, using the simplified Han writing system, in China). The first argument can also be an array of locale strings, and in this case, Intl.NumberFormat will choose the most specific one that is well supported.
+
+The second argument to the `Intl.NumberFormat()` constructor, if specified, should be an object that defines one or more of the following properties:
+
+#### style
+
+Specifies the kind of number formatting that is required. The default is "`decimal`". Specify "`percent`" to format a number as a percentage or specify "currency" to specify a number as an amount of money.
+
+#### currency
+
+If style is "`currency`", then this property is required to specify the three-letter ISO currency code (such as "USD" for US dollars or "GBP" for British pounds) of the desired currency.
+
+#### currencyDisplay
+
+If style is "`currency`", then this property specifies how the currency is displayed. The default value "`symbol`" uses a currency symbol if the currency has one. The value "`code`" uses the three-letter ISO code, and the value "`name`" spells out the name of the currency in long form.
+
+#### useGrouping
+
+Set this property to `false` if you do not want numbers to have thousands separators (or their locale-appropriate equivalents).
+
+#### minimumIntegerDigits
+
+The minimum number of digits to use to display the integer part of the number. If the number has fewer digits than this, it will be padded on the left with zeros. The default value is 1, but you can use values as high as 21.
+
+#### minimumFractionDigits, maximumFractionDigits
+
+These two properties control the formatting of the fractional part of the number. If a number has fewer fractional digits than the minimum, it will be padded with zeros on the right. If it has more than the maximum, then the fractional part will be rounded. Legal values for both properties are between 0 and 20. The default minimum is 0 and the default maximum is 3, except when formatting monetary amounts, when the length of the fractional part varies depending on the specified currency.
+
+#### minimumSignificantDigits, maximumSignificantDigits
+
+These properties control the number of significant digits used when formatting a number, making them suitable when formatting scientific data, for example. If specified, these properties override the integer and fractional digit properties listed previously. Legal values are between 1 and 21.
+
+Once you have created an Intl.NumberFormat object with the desired locale and options, you use it by passing a number to its `format()` method, which returns an appropriately formatted string. For example:
+
+```js
+let euros = Intl.NumberFormat("es", { style: "currency", currency: "EUR" });
+euros.format(10); // => '10,00 €': ten euros, Spanish formatting
+
+let pounds = Intl.NumberFormat("en", { style: "currency", currency: "GBP" });
+pounds.format(1000); // => '£1,000.00': One thousand pounds, English formatting
+```
+
+A useful feature of `Intl.NumberFormat` (and the other Intl classes as well) is that its `format()` method is bound to the NumberFormat object to which it belongs. So instead of defining a variable that refers to the formatting object and then invoking the `format()` method on that, you can just assign the `format()` method to a variable and use it as if it were a standalone function, as in this example:
+
+```js
+let data = [0.05, 0.75, 1];
+let formatData = Intl.NumberFormat(undefined, {
+  style: "percent",
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+}).format;
+
+data.map(formatData); // => [ '5.0%', '75.0%', '100.0%' ]: in en-US locale
+```
+
+Some languages, such as Arabic, use their own script for decimal digits:
+
+```js
+let arabic = Intl.NumberFormat("ar", { useGrouping: false }).format;
+arabic(1234567890); // => '١٢٣٤٥٦٧٨٩٠'
+```
+
+Other languages, such as Hindi, use a script that has its own set of digits, but tend to use the ASCII digits 0–9 by default. If you want to override the default script used for digits, add `-u-nu-` to the locale and follow it with an abbreviated script name. You can format numbers with Indian-style grouping and Devanagari digits like this, for example:
+
+```js
+let hindi = Intl.NumberFormat("hi-IN-u-nu-deva").format;
+hindi(1234567890); // => '१,२३,४५,६७,८९०'
+```
+
+`-u-` in a locale specifies that what comes next is a Unicode extension. `nu` is the extension name for the numbering system, and `deva` is short for Devanagari. The Intl API standard defines names for a number of other numbering systems, mostly for the Indic languages of South and Southeast Asia.
+
+### Formatting Dates and Times
+
+The Intl.DateTimeFormat class is a lot like the Intl.NumberFormat class. The `Intl.DateTimeFormat()` constructor takes the same two arguments that `Intl.NumberFormat()` does: a locale or array of locales and an object of formatting options. And the way you use an Intl.DateTimeFormat instance is by calling its `format()` method to convert a Date object to a string.
+
+As mentioned in §11.4, the Date class defines simple `toLocaleDateString()` and `toLocaleTimeString()` methods that produce locale-appropriate output for the user’s locale. But these methods don’t give you any control over what fields of the date and time are displayed. Maybe you want to omit the year but add a weekday to the date format. Do you want the month to be represented numerically or spelled out by name? The Intl.DateTimeFormat class provides fine-grained control over what is output based on the properties in the options object that is passed as the second argument to the constructor. Note, however, that Intl.DateTimeFormat cannot always display exactly what you ask for. If you specify options to format hours and seconds but omit minutes, you’ll find that the formatter displays the minutes anyway. The idea is that you use the options object to specify what date and time fields you’d like to present to the user and how you’d like those formatted (by name or by number, for example), then the formatter will look for a locale-appropriate format that most closely matches what you have asked for.
+
+The available options are the following. Only specify properties for date and time fields that you would like to appear in the formatted output.
+
+#### year
+
+Use "`numeric`" for a full, four-digit year or "`2-digit`" for a two-digit abbreviation.
+
+#### month
+
+Use "`numeric`" for a possibly short number like “1”, or "`2-digit`" for a numeric representation that always has two digits, like “01”. Use "`long`" for a full name like “January”, "`short`" for an abbreviated name like “Jan”, and "`narrow`" for a highly abbreviated name like “J” that is not guaranteed to be unique.
+
+#### day
+
+Use "`numeric`" for a one- or two-digit number or "`2-digit`" for a two-digit number for the day-of-month.
+
+#### weekday
+
+Use "`long`" for a full name like “Monday”, "`short`" for an abbreviated name like “Mon”, and "`narrow`" for a highly abbreviated name like “M” that is not guaranteed to be unique.
+
+#### era
+
+This property specifies whether a date should be formatted with an era, such as CE or BCE. This may be useful if you are formatting dates from very long ago or if you are using a Japanese calendar. Legal values are "`long`", "`short`", and "`narrow`".
+
+#### hour, minute, second
+
+These properties specify how you would like time displayed. Use "`numeric`" for a one- or two-digit field or "`2-digit`" to force single-digit numbers to be padded on the left with a 0.
+
+#### timeZone
+
+This property specifies the desired time zone for which the date should be formatted. If omitted, the local time zone is used. Implementations always recognize “UTC” and may also recognize Internet Assigned Numbers Authority (IANA) time zone names, such as “America/Los_Angeles”.
+
+#### timeZoneName
+
+This property specifies how the time zone should be displayed in a formatted date or time. Use "`long`" for a fully spelled-out time zone name and "`short`" for an abbreviated or numeric time zone.
+
+#### hour12
+
+This boolean property specifies whether or not to use 12-hour time. The default is locale dependent, but you can override it with this property.
+
+#### hourCycle
+
+This property allows you to specify whether midnight is written as 0 hours, 12 hours, or 24 hours. The default is locale dependent, but you can override the default with this property. Note that hour12 takes precedence over this property. Use the value "`h11`" to specify that midnight is 0 and the hour before midnight is 11pm. Use "`h12`" to specify that midnight is 12. Use "`h23`" to specify that midnight is 0 and the hour before midnight is 23. And use "`h24`" to specify that midnight is 24.
+
+Here are some examples:
+
+```js
+let d = new Date("2020-01-02T13:14:15Z"); // January 2nd, 2020, 13:14:15 UTC
+
+// With no options, we get a basic numeric date format
+Intl.DateTimeFormat("en-US").format(d); // => '1/2/2020'
+Intl.DateTimeFormat("fr-FR").format(d); // => '02/01/2020'
+
+// Spelled out weekday and month
+let opts = { weekday: "long", month: "long", year: "numeric", day: "numeric" };
+Intl.DateTimeFormat("en-US", opts).format(d); // => 'Tuesday, January 2, 2020'
+Intl.DateTimeFormat("es-ES", opts).format(d); // => 'jueves, 2 de enero de 2020'
+
+// The time in New York, for a French-speaking Canadian
+opts = { hour: "numeric", minute: "2-digit", timeZone: "America/New_York" };
+Intl.DateTimeFormat("fr-CA", opts).format(d); // => '8 h 14'
+```
+
+Intl.DateTimeFormat can display dates using calendars other than the default Julian calendar based on the Christian era. Although some locales may use a non-Christian calendar by default, you can always explicitly specify the calendar to use by adding `-u-ca-` to the locale and following that with the name of the calendar. Possible calendar names include “buddhist”, “chinese”, “coptic”, “ethiopic”, “gregory”, “hebrew”, “indian”, “islamic”, “iso8601”, “japanese”, and “persian”. Continuing the preceding example, we can determine the year in various non-Christian calendars:
+
+```js
+let opts = { year: "numeric", era: "short" };
+Intl.DateTimeFormat("en", opts).format(d); // => '2020 AD'
+Intl.DateTimeFormat("en-u-ca-iso8601", opts).format(d); // => '2020 AD'
+Intl.DateTimeFormat("en-u-ca-hebrew", opts).format(d); // => '5780 AM'
+Intl.DateTimeFormat("en-u-ca-buddhist", opts).format(d); // => '2563 BE'
+Intl.DateTimeFormat("en-u-ca-islamic", opts).format(d); // => '1441 AH'
+Intl.DateTimeFormat("en-u-ca-persian", opts).format(d); // => '1398 AP'
+Intl.DateTimeFormat("en-u-ca-indian", opts).format(d); // => '1941 Saka'
+Intl.DateTimeFormat("en-u-ca-chinese", opts).format(d); // => '2019(ji-hai)'
+Intl.DateTimeFormat("en-u-ca-japanese", opts).format(d); // => '2 Reiwa'
+```
+
+### Comparing Strings
+
+The problem of sorting strings into alphabetical order (or some more general “collation order” for nonalphabetical scripts) is more challenging than English speakers often realize. English uses a relatively small alphabet with no accented letters, and we have the benefit of a character encoding (ASCII, since incorporated into Unicode) whose numerical values perfectly match our standard string sort order. Things are not so simple in other languages. Spanish, for example treats ñ as a distinct letter that comes after n and before o. Lithuanian alphabetizes Y before J, and Welsh treats digraphs like CH and DD as single letters with CH coming after C and DD sorting after D.
+
+If you want to display strings to a user in an order that they will find natural, it is not enough use the `sort()` method on an array of strings. But if you create an Intl.Collator object, you can pass the `compare()` method of that object to the `sort()` method to perform locale-appropriate sorting of the strings. Intl.Collator objects can be configured so that the `compare()` method performs case-insensitive comparisons or even comparisons that only consider the base letter and ignore accents and other diacritics.
+
+Like `Intl.NumberFormat()` and `Intl.DateTimeFormat()`, the `Intl.Collator()` constructor takes two arguments. The first specifies a locale or an array of locales, and the second is an optional object whose properties specify exactly what kind of string comparison is to be done. The supported properties are these:
+
+#### usage
+
+This property specifies how the collator object is to be used. The default value is "`sort`", but you can also specify "`search`". The idea is that, when sorting strings, you typically want a collator that differentiates as many strings as possible to produce a reliable ordering. But when comparing two strings, some locales may want a less strict comparison that ignores accents, for example.
+
+#### sensitivity
+
+This property specifies whether the collator is sensitive to letter case and accents when comparing strings. The value "`base`" causes comparisons that ignore case and accents, considering only the base letter for each character. (Note, however, that some languages consider certain accented characters to be distinct base letters.) "`accent`" considers accents in comparisons but ignores case. "case" considers case and ignores accents. And "`variant`" performs strict comparisons that consider both case and accents. The default value for this property is "variant" when `usage` is "`sort`". If `usage` is "`search`", then the default sensitivity depends on the locale.
+
+#### ignorePunctuation
+
+Set this property to true to ignore spaces and punctuation when comparing strings. With this property set to `true`, the strings “any one” and “anyone”, for example, will be considered equal.
+
+#### numeric
+
+Set this property to true if the strings you are comparing are integers or contain integers and you want them to be sorted into numerical order instead of alphabetical order. With this option set, the string “Version 9” will be sorted before “Version 10”, for example.
+
+#### caseFirst
+
+This property specifies which letter case should come first. If you specify "upper", then “A” will sort before “a”. And if you specify "`lower`", then “a” will sort before “A”. In either case, note that the upper- and lowercase variants of the same letter will be next to one another in sort order, which is different than Unicode lexicographic ordering (the default behavior of the Array `sort()` method) in which all ASCII uppercase letters come before all ASCII lowercase letters. The default for this property is locale dependent, and implementations may ignore this property and not allow you to override the case sort order.
+
+Once you have created an Intl.Collator object for the desired locale and options, you can use its `compare()` method to compare two strings. This method returns a number. If the returned value is less than zero, then the first string comes before the second string. If it is greater than zero, then the first string comes after the second string. And if `compare()` returns zero, then the two strings are equal as far as this collator is concerned.
+
+This `compare()` method that takes two strings and returns a number less than, equal to, or greater than zero is exactly what the Array `sort()` method expects for its optional argument. Also, Intl.Collator automatically binds the `compare()` method to its instance, so you can pass it directly to `sort()` without having to write a wrapper function and invoke it through the collator object. Here are some examples:
+
+```js
+// A basic comparator for sorting in the user's locale.
+// Never sort human-readable strings without passing something like this:
+const collator = new Intl.Collator().compare;
+["a", "z", "A", "Z"].sort(collator); // => ['a', 'A', 'z', 'Z']
+
+// Filenames often include numbers, so we should sort those specially
+const filenameOrder = new Intl.Collator(undefined, { numeric: true }).compare;
+["page10", "page9"].sort(filenameOrder); // => ['page9', 'page10']
+
+// Find all strings that loosely match a target string
+const fuzzyMatcher = new Intl.Collator(undefined, {
+  sensitivity: "base",
+  ignorePunctuation: true,
+}).compare;
+let strings = ["food", "fool", "Føø Bar"];
+strings.findIndex((s) => fuzzyMatcher(s, "foobar") === 0); // => 2
+```
+
+Some locales have more than one possible collation order. In Germany, for example, phone books use a slightly more phonetic sort order than dictionaries do. In Spain, before 1994, “ch” and “ll” were treated as separate letters, so that country now has a modern sort order and a traditional sort order. And in China, collation order can be based on character encodings, the base radical and strokes of each character, or on the Pinyin romanization of characters. These collation variants cannot be selected through the Intl.Collator options argument, but they can be selected by adding `-uco-` to the locale string and adding the name of the desired variant. Use "`de-DE-uco-phonebk`" for phone book ordering in Germany, for example, and "`zh-TW-u-copinyin`" for Pinyin ordering in Taiwan.
+
+```js
+// Before 1994, CH and LL were treated as separate letters in Spain
+const modernSpanish = Intl.Collator("es-ES").compare;
+const traditionalSpanish = Intl.Collator("es-ES-u-co-trad").compare;
+let palabras = ["luz", "llama", "como", "chico"];
+palabras.sort(modernSpanish); // => ["chico", "como", "llama", "luz"]
+palabras.sort(traditionalSpanish); // => ["como", "chico", "luz", "llama"]
+```
+
+## The Console API
+
+You’ve seen the `console.log()` function used throughout this book: in web browsers, it prints a string in the “Console” tab of the browser’s developer tools pane, which can be very helpful when debugging. In Node, `console.log()` is a general-purpose output function and prints its arguments to the process’s stdout stream, where it typically appears to the user in a terminal window as program output.
+
+The Console API defines a number of useful functions in addition to `console.log()`. The API is not part of any ECMAScript standard, but it is supported by browsers and by Node and has been formally written up and standardized at https://console.spec.whatwg.org.
+
+The Console API defines the following functions:
+
+#### console.log()
+
+This is the most well-known of the console functions. It converts its arguments to strings and outputs them to the console. It includes spaces between the arguments and starts a new line after outputting all arguments.
+
+#### console.debug(), console.info(), console.warn(), console.error()
+
+These functions are almost identical to `console.log()`. In Node, `console.error()` sends its output to the stderr stream rather than the stdout stream, but the other functions are aliases of `console.log()`. In browsers, output messages generated by each of these functions may be prefixed by an icon that indicates its level or severity, and the developer console may also allow developers to filter console messages by level.
+
+#### console.assert()
+
+If the first argument is truthy (i.e., if the assertion passes), then this function does nothing. But if the first argument is `false` or another falsy value, then the remaining arguments are printed as if they had been passed to `console.error()` with an “Assertion failed” prefix. Note that, unlike typical `assert()` functions, `console.assert()` does not throw an exception when an assertion fails.
+
+#### console.clear()
+
+This function clears the console when that is possible. This works in browsers and in Node when Node is displaying its output to a terminal. If Node’s output has been redirected to a file or a pipe, however, then calling this function has no effect.
+
+#### console.table()
+
+This function is a remarkably powerful but little-known feature for producing tabular output, and it is particularly useful in Node programs that need to produce output that summarizes data. `console.table()` attempts to display its argument in tabular form (although, if it can’t do that, it displays it using regular
+`console.log()` formatting). This works best when the argument is a relatively short array of objects, and all of the objects in the array have the same (relatively small) set of properties. In this case, each object in the array is formatted as a row of the table, and each property is a column of the table. You can also pass an array of property names as an optional second argument to specify the desired set of columns. If you pass an object instead of an array of objects, then the output will be a table with one column for property names and one column for property values. Or, if those property values are themselves objects, their property names will become columns in the table.
+
+#### console.trace()
+
+This function logs its arguments like `console.log()` does, and, in addition, follows its output with a stack trace. In Node, the output goes to stderr instead of stdout.
+
+#### console.count()
+
+This function takes a string argument and logs that string, followed by the number of times it has been called with that string. This can be useful when debugging an event handler, for example, if you need to keep track of how many times the event handler has been triggered.
+
+#### console.countReset()
+
+This function takes a string argument and resets the counter for that string.
+
+#### console.group()
+
+This function prints its arguments to the console as if they had been passed to `console.log()`, then sets the internal state of the console so that all subsequent console messages (until the next `console.groupEnd()` call) will be indented relative to the message that it just printed. This allows a group of related messages to be visually grouped with indentation. In web browsers, the developer console typically allows grouped messages to be collapsed and expanded as a group. The arguments to `console.group()` are typically used to provide an explanatory name for the group.
+
+#### console.groupCollapsed()
+
+This function works like `console.group()` except that in web browsers, the group will be “collapsed” by default and the messages it contains will be hidden unless the user clicks to expand the group. In Node, this function is a synonym for `console.group()`.
+
+#### console.groupEnd()
+
+This function takes no arguments. It produces no output of its own but ends the indentation and grouping caused by the most recent call to `console.group()` or `console.groupCollapsed()`.
+
+#### console.time()
+
+This function takes a single string argument, makes a note of the time it was called with that string, and produces no output.
+
+#### console.timeLog()
+
+This function takes a string as its first argument. If that string had previously been passed to `console.time()`, then it prints that string followed by the elapsed time since the `console.time()` call. If there are any additional arguments to `console.timeLog()`, they are printed as if they had been passed to `console.log()`.
+
+#### console.timeEnd()
+
+This function takes a single string argument. If that argument had previously been passed to `console.time()`, then it prints that argument and the elapsed time. After calling `console.timeEnd()`, it is no longer legal to call `console.timeLog()` without first calling `console.time()` again.
+
+### Formatted Output with Console
+
+Console functions that print their arguments like `console.log()` have a little-known feature: if the first argument is a string that includes `%s`, `%i`, `%d`, `%f`, `%o`, `%O`, or `%c`, then this first argument is treated as format string, and the values of subsequent arguments are substituted into the string in place of the two-character `%` sequences.
+
+The meanings of the sequences are as follows:
+
+#### %s
+
+The argument is converted to a string.
+
+#### %i and %d
+
+The argument is converted to a number and then truncated to an integer.
+
+#### %f
+
+The argument is converted to a number
+
+#### %o and %O
+
+The argument is treated as an object, and property names and values are displayed. (In web browsers, this display is typically interactive, and users can expand and collapse properties to explore a nested data structure.) `%o` and `%O` both display object details. The uppercase variant uses an implementationdependent output format that is judged to be most useful for software developers.
+
+#### %c
+
+In web browsers, the argument is interpreted as a string of CSS styles and used to style any text that follows (until the next `%c` sequence or the end of the string). In Node, the `%c` sequence and its corresponding argument are simply ignored.
+
+Note that it is not often necessary to use a format string with the console functions: it is usually easy to obtain suitable output by simply passing one or more values (including objects) to the function and allowing the implementation to display them in a useful way. As an example, note that, if you pass an Error object to `console.log()`, it is automatically printed along with its stack trace.
+
+## URL APIs
+
+Since JavaScript is so commonly used in web browsers and web servers, it is common for JavaScript code to need to manipulate URLs. The URL class parses URLs and also allows modification (adding search parameters or altering paths, for example) of existing URLs. It also properly handles the complicated topic of escaping and unescaping the various components of a URL.
+
+The URL class is not part of any ECMAScript standard, but it works in Node and all internet browsers other than Internet Explorer. It is standardized at https://url.spec.whatwg.org.
+
+Create a URL object with the `URL()` constructor, passing an absolute URL string as the argument. Or pass a relative URL as the first argument and the absolute URL that it is relative to as the second argument. Once you have created the URL object, its various properties allow you to query unescaped versions of the various parts of the URL:
+
+```js
+let url = new URL("https://example.com:8000/path/name?q=term#fragment");
+url.href; // => 'https://example.com:8000/path/name?q=term#fragment'
+url.origin; // => 'https://example.com:8000'
+url.protocol; // => 'https:'
+url.host; // => 'example.com:8000'
+url.hostname; // => 'example.com'
+url.port; // => '8000'
+url.pathname; // => '/path/name'
+url.search; // => '?q=term'
+url.hash; // => '#fragment'
+```
+
+Although it is not commonly used, URLs can include a username or a username and password, and the URL class can parse these URL components, too:
+
+```js
+let url = new URL("ftp://admin:1337!@ftp.example.com/");
+url.href; // => 'ftp://admin:1337!@ftp.example.com/'
+url.origin; // => 'ftp://ftp.example.com'
+url.username; // => 'admin'
+url.password; // => '1337!'
+```
+
+The `origin` property here is a simple combination of the URL protocol and host (including the port if one is specified). As such, it is a read-only property. But each of the other properties demonstrated in the previous example is read/write: you can set any of these properties to set the corresponding part of the URL:
+
+```js
+let url = new URL("https://example.com"); // Start with our server
+url.pathname = "api/search"; // Add a path to an API endpoint
+url.search = "q=test"; // Add a query parameter
+url.toString(); // => 'https://example.com/api/search?q=test'
+```
+
+One of the important features of the URL class is that it correctly adds punctuation and escapes special characters in URLs when that is needed:
+
+```js
+let url = new URL("https://example.com");
+url.pathname = "path with spaces";
+url.search = "q=foo#bar";
+url.pathname; // => '/path%20with%20spaces'
+url.search; // => '?q=foo%23bar'
+url.href; // => 'https://example.com/path%20with%20spaces?q=foo%23bar'
+```
+
+The `href` property in these examples is a special one: reading `href` is equivalent to calling `toString()`: it reassembles all parts of the URL into the canonical string form of the URL. And setting `href` to a new string reruns the URL parser on the new string as if you had called the `URL()` constructor again.
+
+In the previous examples, we’ve been using the `search` property to refer to the entire query portion of a URL, which consists of the characters from a question mark to the end of the URL or to the first hash character. Sometimes, it is sufficient to just treat this as a single URL property. Often, however, HTTP requests encode the values of multiple form fields or multiple API parameters into the query portion of a URL using the `application/x-www-form-urlencode`d format. In this format, the query portion of the URL is a question mark followed by one or more name/value pairs, which are separated from one another by ampersands. The same name can appear more than once, resulting in a named search parameter with more than one value.
+
+If you want to encode these kinds of name/value pairs into the query portion of a URL, then the `searchParams` property will be more useful than the `search` property. The `search` property is a read/write string that lets you get and set the entire query portion of the URL. The `searchParams` property is a read-only reference to a URLSearchParams object, which has an API for getting, setting, adding, deleting, and sorting the parameters encoded into the query portion of the URL:
+
+```js
+let url = new URL("https://example.com/search");
+url.search // => "": no query yet
+url.searchParams.append("q", "term"); // Add a search parameter
+url.search // => "?q=term"
+url.searchParams.set("q", "x"); // Change the value of this parameter
+url.search // => "?q=x"
+url.searchParams.get("q") // => "x": query the parameter value
+url.searchParams.has("q") // => true: there is a q parameter
+url.searchParams.has("p") // => false: there is no p parameter
+url.searchParams.append("opts", "1"); // Add another search parameter
+url.search // => "?q=x&opts=1"
+url.searchParams.append("opts", "&"); // Add another value for same name
+url.search // => "?q=x&opts=1&opts=%26": note escape
+url.searchParams.get("opts") // => "1": the first value
+url.searchParams.getAll("opts") // => ["1", "&"]: all values
+url.searchParams.sort(); // Put params in alphabetical order
+url.search // => "?opts=1&opts=%26&q=x"
+url.searchParams.set("opts", "y"); // Change the opts param
+url.search // => "?opts=y&q=x"
+// searchParams is iterable
+[...url.searchParams] // => [["opts", "y"], ["q", "x"]]
+url.searchParams.delete("opts"); // Delete the opts param
+url.search // => "?q=x"
+url.href // => "https://example.com/search?q=x"
+```
+
+The value of the `searchParams` property is a URLSearchParams object. If you want to encode URL parameters into a query string, you can create a URLSearchParams object, append parameters, then convert it to a string and set it on the search property of a URL:
+
+```js
+let url = new URL("http://example.com");
+let params = new URLSearchParams();
+params.append("q", "term");
+params.append("opts", "exact");
+params.toString(); // => "q=term&opts=exact"
+url.search = params;
+url.href; // => "http://example.com/?q=term&opts=exact"
+```
+
+### Legacy URL Functions
+
+Prior to the definition of the URL API described previously, there have been multiple attempts to support URL escaping and unescaping in the core JavaScript language. The first attempt was the globally defined `escape()` and `unescape()` functions, which are now deprecated but still widely implemented. They should not be used.
+
+When `escape()` and `unescape()` were deprecated, ECMAScript introduced two pairs of alternative global functions:
+
+#### encodeURI() and decodeURI()
+
+`encodeURI()` takes a string as its argument and returns a new string in which non-ASCII characters plus certain ASCII characters (such as space) are escaped. `decodeURI()` reverses the process. Characters that need to be escaped are first converted to their UTF-8 encoding, then each byte of that encoding is replaced with a %xx escape sequence, where xx is two hexadecimal digits. Because `encodeURI()` is intended for encoding entire URLs, it does not escape URL separator characters such as `/`, `?`, and `#`. But this means that `encodeURI()` cannot work correctly for URLs that have those characters within their various components.
+
+#### encodeURIComponent() and decodeURIComponent()
+
+This pair of functions works just like `encodeURI()` and `decodeURI()` except that they are intended to escape individual components of a URI, so they also escape characters like `/`, `?`, and `#` that are used to separate those components. These are the most useful of the legacy URL functions, but be aware that `encodeURIComponent()` will escape `/` characters in a path name that you probably do not want escaped. And it will convert spaces in a query parameter to `%20`, even though spaces are supposed to be escaped with a `+` in that portion of a URL.
+
+The fundamental problem with all of these legacy functions is that they seek to apply a single encoding scheme to all parts of a URL when the fact is that different portions of a URL use different encodings. If you want a properly formatted and encoded URL, the solution is simply to use the URL class for all URL manipulation you do.
+
+## Timers
+
+Since the earliest days of JavaScript, web browsers have defined two functions—`setTimeout()` and `setInterval()`—that allow programs to ask the browser to invoke a function after a specified amount of time has elapsed or to invoke the function repeatedly at a specified interval. These functions have never been standardized as part of the core language, but they work in all browsers and in Node and are a de facto part of the JavaScript standard library.
+
+The first argument to `setTimeout()` is a function, and the second argument is a number that specifies how many milliseconds should elapse before the function is invoked. After the specified amount of time (and maybe a little longer if the system is busy), the function will be invoked with no arguments. Here, for example, are three `setTimeout()` calls that print console messages after one second, two seconds, and three seconds:
+
+```js
+setTimeout(() => {
+  console.log("Ready...");
+}, 1000);
+setTimeout(() => {
+  console.log("set...");
+}, 2000);
+setTimeout(() => {
+  console.log("go!");
+}, 3000);
+```
+
+Note that `setTimeout()` does not wait for the time to elapse before returning. All three lines of code in this example run almost instantly, but then nothing happens until 1,000 milliseconds elapse.
+
+If you omit the second argument to `setTimeout()`, it defaults to 0. That does not mean, however, that the function you specify is invoked immediately. Instead, the function is registered to be called “as soon as possible.” If a browser is particularly busy handling user input or other events, it may take 10 milliseconds or more before the function is invoked.
+
+`setTimeout()` registers a function to be invoked once. Sometimes, that function will itself call `setTimeout()` to schedule another invocation at a future time. If you want to invoke a function repeatedly, however, it is often simpler to use `setInterval()`. `setInterval()` takes the same two arguments as `setTimeout()` but invokes the function repeatedly every time the specified number of milliseconds (approximately) have elapsed.
+
+Both `setTimeout()` and `setInterval()` return a value. If you save this value in a variable, you can then use it later to cancel the execution of the function by passing it to `clearTimeout()` or `clearInterval()`. The returned value is typically a number in web browsers and is an object in Node. The actual type doesn’t matter, and you should treat it as an opaque value. The only thing you can do with this value is pass it to `clearTimeout()` to cancel the execution of a function registered with `setTimeout()` (assuming it hasn’t been invoked yet) or to stop the repeating execution of a function registered with `setInterval()`.
+
+Here is an example that demonstrates the use of `setTimeout()`, `setInterval()`, and `clearInterval()` to display a simple digital clock with the Console API:
+
+```js
+// Once a second: clear the console and print the current time
+let clock = setInterval(() => {
+  console.clear();
+  console.log(new Date().toLocaleTimeString());
+}, 1000);
+
+// After 10 seconds: stop the repeating code above
+setTimeout(() => {
+  clearInterval(clock);
+}, 10000);
+```
+
+We’ll see `setTimeout()` and `setInterval()` again when we cover asynchronous programming in **Chapter 13**.
+
+## Summary
+
+Learning a programming language is not just about mastering the grammar. It is equally important to study the standard library so that you are familiar with all the tools that are shipped with the language. This chapter has documented JavaScript’s standard library, which includes:
+
+- Important data structures, such as Set, Map, and typed arrays.
+- The Date and URL classes for working with dates and URLs.
+- JavaScript’s regular expression grammar and its RegExp class for textual pattern matching.
+- JavaScript’s internationalization library for formatting dates, time, and numbers and for sorting strings.
+- The `JSON` object for serializing and deserializing simple data structures and the console object for logging messages.
