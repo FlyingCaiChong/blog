@@ -1721,9 +1721,13 @@ while ((match = pattern.exec(text)) !== null) {
 >
 > 这里的寓意是 `lastIndex` 使 `RegExp` API 容易出错。 因此，在使用 `g` 或 `y` 标志和循环时要格外小心。 在 ES2020 及更高版本中，使用 String `matchAll()` 方法而不是 `exec()` 来回避这个问题，因为 `matchAll()` 不会修改 `lastIndex`。
 
-## Dates and Times
+## 日期和时间
 
 The Date class is JavaScript’s API for working with dates and times. Create a Date object with the `Date()` constructor. With no arguments, it returns a Date object that represents the current date and time:
+
+::: tip 翻译
+`Date` 类是 JavaScript 用于处理日期和时间的 API。 使用 `Date()` 构造函数创建一个 `Date` 对象。 如果不带参数，它会返回一个表示当前日期和时间的 `Date` 对象：
+:::
 
 ```js
 let now = new Date(); // The current time
@@ -1731,11 +1735,19 @@ let now = new Date(); // The current time
 
 If you pass one numeric argument, the `Date()` constructor interprets that argument as the number of milliseconds since the 1970 epoch:
 
+::: tip 翻译
+如果您传递一个数字参数， `Date()` 构造函数会将该参数解释为自 1970 纪元以来的毫秒数：
+:::
+
 ```js
 let epoch = new Date(0); // Midnight, January 1, 1970, GMT
 ```
 
 If you specify two or more integer arguments, they are interpreted as the year, month, day-of-month, hour, minute, second, and millisecond in your local time zone, as in the following:
+
+::: tip 翻译
+如果指定两个或多个整数参数，它们将被解释为本地时区的年、月、日、时、分、秒和毫秒，如下所示：
+:::
 
 ```js
 let century = new Date(
@@ -1751,7 +1763,15 @@ let century = new Date(
 
 One quirk of the Date API is that the first month of a year is number 0, but the first day of a month is number 1. If you omit the time fields, the `Date()` constructor defaults them all to 0, setting the time to midnight.
 
+::: tip 翻译
+`Date` API 的一个怪癖是一年的第一个月是数字 0，但一个月的第一天是数字 1。如果省略时间字段，`Date()` 构造函数将它们默认为 0，设置 时间到了午夜。
+:::
+
 Note that when invoked with multiple numbers, the `Date()` constructor interprets them using whatever time zone the local computer is set to. If you want to specify a date and time in UTC (Universal Coordinated Time, aka GMT), then you can use the `Date.UTC()`. This static method takes the same arguments as the `Date()` constructor, interprets them in UTC, and returns a millisecond timestamp that you can pass to the `Date()` constructor:
+
+::: tip 翻译
+请注意，当使用多个数字调用时，`Date()` 构造函数会使用本地计算机设置的任何时区来解释它们。 如果您想指定 UTC（通用协调时间，又名 GMT）格式的日期和时间，则可以使用 `Date.UTC()`。 此静态方法采用与 `Date()`构造函数相同的参数，以 UTC 解释它们，并返回一个毫秒时间戳，您可以将其传递给 `Date()`构造函数：
+:::
 
 ```js
 // Midnight in England, January 1, 2100
@@ -1760,13 +1780,25 @@ let century = new Date(Date.UTC(2100, 0, 1));
 
 If you print a date (with `console.log(century)`, for example), it will, by default, be printed in your local time zone. If you want to display a date in UTC, you should explicitly convert it to a string with `toUTCString()` or `toISOString()`.
 
+::: tip 翻译
+如果您打印日期（例如，使用 `console.log(century)`），默认情况下，它将以您当地的时区打印。 如果要显示 UTC 日期，则应使用`toUTCString()` 或 `toISOString()` 将其显式转换为字符串。
+:::
+
 Finally, if you pass a string to the `Date()` constructor, it will attempt to parse that string as a date and time specification. The constructor can parse dates specified in the formats produced by the `toString()`, `toUTCString()`, and `toISOString()` methods:
+
+::: tip 翻译
+最后，如果您将字符串传递给 `Date()` 构造函数，它将尝试将该字符串解析为日期和时间规范。 构造函数可以解析以 `toString()`、`toUTCString()` 和 `toISOString()` 方法生成的格式指定的日期：
+:::
 
 ```js
 let century = new Date("2100-01-01T00:00:00.000Z"); // An ISO format date
 ```
 
 Once you have a Date object, various get and set methods allow you to query and modify the year, month, day-of-month, hour, minute, second, and millisecond fields of the Date. Each of these methods has two forms: one that gets or sets using local time and one that gets or sets using UTC time. To get or set the year of a Date object, for example, you would use `getFullYear()`, `getUTCFullYear()`, `setFullYear()`, or `setUTCFullYear()`:
+
+::: tip 翻译
+一旦有了 `Date` 对象，各种 `get` 和 `set` 方法就允许您查询和修改 `Date` 的年、月、日、时、分、秒和毫秒字段。 其中每种方法都有两种形式：一种使用本地时间获取或设置，另一种使用 UTC 时间获取或设置。 例如，要获取或设置 `Date` 对象的年份，您可以使用 `getFullYear()`、`getUTCFullYear()`、`setFullYear()` 或 `setUTCFullYear()`：
+:::
 
 ```js
 let d = new Date(); // Start with the current date
@@ -1775,19 +1807,39 @@ d.setFullYear(d.getFullYear() + 1); // Increment the year
 
 To get or set the other fields of a Date, replace “FullYear” in the method name with “Month”, “Date”, “Hours”, “Minutes”, “Seconds”, or “Milliseconds”. Some of the date set methods allow you to set more than one field at a time. `setFullYear()` and `setUTCFullYear()` also optionally allow you to set the month and day-of-month as well. And `setHours()` and `setUTCHours()` allow you to specify the minutes, seconds, and milliseconds fields in addition to the hours field.
 
+::: tip 翻译
+要获取或设置日期的其他字段，请将方法名称中的 `FullYear` 替换为“月”、“日期”、“小时”、“分钟”、“秒”或“毫秒”。 某些日期设置方法允许您一次设置多个字段。 `setFullYear()` 和 `setUTCFullYear()` 还可以选择允许您设置月份和日期。 除了小时字段之外，`setHours()` 和 `setUTCHours()` 还允许您指定分钟、秒和毫秒字段。
+:::
+
 Note that the methods for querying the day-of-month are `getDate()` and `getUTCDate()`. The more natural-sounding functions `getDay()` and `getUTCDay()` return the day-of-week (0 for Sunday through 6 for Saturday). The day-of-week is read-only, so there is not a corresponding `setDay()` method.
 
-### Timestamps
+::: tip 翻译
+请注意，查询月份日期的方法是 `getDate()` 和 `getUTCDate()`。 听起来更自然的函数 `getDay()` 和 `getUTCDay()` 返回星期几（0 表示星期日，6 表示星期六）。 星期几是只读的，因此没有相应的 `setDay()` 方法。
+:::
+
+### 时间戳
 
 JavaScript represents dates internally as integers that specify the number of milliseconds since (or before) midnight on January 1, 1970, UTC time. Integers as large as 8,640,000,000,000,000 are supported, so JavaScript won’t be running out of milliseconds for more than 270,000 years.
 
+::: tip 翻译
+JavaScript 在内部将日期表示为整数，指定自 1970 年 1 月 1 日午夜（UTC 时间）以来（或之前）的毫秒数。 支持大到 8,640,000,000,000,000 的整数，因此 JavaScript 在超过 270,000 年的时间内都不会耗尽毫秒。
+:::
+
 For any Date object, the `getTime()` method returns this internal value, and the `setTime()` method sets it. So you can add 30 seconds to a Date with code like this, for example:
+
+::: tip 翻译
+对于任何 `Date` 对象，`getTime()` 方法返回此内部值，而 `setTime()` 方法设置它。 因此，您可以使用如下代码向日期添加 30 秒，例如：
+:::
 
 ```js
 d.setTime(d.getTime() + 30000);
 ```
 
 These millisecond values are sometimes called timestamps, and it is sometimes useful to work with them directly rather than with Date objects. The static `Date.now()` method returns the current time as a timestamp and is helpful when you want to measure how long your code takes to run:
+
+::: tip 翻译
+这些毫秒值有时称为时间戳，有时直接使用它们比使用 `Date` 对象更有用。 静态 `Date.now()` 方法将当前时间作为时间戳返回，当您想要测量代码运行时间时非常有用：
+:::
 
 ```js
 let startTime = Date.now();
@@ -1806,13 +1858,33 @@ console.log(`Spline reticulate took ${endTime - startTime}ms`);
 > const { performance } = require("perf_hooks");
 > ```
 >
-> Allowing high-precision timing on the web may allow unscrupulous websites to fingerprint visitors, so browsers (notably Firefox) may reduce the precision of `performance.now()` by default. As a web developer, you should be able to re-enable highprecision timing somehow (such as by setting `privacy.reduceTimerPrecision` to false in Firefox).
+> Allowing high-precision timing on the web may allow unscrupulous websites to fingerprint visitors, so browsers (notably Firefox) may reduce the precision of `performance.now()` by default. As a web developer, you should be able to re-enable high precision timing somehow (such as by setting `privacy.reduceTimerPrecision` to false in Firefox).
 
-### Date Arithmetic
+> **高分辨率时间戳**
+>
+> `Date.now()` 返回的时间戳以毫秒为单位。 对于计算机来说，毫秒实际上是一个相对较长的时间，有时您可能希望以更高精度测量经过的时间。 `performance.now()` 函数允许这样做：它还返回基于毫秒的时间戳，但返回值不是整数，因此它包含毫秒的小数部分。 `performance.now()` 返回的值不是像 `Date.now()` 值那样的绝对时间戳。 相反，它只是指示自加载网页或自 Node 进程启动以来已经过去了多少时间。
+>
+> `performance` 对象是更大的性能 API 的一部分，该 API 不是由 ECMAScript 标准定义的，而是由 Web 浏览器和 Node.js 实现的。 为了在 Node 中使用性能对象，您必须使用以下命令导入它：
+>
+> ```js
+> const { performance } = require("perf_hooks");
+> ```
+>
+> 允许网络上的高精度计时可能会让不道德的网站对访问者进行指纹识别，因此浏览器（尤其是 Firefox）可能会默认降低 `performance.now()` 的精度。 作为一名 Web 开发人员，您应该能够以某种方式重新启用高精度计时（例如通过在 Firefox 中将 `privacy.reduceTimerPrecision` 设置为 `false`）。
+
+### Date 算术
 
 Date objects can be compared with JavaScript’s standard `<`, `<=`, `>`, and `>=` comparison operators. And you can subtract one Date object from another to determine the number of milliseconds between the two dates. (This works because the Date class defines a `valueOf()` method that returns a timestamp.)
 
+::: tip 翻译
+`Date` 对象可以与 JavaScript 的标准 `<`、`<=`、`>`和`>=`比较运算符进行比较。 您可以将一个 `Date` 对象与另一个 `Date` 对象相减，以确定两个日期之间的毫秒数。 （这是有效的，因为 `Date` 类定义了一个返回时间戳的 `valueOf()` 方法。）
+:::
+
 If you want to add or subtract a specified number of seconds, minutes, or hours from a Date, it is often easiest to simply modify the timestamp as demonstrated in the previous example, when we added 30 seconds to a date. This technique becomes more cumbersome if you want to add days, and it does not work at all for months and years since they have varying numbers of days. To do date arithmetic involving days, months, and years, you can use `setDate()`, `setMonth()`, and `setYear()`. Here, for example, is code that adds three months and two weeks to the current date:
+
+::: tip 翻译
+如果要在日期中添加或减去指定的秒数、分钟数或小时数，通常最简单的方法是简单地修改时间戳，如上一个示例所示，当时我们向日期添加了 30 秒。 如果您想添加天数，此技术会变得更加麻烦，并且对于几个月和几年来说，它根本不起作用，因为它们的天数不同。 要进行涉及日、月和年的日期算术，可以使用 `setDate()`、`setMonth()` 和 `setYear()`。 例如，下面的代码在当前日期的基础上添加了三个月零两周：
+:::
 
 ```js
 let d = new Date();
@@ -1821,9 +1893,17 @@ d.setMonth(d.getMonth() + 3, d.getDate() + 14);
 
 Date setting methods work correctly even when they overflow. When we add three months to the current month, we can end up with a value greater than 11 (which represents December). The `setMonth()` handles this by incrementing the year as needed. Similarly, when we set the day of the month to a value larger than the number of days in the month, the month gets incremented appropriately.
 
-### Formatting and Parsing Date Strings
+::: tip 翻译
+日期设置方法即使在溢出时也能正常工作。 当我们向当前月份添加三个月时，我们最终会得到一个大于 11 的值（代表 12 月）。 `setMonth()` 通过根据需要增加年份来处理这个问题。 同样，当我们将月份中的某一天设置为大于该月中的天数的值时，月份会相应地增加。
+:::
+
+### 格式化和解析日期字符串
 
 If you are using the Date class to actually keep track of dates and times (as opposed to just measuring time intervals), then you are likely to need to display dates and times to the users of your code. The Date class defines a number of different methods for converting Date objects to strings. Here are some examples:
+
+::: tip 翻译
+如果您使用 `Date` 类来实际跟踪日期和时间（而不是仅仅测量时间间隔），那么您可能需要向代码的用户显示日期和时间。 `Date` 类定义了许多将 `Date` 对象转换为字符串的不同方法。 这里有些例子：
+:::
 
 ```js
 let d = new Date(2020, 0, 1, 17, 10, 30); // 5:10:30pm on New Year's Day 2020
@@ -1836,42 +1916,85 @@ d.toISOString(); // => "2020-01-02T01:10:30.000Z"
 
 This is a full list of the string formatting methods of the Date class:
 
+::: tip 翻译
+这是 `Date` 类的字符串格式化方法的完整列表：
+:::
+
 #### toString()
 
 This method uses the local time zone but does not format the date and time in a locale-aware way.
 
+::: tip 翻译
+此方法使用本地时区，但不以区域设置感知的方式格式化日期和时间。
+:::
+
 #### toUTCString()
 
-This method uses the UTC time zone but does not format the date in a localeaware way.
+This method uses the UTC time zone but does not format the date in a locale aware way.
+
+::: tip 翻译
+此方法使用 UTC 时区，但不以区域设置感知的方式格式化日期。
+:::
 
 #### toISOString()
 
-This method prints the date and time in the standard year-month-day
-hours:minutes:seconds.ms format of the ISO-8601 standard. The letter “T” separates the date portion of the output from the time portion of the output. The time is expressed in UTC, and this is indicated with the letter “Z” as the last letter of the output.
+This method prints the date and time in the standard year-month-day hours:minutes:seconds.ms format of the ISO-8601 standard. The letter “T” separates the date portion of the output from the time portion of the output. The time is expressed in UTC, and this is indicated with the letter “Z” as the last letter of the output.
+
+::: tip 翻译
+此方法以 ISO-8601 标准的标准年-月-日时:分:秒.毫秒 格式打印日期和时间。 字母“T”将输出的日期部分与输出的时间部分分开。 时间以 UTC 表示，并用字母“Z”作为输出的最后一个字母来指示。
+:::
 
 #### toLocaleString()
 
 This method uses the local time zone and a format that is appropriate for the user’s locale.
 
+::: tip 翻译
+此方法使用本地时区和适合用户区域设置的格式。
+:::
+
 #### toDateString()
 
 This method formats only the date portion of the Date and omits the time. It uses the local time zone and does not do locale-appropriate formatting.
 
+::: tip 翻译
+此方法仅格式化日期的日期部分并省略时间。 它使用本地时区并且不执行适合区域设置的格式。
+:::
+
 #### toLocaleDateString()
 
-This method formats only the date. It uses the local time zone and a localeappropriate date format.
+This method formats only the date. It uses the local time zone and a locale appropriate date format.
+
+::: tip 翻译
+此方法仅格式化日期。 它使用本地时区和适合区域设置的日期格式。
+:::
 
 #### toTimeString()
 
 This method formats only the time and omits the date. It uses the local time zone but does not format the time in a locale-aware way.
 
+::: tip 翻译
+此方法仅格式化时间并省略日期。 它使用本地时区，但不以区域设置感知的方式格式化时间。
+:::
+
 #### toLocaleTimeString()
 
 This method formats the time in a locale-aware way and uses the local time zone.
 
-None of these date-to-string methods is ideal when formatting dates and times to be displayed to end users. See §11.7.2 for a more general-purpose and locale-aware dateand time-formatting technique.
+::: tip 翻译
+此方法以区域设置感知的方式格式化时间并使用本地时区。
+:::
+
+None of these date-to-string methods is ideal when formatting dates and times to be displayed to end users. See §11.7.2 for a more general-purpose and locale-aware date and time-formatting technique.
+
+::: tip 翻译
+当格式化要显示给最终用户的日期和时间时，这些日期到字符串的方法都不是理想的。 有关更通用和区域设置感知的日期和时间格式化技术，请参阅第 11.7.2 节。
+:::
 
 Finally, in addition to these methods that convert a Date object to a string, there is also a static `Date.parse()` method that takes a string as its argument, attempts to parse it as a date and time, and returns a timestamp representing that date. `Date.parse()` is able to parse the same strings that the `Date()` constructor can and is guaranteed to be able to parse the output of `toISOString()`, `toUTCString()`, and `toString()`.
+
+::: tip 翻译
+最后，除了这些将 `Date` 对象转换为字符串的方法之外，还有一个静态的 `Date.parse()` 方法，该方法将字符串作为参数，尝试将其解析为日期和时间，并返回代表该日期的时间戳。 `Date.parse()` 能够解析与 `Date()` 构造函数相同的字符串，并且保证能够解析 `toISOString()`、`toUTCString()` 和 `toString( ）`。
+:::
 
 ## Error Classes
 
