@@ -760,15 +760,27 @@ Typed arrays and the DataView class give you all the tools you need to process b
 类型化数组和 `DataView` 类为您提供了处理二进制数据所需的所有工具，并使您能够编写 JavaScript 程序来执行解压缩 ZIP 文件或从 JPEG 文件中提取元数据等操作。
 :::
 
-## Pattern Matching with Regular Expressions
+## 与正则表达式的模式匹配
 
 A _regular expression_ is an object that describes a textual pattern. The JavaScript RegExp class represents regular expressions, and both String and RegExp define methods that use regular expressions to perform powerful pattern-matching and search-and-replace functions on text. In order to use the RegExp API effectively, however, you must also learn how to describe patterns of text using the regular expression grammar, which is essentially a mini programming language of its own. Fortunately, the JavaScript regular expression grammar is quite similar to the grammar used by many other programming languages, so you may already be familiar with it. (And if you are not, the effort you invest in learning JavaScript regular expressions will probably be useful to you in other programming contexts as well.)
 
+::: tip 翻译
+_正则表达式_ 是描述文本模式的对象。 JavaScript `RegExp` 类表示正则表达式，`String` 和 `RegExp` 都定义了使用正则表达式对文本执行强大的模式匹配以及搜索和替换功能的方法。 然而，为了有效地使用 `RegExp` API，您还必须学习如何使用正则表达式语法来描述文本模式，正则表达式语法本质上是一种微型编程语言。 幸运的是，JavaScript 正则表达式语法与许多其他编程语言使用的语法非常相似，因此您可能已经熟悉它了。 （如果您不是，那么您在学习 JavaScript 正则表达式上投入的精力可能在其他编程环境中也对您有用。）
+:::
+
 The subsections that follow describe the regular expression grammar first, and then, after explaining how to write regular expressions, they explain how you can use them with methods of the String and RegExp classes.
 
-### Dening Regular Expressions
+::: tip 翻译
+接下来的小节首先描述正则表达式语法，然后在解释如何编写正则表达式之后，解释如何将它们与 `String` 和 `RegExp` 类的方法一起使用。
+:::
+
+### 定义正则表达式
 
 In JavaScript, regular expressions are represented by RegExp objects. RegExp objects may be created with the `RegExp()` constructor, of course, but they are more often created using a special literal syntax. Just as string literals are specified as characters within quotation marks, regular expression literals are specified as characters within a pair of slash (`/`) characters. Thus, your JavaScript code may contain lines like this:
+
+::: tip 翻译
+在 JavaScript 中，正则表达式由 `RegExp` 对象表示。 当然，`RegExp` 对象可以使用 `RegExp()` 构造函数创建，但它们更经常使用特殊的文字语法创建。 正如字符串文字指定为引号内的字符一样，正则表达式文字指定为一对斜杠 (`/`) 字符内的字符。 因此，您的 JavaScript 代码可能包含如下行：
+:::
 
 ```js
 let pattern = /s$/;
@@ -776,13 +788,25 @@ let pattern = /s$/;
 
 This line creates a new RegExp object and assigns it to the variable pattern. This particular RegExp object matches any string that ends with the letter “s.” This regular expression could have equivalently been defined with the `RegExp()` constructor, like this:
 
+::: tip 翻译
+此行创建一个新的 `RegExp` 对象并将其分配给变量模式。 这个特定的 `RegExp` 对象匹配任何以字母“s”结尾的字符串。 该正则表达式可以等效地使用 `RegExp()` 构造函数来定义，如下所示：
+:::
+
 ```js
 let pattern = new RegExp("s$");
 ```
 
-Regular-expression pattern specifications consist of a series of characters. Most characters, including all alphanumeric characters, simply describe characters to be matched literally. Thus, the regular expression `/java/` matches any string that contains the substring “java”. Other characters in regular expressions are not matched literally but have special significance. For example, the regular expression `/s$/` contains two characters. The first, “s”, matches itself literally. The second, “$”, is a special metacharacter that matches the end of a string. Thus, this regular expression matches any string that contains the letter “s” as its last character.
+Regular-expression pattern specifications consist of a series of characters. Most characters, including all alphanumeric characters, simply describe characters to be matched literally. Thus, the regular expression `/java/` matches any string that contains the substring “java”. Other characters in regular expressions are not matched literally but have special significance. For example, the regular expression `/s$/` contains two characters. The first, “s”, matches itself literally. The second, “$”, is a special meta character that matches the end of a string. Thus, this regular expression matches any string that contains the letter “s” as its last character.
+
+::: tip 翻译
+正则表达式模式规范由一系列字符组成。 大多数字符（包括所有字母数字字符）只是简单地描述要按字面匹配的字符。 因此，正则表达式 `/java/` 匹配任何包含子字符串 `java` 的字符串。 正则表达式中的其他字符不是按字面匹配的，而是具有特殊意义。 例如，正则表达式 `/s$/` 包含两个字符。 第一个“`s`”与字面意思相符。 第二个“`$`”是一个特殊的元字符，与字符串的末尾匹配。 因此，此正则表达式匹配包含字母“`s`”作为最后一个字符的任何字符串。
+:::
 
 As we’ll see, regular expressions can also have one or more flag characters that affect how they work. Flags are specified following the second slash character in RegExp literals, or as a second string argument to the `RegExp()` constructor. If we wanted to match strings that end with “`s`” or “`S`”, for example, we could use the `i` flag with our regular expression to indicate that we want case-insensitive matching:
+
+::: tip 翻译
+正如我们将看到的，正则表达式还可以具有一个或多个影响其工作方式的标志字符。 标志是在 `RegExp` 文本中的第二个斜杠字符之后指定的，或者作为 `RegExp()` 构造函数的第二个字符串参数指定。 例如，如果我们想要匹配以“`s`”或“`S`”结尾的字符串，我们可以在正则表达式中使用“`i`”标志来指示我们想要不区分大小写的匹配：
+:::
 
 ```js
 let pattern = /s$/i;
@@ -790,9 +814,17 @@ let pattern = /s$/i;
 
 The following sections describe the various characters and meta-characters used in JavaScript regular expressions.
 
-#### Literal characters
+::: tip 翻译
+以下部分描述了 JavaScript 正则表达式中使用的各种字符和元字符。
+:::
+
+#### 文字字符
 
 All alphabetic characters and digits match themselves literally in regular expressions. JavaScript regular expression syntax also supports certain nonalphabetic characters through escape sequences that begin with a backslash (`\`). For example, the sequence `\n` matches a literal newline character in a string. Table 11-1 lists these characters.
+
+::: tip 翻译
+所有字母字符和数字在正则表达式中都按字面意思匹配。 JavaScript 正则表达式语法还通过以反斜杠 (`\`) 开头的转义序列支持某些非字母字符。 例如，序列 `\n` 匹配字符串中的文字换行符。 表 11-1 列出了这些字符。
+:::
 
 _Table 11-1. Regular-expression literal characters_
 
@@ -812,19 +844,39 @@ _Table 11-1. Regular-expression literal characters_
 
 A number of punctuation characters have special meanings in regular expressions. They are:
 
+::: tip 翻译
+许多标点符号在正则表达式中具有特殊含义。 他们是：
+:::
+
 ```js
 ^ $ . * + ? = ! : | \ / ( ) [ ] { }
 ```
 
 The meanings of these characters are discussed in the sections that follow. Some of these characters have special meaning only within certain contexts of a regular expression and are treated literally in other contexts. As a general rule, however, if you want to include any of these punctuation characters literally in a regular expression, you must precede them with a `\`. Other punctuation characters, such as quotation marks and `@`, do not have special meaning and simply match themselves literally in a regular expression.
 
+::: tip 翻译
+这些字符的含义将在以下各节中讨论。 其中一些字符仅在正则表达式的某些上下文中具有特殊含义，并且在其他上下文中按字面意思处理。 但是，作为一般规则，如果您想在正则表达式中按字面意思包含任何这些标点符号，则必须在它们前面加上 `\`。 其他标点符号，例如引号和 `@`，没有特殊含义，只是在正则表达式中按字面意思进行匹配。
+:::
+
 If you can’t remember exactly which punctuation characters need to be escaped with a backslash, you may safely place a backslash before any punctuation character. On the other hand, note that many letters and numbers have special meaning when preceded by a backslash, so any letters or numbers that you want to match literally should not be escaped with a backslash. To include a backslash character literally in a regular expression, you must escape it with a backslash, of course. For example, the following regular expression matches any string that includes a backslash: `/\\/`. (And if you use the `RegExp()` constructor, keep in mind that any backslashes in your regular expression need to be doubled, since strings also use backslashes as an escape character.)
 
-#### Character classes
+::: tip 翻译
+如果您无法准确记住哪些标点字符需要使用反斜杠进行转义，您可以安全地在任何标点字符之前放置一个反斜杠。 另一方面，请注意，许多字母和数字在前面带有反斜杠时具有特殊含义，因此您想要按字面匹配的任何字母或数字不应使用反斜杠进行转义。 当然，要在正则表达式中包含反斜杠字符，您必须使用反斜杠对其进行转义。 例如，以下正则表达式匹配任何包含反斜杠的字符串：`/\\/`。 （如果您使用 `RegExp()` 构造函数，请记住正则表达式中的任何反斜杠都需要加倍，因为字符串也使用反斜杠作为转义字符。）
+:::
 
-Individual literal characters can be combined into _character classes_ by placing them within square brackets. A character class matches any one character that is contained within it. Thus, the regular expression `/[abc]/` matches any one of the letters a, b, or c. Negated character classes can also be defined; these match any character except those contained within the brackets. A negated character class is specified by placing a caret (`^`) as the first character inside the left bracket. The RegExp `/[^abc]/` matches any one character other than a, b, or c. Character classes can use a hyphen to indicate a range of characters. To match any one lowercase character from the Latin alphabet, use `/[a-z]/`, and to match any letter or digit from the Latin alphabet, use `/[a-zAZ0-9]/`. (And if you want to include an actual hyphen in your character class, simply make it the last character before the right bracket.)
+#### 字符类
 
-Because certain character classes are commonly used, the JavaScript regularexpression syntax includes special characters and escape sequences to represent these common classes. For example, `\s` matches the space character, the tab character, and any other Unicode whitespace character; `\S` matches any character that is not Unicode whitespace. Table 11-2 lists these characters and summarizes character-class syntax. (Note that several of these character-class escape sequences match only ASCII characters and have not been extended to work with Unicode characters. You can, however, explicitly define your own Unicode character classes; for example, `/[\u0400-\u04FF]/` matches any one Cyrillic character.)
+Individual literal characters can be combined into _character classes_ by placing them within square brackets. A character class matches any one character that is contained within it. Thus, the regular expression `/[abc]/` matches any one of the letters a, b, or c. Negated character classes can also be defined; these match any character except those contained within the brackets. A negated character class is specified by placing a caret (`^`) as the first character inside the left bracket. The RegExp `/[^abc]/` matches any one character other than a, b, or c. Character classes can use a hyphen to indicate a range of characters. To match any one lowercase character from the Latin alphabet, use `/[a-z]/`, and to match any letter or digit from the Latin alphabet, use `/[a-zA-Z0-9]/`. (And if you want to include an actual hyphen in your character class, simply make it the last character before the right bracket.)
+
+::: tip 翻译
+通过将各个文字字符放在方括号内，可以将它们组合成 _字符类_。 字符类匹配其中包含的任何一个字符。 因此，正则表达式 `/[abc]/` 匹配字母 a、b 或 c 中的任意一个。 也可以定义否定的字符类； 它们匹配除括号内包含的字符之外的任何字符。 通过将插入符号 (`^`) 作为左括号内的第一个字符来指定否定字符类。 正则表达式 `/[^abc]/` 匹配除 a、b 或 c 之外的任何一个字符。 字符类可以使用连字符来指示字符范围。 要匹配拉丁字母表中的任何一个小写字符，请使用 `/[a-z]/`，要匹配拉丁字母表中的任何字母或数字，请使用 `/[a-zA-Z0-9]/`。 （如果您想在字符类中包含实际的连字符，只需将其作为右括号之前的最后一个字符即可。）
+:::
+
+Because certain character classes are commonly used, the JavaScript regular expression syntax includes special characters and escape sequences to represent these common classes. For example, `\s` matches the space character, the tab character, and any other Unicode whitespace character; `\S` matches any character that is not Unicode whitespace. Table 11-2 lists these characters and summarizes character-class syntax. (Note that several of these character-class escape sequences match only ASCII characters and have not been extended to work with Unicode characters. You can, however, explicitly define your own Unicode character classes; for example, `/[\u0400-\u04FF]/` matches any one Cyrillic character.)
+
+::: tip 翻译
+由于某些字符类很常用，因此 JavaScript 正则表达式语法包含特殊字符和转义序列来表示这些常见类。 例如，`\s` 匹配空格字符、制表符和任何其他 Unicode 空白字符； `\S` 匹配任何不是 Unicode 空白的字符。 表 11-2 列出了这些字符并总结了字符类语法。 （请注意，其中一些字符类转义序列仅匹配 ASCII 字符，尚未扩展为可与 Unicode 字符一起使用。但是，您可以显式定义自己的 Unicode 字符类；例如 `/[\u0400-\u04FF ]/` 匹配任何一个西里尔字母字符。）
+:::
 
 _Table 11-2. Regular expression character classes_
 
@@ -842,6 +894,10 @@ _Table 11-2. Regular expression character classes_
 | [\b]      | A literal backspace (special case).                                                                                                                                  |
 
 Note that the special character-class escapes can be used within square brackets. `\s` matches any whitespace character, and `\d` matches any digit, so `/[\s\d]/` matches any one whitespace character or digit. Note that there is one special case. As you’ll see later, the `\b` escape has a special meaning. When used within a character class, however, it represents the backspace character. Thus, to represent a backspace character literally in a regular expression, use the character class with one element: `/[\b]/`.
+
+::: tip 翻译
+请注意，特殊字符类转义符可以在方括号内使用。 `\s` 匹配任何空白字符，`\d` 匹配任何数字，因此 `/[\s\d]/` 匹配任何一个空白字符或数字。 请注意，有一种特殊情况。 正如您稍后将看到的， `\b` 转义符具有特殊含义。 然而，当在字符类中使用时，它表示退格字符。 因此，要在正则表达式中按字面意思表示退格字符，请使用具有一个元素的字符类：`/[\b]/`。
+:::
 
 > **Unicode Character Classes**
 > In ES2018, if a regular expression uses the `u` flag, then character classes `\p{...}` and its negation `\P{...}` are supported. (As of early 2020, this is implemented by Node, Chrome, Edge, and Safari, but not Firefox.) These character classes are based on properties defined by the Unicode standard, and the set of characters they represent may change as Unicode evolves.
@@ -863,13 +919,45 @@ Note that the special character-class escapes can be used within square brackets
 > let cyrillicLetter = /\p{Script=Cyrillic}/u;
 > ```
 
-#### Repetition
+> **Unicode 字符类**
+> 在 ES2018 中，如果正则表达式使用 `u` 标志，则支持字符类 `\p{...}` 及其否定 `\P{...}`。 （截至 2020 年初，Node、Chrome、Edge 和 Safari 实现了这一点，但 Firefox 尚未实现。）这些字符类基于 Unicode 标准定义的属性，它们表示的字符集可能会随着 Unicode 的发展而变化。
+>
+> `\d` 字符类仅匹配 ASCII 数字。 如果您想匹配世界上任何一种书写系统中的一位十进制数字，您可以使用 `/\p{Decimal_Number}/u`。 如果您想匹配任何语言中非十进制数字的任何一个字符，您可以将 p 大写并写入`P{Decimal_Number}`。 如果要匹配任何类似数字的字符，包括分数和罗马数字，可以使用`\p{Number}`。 请注意，`Decimal_Number` 和 `Number` 并非特定于 JavaScript 或正则表达式语法：它是 Unicode 标准定义的一类字符的名称。
+>
+> `\w` 字符类仅适用于 ASCII 文本，但是使用 `\p`，我们可以近似为国际化版本，如下所示：
+>
+> ```js
+> /[\p{Alphabetic}\p{Decimal_Number}\p{Mark}]/u;
+> ```
+>
+> （尽管为了完全兼容世界语言的复杂性，我们确实还需要添加“Connector_Punctuation”和“Join_Control”类别。）
+>
+> 作为最后一个示例，`\p` 语法还允许我们定义匹配特定字母或脚本中的字符的正则表达式：
+>
+> ```js
+> let greekLetter = /\p{Script=Greek}/u;
+> let cyrillicLetter = /\p{Script=Cyrillic}/u;
+> ```
+
+#### 重复
 
 With the regular expression syntax you’ve learned so far, you can describe a two-digit number as `/\d\d/` and a four-digit number as `/\d\d\d\d/`. But you don’t have any way to describe, for example, a number that can have any number of digits or a string of three letters followed by an optional digit. These more complex patterns use regular expression syntax that specifies how many times an element of a regular expression may be repeated.
 
+::: tip 翻译
+使用目前为止学到的正则表达式语法，您可以将两位数字描述为 `/\d\d/`，将四位数字描述为 `/\d\d\d\d/`。 但你没有任何方法来描述，例如，一个可以有任意位数的数字或一个由三个字母组成的字符串，后跟一个可选的数字。 这些更复杂的模式使用正则表达式语法来指定正则表达式的元素可以重复多少次。
+:::
+
 The characters that specify repetition always follow the pattern to which they are being applied. Because certain types of repetition are quite commonly used, there are special characters to represent these cases. For example, `+` matches one or more occurrences of the previous pattern.
 
+::: tip 翻译
+指定重复的字符始终遵循它们所应用的模式。 由于某些类型的重复非常常用，因此有特殊字符来表示这些情况。 例如，`+` 匹配前一个模式的一次或多次出现。
+:::
+
 Table 11-3 summarizes the repetition syntax.
+
+::: tip 翻译
+表 11-3 总结了重复语法。
+:::
 
 _Table 11-3. Regular expression repetition characters_
 
@@ -884,6 +972,10 @@ _Table 11-3. Regular expression repetition characters_
 
 The following lines show some examples:
 
+::: tip 翻译
+以下几行显示了一些示例：
+:::
+
 ```js
 let r = /\d{2,4}/; // Match between two and four digits
 r = /\w{3}\d?/; // Match exactly three word characters and an optional digit
@@ -893,25 +985,61 @@ r = /[^(]*/; // Match zero or more characters that are not open parens
 
 Note that in all of these examples, the repetition specifiers apply to the single character or character class that precedes them. If you want to match repetitions of more complicated expressions, you’ll need to define a group with parentheses, which are explained in the following sections.
 
+::: tip 翻译
+请注意，在所有这些示例中，重复说明符适用于它们前面的单个字符或字符类。 如果要匹配更复杂表达式的重复，则需要使用括号定义一个组，这将在以下部分中进行解释。
+:::
+
 Be careful when using the `*` and `?` repetition characters. Since these characters may match zero instances of whatever precedes them, they are allowed to match nothing. For example, the regular expression `/a*/` actually matches the string “bbbb” because the string contains zero occurrences of the letter a!
 
-#### Non-greedy repetition
+::: tip 翻译
+使用 `*` 和 `?` 重复字符时要小心。 由于这些字符可能与它们前面的任何字符匹配零个实例，因此允许它们不匹配任何内容。 例如，正则表达式`/a*/` 实际上匹配字符串 `bbbb`，因为该字符串包含零次出现的字母`a`！
+:::
+
+#### 非贪婪重复
 
 The repetition characters listed in Table 11-3 match as many times as possible while still allowing any following parts of the regular expression to match. We say that this repetition is “greedy.” It is also possible to specify that repetition should be done in a non-greedy way. Simply follow the repetition character or characters with a question mark: `??`, `+?`, `*?`, or even `{1,5}?`. For example, the regular expression `/a+/` matches one or more occurrences of the letter a. When applied to the string “aaa”, it matches all three letters. But `/a+?/` matches one or more occurrences of the letter a, matching as few characters as necessary. When applied to the same string, this pattern matches only the first letter a.
 
+::: tip 翻译
+表 11-3 中列出的重复字符尽可能多次匹配，同时仍允许正则表达式的任何后续部分匹配。 我们说这种重复是“贪婪的”。 还可以指定重复应该以非贪婪的方式完成。 只需在重复字符后面加上问号：`??`、`+？`、`*？`，甚至 `{1,5}？`。 例如，正则表达式 `/a+/` 匹配字母 `a` 的一次或多次出现。 当应用于字符串 `aaa` 时，它匹配所有三个字母。 但 `/a+?/` 匹配字母 `a` 的一次或多次出现，并根据需要匹配尽可能少的字符。 当应用于同一字符串时，此模式仅匹配第一个字母 `a`。
+:::
+
 Using non-greedy repetition may not always produce the results you expect. Consider the pattern `/a+b/`, which matches one or more a’s, followed by the letter b. When applied to the string “aaab”, it matches the entire string. Now let’s use the non-greedy version: `/a+?b/`. This should match the letter b preceded by the fewest number of a’s possible. When applied to the same string “aaab”, you might expect it to match only one a and the last letter b. In fact, however, this pattern matches the entire string, just like the greedy version of the pattern. This is because regular expression pattern matching is done by finding the first position in the string at which a match is possible. Since a match is possible starting at the first character of the string, shorter matches starting at subsequent characters are never even considered.
 
-#### Alternation, grouping, and references
+::: tip 翻译
+使用非贪婪重复可能并不总能产生您期望的结果。 考虑模式 `/a+b/`，它匹配一个或多个 `a`，后跟字母 `b`。 当应用于字符串 `aaab` 时，它匹配整个字符串。 现在让我们使用非贪婪版本：`/a+?b/`。 这应该与字母 `b` 匹配，字母 `b` 前面有尽可能少的 a。 当应用于同一字符串`aaab` 时，您可能期望它仅匹配一个 `a` 和最后一个字母 `b`。 然而事实上，这个模式匹配整个字符串，就像该模式的贪婪版本一样。 这是因为正则表达式模式匹配是通过查找字符串中可能匹配的第一个位置来完成的。 由于匹配可能从字符串的第一个字符开始，因此从不考虑从后续字符开始的较短匹配。
+:::
+
+#### 交替、分组和引用
 
 The regular expression grammar includes special characters for specifying alternatives, grouping subexpressions, and referring to previous subexpressions. The `|` character separates alternatives. For example, `/ab|cd|ef/` matches the string “ab” or the string “cd” or the string “ef ”. And `/\d{3}|[a-z]{4}/` matches either three digits or four lowercase letters.
 
+::: tip 翻译
+正则表达式语法包括用于指定替代项、对子表达式进行分组以及引用先前子表达式的特殊字符。 `|` 字符分隔替代项。 例如，`/ab|cd|ef/` 匹配字符串“ab”或字符串“cd”或字符串“ef”。 `/\d{3}|[a-z]{4}/` 匹配三个数字或四个小写字母。
+:::
+
 Note that alternatives are considered left to right until a match is found. If the left alternative matches, the right alternative is ignored, even if it would have produced a “better” match. Thus, when the pattern `/a|ab/` is applied to the string “ab”, it matches only the first letter.
+
+::: tip 翻译
+请注意，在找到匹配项之前，将从左到右考虑替代项。 如果左侧替代项匹配，则右侧替代项将被忽略，即使它会产生“更好”的匹配。 因此，当模式 `/a|ab/` 应用于字符串“ab”时，它仅匹配第一个字母。
+:::
 
 Parentheses have several purposes in regular expressions. One purpose is to group separate items into a single subexpression so that the items can be treated as a single unit by `|`, `*`, `+`, `?`, and so on. For example, `/java(script)?/` matches “java” followed by the optional “script”. And `/(ab|cd)+|ef/` matches either the string “ef ” or one or more repetitions of either of the strings “ab” or “cd”.
 
+::: tip 翻译
+括号在正则表达式中有多种用途。 一个目的是将单独的项目分组到单个子表达式中，以便可以通过 `|`、`*`、`+`、`?` 等将这些项目视为单个单元。 例如，`/java(script)?/` 匹配“java”，后跟可选的“script”。 `/(ab|cd)+|ef/` 匹配字符串“ef”或字符串“ab”或“cd”的一次或多次重复。
+:::
+
 Another purpose of parentheses in regular expressions is to define subpatterns within the complete pattern. When a regular expression is successfully matched against a target string, it is possible to extract the portions of the target string that matched any particular parenthesized subpattern. (You’ll see how these matching substrings are obtained later in this section.) For example, suppose you are looking for one or more lowercase letters followed by one or more digits. You might use the pattern `/[a-z]+\d+/`. But suppose you only really care about the digits at the end of each match. If you put that part of the pattern in parentheses (`/[a-z]+(\d+)/`), you can extract the digits from any matches you find, as explained later.
 
+::: tip 翻译
+正则表达式中括号的另一个用途是定义完整模式中的子模式。 当正则表达式与目标字符串成功匹配时，可以提取与任何特定括号子模式匹配的目标字符串部分。 （您将在本节后面看到如何获取这些匹配的子字符串。）例如，假设您正在查找一个或多个小写字母，后跟一个或多个数字。 您可以使用模式 `/[a-z]+\d+/`。 但假设您只关心每场比赛结束时的数字。 如果将模式的该部分放在括号中 (`/[a-z]+(\d+)/`)，则可以从找到的任何匹配项中提取数字，如下所述。
+:::
+
 A related use of parenthesized subexpressions is to allow you to refer back to a subexpression later in the same regular expression. This is done by following a `\` character by a digit or digits. The digits refer to the position of the parenthesized subexpression within the regular expression. For example, `\1` refers back to the first subexpression, and `\3` refers to the third. Note that, because subexpressions can be nested within others, it is the position of the left parenthesis that is counted. In the following regular expression, for example, the nested subexpression (`[Ss]cript`) is referred to as `\2`:
+
+::: tip 翻译
+带括号的子表达式的一个相关用途是允许您稍后在同一正则表达式中引用子表达式。 这是通过在 `\` 字符后跟一个或多个数字来完成的。 这些数字指的是正则表达式中带括号的子表达式的位置。 例如，`\1`引用第一个子表达式，`\3`引用第三个子表达式。 请注意，由于子表达式可以嵌套在其他子表达式中，因此计算的是左括号的位置。 例如，在以下正则表达式中，嵌套子表达式 (`[Ss]cript`) 称为 `\2`：
+:::
 
 ```js
 /([Jj]ava([Ss]cript)?)\sis\s(fun\w*)/;
@@ -919,11 +1047,19 @@ A related use of parenthesized subexpressions is to allow you to refer back to a
 
 A reference to a previous subexpression of a regular expression does _not_ refer to the pattern for that subexpression but rather to the text that matched the pattern. Thus, references can be used to enforce a constraint that separate portions of a string contain exactly the same characters. For example, the following regular expression matches zero or more characters within single or double quotes. However, it does not require the opening and closing quotes to match (i.e., both single quotes or both double quotes):
 
+::: tip 翻译
+对正则表达式的前一个子表达式的引用并不是指该子表达式的模式，而是指与该模式匹配的文本。 因此，引用可用于强制约束字符串的各个部分包含完全相同的字符。 例如，以下正则表达式匹配单引号或双引号内的零个或多个字符。 但是，它不需要左引号和右引号匹配（即两个单引号或两个双引号）：
+:::
+
 ```js
 /['"][^'"]*['"]/;
 ```
 
 To require the quotes to match, use a reference:
+
+::: tip 翻译
+要要求引号匹配，请使用引用：
+:::
 
 ```js
 /(['"])[^'"]*\1/;
@@ -931,9 +1067,21 @@ To require the quotes to match, use a reference:
 
 The `\1` matches whatever the first parenthesized subexpression matched. In this example, it enforces the constraint that the closing quote match the opening quote. This regular expression does not allow single quotes within double-quoted strings or vice versa. (It is not legal to use a reference within a character class, so you cannot write: `/(['"])[^\1]*\1/`.)
 
+::: tip 翻译
+`\1` 匹配第一个带括号的子表达式匹配的内容。 在此示例中，它强制执行关闭引号与开始引号的约束。 此正则表达式不允许在双引号字符串中使用单引号，反之亦然。 （在字符类中使用引用是不合法的，因此不能写：`/(['"])[^\1]*\1/`。）
+:::
+
 When we cover the RegExp API later, you’ll see that this kind of reference to a parenthesized subexpression is a powerful feature of regular-expression search-and-replace operations.
 
+::: tip 翻译
+当我们稍后介绍 `RegExp` API 时，您将看到这种对括号子表达式的引用是正则表达式搜索和替换操作的强大功能。
+:::
+
 It is also possible to group items in a regular expression without creating a numbered reference to those items. Instead of simply grouping the items within `(` and `)`, begin the group with `(?:` and end it with `)`. Consider the following pattern:
+
+::: tip 翻译
+还可以在正则表达式中对项目进行分组，而无需创建对这些项目的编号引用。 不要简单地将 `(` 和 `)` 中的项目分组，而是以 `(?:` 开始组并以 `)`结束。 考虑以下模式：
+:::
 
 ```js
 /([Jj]ava(?:[Ss]cript)?)\sis\s(fun\w*)/;
@@ -941,7 +1089,15 @@ It is also possible to group items in a regular expression without creating a nu
 
 In this example, the subexpression `(?:[Ss]cript)` is used simply for grouping, so the `?` repetition character can be applied to the group. These modified parentheses do not produce a reference, so in this regular expression, `\2` refers to the text matched by `(fun\w*)`.
 
+::: tip 翻译
+在此示例中，子表达式 `(?:[Ss]cript)` 仅用于分组，因此可以将 `?` 重复字符应用于组。 这些修改后的括号不会产生引用，因此在此正则表达式中，`\2` 引用与 `(fun\w*)` 匹配的文本。
+:::
+
 Table 11-4 summarizes the regular expression alternation, grouping, and referencing operators.
+
+::: tip 翻译
+表 11-4 总结了正则表达式的交替、分组和引用运算符。
+:::
 
 _Table 11-4. Regular expression alternation, grouping, and reference characters_
 
@@ -972,15 +1128,51 @@ _Table 11-4. Regular expression alternation, grouping, and reference characters_
 >
 > The `\k<quote>` is a named backreference to the named group that captures the open quotation mark.
 
-#### Specifying match position
+> **命名捕获组**
+>
+> ES2018 标准化了一项新功能，可以使正则表达式更加自文档化并且更易于理解。 这个新功能被称为“命名捕获组”，它允许我们将名称与正则表达式中的每个左括号关联起来，以便我们可以通过名称而不是数字来引用匹配的文本。 同样重要的是：使用名称可以让阅读代码的人更轻松地理解正则表达式该部分的用途。 截至 2020 年初，此功能已在 Node、Chrome、Edge 和 Safari 中实现，但 Firefox 尚未实现。
+>
+> 要命名组，请使用 `(?<...>` 而不是 `(`，并将名称放在尖括号之间。例如，下面是一个正则表达式，可用于检查美国邮寄地址最后一行的格式 ：
+>
+> ```js
+> /(?<city>\w+) (?<state>[A-Z]{2}) (?<zipcode>\d{5})(?<zip9>-\d{4})?/;
+> ```
+>
+> 请注意组名称提供了多少上下文以使正则表达式更易于理解。 在第 11.3.2 节中，当我们讨论字符串 `replace()` 和 `match()` 方法以及 RegExp `exec()` 方法时，您将看到 `RegExp` API 如何允许您引用匹配的文本 这些组中的每一个都是按名称而不是按职位排列的。
+>
+> 如果您想在正则表达式中引用已命名的捕获组，也可以通过名称来执行此操作。 在前面的示例中，我们能够使用正则表达式“反向引用”来编写一个正则表达式，该正则表达式将匹配单引号或双引号字符串，其中开引号和闭引号必须匹配。 我们可以使用命名捕获组和命名反向引用重写此正则表达式，如下所示：
+>
+> ```js
+> /(?<quote>['"])[^'"]*\k<quote>/;
+> ```
+>
+> `\k<quote>` 是对捕获左引号的命名组的命名反向引用。
+
+#### 指定匹配位置
 
 As described earlier, many elements of a regular expression match a single character in a string. For example, `\s` matches a single character of whitespace. Other regular expression elements match the positions between characters instead of actual characters. `\b`, for example, matches an ASCII word boundary—the boundary between a `\w` (ASCII word character) and a `\W` (nonword character), or the boundary between an ASCII word character and the beginning or end of a string. Elements such as `\b` do not specify any characters to be used in a matched string; what they do specify, however, are legal positions at which a match can occur. Sometimes these elements are called _regular expression anchors_ because they anchor the pattern to a specific position in the search string. The most commonly used anchor elements are `^`, which ties the pattern to the beginning of the string, and `$`, which anchors the pattern to the end of the string.
 
+::: tip 翻译
+如前所述，正则表达式的许多元素与字符串中的单个字符匹配。 例如，`\s` 匹配单个空格字符。 其他正则表达式元素匹配字符之间的位置而不是实际字符。 例如，`\b`匹配 ASCII 字边界 - `\w`（ASCII 字字符）和`\W`（非字字符）之间的边界，或者 ASCII 字字符和字符串开头或结尾之间的边界。 诸如 `\b` 之类的元素不指定在匹配字符串中使用的任何字符； 然而，他们所指定的是比赛可以发生的合法位置。 有时，这些元素被称为 _正则表达式锚_，因为它们将模式锚定到搜索字符串中的特定位置。 最常用的锚元素是 `^`，它将模式连接到字符串的开头，以及 `$`，它将模式锚定到字符串的末尾。
+:::
+
 For example, to match the word “JavaScript” on a line by itself, you can use the regular expression `/^JavaScript$/`. If you want to search for “Java” as a word by itself (not as a prefix, as it is in “JavaScript”), you can try the pattern `/\sJava\s/`, which requires a space before and after the word. But there are two problems with this solution. First, it does not match “Java” at the beginning or the end of a string, but only if it appears with space on either side. Second, when this pattern does find a match, the matched string it returns has leading and trailing spaces, which is not quite what’s needed. So instead of matching actual space characters with `\s`, match (or anchor to) word boundaries with `\b`. The resulting expression is `/\bJava\b/`. The element `\B` anchors the match to a location that is not a word boundary. Thus, the pattern `\B[Ss]cript/` matches “JavaScript” and “postscript”, but not “script” or “Scripting”.
 
-You can also use arbitrary regular expressions as anchor conditions. If you include an expression within (`?=` and ) characters, it is a lookahead assertion, and it specifies that the enclosed characters must match, without actually matching them. For example, to match the name of a common programming language, but only if it is followed by a colon, you could use `/[Jj]ava([Ss]cript)?(?=\:)/`. This pattern matches the word “JavaScript” in “JavaScript: The Definitive Guide”, but it does not match “Java” in “Java in a Nutshell” because it is not followed by a colon.
+::: tip 翻译
+例如，要匹配一行中的单词“JavaScript”，您可以使用正则表达式 `/^JavaScript$/`。 如果您想单独搜索“Java”（而不是像“JavaScript”中那样作为前缀），您可以尝试模式 `/\sJava\s/`，该模式在这个单词前后需要一个空格 。 但这个解决方案有两个问题。 首先，它不匹配字符串开头或结尾的`Java`，但前提是它两侧都带有空格。 其次，当此模式确实找到匹配项时，它返回的匹配字符串具有前导空格和尾随空格，这并不是所需要的。 因此，不要用 `\s` 匹配实际的空格字符，而是用 `\b` 匹配（或锚定）单词边界。 结果表达式是 `/\bJava\b/`。 元素 `\B`将匹配锚定到非单词边界的位置。 因此，模式 `\B[Ss]cript/``匹配“JavaScript”和“postscript”，但不匹配“script”或“Scripting”。
+:::
+
+You can also use arbitrary regular expressions as anchor conditions. If you include an expression within `(?=` and `)` characters, it is a lookahead assertion, and it specifies that the enclosed characters must match, without actually matching them. For example, to match the name of a common programming language, but only if it is followed by a colon, you could use `/[Jj]ava([Ss]cript)?(?=\:)/`. This pattern matches the word “JavaScript” in “JavaScript: The Definitive Guide”, but it does not match “Java” in “Java in a Nutshell” because it is not followed by a colon.
+
+::: tip 翻译
+您还可以使用任意正则表达式作为锚条件。 如果在 `(?=` 和 `)` 字符中包含表达式，则它是一个先行断言，它指定所包含的字符必须匹配，但实际上并不匹配它们。 例如，要匹配通用编程语言的名称，但仅当其后跟冒号时，您可以使用 `/[Jj]ava([Ss]cript)?(?=\:)/`。 此模式与“JavaScript：The Definitive Guide”中的“JavaScript”一词匹配，但与“Java in a Nutshell”中的“Java”不匹配，因为它后面没有冒号。
+:::
 
 If you instead introduce an assertion with `(?!`, it is a negative lookahead assertion, which specifies that the following characters must not match. For example, `/Java(?!Script)([A-Z]\w*)/` matches “Java” followed by a capital letter and any number of additional ASCII word characters, as long as “Java” is not followed by “Script”. It matches “JavaBeans” but not “Javanese”, and it matches “JavaScrip” but not “JavaScript” or “JavaScripter”. Table 11-5 summarizes regular expression anchors.
+
+::: tip 翻译
+如果您改为使用 `(?!` 引入断言，则它是负向先行断言，它指定以下字符不能匹配。例如，`/Java(?!Script)([A-Z]\w*)/ ` 匹配“Java”后跟一个大写字母和任意数量的附加 ASCII 单词字符，只要“Java”后面不跟“Script”。它匹配“JavaBeans”但不匹配“Javanese”，并且匹配“JavaScrip” 但不是“JavaScript”或“JavaScripter”。表 11-5 总结了正则表达式锚点。
+:::
 
 _Table 11-5. Regular expression anchor characters_
 
@@ -1009,43 +1201,98 @@ _Table 11-5. Regular expression anchor characters_
 > /(?<![\p{Currency_Symbol}\d.])\d+(\.\d+)?/u;
 > ```
 
-#### Flags
+> **后向断言**
+> ES2018 扩展了正则表达式语法以允许“lookbehind”断言。 这些类似于前瞻断言，但引用当前匹配位置之前的文本。 截至 2020 年初，这些已在 Node、Chrome 和 Edge 中实现，但尚未在 Firefox 或 Safari 中实现。
+>
+> 使用 `(?<=...)` 指定正回顾断言，使用 `(?<!...)` 指定负回顾断言。 例如，如果您使用的是美国邮寄地址，则可以匹配 5 位邮政编码，但前提是它遵循两个字母的州缩写，如下所示：
+>
+> ```js
+> /(?<= [A-Z]{2} )\d{5}/;
+> ```
+>
+> 您可以将前面没有 Unicode 货币符号的数字字符串与否定后向断言相匹配，如下所示：
+>
+> ```js
+> /(?<![\p{Currency_Symbol}\d.])\d+(\.\d+)?/u;
+> ```
+
+#### 标识符
 
 Every regular expression can have one or more flags associated with it to alter its matching behavior. JavaScript defines six possible flags, each of which is represented by a single letter. Flags are specified after the second `/` character of a regular expression literal or as a string passed as the second argument to the `RegExp()` constructor. The supported flags and their meanings are:
+
+::: tip 翻译
+每个正则表达式都可以有一个或多个与之关联的标志来改变其匹配行为。 JavaScript 定义了六个可能的标志，每个标志都由一个字母表示。 标志在正则表达式文字的第二个 `/` 字符之后指定，或者作为作为第二个参数传递给 `RegExp()` 构造函数的字符串。 支持的标志及其含义是：
+:::
 
 ##### g
 
 The `g` flag indicates that the regular expression is “global”—that is, that we intend to use it to find all matches within a string rather than just finding the first match. This flag does not alter the way that pattern matching is done, but, as we’ll see later, it does alter the behavior of the String `match()` method and the RegExp `exec()` method in important ways.
 
+::: tip 翻译
+`g`标志表示正则表达式是“全局”的，也就是说，我们打算使用它来查找字符串中的所有匹配项，而不仅仅是查找第一个匹配项。 该标志不会改变模式匹配的完成方式，但是，正如我们稍后将看到的，它确实以重要方式改变了 String `match()` 方法和 RegExp `exec()` 方法的行为。
+:::
+
 ##### i
 
 The `i` flag specifies that pattern matching should be case-insensitive.
+
+::: tip 翻译
+`i` 标志指定模式匹配应该不区分大小写。
+:::
 
 ##### m
 
 The `m` flag specifies that matching should be done in “multiline” mode. It says that the RegExp will be used with multiline strings and that the `^` and `$` anchors should match both the beginning and end of the string and also the beginning and end of individual lines within the string.
 
+::: tip 翻译
+`m` 标志指定匹配应该在“多行”模式下完成。 它表示 RegExp 将与多行字符串一起使用，并且 `^` 和 `$` 锚点应匹配字符串的开头和结尾以及字符串中各行的开头和结尾。
+:::
+
 ##### s
 
 Like the `m` flag, the `s` flag is also useful when working with text that includes newlines. Normally, a “.” in a regular expression matches any character except a line terminator. When the `s` flag is used, however, “.” will match any character, including line terminators. The `s` flag was added to JavaScript in ES2018 and, as of early 2020, is supported in Node, Chrome, Edge, and Safari, but not Firefox.
+
+::: tip 翻译
+与 `m` 标志一样，`s` 标志在处理包含换行符的文本时也很有用。 通常，一个 `.` 正则表达式中的匹配除行终止符之外的任何字符。 然而，当使用 `s` 标志时，`.` 将匹配任何字符，包括行终止符。 ES2018 中向 JavaScript 添加了 `s` 标志，并且从 2020 年初开始，Node、Chrome、Edge 和 Safari 支持该标志，但 Firefox 不支持。
+:::
 
 ##### u
 
 The `u` flag stands for Unicode, and it makes the regular expression match full Unicode codepoints rather than matching 16-bit values. This flag was introduced in ES6, and you should make a habit of using it on all regular expressions unless you have some reason not to. If you do not use this flag, then your RegExps will not work well with text that includes emoji and other characters (including many Chinese characters) that require more than 16 bits. Without the `u` flag, the “.” character matches any 1 UTF-16 16-bit value. With the flag, however, “.” matches one Unicode codepoint, including those that have more than 16 bits. Setting the `u` flag on a RegExp also allows you to use the new `\u{...}` escape sequence for Unicode character and also enables the `\p{...}` notation for Unicode character classes.
 
+::: tip 翻译
+`u` 标志代表 Unicode，它使正则表达式匹配完整的 Unicode 代码点，而不是匹配 16 位值。 这个标志是在 ES6 中引入的，你应该养成在所有正则表达式上使用它的习惯，除非你有某种理由不这样做。 如果您不使用此标志，那么您的正则表达式将无法很好地处理包含表情符号和其他需要超过 16 位的字符（包括许多中文字符）的文本。 如果没有 `u` 标志，则 `.` 字符匹配任何 1 个 UTF-16 16 位值。 然而，有了标识，`.` 匹配一个 Unicode 代码点，包括那些超过 16 位的代码点。 在 RegExp 上设置 `u` 标志还允许您对 Unicode 字符使用新的 `\u{...}` 转义序列，并为 Unicode 字符类启用 `\p{...}` 表示法。
+:::
+
 ##### y
 
 The `y` flag indicates that the regular expression is “sticky” and should match at the beginning of a string or at the first character following the previous match. When used with a regular expression that is designed to find a single match, it effectively treats that regular expression as if it begins with `^` to anchor it to the beginning of the string. This flag is more useful with regular expressions that are used repeatedly to find all matches within a string. In this case, it causes special behavior of the String `match()` method and the RegExp `exec()` method to enforce that each subsequent match is anchored to the string position at which the last one ended.
 
+::: tip 翻译
+`y` 标志表示正则表达式是“粘性”的，并且应该匹配字符串的开头或上一个匹配之后的第一个字符。 当与旨在查找单个匹配项的正则表达式一起使用时，它会有效地将该正则表达式视为以 `^` 开头，以将其锚定到字符串的开头。 此标志对于重复使用以查找字符串中所有匹配项的正则表达式更有用。 在这种情况下，它会导致 String `match()` 方法和 RegExp `exec()` 方法的特殊行为，以强制每个后续匹配都锚定到最后一个结束的字符串位置。
+:::
+
 These flags may be specified in any combination and in any order. For example, if you want your regular expression to be Unicode-aware to do case-insensitive matching and you intend to use it to find multiple matches within a string, you would specify the flags `uig`, `gui`, or any other permutation of these three letters.
 
-### String Methods for Pattern Matching
+::: tip 翻译
+这些标志可以以任意组合和任意顺序指定。 例如，如果您希望正则表达式能够识别 Unicode 以进行不区分大小写的匹配，并且打算使用它来查找字符串中的多个匹配项，则可以指定标志 `uig`、`gui`或任何其他这三个字母的排列。
+:::
+
+### 模式匹配的字符串方法
 
 Until now, we have been describing the grammar used to define regular expressions, but not explaining how those regular expressions can actually be used in JavaScript code. We are now switching to cover the API for using RegExp objects. This section begins by explaining the string methods that use regular expressions to perform pattern matching and search-and-replace operations. The sections that follow this one continue the discussion of pattern matching with JavaScript regular expressions by discussing the RegExp object and its methods and properties.
+
+::: tip 翻译
+到目前为止，我们一直在描述用于定义正则表达式的语法，但没有解释如何在 JavaScript 代码中实际使用这些正则表达式。 我们现在转而介绍使用 RegExp 对象的 API。 本节首先解释使用正则表达式执行模式匹配以及搜索和替换操作的字符串方法。 本节后面的部分通过讨论 RegExp 对象及其方法和属性，继续讨论与 JavaScript 正则表达式的模式匹配。
+:::
 
 #### search()
 
 Strings support four methods that use regular expressions. The simplest is `search()`. This method takes a regular expression argument and returns either the character position of the start of the first matching substring or −1 if there is no match:
+
+::: tip 翻译
+字符串支持四种使用正则表达式的方法。 最简单的是 `search()`。 此方法采用正则表达式参数，并返回第一个匹配子字符串开头的字符位置，如果没有匹配，则返回 -1：
+:::
 
 ```js
 "JavaScript".search(/script/iu); // => 4
@@ -1054,9 +1301,17 @@ Strings support four methods that use regular expressions. The simplest is `sear
 
 If the argument to `search()` is not a regular expression, it is first converted to one by passing it to the `RegExp` constructor. `search()` does not support global searches; it ignores the g flag of its regular expression argument.
 
+::: tip 翻译
+如果 `search()` 的参数不是正则表达式，则首先将其传递给 `RegExp` 构造函数，将其转换为正则表达式。 `search()` 不支持全局搜索； 它忽略其正则表达式参数的 `g` 标志。
+:::
+
 #### replace()
 
 The `replace()` method performs a search-and-replace operation. It takes a regular expression as its first argument and a replacement string as its second argument. It searches the string on which it is called for matches with the specified pattern. If the regular expression has the g flag set, the `replace()` method replaces all matches in the string with the replacement string; otherwise, it replaces only the first match it finds. If the first argument to `replace()` is a string rather than a regular expression, the method searches for that string literally rather than converting it to a regular expression with the `RegExp()` constructor, as `search()` does. As an example, you can use `replace()` as follows to provide uniform capitalization of the word “JavaScript” throughout a string of text:
+
+::: tip 翻译
+`replace()` 方法执行搜索和替换操作。 它采用正则表达式作为其第一个参数，并将替换字符串作为其第二个参数。 它在调用它的字符串中搜索与指定模式的匹配项。 如果正则表达式设置了 `g` 标志，则 `replace()` 方法将用替换字符串替换字符串中的所有匹配项； 否则，它仅替换它找到的第一个匹配项。 如果 `replace()` 的第一个参数是字符串而不是正则表达式，则该方法会按字面意思搜索该字符串，而不是像 `search()`那样使用 `RegExp()` 构造函数将其转换为正则表达式 。 例如，您可以按如下方式使用 `replace()` 来在整个文本字符串中提供单词“JavaScript”的统一大写：
+:::
 
 ```js
 // No matter how it is capitalized, replace it with the correct capitalization
@@ -1064,6 +1319,10 @@ text.replace(/javascript/gi, "JavaScript");
 ```
 
 `replace()` is more powerful than this, however. Recall that parenthesized subexpressions of a regular expression are numbered from left to right and that the regular expression remembers the text that each subexpression matches. If a $ followed by a digit appears in the replacement string, `replace()` replaces those two characters with the text that matches the specified subexpression. This is a very useful feature. You can use it, for example, to replace quotation marks in a string with other characters:
+
+::: tip 翻译
+然而，`replace()` 比这更强大。 回想一下，正则表达式的括号子表达式是从左到右编号的，并且正则表达式会记住每个子表达式匹配的文本。 如果替换字符串中出现 `$` 后跟数字，则 `replace()` 会将这两个字符替换为与指定子表达式匹配的文本。 这是一个非常有用的功能。 例如，您可以使用它用其他字符替换字符串中的引号：
+:::
 
 ```js
 // A quote is a quotation mark, followed by any number of
@@ -1077,12 +1336,20 @@ let quote = /"([^"]*)"/g;
 
 If your RegExp uses named capture groups, then you can refer to the matching text by name rather than by number:
 
+::: tip 翻译
+如果您的正则表达式使用命名捕获组，那么您可以按名称而不是数字引用匹配文本：
+:::
+
 ```js
 let quote = /"(?<quotedText>[^"]*)"/g;
 'He said "stop"'.replace(quote, "«$<quotedText>»"); // => 'He said «stop»'
 ```
 
 Instead of passing a replacement string as the second argument to `replace()`, you can also pass a function that will be invoked to compute the replacement value. The replacement function is invoked with a number of arguments. First is the entire matched text. Next, if the RegExp has capturing groups, then the substrings that were captured by those groups are passed as arguments. The next argument is the position within the string at which the match was found. After that, the entire string that `replace()` was called on is passed. And finally, if the RegExp contained any named capture groups, the last argument to the replacement function is an object whose property names match the capture group names and whose values are the matching text. As an example, here is code that uses a replacement function to convert decimal integers in a string to hexadecimal:
+
+::: tip 翻译
+您还可以传递一个将被调用来计算替换值的函数，而不是将替换字符串作为第二个参数传递给 `replace()`。 使用多个参数调用替换函数。 首先是整个匹配的文本。 接下来，如果 `RegExp` 具有捕获组，则这些组捕获的子字符串将作为参数传递。 下一个参数是字符串中找到匹配项的位置。 之后，调用 `replace()` 的整个字符串都会被传递。 最后，如果 `RegExp` 包含任何命名捕获组，则替换函数的最后一个参数是一个对象，其属性名称与捕获组名称匹配，其值是匹配文本。 例如，以下代码使用替换函数将字符串中的十进制整数转换为十六进制：
+:::
 
 ```js
 let s = "15 times 15 is 225";
@@ -1093,13 +1360,25 @@ s.replace(/\d+/gu, (n) => parseInt(n).toString(16)); // => "f times f is e1"
 
 The `match()` method is the most general of the String regular expression methods. It takes a regular expression as its only argument (or converts its argument to a regular expression by passing it to the `RegExp()` constructor) and returns an array that contains the results of the match, or null if no match is found. If the regular expression has the `g` flag set, the method returns an array of all matches that appear in the string. For example:
 
+::: tip 翻译
+`match()` 方法是最通用的字符串正则表达式方法。 它将正则表达式作为其唯一参数（或通过将其传递给 `RegExp()` 构造函数将其参数转换为正则表达式）并返回一个包含匹配结果的数组，如果未找到匹配则返回 `null`。 如果正则表达式设置了 `g` 标志，则该方法返回字符串中出现的所有匹配项的数组。 例如：
+:::
+
 ```js
 "7 plus 8 equals 15".match(/\d+/g); // => ["7", "8", "15"]
 ```
 
 If the regular expression does not have the `g` flag set, `match()` does not do a global search; it simply searches for the first match. In this nonglobal case, `match()` still returns an array, but the array elements are completely different. Without the `g` flag, the first element of the returned array is the matching string, and any remaining elements are the substrings matching the parenthesized capturing groups of the regular expression. Thus, if `match()` returns an array `a`, `a[0]` contains the complete match, `a[1]` contains the substring that matched the first parenthesized expression, and so on. To draw a parallel with the `replace()` method, `a[1]` is the same string as `$1`, `a[2]` is the same as `$2`, and so on.
 
+::: tip 翻译
+如果正则表达式没有设置 `g` 标志，则 `match()` 不会进行全局搜索； 它只是搜索第一个匹配项。 在这种非全局情况下，`match()` 仍然返回一个数组，但数组元素完全不同。 如果没有 `g` 标志，返回数组的第一个元素是匹配的字符串，任何剩余元素都是与正则表达式的括号内的捕获组匹配的子字符串。 因此，如果 `match()` 返回一个数组 `a`，则 `a[0]` 包含完整匹配，`a[1]` 包含与第一个括号表达式匹配的子字符串，依此类推。 与 `replace()` 方法进行类比，`a[1]` 与 `$1` 是相同的字符串，`a[2]` 与 `$2` 相同，依此类推。
+:::
+
 For example, consider parsing a URL with the following code:
+
+::: tip 翻译
+例如，考虑使用以下代码解析 URL：
+:::
 
 ```js
 // A very simple URL parsing RegExp
@@ -1115,8 +1394,11 @@ if (match !== null) {
 }
 ```
 
-In this non-global case, the array returned by `match()` also has some object properties in addition to the numbered array elements. The `input` property refers to the string on which `match()` was called. The `index` property is the position within that string at
-which the match starts. And if the regular expression contains named capture groups, then the returned array also has a `groups` property whose value is an object. The properties of this object match the names of the named groups, and the values are the matching text. We could rewrite the previous URL parsing example, for example, like this:
+In this non-global case, the array returned by `match()` also has some object properties in addition to the numbered array elements. The `input` property refers to the string on which `match()` was called. The `index` property is the position within that string at which the match starts. And if the regular expression contains named capture groups, then the returned array also has a `groups` property whose value is an object. The properties of this object match the names of the named groups, and the values are the matching text. We could rewrite the previous URL parsing example, for example, like this:
+
+::: tip 翻译
+在这种非全局情况下，除了编号的数组元素之外，`match()` 返回的数组还具有一些对象属性。 `input` 属性指的是调用 `match()` 的字符串。 `index` 属性是该字符串中匹配开始的位置。 如果正则表达式包含命名捕获组，则返回的数组还有一个值为对象的 `groups` 属性。 该对象的属性与命名组的名称匹配，并且值是匹配的文本。 我们可以重写之前的 URL 解析示例，例如：
+:::
 
 ```js
 let url = /(?<protocol>\w+):\/\/(?<host>[\w.]+)\/(?<path>\S*)/;
@@ -1132,7 +1414,15 @@ match.groups.path; // => '~david'
 
 We’ve seen that `match()` behaves quite differently depending on whether the RegExp has the `g` flag set or not. There are also important but less dramatic differences in behavior when the `y` flag is set. Recall that the `y` flag makes a regular expression “sticky” by constraining where in the string matches can begin. If a RegExp has both the `g` and `y` flags set, then `match()` returns an array of matched strings, just as it does when `g` is set without `y`. But the first match must begin at the start of the string, and each subsequent match must begin at the character immediately following the previous match.
 
-If the y flag is set without `g`, then `match()` tries to find a single match, and, by default, this match is constrained to the start of the string. You can change this default match start position, however, by setting the `lastIndex` property of the RegExp object at the index at which you want to match at. If a match is found, then this `lastIndex` will be automatically updated to the first character after the match, so if you call `match()` again, in this case, it will look for a subsequent match. (`lastIndex` may seem like a strange name for a property that specifies the position at which to begin the next match. We will see it again when we cover the RegExp `exec()` method, and its name may make more sense in that context.)
+::: tip 翻译
+我们已经看到，根据正则表达式是否设置了 `g` 标志，`match()`的行为有很大不同。 当设置 `y` 标志时，行为上也存在重要但不太显着的差异。 回想一下，`y`标志通过限制字符串匹配可以开始的位置来使正则表达式具有“粘性”。 如果 RegExp 同时设置了 `g` 和 `y` 标志，则 `match()` 返回一个匹配字符串的数组，就像设置了 `g` 而没有设置 `y` 时一样。 但第一个匹配必须从字符串的开头开始，并且后续的每个匹配必须从紧跟上一个匹配的字符开始。
+:::
+
+If the `y` flag is set without `g`, then `match()` tries to find a single match, and, by default, this match is constrained to the start of the string. You can change this default match start position, however, by setting the `lastIndex` property of the RegExp object at the index at which you want to match at. If a match is found, then this `lastIndex` will be automatically updated to the first character after the match, so if you call `match()` again, in this case, it will look for a subsequent match. (`lastIndex` may seem like a strange name for a property that specifies the position at which to begin the next match. We will see it again when we cover the RegExp `exec()` method, and its name may make more sense in that context.)
+
+::: tip 翻译
+如果 `y` 标志设置为没有 `g`，则 `match()` 会尝试查找单个匹配项，并且默认情况下，该匹配项被限制在字符串的开头。 但是，您可以通过在要匹配的索引处设置 RegExp 对象的 `lastIndex` 属性来更改此默认匹配开始位置。 如果找到匹配项，则此 `lastIndex` 将自动更新为匹配后的第一个字符，因此如果您再次调用 `match()`，在这种情况下，它将查找后续匹配项。 （对于指定下一场比赛开始位置的属性来说，`lastIndex` 可能看起来是一个奇怪的名称。当我们介绍 RegExp `exec()` 方法时，我们会再次看到它，它的名称在那个上下文中可能更有意义 。）
+:::
 
 ```js
 let vowel = /[aeiou]/y; // Sticky vowel match
@@ -1146,11 +1436,23 @@ vowel.lastIndex; // => 0: lastIndex gets reset after failed match
 
 It is worth noting that passing a non-global regular expression to the `match()` method of a string is the same as passing the string to the `exec()` method of the regular expression: the returned array and its properties are the same in both cases.
 
+::: tip 翻译
+值得注意的是，将非全局正则表达式传递给字符串的 `match()` 方法与将字符串传递给正则表达式的 `exec()` 方法相同：返回的数组及其属性是两种情况都是一样的。
+:::
+
 #### matchAll()
 
 The `matchAll()` method is defined in ES2020, and as of early 2020 is implemented by modern web browsers and Node. `matchAll()` expects a RegExp with the `g` flag set. Instead of returning an array of matching substrings like `match()` does, however, it returns an iterator that yields the kind of match objects that `match()` returns when used with a non-global RegExp. This makes `matchAll()` the easiest and most general way to loop through all matches within a string.
 
+::: tip 翻译
+`matchAll()` 方法是在 ES2020 中定义的，并且从 2020 年初开始由现代 Web 浏览器和 Node.js 实现。 `matchAll()` 需要一个设置了 `g` 标志的正则表达式。 然而，它不是像 `match()` 那样返回匹配子字符串的数组，而是返回一个迭代器，该迭代器生成 `match()` 与非全局正则表达式一起使用时返回的匹配对象类型。 这使得 `matchAll()` 成为循环遍历字符串中所有匹配项的最简单、最通用的方法。
+:::
+
 You might use `matchAll()` to loop through the words in a string of text like this:
+
+::: tip 翻译
+您可以使用 `matchAll()` 来循环文本字符串中的单词，如下所示：
+:::
 
 ```js
 // One or more Unicode alphabetic characters between word boundaries.
@@ -1163,9 +1465,17 @@ for (let word of text.matchAll(words)) {
 
 You can set the `lastIndex` property of a RegExp object to tell `matchAll()` what index in the string to begin matching at. Unlike the other pattern-matching methods, however, `matchAll()` never modifies the `lastIndex` property of the RegExp you call it on, and this makes it much less likely to cause bugs in your code.
 
+::: tip 翻译
+您可以设置 `RegExp` 对象的 `lastIndex` 属性来告诉 `matchAll()` 从字符串中的哪个索引开始匹配。 然而，与其他模式匹配方法不同，`matchAll()` 永远不会修改您调用它的正则表达式的 `lastIndex` 属性，这使得它不太可能在代码中引起错误。
+:::
+
 #### split()
 
 The last of the regular expression methods of the String object is `split()`. This method breaks the string on which it is called into an array of substrings, using the argument as a separator. It can be used with a string argument like this:
+
+::: tip 翻译
+String 对象的最后一个正则表达式方法是 `split()`。 此方法使用参数作为分隔符，将调用它的字符串分解为子字符串数组。 它可以与字符串参数一起使用，如下所示：
+:::
 
 ```js
 "123,456,789".split(","); // => ["123", "456", "789"]
@@ -1173,22 +1483,38 @@ The last of the regular expression methods of the String object is `split()`. Th
 
 The `split()` method can also take a regular expression as its argument, and this allows you to specify more general separators. Here we call it with a separator that includes an arbitrary amount of whitespace on either side:
 
+::: tip 翻译
+`split()` 方法还可以将正则表达式作为其参数，这允许您指定更通用的分隔符。 这里我们用一个分隔符来调用它，该分隔符在两侧包含任意数量的空格：
+:::
+
 ```js
 "1, 2, 3,\n4, 5".split(/\s*,\s*/); // => ["1", "2", "3", "4", "5"]
 ```
 
 Surprisingly, if you call `split()` with a RegExp delimiter and the regular expression includes capturing groups, then the text that matches the capturing groups will be included in the returned array. For example:
 
+::: tip 翻译
+令人惊讶的是，如果您使用 `RegExp` 分隔符调用 `split()` 并且正则表达式包含捕获组，则与捕获组匹配的文本将包含在返回的数组中。 例如：
+:::
+
 ```js
 const htmlTag = /<([^>]+)>/; // < followed by one or more non->, followed by >
 "Testing<br/>1,2,3".split(htmlTag); // => ["Testing", "br/", "1,2,3"]
 ```
 
-### The RegExp Class
+### RegExp 类
 
 This section documents the `RegExp()` constructor, the properties of RegExp instances, and two important pattern-matching methods defined by the RegExp class.
 
+::: tip 翻译
+本节记录了 `RegExp()` 构造函数、`RegExp` 实例的属性以及 `RegExp` 类定义的两个重要的模式匹配方法。
+:::
+
 The `RegExp()` constructor takes one or two string arguments and creates a new RegExp object. The first argument to this constructor is a string that contains the body of the regular expression—the text that would appear within slashes in a regular-expression literal. Note that both string literals and regular expressions use the `\` character for escape sequences, so when you pass a regular expression to `RegExp()` as a string literal, you must replace each `\` character with `\\`. The second argument to `RegExp()` is optional. If supplied, it indicates the regular expression flags. It should be `g`, `i`, `m`, `s`, `u`, `y`, or any combination of those letters.
+
+::: tip 翻译
+`RegExp()` 构造函数接受一两个字符串参数并创建一个新的 `RegExp` 对象。 此构造函数的第一个参数是一个字符串，其中包含正则表达式的主体，即出现在正则表达式文字中斜杠内的文本。 请注意，字符串文字和正则表达式都使用 `\` 字符作为转义序列，因此当您将正则表达式作为字符串文字传递给 `RegExp()` 时，必须将每个 `\` 字符替换为 `\\`。 `RegExp()` 的第二个参数是可选的。 如果提供，它指示正则表达式标志。 它应该是 `g`、`i`、`m`、`s`、`u`、`y`或这些字母的任意组合。
+:::
 
 For example:
 
@@ -1199,64 +1525,128 @@ let zipcode = new RegExp("\\d{5}", "g");
 
 The `RegExp()` constructor is useful when a regular expression is being dynamically created and thus cannot be represented with the regular expression literal syntax. For example, to search for a string entered by the user, a regular expression must be created at runtime with `RegExp()`.
 
+::: tip 翻译
+当动态创建正则表达式且无法用正则表达式文字语法表示时，`RegExp()`构造函数非常有用。 例如，要搜索用户输入的字符串，必须在运行时使用`RegExp()` 创建正则表达式。
+:::
+
 Instead of passing a string as the first argument to `RegExp()`, you can also pass a RegExp object. This allows you to copy a regular expression and change its flags:
+
+::: tip 翻译
+您还可以传递一个 `RegExp` 对象，而不是将字符串作为第一个参数传递给 `RegExp()`。 这允许您复制正则表达式并更改其标志：
+:::
 
 ```js
 let exactMatch = /JavaScript/;
 let caseInsensitive = new RegExp(exactMatch, "i");
 ```
 
-#### RegExp properties
+#### RegExp 属性
 
 RegExp objects have the following properties:
+
+::: tip 翻译
+RegExp 对象具有以下属性：
+:::
 
 ##### source
 
 This read-only property is the source text of the regular expression: the characters that appear between the slashes in a RegExp literal.
 
+::: tip 翻译
+此只读属性是正则表达式的源文本：`RegExp` 文本中斜杠之间出现的字符。
+:::
+
 ##### flags
 
 This read-only property is a string that specifies the set of letters that represent the flags for the RegExp.
+
+::: tip 翻译
+此只读属性是一个字符串，指定表示 RegExp 标志的字母集。
+:::
 
 ##### global
 
 A read-only boolean property that is true if the `g` flag is set.
 
+::: tip 翻译
+只读布尔属性，如果设置了 `g` 标志，则该属性为 `true`。
+:::
+
 ##### ignoreCase
 
 A read-only boolean property that is true if the `i` flag is set.
+
+::: tip 翻译
+只读布尔属性，如果设置了 `i` 标志，则该属性为 `true`。
+:::
 
 ##### multiline
 
 A read-only boolean property that is true if the `m` flag is set.
 
+::: tip 翻译
+只读布尔属性，如果设置了 `m` 标志，则该属性为 `true`。
+:::
+
 ##### dotAll
 
 A read-only boolean property that is true if the `s` flag is set.
+
+::: tip 翻译
+只读布尔属性，如果设置了 `s` 标志，则该属性为 `true`。
+:::
 
 ##### unicode
 
 A read-only boolean property that is true if the `u` flag is set.
 
+::: tip 翻译
+只读布尔属性，如果设置了 `u` 标志，则该属性为 `true`。
+:::
+
 ##### sticky
 
 A read-only boolean property that is true if the `y` flag is set.
+
+::: tip 翻译
+只读布尔属性，如果设置了 `y` 标志，则该属性为 `true`。
+:::
 
 ##### lastIndex
 
 This property is a read/write integer. For patterns with the g or y flags, it specifies the character position at which the next search is to begin. It is used by the `exec()` and `test()` methods, described in the next two subsections.
 
+::: tip 翻译
+该属性是一个读/写整数。 对于带有 `g` 或 `y` 标志的模式，它指定下一个搜索开始的字符位置。 它由 `exec()` 和 `test()` 方法使用，在接下来的两小节中进行描述。
+:::
+
 #### test()
 
 The `test()` method of the RegExp class is the simplest way to use a regular expression. It takes a single string argument and returns true if the string matches the pattern or `false` if it does not match.
 
+::: tip 翻译
+`RegExp` 类的 `test()` 方法是使用正则表达式的最简单方法。 它采用单个字符串参数，如果字符串与模式匹配则返回 `true`，如果不匹配则返回 `false`。
+:::
+
 `test()` works by simply calling the (much more complicated) `exec()` method described in the next section and returning true if `exec()` returns a non-null value. Because of this, if you use `test()` with a RegExp that uses the `g` or `y` flags, then its behavior depends on the value of the `lastIndex` property of the RegExp object, which can change unexpectedly. See “The lastIndex Property and RegExp Reuse” on page 299 for more details.
+
+::: tip 翻译
+`test()` 的工作原理是简单地调用下一节中描述的（更复杂的） `exec()` 方法，如果 `exec()` 返回非空值，则返回 `true`。 因此，如果将 `test()` 与使用 `g` 或 `y` 标志的 `RegExp` 一起使用，则其行为取决于 `RegExp` 对象的 `lastIndex` 属性的值，该值可能会意外更改。 有关详细信息，请参阅第 299 页的“lastIndex 属性和 RegExp 重用”。
+:::
 
 #### exec()
 
 The RegExp `exec()` method is the most general and powerful way to use regular expressions. It takes a single string argument and looks for a match in that string. If no match is found, it returns `null`. If a match is found, however, it returns an array just like the array returned by the `match()` method for non-global searches. Element 0 of the array contains the string that matched the regular expression, and any subsequent array elements contain the substrings that matched any capturing groups. The returned array also has named properties: the `index` property contains the character position at which the match occurred, and the `input` property specifies the string that was searched, and the `groups` property, if defined, refers to an object that holds the substrings matching the any named capturing groups.
 
+::: tip 翻译
+RegExp `exec()` 方法是使用正则表达式的最通用和最强大的方法。 它采用单个字符串参数并在该字符串中查找匹配项。 如果未找到匹配项，则返回 `null`。 但是，如果找到匹配项，它会返回一个数组，就像非全局搜索的 `match()` 方法返回的数组一样。 数组的元素 0 包含与正则表达式匹配的字符串，任何后续数组元素都包含与任何捕获组匹配的子字符串。 返回的数组还具有命名属性：`index` 属性包含匹配发生的字符位置，`input`属性指定搜索的字符串，`groups` 属性（如果定义）引用一个对象 它保存与任何命名捕获组匹配的子字符串。
+:::
+
 Unlike the String `match()` method, `exec()` returns the same kind of array whether or not the regular expression has the global `g` flag. Recall that `match()` returns an array of matches when passed a global regular expression. `exec()`, by contrast, always returns a single match and provides complete information about that match. When `exec()` is called on a regular expression that has either the global `g` flag or the sticky `y` flag set, it consults the `lastIndex` property of the RegExp object to determine where to start looking for a match. (And if the `y` flag is set, it also constrains the match to begin at that position.) For a newly created RegExp object, `lastIndex` is 0, and the search begins at the start of the string. But each time `exec()` successfully finds a match, it updates the `lastIndex` property to the index of the character immediately after the matched text. If `exec()` fails to find a match, it resets `lastIndex` to 0. This special behavior allows you to call `exec()` repeatedly in order to loop through all the regular expression matches in a string. (Although, as we’ve described, in ES2020 and later, the `matchAll()` method of String is an easier way to loop through all matches.) For example, the loop in the following code will run twice:
+
+::: tip 翻译
+与 String `match()` 方法不同，无论正则表达式是否具有全局 `g` 标志，`exec()` 都会返回相同类型的数组。 回想一下，当传递全局正则表达式时，`match()` 返回一个匹配数组。 相比之下，`exec()` 始终返回单个匹配项并提供有关该匹配项的完整信息。 当对设置了全局 `g` 标志或粘性 `y` 标志的正则表达式调用 `exec()` 时，它会查阅 `RegExp` 对象的 `lastIndex` 属性来确定从哪里开始查找匹配项 。 （如果设置了 `y` 标志，它还会限制匹配从该位置开始。）对于新创建的 `RegExp` 对象，`lastIndex`为 0，并且搜索从字符串的开头开始。 但每次`exec()` 成功找到匹配项时，它都会将 `lastIndex` 属性更新为紧随匹配文本之后的字符的索引。 如果 `exec()` 未能找到匹配项，则会将 `lastIndex` 重置为 0。这种特殊行为允许您重复调用 `exec()` 以便循环遍历字符串中的所有正则表达式匹配项。 （尽管，正如我们所描述的，在 ES2020 及更高版本中，String 的 `matchAll()` 方法是循环所有匹配项的更简单方法。）例如，以下代码中的循环将运行两次：
+:::
 
 ```js
 let pattern = /Java/g;
@@ -1305,6 +1695,31 @@ while ((match = pattern.exec(text)) !== null) {
 > We could fix this problem by removing the `g` flag (which is not actually necessary in this particular example), or by moving the RegExp literal into the body of the loop so that it is re-created on each iteration, or by explicitly resetting lastIndex to zero before each call to `test()`.
 >
 > The moral here is that `lastIndex` makes the RegExp API error prone. So be extra careful when using the `g` or `y` flags and looping. And in ES2020 and later, use the String `matchAll()` method instead of `exec()` to sidestep this problem since `matchAll()` does not modify `lastIndex`.
+
+> **lastIndex 属性和正则表达式重用**
+>
+> 正如您已经看到的，JavaScript 的正则表达式 API 很复杂。 将 `lastIndex` 属性与 `g` 和 `y` 标志一起使用是此 API 中特别尴尬的部分。 当您使用这些标志时，在调用 `match()`、`exec()` 或 `test()` 方法时需要特别小心，因为这些方法的行为取决于 `lastIndex` 和 `lastIndex` 取决于您之前对 `RegExp` 对象所做的操作。 这使得编写有错误的代码变得很容易。
+>
+> 另一方面，有时重用 `RegExp` 对象是错误的做法。 例如，假设我们想要循环字典中的所有单词以查找包含双字母对的单词：
+>
+> ```js
+> let dictionary = ["apple", "book", "coffee"];
+> let doubleLetterWords = [];
+> let doubleLetter = /(\w)\1/g;
+>
+> for (let word of dictionary) {
+>   if (doubleLetter.test(word)) {
+>     doubleLetterWords.push(word);
+>   }
+> }
+> doubleLetterWords; // => ['apple', 'coffee']: 'book' is missing!
+> ```
+>
+> 因为我们在 `RegExp` 上设置了 `g` 标志，所以在成功匹配后，`lastIndex` 属性会发生更改，并且 `test()` 方法（基于 `exec()`）开始在由 指定的位置搜索匹配项 `lastIndex`。 匹配“apple”中的“pp”后，`lastIndex`为 3，因此我们从位置 3 开始搜索单词“book”，但没有看到它包含的“oo”。
+>
+> 我们可以通过删除 `g` 标志（在这个特定示例中实际上并不需要）来解决这个问题，或者通过将 `RegExp` 文字移动到循环体中以便在每次迭代时重新创建它，或者通过显式地 在每次调用 `test()` 之前将 `lastIndex` 重置为零。
+>
+> 这里的寓意是 `lastIndex` 使 `RegExp` API 容易出错。 因此，在使用 `g` 或 `y` 标志和循环时要格外小心。 在 ES2020 及更高版本中，使用 String `matchAll()` 方法而不是 `exec()` 来回避这个问题，因为 `matchAll()` 不会修改 `lastIndex`。
 
 ## Dates and Times
 
