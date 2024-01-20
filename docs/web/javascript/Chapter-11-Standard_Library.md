@@ -1996,17 +1996,37 @@ Finally, in addition to these methods that convert a Date object to a string, th
 最后，除了这些将 `Date` 对象转换为字符串的方法之外，还有一个静态的 `Date.parse()` 方法，该方法将字符串作为参数，尝试将其解析为日期和时间，并返回代表该日期的时间戳。 `Date.parse()` 能够解析与 `Date()` 构造函数相同的字符串，并且保证能够解析 `toISOString()`、`toUTCString()` 和 `toString( ）`。
 :::
 
-## Error Classes
+## Error 类
 
 The JavaScript `throw` and `catch` statements can throw and catch any JavaScript value, including primitive values. There is no exception type that must be used to signal errors. JavaScript does define an Error class, however, and it is traditional to use instances of Error or a subclass when signaling an error with throw. One good reason to use an Error object is that, when you create an Error, it captures the state of the JavaScript stack, and if the exception is uncaught, the stack trace will be displayed with the error message, which will help you debug the issue. (Note that the stack trace shows where the Error object was created, not where the throw statement throws it. If you always create the object right before throwing it with `throw new Error()`, this will not cause any confusion.)
 
+::: tip 翻译
+JavaScript `throw` 和 `catch` 语句可以抛出和捕获任何 JavaScript 值，包括原始值。 没有必须使用异常类型来表示错误。 然而，JavaScript 确实定义了一个 `Error` 类，并且在使用 `throw` 发出错误信号时，传统上使用 `Error` 或其子类的实例。 使用 `Error` 对象的一个很好的理由是，当您创建一个 `Error` 时，它会捕获 JavaScript 堆栈的状态，如果未捕获异常，堆栈跟踪将与错误消息一起显示，这将帮助您调试 问题。 （请注意，堆栈跟踪显示了 `Error` 对象的创建位置，而不是 `throw` 语句抛出该对象的位置。如果您始终在使用 `throw new Error()` 抛出该对象之前创建该对象，则不会导致任何混乱。）
+:::
+
 Error objects have two properties: `message` and `name`, and a `toString()` method. The value of the `message` property is the value you passed to the `Error()` constructor, converted to a string if necessary. For error objects created with `Error()`, the `name` property is always “Error”. The `toString()` method simply returns the value of the `name` property followed by a colon and space and the value of the `message` property.
 
-Although it is not part of the ECMAScript standard, Node and all modern browsers also define a `stack` property on Error objects. The value of this property is a multiline string that contains a stack trace of the JavaScript call stack at the moment that the Error object was created. This can be useful information to log when an unexpected error is caught.
+::: tip 翻译
+错误对象有两个属性：`message` 和 `name` ，以及一个 `toString()` 方法。 `message` 属性的值是您传递给 `Error()` 构造函数的值，必要时将其转换为字符串。 对于使用 `Error()` 创建的错误对象，`name` 属性始终为 `Error`。 `toString()` 方法仅返回 `name` 属性的值，后跟冒号和空格以及`message` 属性的值。
+:::
+
+Although it is not part of the ECMAScript standard, Node and all modern browsers also define a `stack` property on Error objects. The value of this property is a multiline string that contains a stack trace of the JavaScript call stack at the moment that the Error object was created. This can be useful information to log when an unexpected error is caught.
+
+::: tip 翻译
+尽管它不是 ECMAScript 标准的一部分，但 Node 和所有现代浏览器也在 `Error` 对象上定义了 `stack` 属性。 此属性的值是一个多行字符串，其中包含创建 `Error` 对象时 JavaScript 调用堆栈的堆栈跟踪。 当捕获意外错误时，这可能是有用的记录信息。
+:::
 
 In addition to the Error class, JavaScript defines a number of subclasses that it uses to signal particular types of errors defined by ECMAScript. These subclasses are EvalError, RangeError, ReferenceError, SyntaxError, TypeError, and URIError. You can use these error classes in your own code if they seem appropriate. Like the base Error class, each of these subclasses has a constructor that takes a single message argument. And instances of each of these subclasses have a `name` property whose value is the same as the constructor name.
 
-You should feel free to define your own Error subclasses that best encapsulate the error conditions of your own program. Note that you are not limited to the `name` and `message` properties. If you create a subclass, you can define new properties to provide error details. If you are writing a parser, for example, you might find it useful to define a ParseError class with line and `column` properties that specify the exact location of the parsing failure. Or if you are working with HTTP requests, you might want to define an HTTPError class that has a `status` property that holds the HTTP status code (such as 404 or 500) of the failed request.
+::: tip 翻译
+除了 `Error` 类之外，JavaScript 还定义了许多子类，用于表示 ECMAScript 定义的特定类型的错误。 这些子类是 `EvalError`、`RangeError`、`ReferenceError`、`SyntaxError`、`TypeError` 和 `URIError`。 如果这些错误类看起来合适，您可以在自己的代码中使用它们。 与 `Error` 基类一样，每个子类都有一个采用单个消息参数的构造函数。 每个子类的实例都有一个 `name` 属性，其值与构造函数名称相同。
+:::
+
+You should feel free to define your own Error subclasses that best encapsulate the error conditions of your own program. Note that you are not limited to the `name` and `message` properties. If you create a subclass, you can define new properties to provide error details. If you are writing a parser, for example, you might find it useful to define a ParseError class with `line` and `column` properties that specify the exact location of the parsing failure. Or if you are working with HTTP requests, you might want to define an HTTPError class that has a `status` property that holds the HTTP status code (such as 404 or 500) of the failed request.
+
+::: tip 翻译
+您应该随意定义自己的错误子类，以最好地封装您自己的程序的错误条件。 请注意，您不仅限于 `name` 和 `message` 属性。 如果创建子类，则可以定义新属性来提供错误详细信息。 例如，如果您正在编写解析器，您可能会发现使用 `line` 和 `column` 属性定义 `ParseError` 类很有用，这些属性指定解析失败的确切位置。 或者，如果您正在处理 HTTP 请求，您可能需要定义一个 `HTTPError` 类，该类具有一个 `status` 属性，用于保存失败请求的 HTTP 状态代码（例如 404 或 500）。
+:::
 
 For example:
 
