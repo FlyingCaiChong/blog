@@ -2050,13 +2050,25 @@ error.message; // => '404 Not Found: https://example.com'
 error.name; // => 'HTTPError'
 ```
 
-## JSON Serialization and Parsing
+## JSON 序列化和解析
 
 When a program needs to save data or needs to transmit data across a network connection to another program, it must to convert its in-memory data structures into a string of bytes or characters than can be saved or transmitted and then later be parsed to restore the original in-memory data structures. This process of converting data structures into streams of bytes or characters is known as _serialization_ (or _marshaling_ or even _pickling_).
 
-The easiest way to serialize data in JavaScript uses a serialization format known as JSON. This acronym stands for “JavaScript Object Notation” and, as the name implies, the format uses JavaScript object and array literal syntax to convert data structures consisting of objects and arrays into strings. JSON supports primitive numbers and strings and also the values `true`, `false`, and `null`, as well as arrays and objects built up from those primitive values. JSON does not support other JavaScript types like Map, Set, RegExp, Date, or typed arrays. Nevertheless, it has proved to be a remarkably versatile data format and is in common use even with non-JavaScriptbased programs.
+::: tip 翻译
+当一个程序需要保存数据或需要通过网络连接将数据传输到另一个程序时，它必须将其内存中的数据结构转换为可以保存或传输的字节或字符字符串，然后进行解析以恢复 原始内存数据结构。 这种将数据结构转换为字节或字符流的过程称为 _序列化_（或 _编组_ 甚至 _pickling_）。
+:::
+
+The easiest way to serialize data in JavaScript uses a serialization format known as JSON. This acronym stands for “JavaScript Object Notation” and, as the name implies, the format uses JavaScript object and array literal syntax to convert data structures consisting of objects and arrays into strings. JSON supports primitive numbers and strings and also the values `true`, `false`, and `null`, as well as arrays and objects built up from those primitive values. JSON does not support other JavaScript types like Map, Set, RegExp, Date, or typed arrays. Nevertheless, it has proved to be a remarkably versatile data format and is in common use even with non-JavaScript based programs.
+
+::: tip 翻译
+在 JavaScript 中序列化数据的最简单方法是使用称为 JSON 的序列化格式。 该缩写词代表“JavaScript Object Notation”，顾名思义，该格式使用 JavaScript 对象和数组文字语法将由对象和数组组成的数据结构转换为字符串。 JSON 支持原始数字和字符串以及 `true`、`false` 和 `null`值，以及从这些原始值构建的数组和对象。 JSON 不支持其他 JavaScript 类型，例如 `Map`、`Set`、`RegExp`、`Date` 或类型化数组。 尽管如此，它已被证明是一种非常通用的数据格式，即使在非基于 JavaScript 的程序中也很常见。
+:::
 
 JavaScript supports JSON serialization and deserialization with the two functions `JSON.stringify()` and `JSON.parse()`, which were covered briefly in §6.8. Given an object or array (nested arbitrarily deeply) that does not contain any nonserializable values like RegExp objects or typed arrays, you can serialize the object simply by passing it to `JSON.stringify()`. As the name implies, the return value of this function is a string. And given a string returned by `JSON.stringify()`, you can re-create the original data structure by passing the string to `JSON.parse()`:
+
+::: tip 翻译
+JavaScript 通过 `JSON.stringify()` 和 `JSON.parse()` 这两个函数支持 JSON 序列化和反序列化，这两个函数在第 6.8 节中进行了简要介绍。 给定一个不包含任何不可序列化值（如 `RegExp` 对象或类型化数组）的对象或数组（任意深度嵌套），您只需将其传递给 `JSON.stringify()` 即可序列化该对象。 顾名思义，该函数的返回值是一个字符串。 给定一个由 `JSON.stringify()` 返回的字符串，您可以通过将字符串传递给 `JSON.parse()` 来重新创建原始数据结构：
+:::
 
 ```js
 let o = { s: "", n: 0, a: [true, false, null] };
@@ -2065,6 +2077,10 @@ let copy = JSON.parse(s); // copy == {s: "", n: 0, a: [true, false, null]}
 ```
 
 If we leave out the part where serialized data is saved to a file or sent over the network, we can use this pair of functions as a somewhat inefficient way of creating a deep copy of an object:
+
+::: tip 翻译
+如果我们省略将序列化数据保存到文件或通过网络发送的部分，我们可以使用这对函数作为创建对象深层副本的一种效率较低的方法：
+:::
 
 ```js
 // Make a deep copy of any serializable object or array
@@ -2079,7 +2095,17 @@ function deepcopy(o) {
 >
 > JSON is sometimes used as a human-readable configuration file format. If you find yourself hand-editing a JSON file, note that the JSON format is a very strict subset of JavaScript. Comments are not allowed and property names must be enclosed in double quotes even when JavaScript would not require this.
 
-Typically, you pass only a single argument to `JSON.stringify()` and `JSON.parse()`. Both functions accept an optional second argument that allows us to extend the JSON format, and these are described next. `JSON.stringify()` also takes an optional third argument that we’ll discuss first. If you would like your JSON-formatted string to be human-readable (if it is being used as a configuration file, for example), then you should pass null as the second argument and pass a number or string as the third argument. This third argument tells `JSON.stringify()` that it should format the data on multiple indented lines. If the third argument is a number, then it will use that number of spaces for each indentation level. If the third argument is a string of whitespace (such as '\t'), it will use that string for each level of indent.
+> **JSON 是 JavaScript 的子集**
+>
+> 当数据序列化为 JSON 格式时，结果是表达式的有效 JavaScript 源代码，该表达式的计算结果为原始数据结构的副本。 如果您在 JSON 字符串前加上 `var data =` 前缀并将结果传递给 `eval()`，您将获得分配给变量数据的原始数据结构的副本。 但是，您永远不应该这样做，因为这是一个巨大的安全漏洞 - 如果攻击者可以将任意 JavaScript 代码注入到 JSON 文件中，他们就可以让您的程序运行他们的代码。 仅使用 `JSON.parse()` 来解码 JSON 格式的数据更快、更安全。
+>
+> JSON 有时用作人类可读的配置文件格式。 如果您发现自己手动编辑 JSON 文件，请注意 JSON 格式是 JavaScript 的一个非常严格的子集。 不允许注释，并且属性名称必须用双引号括起来，即使 JavaScript 不需要这样做。
+
+Typically, you pass only a single argument to `JSON.stringify()` and `JSON.parse()`. Both functions accept an optional second argument that allows us to extend the JSON format, and these are described next. `JSON.stringify()` also takes an optional third argument that we’ll discuss first. If you would like your JSON-formatted string to be human-readable (if it is being used as a configuration file, for example), then you should pass null as the second argument and pass a number or string as the third argument. This third argument tells `JSON.stringify()` that it should format the data on multiple indented lines. If the third argument is a number, then it will use that number of spaces for each indentation level. If the third argument is a string of whitespace (such as `\t`), it will use that string for each level of indent.
+
+::: tip 翻译
+通常，您仅将单个参数传递给 `JSON.stringify()` 和 `JSON.parse()`。 这两个函数都接受可选的第二个参数，该参数允许我们扩展 JSON 格式，接下来将对此进行描述。 `JSON.stringify()` 还带有一个可选的第三个参数，我们将首先讨论它。 如果您希望 JSON 格式的字符串是人类可读的（例如，如果它被用作配置文件），那么您应该传递 `null` 作为第二个参数，并传递一个数字或字符串作为第三个参数。 第三个参数告诉 `JSON.stringify()` 它应该在多个缩进行上格式化数据。 如果第三个参数是数字，那么它将为每个缩进级别使用该数量的空格。 如果第三个参数是空格字符串（例如 `\t`），则它将在每个缩进级别使用该字符串。
+:::
 
 ```js
 let o = {
@@ -2091,15 +2117,35 @@ JSON.stringify(o, null, 2); // => '{\n "s": "test",\n "n": 0\n}'
 
 `JSON.parse()` ignores whitespace, so passing a third argument to `JSON.stringify()` has no impact on our ability to convert the string back into a data structure.
 
-### JSON Customizations
+::: tip 翻译
+`JSON.parse()` 会忽略空格，因此将第三个参数传递给 `JSON.stringify()` 不会影响我们将字符串转换回数据结构的能力。
+:::
+
+### JSON 定制
 
 If `JSON.stringify()` is asked to serialize a value that is not natively supported by the JSON format, it looks to see if that value has a `toJSON()` method, and if so, it calls that method and then stringifies the return value in place of the original value. Date objects implement `toJSON()`: it returns the same string that `toISOString()` method does. This means that if you serialize an object that includes a Date, the date will automatically be converted to a string for you. When you parse the serialized string, the re-created data structure will not be exactly the same as the one you started with because it will have a string where the original object had a Date.
 
+::: tip 翻译
+如果要求 `JSON.stringify()` 序列化 JSON 格式本身不支持的值，它会查看该值是否具有 `toJSON()` 方法，如果有，它会调用该方法，然后 将返回值字符串化以代替原始值。 日期对象实现 `toJSON()`：它返回与 `toISOString()` 方法相同的字符串。 这意味着，如果您序列化包含日期的对象，该日期将自动转换为字符串。 当您解析序列化字符串时，重新创建的数据结构将与您开始时的数据结构不完全相同，因为它将具有一个字符串，其中原始对象具有日期。
+:::
+
 If you need to re-create Date objects (or modify the parsed object in any other way), you can pass a “reviver” function as the second argument to `JSON.parse()`. If specified, this “reviver” function is invoked once for each primitive value (but not the objects or arrays that contain those primitive values) parsed from the input string. The function is invoked with two arguments. The first is a property name—either an object property name or an array index converted to a string. The second argument is the primitive value of that object property or array element. Furthermore, the function is invoked as a method of the object or array that contains the primitive value, so you can refer to that containing object with the `this` keyword.
+
+::: tip 翻译
+如果您需要重新创建 `Date` 对象（或以任何其他方式修改解析的对象），您可以将 `reviver` 函数作为第二个参数传递给 `JSON.parse()`。 如果指定，则针对从输入字符串解析的每个原始值（但不是包含这些原始值的对象或数组）调用此 `reviver` 函数一次。 使用两个参数调用该函数。 第一个是属性名称 - 可以是对象属性名称，也可以是转换为字符串的数组索引。 第二个参数是该对象属性或数组元素的原始值。 此外，该函数作为包含原始值的对象或数组的方法来调用，因此您可以使用 `this` 关键字引用包含对象。
+:::
 
 The return value of the reviver function becomes the new value of the named property. If it returns its second argument, the property will remain unchanged. If it returns `undefined`, then the named property will be deleted from the object or array before `JSON.parse()` returns to the user.
 
-As an example, here is a call to `JSON.parse()` that uses a reviver function to filter some properties and to re-create Date objects:
+::: tip 翻译
+`reviver` 函数的返回值成为指定属性的新值。 如果它返回第二个参数，则该属性将保持不变。 如果它返回 `undefined`，则在 `JSON.parse()` 返回给用户之前，命名属性将从对象或数组中删除。
+:::
+
+As an example, here is a call to `JSON.parse()` that uses a `reviver` function to filter some properties and to re-create Date objects:
+
+::: tip 翻译
+作为示例，下面是对 `JSON.parse()` 的调用，它使用 `reviver` 函数来过滤某些属性并重新创建 `Date` 对象：
+:::
 
 ```js
 let data = JSON.parse(text, function (key, value) {
@@ -2123,9 +2169,21 @@ let data = JSON.parse(text, function (key, value) {
 
 In addition to its use of `toJSON()` described earlier, `JSON.stringify()` also allows its output to be customized by passing an array or a function as the optional second argument.
 
+::: tip 翻译
+除了前面描述的使用 `toJSON()` 之外，`JSON.stringify()` 还允许通过传递数组或函数作为可选的第二个参数来自定义其输出。
+:::
+
 If an array of strings (or numbers—they are converted to strings) is passed instead as the second argument, these are used as the names of object properties (or array elements). Any property whose name is not in the array will be omitted from stringification. Furthermore, the returned string will include properties in the same order that they appear in the array (which can be very useful when writing tests).
 
+::: tip 翻译
+如果将字符串数组（或数字 - 它们被转换为字符串）作为第二个参数传递，则它们将用作对象属性（或数组元素）的名称。 名称不在数组中的任何属性都将从字符串化中省略。 此外，返回的字符串将包含与数组中出现的顺序相同的属性（这在编写测试时非常有用）。
+:::
+
 If you pass a function, it is a replacer function—effectively the inverse of the optional reviver function you can pass to `JSON.parse()`. If specified, the replacer function is invoked for each value to be stringified. The first argument to the replacer function is the object property name or array index of the value within that object, and the second argument is the value itself. The replacer function is invoked as a method of the object or array that contains the value to be stringified. The return value of the replacer function is stringified in place of the original value. If the replacer returns `undefined` or returns nothing at all, then that value (and its array element or object property) is omitted from the stringification.
+
+::: tip 翻译
+如果您传递一个函数，它就是一个替换函数——实际上是您可以传递给 `JSON.parse()` 的可选恢复函数的逆函数。 如果指定，则为每个要字符串化的值调用替换函数。 替换函数的第一个参数是对象属性名称或该对象内值的数组索引，第二个参数是值本身。 替换函数作为包含要字符串化的值的对象或数组的方法来调用。 替换函数的返回值被字符串化以代替原始值。 如果替换器返回 `undefined` 或根本不返回任何内容，则该值（及其数组元素或对象属性）将从字符串化中省略。
+:::
 
 ```js
 // Specify what fields to serialize, and what order to serialize them in
@@ -2136,6 +2194,10 @@ let json = JSON.stringify(o, (k, v) => (v instanceof RegExp ? undefined : v));
 ```
 
 The two `JSON.stringify()` calls here use the second argument in a benign way, producing serialized output that can be deserialized without requiring a special reviver function. In general, though, if you define a `toJSON()` method for a type, or if you use a replacer function that actually replaces nonserializable values with serializable ones, then you will typically need to use a custom reviver function with `JSON.parse()` to get your original data structure back. If you do this, you should understand that you are defining a custom data format and sacrificing portability and compatibility with a large ecosystem of JSON-compatible tools and languages.
+
+::: tip 翻译
+这里的两个 `JSON.stringify()` 调用以良性方式使用第二个参数，生成可以反序列化的序列化输出，而无需特殊的恢复函数。 不过，一般来说，如果您为类型定义了 `toJSON()` 方法，或者使用了实际上用可序列化值替换不可序列化值的替换函数，那么您通常需要使用带有 `JSON.toJSON()` 的自定义恢复函数。 `parse()` 来获取原始数据结构。 如果您这样做，您应该明白您正在定义自定义数据格式并牺牲可移植性以及与 JSON 兼容工具和语言的大型生态系统的兼容性。
+:::
 
 ## The Internationalization API
 
