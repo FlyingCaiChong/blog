@@ -2788,9 +2788,21 @@ Note that it is not often necessary to use a format string with the console func
 
 Since JavaScript is so commonly used in web browsers and web servers, it is common for JavaScript code to need to manipulate URLs. The URL class parses URLs and also allows modification (adding search parameters or altering paths, for example) of existing URLs. It also properly handles the complicated topic of escaping and unescaping the various components of a URL.
 
+::: tip 翻译
+由于 JavaScript 在 Web 浏览器和 Web 服务器中使用非常广泛，因此 JavaScript 代码通常需要操作 URL。 URL 类解析 URL，还允许修改（例如添加搜索参数或更改路径）现有 URL。 它还可以正确处理转义和取消转义 URL 各个组件的复杂主题。
+:::
+
 The URL class is not part of any ECMAScript standard, but it works in Node and all internet browsers other than Internet Explorer. It is standardized at https://url.spec.whatwg.org.
 
+::: tip 翻译
+URL 类不属于任何 ECMAScript 标准，但它适用于 Node 和除 Internet Explorer 之外的所有 Internet 浏览器。 它在 https://url.spec.whatwg.org 上进行了标准化。
+:::
+
 Create a URL object with the `URL()` constructor, passing an absolute URL string as the argument. Or pass a relative URL as the first argument and the absolute URL that it is relative to as the second argument. Once you have created the URL object, its various properties allow you to query unescaped versions of the various parts of the URL:
+
+::: tip 翻译
+使用 `URL()` 构造函数创建一个 URL 对象，并传递绝对 URL 字符串作为参数。 或者传递相对 URL 作为第一个参数，并将其相对的绝对 URL 作为第二个参数。 创建 URL 对象后，它的各种属性允许您查询 URL 各个部分的未转义版本：
+:::
 
 ```js
 let url = new URL("https://example.com:8000/path/name?q=term#fragment");
@@ -2807,6 +2819,10 @@ url.hash; // => '#fragment'
 
 Although it is not commonly used, URLs can include a username or a username and password, and the URL class can parse these URL components, too:
 
+::: tip 翻译
+虽然不常用，但 URL 可以包含用户名或用户名和密码，并且 URL 类也可以解析这些 URL 组件：
+:::
+
 ```js
 let url = new URL("ftp://admin:1337!@ftp.example.com/");
 url.href; // => 'ftp://admin:1337!@ftp.example.com/'
@@ -2817,6 +2833,10 @@ url.password; // => '1337!'
 
 The `origin` property here is a simple combination of the URL protocol and host (including the port if one is specified). As such, it is a read-only property. But each of the other properties demonstrated in the previous example is read/write: you can set any of these properties to set the corresponding part of the URL:
 
+::: tip 翻译
+这里的 `origin` 属性是 URL 协议和主机的简单组合（如果指定了端口，则包括端口）。 因此，它是只读属性。 但上一个示例中演示的每个其他属性都是读/写的：您可以设置这些属性中的任何一个来设置 URL 的相应部分：
+:::
+
 ```js
 let url = new URL("https://example.com"); // Start with our server
 url.pathname = "api/search"; // Add a path to an API endpoint
@@ -2825,6 +2845,10 @@ url.toString(); // => 'https://example.com/api/search?q=test'
 ```
 
 One of the important features of the URL class is that it correctly adds punctuation and escapes special characters in URLs when that is needed:
+
+::: tip 翻译
+URL 类的重要功能之一是，它可以在需要时正确添加标点符号并转义 URL 中的特殊字符：
+:::
 
 ```js
 let url = new URL("https://example.com");
@@ -2837,9 +2861,21 @@ url.href; // => 'https://example.com/path%20with%20spaces?q=foo%23bar'
 
 The `href` property in these examples is a special one: reading `href` is equivalent to calling `toString()`: it reassembles all parts of the URL into the canonical string form of the URL. And setting `href` to a new string reruns the URL parser on the new string as if you had called the `URL()` constructor again.
 
+::: tip 翻译
+这些示例中的 `href` 属性是一个特殊的属性：读取 `href` 相当于调用 `toString()` ：它将 URL 的所有部分重新组装为 URL 的规范字符串形式。 将 `href` 设置为新字符串会在新字符串上重新运行 URL 解析器，就像您再次调用了 `URL()` 构造函数一样。
+:::
+
 In the previous examples, we’ve been using the `search` property to refer to the entire query portion of a URL, which consists of the characters from a question mark to the end of the URL or to the first hash character. Sometimes, it is sufficient to just treat this as a single URL property. Often, however, HTTP requests encode the values of multiple form fields or multiple API parameters into the query portion of a URL using the `application/x-www-form-urlencode`d format. In this format, the query portion of the URL is a question mark followed by one or more name/value pairs, which are separated from one another by ampersands. The same name can appear more than once, resulting in a named search parameter with more than one value.
 
+::: tip 翻译
+在前面的示例中，我们一直使用 `search` 属性来引用 URL 的整个查询部分，其中包含从问号到 URL 末尾或第一个哈希字符的字符。 有时，只需将其视为单个 URL 属性就足够了。 然而，HTTP 请求通常使用 `application/x-www-form-urlencode` 格式将多个表单字段或多个 API 参数的值编码到 URL 的查询部分。 在此格式中，URL 的查询部分是一个问号，后跟一个或多个名称/值对，这些名称/值对之间用 `&` 符号分隔。 相同的名称可以出现多次，从而导致命名搜索参数具有多个值。
+:::
+
 If you want to encode these kinds of name/value pairs into the query portion of a URL, then the `searchParams` property will be more useful than the `search` property. The `search` property is a read/write string that lets you get and set the entire query portion of the URL. The `searchParams` property is a read-only reference to a URLSearchParams object, which has an API for getting, setting, adding, deleting, and sorting the parameters encoded into the query portion of the URL:
+
+::: tip 翻译
+如果您想将这些类型的名称/值对编码到 URL 的查询部分，那么 `searchParams` 属性将比 `search` 属性更有用。 `search`属性是一个读/写字符串，可让您获取和设置 URL 的整个查询部分。 `searchParams` 属性是对 `URLSearchParams` 对象的只读引用，该对象具有用于获取、设置、添加、删除和排序编码到 URL 查询部分的参数的 API：
+:::
 
 ```js
 let url = new URL("https://example.com/search");
@@ -2870,6 +2906,10 @@ url.href // => "https://example.com/search?q=x"
 
 The value of the `searchParams` property is a URLSearchParams object. If you want to encode URL parameters into a query string, you can create a URLSearchParams object, append parameters, then convert it to a string and set it on the search property of a URL:
 
+::: tip 翻译
+`searchParams` 属性的值是一个 `URLSearchParams` 对象。 如果要将 URL 参数编码为查询字符串，可以创建一个 `URLSearchParams` 对象，附加参数，然后将其转换为字符串并将其设置在 URL 的搜索属性上：
+:::
+
 ```js
 let url = new URL("http://example.com");
 let params = new URLSearchParams();
@@ -2880,21 +2920,41 @@ url.search = params;
 url.href; // => "http://example.com/?q=term&opts=exact"
 ```
 
-### Legacy URL Functions
+### 旧版 URL 函数
 
 Prior to the definition of the URL API described previously, there have been multiple attempts to support URL escaping and unescaping in the core JavaScript language. The first attempt was the globally defined `escape()` and `unescape()` functions, which are now deprecated but still widely implemented. They should not be used.
 
+::: tip 翻译
+在前面描述的 URL API 定义之前，已经有多次尝试在核心 JavaScript 语言中支持 URL 转义和取消转义。 第一次尝试是全局定义的`escape()` 和 `unescape()` 函数，这些函数现已弃用，但仍然广泛实现。 不应该使用它们。
+:::
+
 When `escape()` and `unescape()` were deprecated, ECMAScript introduced two pairs of alternative global functions:
+
+::: tip 翻译
+当 `escape()` 和 `unescape()` 被弃用时，ECMAScript 引入了两对替代全局函数：
+:::
 
 #### encodeURI() and decodeURI()
 
 `encodeURI()` takes a string as its argument and returns a new string in which non-ASCII characters plus certain ASCII characters (such as space) are escaped. `decodeURI()` reverses the process. Characters that need to be escaped are first converted to their UTF-8 encoding, then each byte of that encoding is replaced with a %xx escape sequence, where xx is two hexadecimal digits. Because `encodeURI()` is intended for encoding entire URLs, it does not escape URL separator characters such as `/`, `?`, and `#`. But this means that `encodeURI()` cannot work correctly for URLs that have those characters within their various components.
 
+::: tip 翻译
+`encodeURI()` 接受一个字符串作为参数，并返回一个新字符串，其中非 ASCII 字符加上某些 ASCII 字符（例如空格）被转义。 `decodeURI()` 反转了这个过程。 需要转义的字符首先转换为其 UTF-8 编码，然后该编码的每个字节都替换为 `%xx` 转义序列，其中 `xx` 是两个十六进制数字。 由于 `encodeURI()` 旨在对整个 URL 进行编码，因此它不会转义 URL 分隔符，例如 `/`、`?` 和`#`。 但这意味着 `encodeURI()` 对于在其各个组件中包含这些字符的 URL 无法正常工作。
+:::
+
 #### encodeURIComponent() and decodeURIComponent()
 
 This pair of functions works just like `encodeURI()` and `decodeURI()` except that they are intended to escape individual components of a URI, so they also escape characters like `/`, `?`, and `#` that are used to separate those components. These are the most useful of the legacy URL functions, but be aware that `encodeURIComponent()` will escape `/` characters in a path name that you probably do not want escaped. And it will convert spaces in a query parameter to `%20`, even though spaces are supposed to be escaped with a `+` in that portion of a URL.
 
+::: tip 翻译
+这对函数的工作方式与 `encodeURI()` 和 `decodeURI()` 类似，只不过它们旨在转义 URI 的各个组成部分，因此它们也会转义`/`、`?`和`#`等字符 用于分离这些组件。 这些是最有用的旧 URL 函数，但请注意`encodeURIComponent()`将转义路径名中您可能不希望转义的`/`字符。 它会将查询参数中的空格转换为`%20`，即使在 URL 的该部分中空格应该使用`+`进行转义。
+:::
+
 The fundamental problem with all of these legacy functions is that they seek to apply a single encoding scheme to all parts of a URL when the fact is that different portions of a URL use different encodings. If you want a properly formatted and encoded URL, the solution is simply to use the URL class for all URL manipulation you do.
+
+::: tip 翻译
+所有这些遗留函数的根本问题是，当 URL 的不同部分使用不同的编码时，它们试图将单一编码方案应用于 URL 的所有部分。 如果您想要一个正确格式化和编码的 URL，解决方案就是使用 URL 类来进行所有 URL 操作。
+:::
 
 ## Timers
 
