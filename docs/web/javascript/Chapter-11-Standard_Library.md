@@ -2199,49 +2199,101 @@ The two `JSON.stringify()` calls here use the second argument in a benign way, p
 这里的两个 `JSON.stringify()` 调用以良性方式使用第二个参数，生成可以反序列化的序列化输出，而无需特殊的恢复函数。 不过，一般来说，如果您为类型定义了 `toJSON()` 方法，或者使用了实际上用可序列化值替换不可序列化值的替换函数，那么您通常需要使用带有 `JSON.toJSON()` 的自定义恢复函数。 `parse()` 来获取原始数据结构。 如果您这样做，您应该明白您正在定义自定义数据格式并牺牲可移植性以及与 JSON 兼容工具和语言的大型生态系统的兼容性。
 :::
 
-## The Internationalization API
+## 国际化 API
 
-The JavaScript internationalization API consists of the three classes Intl.NumberFormat, Intl.DateTimeFormat, and Intl.Collator that allow us to format numbers (including monetary amounts and percentages), dates, and times in locale-appropriate ways and to compare strings in locale-appropriate ways. These classes are not part of the ECMAScript standard but are defined as part of the _ECMA402 standard_ and are wellsupported by web browsers. The Intl API is also supported in Node, but at the time of this writing, prebuilt Node binaries do not ship with the localization data required to make them work with locales other than US English. So in order to use these classes with Node, you may need to download a separate data package or use a custom build of Node.
+The JavaScript internationalization API consists of the three classes `Intl.NumberFormat`, `Intl.DateTimeFormat`, and `Intl.Collator` that allow us to format numbers (including monetary amounts and percentages), dates, and times in locale-appropriate ways and to compare strings in locale-appropriate ways. These classes are not part of the ECMAScript standard but are defined as part of the _ECMA402 standard_ and are well supported by web browsers. The Intl API is also supported in Node, but at the time of this writing, prebuilt Node binaries do not ship with the localization data required to make them work with locales other than US English. So in order to use these classes with Node, you may need to download a separate data package or use a custom build of Node.
+
+::: tip 翻译
+JavaScript 国际化 API 包含三个类 `Intl.NumberFormat`、`Intl.DateTimeFormat` 和 `Intl.Collator`，它们允许我们以适合区域设置的方式格式化数字（包括货币金额和百分比）、日期和时间，并比较区域设置中的字符串 - 适当的方式。 这些类不是 ECMAScript 标准的一部分，但被定义为 _ECMA402 标准_ 的一部分，并且受到 Web 浏览器的良好支持。 Node 也支持 Intl API，但在撰写本文时，预构建的 Node 二进制文件并未附带使它们能够与美国英语以外的区域设置一起使用所需的本地化数据。 因此，为了将这些类与 Node 一起使用，您可能需要下载单独的数据包或使用 Node 的自定义构建。
+:::
 
 One of the most important parts of internationalization is displaying text that has been translated into the user’s language. There are various ways to achieve this, but none of them are within the scope of the Intl API described here.
 
-### Formatting Numbers
+::: tip 翻译
+国际化最重要的部分之一是显示已翻译成用户语言的文本。 有多种方法可以实现此目的，但它们都不在此处描述的 Intl API 的范围内。
+:::
+
+### 格式化数字
 
 Users around the world expect numbers to be formatted in different ways. Decimal points can be periods or commas. Thousands separators can be commas or periods, and they aren’t used every three digits in all places. Some currencies are divided into hundredths, some into thousandths, and some have no subdivisions. Finally, although the so-called “Arabic numerals” 0 through 9 are used in many languages, this is not universal, and users in some countries will expect to see numbers written using the digits from their own scripts.
 
-The Intl.NumberFormat class defines a `format()` method that takes all of these formatting possibilities into account. The constructor takes two arguments. The first argument specifies the locale that the number should be formatted for and the second is an object that specifies more details about how the number should be formatted. If the first argument is omitted or `undefined`, then the system locale (which we assume to be the user’s preferred locale) will be used. If the first argument is a string, it specifies a desired locale, such as "`en-US`" (English as used in the United States), "`fr`" (French), or "`zh-Hans-CN`" (Chinese, using the simplified Han writing system, in China). The first argument can also be an array of locale strings, and in this case, Intl.NumberFormat will choose the most specific one that is well supported.
+::: tip 翻译
+世界各地的用户期望数字以不同的方式格式化。 小数点可以是句点或逗号。 千位分隔符可以是逗号或句点，并且并非所有地方都每三位数字使用一次。 有的货币分为百分之一，有的为千分之一，有的没有细分。 最后，虽然所谓的“阿拉伯数字”0 到 9 在许多语言中使用，但这并不通用，一些国家的用户希望看到使用自己文字中的数字书写的数字。
+:::
+
+The `Intl.NumberFormat` class defines a `format()` method that takes all of these formatting possibilities into account. The constructor takes two arguments. The first argument specifies the locale that the number should be formatted for and the second is an object that specifies more details about how the number should be formatted. If the first argument is omitted or `undefined`, then the system locale (which we assume to be the user’s preferred locale) will be used. If the first argument is a string, it specifies a desired locale, such as "`en-US`" (English as used in the United States), "`fr`" (French), or "`zh-Hans-CN`" (Chinese, using the simplified Han writing system, in China). The first argument can also be an array of locale strings, and in this case, `Intl.NumberFormat` will choose the most specific one that is well supported.
+
+::: tip 翻译
+`Intl.NumberFormat` 类定义了一个 `format()` 方法，该方法考虑了所有这些格式设置的可能性。 构造函数有两个参数。 第一个参数指定数字应格式化的区域设置，第二个参数是一个对象，指定有关数字应如何格式化的更多详细信息。 如果第一个参数被省略或 `undefined`，则将使用系统区域设置（我们假设是用户的首选区域设置）。 如果第一个参数是字符串，则它指定所需的区域设置，例如“`en-US`”（美国使用的英语）、“`fr`”（法语）或“`zh-Hans-CN” `”（中文，使用简体汉字书写系统，在中国）。 第一个参数也可以是区域设置字符串数组，在这种情况下，`Intl.NumberFormat` 将选择受良好支持的最具体的一个。
+:::
 
 The second argument to the `Intl.NumberFormat()` constructor, if specified, should be an object that defines one or more of the following properties:
 
+::: tip 翻译
+`Intl.NumberFormat()` 构造函数的第二个参数（如果指定）应该是一个定义以下一个或多个属性的对象：
+:::
+
 #### style
 
-Specifies the kind of number formatting that is required. The default is "`decimal`". Specify "`percent`" to format a number as a percentage or specify "currency" to specify a number as an amount of money.
+Specifies the kind of number formatting that is required. The default is "`decimal`". Specify "`percent`" to format a number as a percentage or specify "`currency`" to specify a number as an amount of money.
+
+::: tip 翻译
+指定所需的数字格式类型。 默认为“十进制”。 指定“`percent`”将数字格式化为百分比，或指定“`currency`”将数字指定为金额。
+:::
 
 #### currency
 
 If style is "`currency`", then this property is required to specify the three-letter ISO currency code (such as "USD" for US dollars or "GBP" for British pounds) of the desired currency.
 
+::: tip 翻译
+如果 `style` 是“`currency`”，则需要此属性来指定所需货币的三个字母的 ISO 货币代码（例如“USD”表示美元，“GBP”表示英镑）。
+:::
+
 #### currencyDisplay
 
 If style is "`currency`", then this property specifies how the currency is displayed. The default value "`symbol`" uses a currency symbol if the currency has one. The value "`code`" uses the three-letter ISO code, and the value "`name`" spells out the name of the currency in long form.
+
+::: tip 翻译
+如果 `style` 是“`currency`”，则此属性指定货币的显示方式。 如果货币有货币符号，则默认值“`symbol`”使用货币符号。 值“`code`”使用三个字母的 ISO 代码，值“`name`”以长形式拼出货币名称。
+:::
 
 #### useGrouping
 
 Set this property to `false` if you do not want numbers to have thousands separators (or their locale-appropriate equivalents).
 
+::: tip 翻译
+如果您不希望数字具有千位分隔符（或其适合区域设置的等效项），请将此属性设置为“`false`”。
+:::
+
 #### minimumIntegerDigits
 
 The minimum number of digits to use to display the integer part of the number. If the number has fewer digits than this, it will be padded on the left with zeros. The default value is 1, but you can use values as high as 21.
+
+::: tip 翻译
+用于显示数字整数部分的最少位数。 如果数字的位数少于此数字，则会在左侧用零填充。 默认值为 1，但您可以使用高达 21 的值。
+:::
 
 #### minimumFractionDigits, maximumFractionDigits
 
 These two properties control the formatting of the fractional part of the number. If a number has fewer fractional digits than the minimum, it will be padded with zeros on the right. If it has more than the maximum, then the fractional part will be rounded. Legal values for both properties are between 0 and 20. The default minimum is 0 and the default maximum is 3, except when formatting monetary amounts, when the length of the fractional part varies depending on the specified currency.
 
+::: tip 翻译
+这两个属性控制数字小数部分的格式。 如果数字的小数位数少于最小值，则将在右侧用零填充。 如果超过最大值，则小数部分将被四舍五入。 这两个属性的合法值都在 0 到 20 之间。默认最小值为 0，默认最大值为 3，除非在格式化货币金额时，小数部分的长度根据指定货币而变化。
+:::
+
 #### minimumSignificantDigits, maximumSignificantDigits
 
 These properties control the number of significant digits used when formatting a number, making them suitable when formatting scientific data, for example. If specified, these properties override the integer and fractional digit properties listed previously. Legal values are between 1 and 21.
 
-Once you have created an Intl.NumberFormat object with the desired locale and options, you use it by passing a number to its `format()` method, which returns an appropriately formatted string. For example:
+::: tip 翻译
+这些属性控制格式化数字时使用的有效位数，使它们适合格式化科学数据等。 如果指定，这些属性将覆盖前面列出的整数和小数位属性。 合法值介于 1 和 21 之间。
+:::
+
+Once you have created an `Intl.NumberFormat` object with the desired locale and options, you use it by passing a number to its `format()` method, which returns an appropriately formatted string. For example:
+
+::: tip 翻译
+创建具有所需区域设置和选项的 `Intl.NumberFormat` 对象后，您可以通过将数字传递给其“`format()`”方法来使用它，该方法返回适当格式的字符串。 例如：
+:::
 
 ```js
 let euros = Intl.NumberFormat("es", { style: "currency", currency: "EUR" });
@@ -2252,6 +2304,10 @@ pounds.format(1000); // => '£1,000.00': One thousand pounds, English formatting
 ```
 
 A useful feature of `Intl.NumberFormat` (and the other Intl classes as well) is that its `format()` method is bound to the NumberFormat object to which it belongs. So instead of defining a variable that refers to the formatting object and then invoking the `format()` method on that, you can just assign the `format()` method to a variable and use it as if it were a standalone function, as in this example:
+
+::: tip 翻译
+`Intl.NumberFormat`（以及其他 Intl 类）的一个有用特性是它的 `format()` 方法绑定到它所属的 `NumberFormat` 对象。 因此，您不必定义一个引用格式化对象的变量，然后调用该变量的“`format()`”方法，只需将“`format()`”方法分配给一个变量，然后将其用作独立函数即可， 如本例所示：
+:::
 
 ```js
 let data = [0.05, 0.75, 1];
@@ -2266,12 +2322,20 @@ data.map(formatData); // => [ '5.0%', '75.0%', '100.0%' ]: in en-US locale
 
 Some languages, such as Arabic, use their own script for decimal digits:
 
+::: tip 翻译
+某些语言（例如阿拉伯语）使用自己的脚本来表示十进制数字：
+:::
+
 ```js
 let arabic = Intl.NumberFormat("ar", { useGrouping: false }).format;
 arabic(1234567890); // => '١٢٣٤٥٦٧٨٩٠'
 ```
 
 Other languages, such as Hindi, use a script that has its own set of digits, but tend to use the ASCII digits 0–9 by default. If you want to override the default script used for digits, add `-u-nu-` to the locale and follow it with an abbreviated script name. You can format numbers with Indian-style grouping and Devanagari digits like this, for example:
+
+::: tip 翻译
+其他语言（例如印地语）使用具有自己的数字集的脚本，但默认情况下倾向于使用 ASCII 数字 0–9。 如果要覆盖用于数字的默认脚本，请将 `-u-nu-` 添加到区域设置，并在其后面添加缩写的脚本名称。 您可以使用印度风格的分组和梵文数字来格式化数字，如下所示：
+:::
 
 ```js
 let hindi = Intl.NumberFormat("hi-IN-u-nu-deva").format;
@@ -2280,53 +2344,109 @@ hindi(1234567890); // => '१,२३,४५,६७,८९०'
 
 `-u-` in a locale specifies that what comes next is a Unicode extension. `nu` is the extension name for the numbering system, and `deva` is short for Devanagari. The Intl API standard defines names for a number of other numbering systems, mostly for the Indic languages of South and Southeast Asia.
 
-### Formatting Dates and Times
+::: tip 翻译
+语言环境中的 `-u-` 指定接下来是 Unicode 扩展。 `nu` 是编号系统的扩展名，`deva` 是梵文的缩写。 Intl API 标准定义了许多其他编号系统的名称，主要是南亚和东南亚的印度语言。
+:::
+
+### 格式化日期和时间
 
 The Intl.DateTimeFormat class is a lot like the Intl.NumberFormat class. The `Intl.DateTimeFormat()` constructor takes the same two arguments that `Intl.NumberFormat()` does: a locale or array of locales and an object of formatting options. And the way you use an Intl.DateTimeFormat instance is by calling its `format()` method to convert a Date object to a string.
 
+::: tip 翻译
+`Intl.DateTimeFormat` 类很像 `Intl.NumberFormat` 类。 `Intl.DateTimeFormat()` 构造函数采用与 `Intl.NumberFormat()` 相同的两个参数：一个语言环境或语言环境数组以及一个格式化选项对象。 使用 `Intl.DateTimeFormat` 实例的方法是调用其“`format()`”方法将 `Date` 对象转换为字符串。
+:::
+
 As mentioned in §11.4, the Date class defines simple `toLocaleDateString()` and `toLocaleTimeString()` methods that produce locale-appropriate output for the user’s locale. But these methods don’t give you any control over what fields of the date and time are displayed. Maybe you want to omit the year but add a weekday to the date format. Do you want the month to be represented numerically or spelled out by name? The Intl.DateTimeFormat class provides fine-grained control over what is output based on the properties in the options object that is passed as the second argument to the constructor. Note, however, that Intl.DateTimeFormat cannot always display exactly what you ask for. If you specify options to format hours and seconds but omit minutes, you’ll find that the formatter displays the minutes anyway. The idea is that you use the options object to specify what date and time fields you’d like to present to the user and how you’d like those formatted (by name or by number, for example), then the formatter will look for a locale-appropriate format that most closely matches what you have asked for.
 
+::: tip 翻译
+如第 11.4 节中所述，Date 类定义了简单的 `toLocaleDateString()` 和 `toLocaleTimeString()` 方法，这些方法为用户的语言环境生成适合语言环境的输出。 但这些方法无法让您控制显示日期和时间的哪些字段。 也许您想省略年份，但在日期格式中添加工作日。 您希望月份以数字形式表示还是以名称拼写？ `Intl.DateTimeFormat` 类根据作为第二个参数传递给构造函数的选项对象中的属性提供对输出内容的细粒度控制。 但请注意，`Intl.DateTimeFormat` 并不总是能准确显示您所要求的内容。 如果您指定选项来格式化小时和秒但省略分钟，您会发现格式化程序无论如何都会显示分钟。 这个想法是，您使用选项对象来指定您想要向用户呈现哪些日期和时间字段以及您希望如何格式化这些字段（例如，按名称或数字），然后格式化程序将查找 最符合您要求的适合区域设置的格式。
+:::
+
 The available options are the following. Only specify properties for date and time fields that you would like to appear in the formatted output.
+
+::: tip 翻译
+可用的选项如下。 仅指定您希望在格式化输出中显示的日期和时间字段的属性。
+:::
 
 #### year
 
 Use "`numeric`" for a full, four-digit year or "`2-digit`" for a two-digit abbreviation.
 
+::: tip 翻译
+使用“`numeric`”表示完整的四位数年份，或使用“`2-digit`”表示两位数缩写。
+:::
+
 #### month
 
 Use "`numeric`" for a possibly short number like “1”, or "`2-digit`" for a numeric representation that always has two digits, like “01”. Use "`long`" for a full name like “January”, "`short`" for an abbreviated name like “Jan”, and "`narrow`" for a highly abbreviated name like “J” that is not guaranteed to be unique.
+
+::: tip 翻译
+使用 `numeric` 表示可能很短的数字，例如“1”，或使用 `2-digit` 表示始终具有两位数的数字表示形式，例如“01”。 对于诸如“January”之类的全名使用“`long`”，对于诸如“Jan”之类的缩写名称使用“`short`”，对于诸如“J”之类的高度缩写名称使用“`narrow`”，但不能保证独特的。
+:::
 
 #### day
 
 Use "`numeric`" for a one- or two-digit number or "`2-digit`" for a two-digit number for the day-of-month.
 
+::: tip 翻译
+使用“`numeric`”表示一位或两位数字，或使用“`2-digit`”表示月份中的某天的两位数字。
+:::
+
 #### weekday
 
 Use "`long`" for a full name like “Monday”, "`short`" for an abbreviated name like “Mon”, and "`narrow`" for a highly abbreviated name like “M” that is not guaranteed to be unique.
+
+::: tip 翻译
+对于诸如“Monday”之类的全名使用“`long`”，对于诸如“Mon”之类的缩写名称使用“`short`”，对于诸如“M”之类的高度缩写名称使用“`narrow`”，但不能保证 独特的。
+:::
 
 #### era
 
 This property specifies whether a date should be formatted with an era, such as CE or BCE. This may be useful if you are formatting dates from very long ago or if you are using a Japanese calendar. Legal values are "`long`", "`short`", and "`narrow`".
 
+::: tip 翻译
+此属性指定日期是否应采用时代格式，例如 CE 或 BCE。 如果您要格式化很久以前的日期或使用日本日历，这可能很有用。 合法值为“`long`”、“`short`”和“`narrow`”。
+:::
+
 #### hour, minute, second
 
 These properties specify how you would like time displayed. Use "`numeric`" for a one- or two-digit field or "`2-digit`" to force single-digit numbers to be padded on the left with a 0.
+
+::: tip 翻译
+这些属性指定您希望如何显示时间。 使用“`numeric`”表示一位或两位数字字段，或使用“`2-digit`”强制在左侧填充单位数字 0。
+:::
 
 #### timeZone
 
 This property specifies the desired time zone for which the date should be formatted. If omitted, the local time zone is used. Implementations always recognize “UTC” and may also recognize Internet Assigned Numbers Authority (IANA) time zone names, such as “America/Los_Angeles”.
 
+::: tip 翻译
+此属性指定应设置日期格式的所需时区。 如果省略，则使用本地时区。 实现始终识别“UTC”，并且还可以识别互联网号码分配机构 (IANA) 时区名称，例如“America/Los_Angeles”。
+:::
+
 #### timeZoneName
 
 This property specifies how the time zone should be displayed in a formatted date or time. Use "`long`" for a fully spelled-out time zone name and "`short`" for an abbreviated or numeric time zone.
+
+::: tip 翻译
+此属性指定时区应如何以格式化的日期或时间显示。 使用“`long`”表示完整拼写的时区名称，使用“`short`”表示缩写或数字时区。
+:::
 
 #### hour12
 
 This boolean property specifies whether or not to use 12-hour time. The default is locale dependent, but you can override it with this property.
 
+::: tip 翻译
+该布尔属性指定是否使用 12 小时时间。 默认值取决于区域设置，但您可以使用此属性覆盖它。
+:::
+
 #### hourCycle
 
 This property allows you to specify whether midnight is written as 0 hours, 12 hours, or 24 hours. The default is locale dependent, but you can override the default with this property. Note that hour12 takes precedence over this property. Use the value "`h11`" to specify that midnight is 0 and the hour before midnight is 11pm. Use "`h12`" to specify that midnight is 12. Use "`h23`" to specify that midnight is 0 and the hour before midnight is 23. And use "`h24`" to specify that midnight is 24.
+
+::: tip 翻译
+此属性允许您指定午夜是否写为 0 小时、12 小时或 24 小时。 默认值取决于区域设置，但您可以使用此属性覆盖默认值。 请注意，`hour12` 优先于该属性。 使用值“`h11`”指定午夜为 0 点且午夜之前的一小时为晚上 11 点。 使用“`h12`”指定午夜为 12。使用“`h23`”指定午夜为 0 且午夜之前的小时为 23。使用“`h24`”指定午夜为 24。
+:::
 
 Here are some examples:
 
@@ -2349,6 +2469,10 @@ Intl.DateTimeFormat("fr-CA", opts).format(d); // => '8 h 14'
 
 Intl.DateTimeFormat can display dates using calendars other than the default Julian calendar based on the Christian era. Although some locales may use a non-Christian calendar by default, you can always explicitly specify the calendar to use by adding `-u-ca-` to the locale and following that with the name of the calendar. Possible calendar names include “buddhist”, “chinese”, “coptic”, “ethiopic”, “gregory”, “hebrew”, “indian”, “islamic”, “iso8601”, “japanese”, and “persian”. Continuing the preceding example, we can determine the year in various non-Christian calendars:
 
+::: tip 翻译
+`Intl.DateTimeFormat` 可以使用日历显示日期，而不是基于基督教纪元的默认儒略历。 尽管某些语言环境默认情况下可能使用非基督教日历，但您始终可以通过将 `-u-ca-` 添加到语言环境并在其后添加日历名称来显式指定要使用的日历。 可能的日历名称包括“buddhist”、“chinese”、“coptic”、“ethiopic”、“gregory”、“hebrew”、“indian”、“islamic”、“iso8601”、“japanese”和“persian”。 继续前面的例子，我们可以确定各种非基督教历法中的年份：
+:::
+
 ```js
 let opts = { year: "numeric", era: "short" };
 Intl.DateTimeFormat("en", opts).format(d); // => '2020 AD'
@@ -2362,37 +2486,77 @@ Intl.DateTimeFormat("en-u-ca-chinese", opts).format(d); // => '2019(ji-hai)'
 Intl.DateTimeFormat("en-u-ca-japanese", opts).format(d); // => '2 Reiwa'
 ```
 
-### Comparing Strings
+### 比较字符串
 
 The problem of sorting strings into alphabetical order (or some more general “collation order” for nonalphabetical scripts) is more challenging than English speakers often realize. English uses a relatively small alphabet with no accented letters, and we have the benefit of a character encoding (ASCII, since incorporated into Unicode) whose numerical values perfectly match our standard string sort order. Things are not so simple in other languages. Spanish, for example treats ñ as a distinct letter that comes after n and before o. Lithuanian alphabetizes Y before J, and Welsh treats digraphs like CH and DD as single letters with CH coming after C and DD sorting after D.
 
+::: tip 翻译
+将字符串按字母顺序（或非字母脚本的一些更通用的“排序顺序”）排序的问题比说英语的人通常意识到的更具挑战性。 英语使用相对较小的字母表，没有重音字母，并且我们受益于字符编码（ASCII，因为并入 Unicode），其数值完全符合我们的标准字符串排序顺序。 在其他语言中事情就没那么简单了。 例如，西班牙语将 ñ 视为位于 n 之后和 o 之前的不同字母。 立陶宛语按字母顺序排列 Y 在 J 之前，威尔士语将 CH 和 DD 等二合字母视为单个字母，CH 在 C 之后，DD 在 D 之后排序。
+:::
+
 If you want to display strings to a user in an order that they will find natural, it is not enough use the `sort()` method on an array of strings. But if you create an Intl.Collator object, you can pass the `compare()` method of that object to the `sort()` method to perform locale-appropriate sorting of the strings. Intl.Collator objects can be configured so that the `compare()` method performs case-insensitive comparisons or even comparisons that only consider the base letter and ignore accents and other diacritics.
 
+::: tip 翻译
+如果您想按照用户认为自然的顺序向用户显示字符串，那么对字符串数组使用 `sort()` 方法是不够的。 但是，如果您创建 `Intl.Collator` 对象，则可以将该对象的 `compare()` 方法传递给 `sort()` 方法，以对字符串执行适合区域设置的排序。 可以配置 `Intl.Collator` 对象，以便 `compare()` 方法执行不区分大小写的比较，甚至只考虑基本字母并忽略重音符号和其他变音符号的比较。
+:::
+
 Like `Intl.NumberFormat()` and `Intl.DateTimeFormat()`, the `Intl.Collator()` constructor takes two arguments. The first specifies a locale or an array of locales, and the second is an optional object whose properties specify exactly what kind of string comparison is to be done. The supported properties are these:
+
+::: tip 翻译
+与 `Intl.NumberFormat()` 和 `Intl.DateTimeFormat()` 一样，`Intl.Collator()` 构造函数也有两个参数。 第一个指定区域设置或区域设置数组，第二个是可选对象，其属性准确指定要进行哪种类型的字符串比较。 支持的属性如下：
+:::
 
 #### usage
 
 This property specifies how the collator object is to be used. The default value is "`sort`", but you can also specify "`search`". The idea is that, when sorting strings, you typically want a collator that differentiates as many strings as possible to produce a reliable ordering. But when comparing two strings, some locales may want a less strict comparison that ignores accents, for example.
 
+::: tip 翻译
+该属性指定如何使用 collator 对象。 默认值为“`sort`”，但您也可以指定“`search`”。 这个想法是，在对字符串进行排序时，您通常需要一个排序器来区分尽可能多的字符串以产生可靠的排序。 但是，在比较两个字符串时，某些语言环境可能需要不太严格的比较，例如忽略重音。
+:::
+
 #### sensitivity
 
 This property specifies whether the collator is sensitive to letter case and accents when comparing strings. The value "`base`" causes comparisons that ignore case and accents, considering only the base letter for each character. (Note, however, that some languages consider certain accented characters to be distinct base letters.) "`accent`" considers accents in comparisons but ignores case. "case" considers case and ignores accents. And "`variant`" performs strict comparisons that consider both case and accents. The default value for this property is "variant" when `usage` is "`sort`". If `usage` is "`search`", then the default sensitivity depends on the locale.
+
+::: tip 翻译
+此属性指定比较字符串时排序器是否对字母大小写和重音敏感。 值`base`会导致忽略大小写和重音符号的比较，仅考虑每个字符的基本字母。 （但请注意，某些语言将某些重音字符视为不同的基本字母。）`accent`在比较中考虑重音，但忽略大小写。 `case`考虑大小写并忽略重音。 而`variant`执行严格的比较，同时考虑大小写和重音。 当 `usage` 为 `sort` 时，此属性的默认值为`variant`。 如果 `usage` 是 `search`，则默认敏感度取决于区域设置。
+:::
 
 #### ignorePunctuation
 
 Set this property to true to ignore spaces and punctuation when comparing strings. With this property set to `true`, the strings “any one” and “anyone”, for example, will be considered equal.
 
+::: tip 翻译
+将此属性设置为 `true` 可在比较字符串时忽略空格和标点符号。 例如，将此属性设置为 `true`时，字符串“any one”和“anyone”将被视为相等。
+:::
+
 #### numeric
 
 Set this property to true if the strings you are comparing are integers or contain integers and you want them to be sorted into numerical order instead of alphabetical order. With this option set, the string “Version 9” will be sorted before “Version 10”, for example.
+
+::: tip 翻译
+如果您要比较的字符串是整数或包含整数并且您希望它们按数字顺序而不是字母顺序排序，请将此属性设置为 `true`。 例如，设置此选项后，字符串“Version 9”将排在“Version 10”之前。
+:::
 
 #### caseFirst
 
 This property specifies which letter case should come first. If you specify "upper", then “A” will sort before “a”. And if you specify "`lower`", then “a” will sort before “A”. In either case, note that the upper- and lowercase variants of the same letter will be next to one another in sort order, which is different than Unicode lexicographic ordering (the default behavior of the Array `sort()` method) in which all ASCII uppercase letters come before all ASCII lowercase letters. The default for this property is locale dependent, and implementations may ignore this property and not allow you to override the case sort order.
 
+::: tip 翻译
+该属性指定哪个字母大小写应该排在第一位。 如果指定 `upper`，则“A”将排序在“a”之前。 如果您指定 `lower`，则“a”将排序在“A”之前。 无论哪种情况，请注意，同一字母的大写和小写变体在排序顺序中将彼此相邻，这与 Unicode 字典顺序（数组 `sort()` 方法的默认行为）不同，其中所有字母 ASCII 大写字母位于所有 ASCII 小写字母之前。 此属性的默认值取决于区域设置，并且实现可能会忽略此属性并且不允许您覆盖大小写排序顺序。
+:::
+
 Once you have created an Intl.Collator object for the desired locale and options, you can use its `compare()` method to compare two strings. This method returns a number. If the returned value is less than zero, then the first string comes before the second string. If it is greater than zero, then the first string comes after the second string. And if `compare()` returns zero, then the two strings are equal as far as this collator is concerned.
 
+::: tip 翻译
+一旦为所需的区域设置和选项创建了 `Intl.Collator` 对象，您就可以使用其 `compare()` 方法来比较两个字符串。 该方法返回一个数字。 如果返回值小于零，则第一个字符串位于第二个字符串之前。 如果它大于零，则第一个字符串位于第二个字符串之后。 如果`compare()` 返回零，则就该整理器而言，两个字符串相等。
+:::
+
 This `compare()` method that takes two strings and returns a number less than, equal to, or greater than zero is exactly what the Array `sort()` method expects for its optional argument. Also, Intl.Collator automatically binds the `compare()` method to its instance, so you can pass it directly to `sort()` without having to write a wrapper function and invoke it through the collator object. Here are some examples:
+
+::: tip 翻译
+这个 `compare()` 方法接受两个字符串并返回一个小于、等于或大于零的数字，这正是数组 `sort()` 方法对其可选参数的期望。 此外，`Intl.Collator` 自动将 `compare()` 方法绑定到其实例，因此您可以将其直接传递给 `sort()`，而无需编写包装函数并通过 collator 对象调用它。 这里有些例子：
+:::
 
 ```js
 // A basic comparator for sorting in the user's locale.
@@ -2413,7 +2577,11 @@ let strings = ["food", "fool", "Føø Bar"];
 strings.findIndex((s) => fuzzyMatcher(s, "foobar") === 0); // => 2
 ```
 
-Some locales have more than one possible collation order. In Germany, for example, phone books use a slightly more phonetic sort order than dictionaries do. In Spain, before 1994, “ch” and “ll” were treated as separate letters, so that country now has a modern sort order and a traditional sort order. And in China, collation order can be based on character encodings, the base radical and strokes of each character, or on the Pinyin romanization of characters. These collation variants cannot be selected through the Intl.Collator options argument, but they can be selected by adding `-uco-` to the locale string and adding the name of the desired variant. Use "`de-DE-uco-phonebk`" for phone book ordering in Germany, for example, and "`zh-TW-u-copinyin`" for Pinyin ordering in Taiwan.
+Some locales have more than one possible collation order. In Germany, for example, phone books use a slightly more phonetic sort order than dictionaries do. In Spain, before 1994, “ch” and “ll” were treated as separate letters, so that country now has a modern sort order and a traditional sort order. And in China, collation order can be based on character encodings, the base radical and strokes of each character, or on the Pinyin romanization of characters. These collation variants cannot be selected through the Intl.Collator options argument, but they can be selected by adding `-u-co-` to the locale string and adding the name of the desired variant. Use "`de-DE-u-co-phonebk`" for phone book ordering in Germany, for example, and "`zh-TW-u-co-pinyin`" for Pinyin ordering in Taiwan.
+
+::: tip 翻译
+某些语言环境具有不止一种可能的整理顺序。 例如，在德国，电话簿使用的语音排序顺序比字典稍多一些。 在西班牙，1994 年之前，“ch”和“ll”被视为单独的字母，因此该国现在拥有现代排序顺序和传统排序顺序。 在中国，排序规则可以基于字符编码、每个字符的根部首和笔画，或者基于字符的拼音罗马化。 这些排序规则变体无法通过 `Intl.Collator` 选项参数进行选择，但可以通过将`-u-co-`添加到区域设置字符串并添加所需变体的名称来选择它们。 例如，在德国订购电话簿时使用“`de-DE-u-co-phonebk`”，在台湾订购拼音时使用“`zh-TW-u-co-pinyin`”。
+:::
 
 ```js
 // Before 1994, CH and LL were treated as separate letters in Spain
