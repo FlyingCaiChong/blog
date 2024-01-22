@@ -4,6 +4,8 @@ title: 第十一章 JavaScript 标准库
 
 # JavaScript 标准库
 
+[[toc]]
+
 Some datatypes, such as numbers and strings ([Chapter 3](./Chapter-03-Types_Values_Variables.md)), objects ([Chapter 6](./Chapter-06-Objects.md)), and arrays ([Chapter 7](./Chapter-07-Arrays.md)) are so fundamental to JavaScript that we can consider them to be part of the language itself. This chapter covers other important but less fundamental APIs that can be thought of as defining the “standard library” for JavaScript: these are useful classes and functions that are built in to JavaScript and available to all JavaScript programs in both web browsers and in Node.
 
 ::: tip 翻译
@@ -2960,7 +2962,15 @@ The fundamental problem with all of these legacy functions is that they seek to 
 
 Since the earliest days of JavaScript, web browsers have defined two functions—`setTimeout()` and `setInterval()`—that allow programs to ask the browser to invoke a function after a specified amount of time has elapsed or to invoke the function repeatedly at a specified interval. These functions have never been standardized as part of the core language, but they work in all browsers and in Node and are a de facto part of the JavaScript standard library.
 
+::: tip 翻译
+自 JavaScript 诞生之初，Web 浏览器就定义了两个函数——`setTimeout()` 和 `setInterval()` ——允许程序要求浏览器在指定的时间过后调用某个函数，或者调用该函数 以指定的时间间隔重复进行。 这些函数从未被标准化为核心语言的一部分，但它们可以在所有浏览器和 Node 中工作，并且实际上是 JavaScript 标准库的一部分。
+:::
+
 The first argument to `setTimeout()` is a function, and the second argument is a number that specifies how many milliseconds should elapse before the function is invoked. After the specified amount of time (and maybe a little longer if the system is busy), the function will be invoked with no arguments. Here, for example, are three `setTimeout()` calls that print console messages after one second, two seconds, and three seconds:
+
+::: tip 翻译
+`setTimeout()` 的第一个参数是一个函数，第二个参数是一个数字，指定在调用函数之前应该经过多少毫秒。 经过指定的时间（如果系统繁忙，可能会更长一些），该函数将在不带参数的情况下被调用。 例如，这里有三个 `setTimeout()` 调用，分别在一秒、两秒和三秒后打印控制台消息：
+:::
 
 ```js
 setTimeout(() => {
@@ -2976,13 +2986,33 @@ setTimeout(() => {
 
 Note that `setTimeout()` does not wait for the time to elapse before returning. All three lines of code in this example run almost instantly, but then nothing happens until 1,000 milliseconds elapse.
 
+::: tip 翻译
+请注意，`setTimeout()` 不会等待时间过去才返回。 此示例中的所有三行代码几乎立即运行，但直到 1,000 毫秒过去才发生任何事情。
+:::
+
 If you omit the second argument to `setTimeout()`, it defaults to 0. That does not mean, however, that the function you specify is invoked immediately. Instead, the function is registered to be called “as soon as possible.” If a browser is particularly busy handling user input or other events, it may take 10 milliseconds or more before the function is invoked.
+
+::: tip 翻译
+如果省略 `setTimeout()` 的第二个参数，则它默认为 0。但这并不意味着立即调用您指定的函数。 相反，该函数被注册为“尽快”调用。 如果浏览器特别忙于处理用户输入或其他事件，则调用该函数可能需要 10 毫秒或更长时间。
+:::
 
 `setTimeout()` registers a function to be invoked once. Sometimes, that function will itself call `setTimeout()` to schedule another invocation at a future time. If you want to invoke a function repeatedly, however, it is often simpler to use `setInterval()`. `setInterval()` takes the same two arguments as `setTimeout()` but invokes the function repeatedly every time the specified number of milliseconds (approximately) have elapsed.
 
+::: tip 翻译
+`setTimeout()` 注册一个要调用一次的函数。 有时，该函数本身会调用 `setTimeout()` 来安排将来的另一次调用。 然而，如果您想重复调用一个函数，使用 `setInterval()` 通常更简单。 `setInterval()` 采用与 `setTimeout()` 相同的两个参数，但每次经过指定的毫秒数（大约）时都会重复调用该函数。
+:::
+
 Both `setTimeout()` and `setInterval()` return a value. If you save this value in a variable, you can then use it later to cancel the execution of the function by passing it to `clearTimeout()` or `clearInterval()`. The returned value is typically a number in web browsers and is an object in Node. The actual type doesn’t matter, and you should treat it as an opaque value. The only thing you can do with this value is pass it to `clearTimeout()` to cancel the execution of a function registered with `setTimeout()` (assuming it hasn’t been invoked yet) or to stop the repeating execution of a function registered with `setInterval()`.
 
+::: tip 翻译
+`setTimeout()` 和 `setInterval()` 都返回一个值。 如果将此值保存在变量中，则稍后可以通过将其传递给 `clearTimeout()` 或 `clearInterval()` 来使用它来取消函数的执行。 返回值在 Web 浏览器中通常是一个数字，在 Node.js 中是一个对象。 实际类型并不重要，您应该将其视为不透明值。 您可以使用此值做的唯一事情是将其传递给 `clearTimeout()`，以取消使用`setTimeout()` 注册的函数的执行（假设尚未调用它）或停止重复执行 使用`setInterval()` 注册的函数。
+:::
+
 Here is an example that demonstrates the use of `setTimeout()`, `setInterval()`, and `clearInterval()` to display a simple digital clock with the Console API:
+
+::: tip 翻译
+以下示例演示了如何使用 `setTimeout()` 、`setInterval()` 和 `clearInterval()` 通过控制台 API 显示简单的数字时钟：
+:::
 
 ```js
 // Once a second: clear the console and print the current time
@@ -2997,9 +3027,13 @@ setTimeout(() => {
 }, 10000);
 ```
 
-We’ll see `setTimeout()` and `setInterval()` again when we cover asynchronous programming in **Chapter 13**.
+We’ll see `setTimeout()` and `setInterval()` again when we cover asynchronous programming in [Chapter 13](./Chapter-13-Asynchronous.md).
 
-## Summary
+::: tip 翻译
+当我们在[第 13 章](./Chapter-13-Asynchronous.md)介绍异步编程时，我们将再次看到 `setTimeout()` 和 `setInterval()`。
+:::
+
+## 总结
 
 Learning a programming language is not just about mastering the grammar. It is equally important to study the standard library so that you are familiar with all the tools that are shipped with the language. This chapter has documented JavaScript’s standard library, which includes:
 
@@ -3008,3 +3042,13 @@ Learning a programming language is not just about mastering the grammar. It is e
 - JavaScript’s regular expression grammar and its RegExp class for textual pattern matching.
 - JavaScript’s internationalization library for formatting dates, time, and numbers and for sorting strings.
 - The `JSON` object for serializing and deserializing simple data structures and the console object for logging messages.
+
+::: tip 翻译
+学习编程语言不仅仅是掌握语法。 研究标准库同样重要，这样您才能熟悉该语言附带的所有工具。 本章记录了 JavaScript 的标准库，其中包括：
+
+- 重要的数据结构，例如 `Set`、`Map` 和类型化数组。
+- 用于处理日期和 URL 的 Date 和 URL 类。
+- JavaScript 正则表达式语法及其用于文本模式匹配的 `RegExp` 类。
+- JavaScript 的国际化库，用于格式化日期、时间和数字以及对字符串进行排序。
+- 用于序列化和反序列化简单数据结构的 `JSON` 对象以及用于记录消息的控制台对象。
+  :::
