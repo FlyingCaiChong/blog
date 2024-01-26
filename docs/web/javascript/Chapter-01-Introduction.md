@@ -34,13 +34,13 @@ When learning a new programming language, it’s important to try the examples i
 
 The easiest way to try out a few lines of JavaScript is to open up the web developer tools in your web browser (with F12, Ctrl-Shift-I, or Command-Option-I) and select the Console tab. You can then type code at the prompt and see the results as you type. Browser developer tools often appear as panes at the bottom or right of the browser window, but you can usually detach them as separate windows (as pictured in Figure 1-1), which is often quite convenient.
 
-![iShot_2024-01-26_09.30.02](media/17059073650040/iShot_2024-01-26_09.30.02.png)
+![js_intro_p1](/assets/js_intro_p1.png)
 
 _Figure 1-1. The JavaScript console in Firefox’s Developer Tools_
 
 Another way to try out JavaScript code is to download and install Node from https://nodejs.org. Once Node is installed on your system, you can simply open a Terminal window and type `node` to begin an interactive JavaScript session like this one:
 
-![iShot_2024-01-26_09.31.44](media/17059073650040/iShot_2024-01-26_09.31.44.png)
+![js_intro_p2](/assets/js_intro_p2.png)
 
 ## Hello World
 
