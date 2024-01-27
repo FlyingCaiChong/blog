@@ -2,81 +2,175 @@
 title: 第三章 类型，值和变量
 ---
 
-# Chapter 3 Types, Values, and Variables
+# 类型、值和变量
+
+[[toc]]
 
 Computer programs work by manipulating values, such as the number 3.14 or the text “Hello World.” The kinds of values that can be represented and manipulated in a programming language are known as types, and one of the most fundamental characteristics of a programming language is the set of types it supports. When a program needs to retain a value for future use, it assigns the value to (or “stores” the value in) a variable. Variables have names, and they allow use of those names in our programs to refer to values. The way that variables work is another fundamental characteristic of any programming language. This chapter explains types, values, and variables in JavaScript. It begins with an overview and some definitions.
 
-## Overview and Definitions
+::: tip 翻译
+计算机程序通过操作值（如数值 3.14）或文本（如“Hello World”）来工作。编程语言中这些可以表示和操作的值被称为类型，而一门语言支持的类型集也是这门语言最基本的特征。程序在需要把某个值保存下来以便将来使用时，会把这个值赋给（或存入）变量。变量有名字，程序可以通过这些名字来引用值。变量的工作方式则是一门编程语言的另一个基本特征。本章讲解 JavaScript 中的类型、值和变量。首先从概念和一些定义开始。
+:::
 
-JavaScript types can be divided into two categories: *primitive types* and *object types*. JavaScript’s primitive types include numbers, strings of text (known as strings), and Boolean truth values (known as booleans). A significant portion of this chapter is dedicated to a detailed explanation of the numeric (§3.2) and string (§3.3) types in JavaScript. Booleans are covered in §3.4.
+## 概述与定义
 
-The special JavaScript values null and undefined are primitive values, but they are not numbers, strings, or booleans. Each value is typically considered to be the sole member of its own special type. §3.5 has more about null and undefined. ES6 adds a new special-purpose type, known as Symbol, that enables the definition of language extensions without harming backward compatibility. Symbols are covered briefly in §3.6.
+JavaScript types can be divided into two categories: _primitive types_ and _object types_. JavaScript’s primitive types include numbers, strings of text (known as strings), and Boolean truth values (known as booleans). A significant portion of this chapter is dedicated to a detailed explanation of the numeric (§3.2) and string (§3.3) types in JavaScript. Booleans are covered in §3.4.
 
-Any JavaScript value that is not a number, a string, a boolean, a symbol, `null`, or `undefined` is an object. An object (that is, a member of the *type object*) is a collection of *properties* where each property has a name and a value (either a primitive value or another object). One very special object, the *global object*, is covered in §3.7, but more general and more detailed coverage of objects is in **Chapter 6**.
+::: tip 翻译
+JavaScript 类型可以分为两类：_原始类型_ 和 _对象类型_。JavaScript 的原始类型包括数值、文本字符串（也称字符串）和布尔真值（也称布尔值）。本章将用很大篇幅专门详细讲解 JavaScript 中的数值（见 3.2 节）类型和字符串（见 3.3 节）类型。布尔值将在 3.4 节介绍。
+:::
 
-An ordinary JavaScript object is an unordered collection of named values. The language also defines a special kind of object, known as an array, that represents an ordered collection of numbered values. The JavaScript language includes special syntax for working with arrays, and arrays have some special behavior that distinguishes them from ordinary objects. Arrays are the subject of **Chapter 7**.
+The special JavaScript values `null` and `undefined` are primitive values, but they are not numbers, strings, or booleans. Each value is typically considered to be the sole member of its own special type. §3.5 has more about `null` and `undefined`. ES6 adds a new special-purpose type, known as Symbol, that enables the definition of language extensions without harming backward compatibility. Symbols are covered briefly in §3.6.
 
-In addition to basic objects and arrays, JavaScript defines a number of other useful object types. A Set object represents a set of values. A Map object represents a mapping from keys to values. Various “typed array” types facilitate operations on arrays of bytes and other binary data. The RegExp type represents textual patterns and enables sophisticated matching, searching, and replacing operations on strings. The Date type represents dates and times and supports rudimentary date arithmetic. Error and its subtypes represent errors that can arise when executing JavaScript code. All of these types are covered in **Chapter 11**.
+::: tip 翻译
+JavaScript 中的特殊值`null`和`undefined`也是原始值，但它们不是数值、字符串或布尔值。这两个值通常被认为是各自特殊类型的唯一成员，将在 3.5 节进行介绍。ES6 新增了一种特殊类型`Symbol`（符号），用于对语言进行扩展而不破坏向后兼容性。3.6 节将简单介绍符号。
+:::
 
-JavaScript differs from more static languages in that functions and classes are not just part of the language syntax: they are themselves values that can be manipulated by JavaScript programs. Like any JavaScript value that is not a primitive value, functions and classes are a specialized kind of object. They are covered in detail in **Chapters 8 and 9**.
+Any JavaScript value that is not a number, a string, a boolean, a symbol, `null`, or `undefined` is an object. An object (that is, a member of the _type object_) is a collection of _properties_ where each property has a name and a value (either a primitive value or another object). One very special object, the _global object_, is covered in §3.7, but more general and more detailed coverage of objects is in [Chapter 6](./Chapter-06-Objects.md).
+
+::: tip 翻译
+在 JavaScript 中，任何不是数值、字符串、布尔值、符号、`null`和`undefined`的值都是对象。对象（也就是对象类型的成员）是属性的集合，其中每个属性都有一个名字和一个值（原始值或其他对象）。有一个非常特殊的对象叫*全局对象*，将在 3.7 节介绍。但关于对象更通用也更详尽的介绍会放到[第 6 章](./Chapter-06-Objects.md)。
+:::
+
+An ordinary JavaScript object is an unordered collection of named values. The language also defines a special kind of object, known as an array, that represents an ordered collection of numbered values. The JavaScript language includes special syntax for working with arrays, and arrays have some special behavior that distinguishes them from ordinary objects. Arrays are the subject of [Chapter 7](./Chapter-07-Arrays.md).
+
+::: tip 翻译
+普通 JavaScript 对象是一个命名值的无序集合。这门语言本身也定义一种特殊对象，称为数组。数组表示一个数字值的有序集合。JavaScript 语言包括操作数组的特殊语法，而数组本身也具有区别于普通对象的行为。数组是[第 7 章](./Chapter-07-Arrays.md)的主题。
+:::
+
+In addition to basic objects and arrays, JavaScript defines a number of other useful object types. A Set object represents a set of values. A Map object represents a mapping from keys to values. Various “typed array” types facilitate operations on arrays of bytes and other binary data. The RegExp type represents textual patterns and enables sophisticated matching, searching, and replacing operations on strings. The Date type represents dates and times and supports rudimentary date arithmetic. Error and its subtypes represent errors that can arise when executing JavaScript code. All of these types are covered in [Chapter 11](./Chapter-11-Standard_Library.md).
+
+::: tip 翻译
+除了基本的对象和数组之外，JavaScript 还定义了其他一些有用的对象类型。`Set` 对象表示一组值的结合，`Map` 对象表示键与值的映射。各种“定型数组”（`typed array`） 类型便于对字节数组和其他二进制数据进行操作。`RegExp` 类型表示文本模式，可以实现对字符串的复杂匹配、搜索和替换操作。Date 类型表示日期和时间，支持基本的日期计算。Error 及其子类型表示 JavaScript 代码运行期间可能发生的错误。所有这些类型将在[第 11 章](./Chapter-11-Standard_Library.md)介绍。
+:::
+
+JavaScript differs from more static languages in that functions and classes are not just part of the language syntax: they are themselves values that can be manipulated by JavaScript programs. Like any JavaScript value that is not a primitive value, functions and classes are a specialized kind of object. They are covered in detail in [Chapters 8](./Chapter-08-Functions.md) and [9](./Chapter-09-Classes.md).
+
+::: tip 翻译
+JavaScript 与静态语言更大的差别在于，函数和类不仅仅是语言的语法，它们本身就是可以被 JavaScript 程序操作的值。与其他 JavaScript 非原始值一样，函数和类也是特殊的对象。[第 8 章](./Chapter-08-Functions.md)和[第 9 章](./Chapter-09-Classes.md)将详细介绍它们。
+:::
 
 The JavaScript interpreter performs automatic garbage collection for memory management. This means that a JavaScript programmer generally does not need to worry about destruction or deallocation of objects or other values. When a value is no longer reachable—when a program no longer has any way to refer to it—the interpreter knows it can never be used again and automatically reclaims the memory it was occupying. (JavaScript programmers do sometimes need to take care to ensure that values do not inadvertently remain reachable—and therefore nonreclaimable—longer than necessary.)
 
+::: tip 翻译
+在内存管理方面，JavaScript 解释器会执行自动垃圾收集。这意味着 JavaScript 程序员通常不用关心对象或其他值的析构与释放。当一个值无法触达时，或者说当程序无法以任何方式引用这个值时，解释器就知道这个值已经用不到了，会自动释放它占用的内存（JavaScript 程序员有时候需要留意，不能让某些值在不经意间存续过长时间后仍可触达，从而导致它们无法被回收）。
+:::
+
 JavaScript supports an object-oriented programming style. Loosely, this means that rather than having globally defined functions to operate on values of various types, the types themselves define methods for working with values. To sort the elements of an array `a`, for example, we don’t pass `a` to a `sort()` function. Instead, we invoke the `sort()` method of `a`:
 
+::: tip 翻译
+JavaScript 支持面向对象的编程风格。粗略地说，这意味着不用定义全局函数去操作不同类型的值，而是由这些类型本身定义操作值的方法。比如要对数组元素排序，不用把数组`a`传给一个`sort()`函数，而是可以调用数组`a`的`sort()`方法。
+:::
+
 ```js
-a.sort(); // The object-oriented version of sort(a).
+a.sort(); // sort(a)的面向对象版
 ```
 
 Method definition is covered in **Chapter 9**. Technically, it is only JavaScript objects that have methods. But numbers, strings, boolean, and symbol values behave as if they have methods. In JavaScript, `null` and `undefined` are the only values that methods cannot be invoked on.
 
-JavaScript’s object types are *mutable* and its primitive types are *immutable*. A value of a mutable type can change: a JavaScript program can change the values of object properties and array elements. Numbers, booleans, symbols, null, and undefined are immutable—it doesn’t even make sense to talk about changing the value of a number, for example. Strings can be thought of as arrays of characters, and you might expect them to be mutable. In JavaScript, however, strings are immutable: you can access the text at any index of a string, but JavaScript provides no way to alter the text of an existing string. The differences between mutable and immutable values are explored further in §3.8.
+::: tip 翻译
+第 9 章将介绍如何定义方法。从技术角度来讲，只有 JavaScript 对象才有方法。但数值、字符串、布尔值和符号表现得似乎它们也有方法。在 JavaScript 中，只有`null`和`undefined`是不能调用方法的值。
+:::
+
+JavaScript’s object types are _mutable_ and its primitive types are _immutable_. A value of a mutable type can change: a JavaScript program can change the values of object properties and array elements. Numbers, booleans, symbols, null, and undefined are immutable—it doesn’t even make sense to talk about changing the value of a number, for example. Strings can be thought of as arrays of characters, and you might expect them to be mutable. In JavaScript, however, strings are immutable: you can access the text at any index of a string, but JavaScript provides no way to alter the text of an existing string. The differences between mutable and immutable values are explored further in §3.8.
+
+::: tip 翻译
+JavaScript 的对象类型是可修改的（mutable），而它的原始类型是不可修改的（immutable）。可修改类型的值可以改变，比如 JavaScript 程序可以修改对象属性和数组元素的值。数值、布尔值、符号、`null`和`undefined`是不可修改的，以数值为例，修改它是没有意义的。字符串可以看成字符数组，你可能期望它们是可修改的。但在 JavaScript 中，字符串也是不可修改的。虽然可以按索引访问字符串中的字符，但 JavaScript 没有提供任何方式去修改已有字符串的字符。可修改值与不可修改值的区别将在 3.8 节更详细地介绍。
+:::
 
 JavaScript liberally converts values from one type to another. If a program expects a string, for example, and you give it a number, it will automatically convert the number to a string for you. And if you use a non-boolean value where a boolean is expected, JavaScript will convert accordingly. The rules for value conversion are explained in §3.9. JavaScript’s liberal value conversion rules affect its definition of equality, and the `==` equality operator performs type conversions as described in §3.9.1. (In practice, however, the `==` equality operator is deprecated in favor of the strict equality operator `===`, which does no type conversions. See §4.9.1 for more about both operators.)
 
-Constants and variables allow you to use names to refer to values in your programs. Constants are declared with `const` and variables are declared with `let` (or with `var` in older JavaScript code). JavaScript constants and variables are *untyped*: declarations do not specify what kind of values will be assigned. Variable declaration and assignment are covered in §3.10.
+::: tip 翻译
+JavaScript 可以自由地转换不同类型的值。比如，程序期待一个字符串，而你提供了一个数值，这个数值会自动转换为字符串。而如果你在一个期待布尔值的地方使用了非布尔值，JavaScript 也会相应地把它转换为布尔值。这种自动转换的规则将在 3.9 节解释。JavaScript 这种自由的值转换会影响对相等的定义，而相等操作符`==`会根据 3.9.1 节的描述进行类型转换（不过在实践中，相等操作符`==`已经被弃用，取而代之的是不会做类型转换的严格相等操作符`===`。关于这两个操作符的更多介绍可以参见 4.9.1 节）。
+:::
+
+Constants and variables allow you to use names to refer to values in your programs. Constants are declared with `const` and variables are declared with `let` (or with `var` in older JavaScript code). JavaScript constants and variables are _untyped_: declarations do not specify what kind of values will be assigned. Variable declaration and assignment are covered in §3.10.
+
+::: tip 翻译
+常量和变量可以让我们在程序中使用名字来引用值。常量使用`const`声明，变量使用`let`（或在较老的 JavaScript 代码中使用`var`）声明。JavaScript 常量和变量是无类型的(`untyped`)，声明并不会限定要赋何种类型的值。变量声明和赋值将在 3.10 节中介绍。
+:::
 
 As you can see from this long introduction, this is a wide-ranging chapter that explains many fundamental details about how data is represented and manipulated in JavaScript. We’ll begin by diving right in to the details of JavaScript numbers and text.
 
-## Numbers
+::: tip 翻译
+看完以上概述，想必读者也已经心领神会了。这一章内容非常宽泛，涉及 JavaScript 如何表示和操作数据的很多基础性细节。下面我们就从详尽了解 JavaScript 的数值和文本开始。
+:::
 
-JavaScript’s primary numeric type, Number, is used to represent integers and to approximate real numbers. JavaScript represents numbers using the 64-bit floatingpoint format defined by the IEEE 754 standard, which means it can represent numbers as large as ±1.7976931348623157 × 10^308 and as small as ±5 × 10^−324.
+## 数值
+
+JavaScript’s primary numeric type, Number, is used to represent integers and to approximate real numbers. JavaScript represents numbers using the 64-bit floating point format defined by the IEEE 754 standard, which means it can represent numbers as large as ±1.7976931348623157 × 10^308 and as small as ±5 × 10^−324.
+
+::: tip 翻译
+JavaScript 的主要数值类型 Number 用于表示整数和近似实数。JavaScript 使用 IEEE 754 标准定义的 64 位符点格式表示数值，这意味着 JavaScript 可以表示的最大整数是 ±1.7976931348623157 × 10^308，最小整数是 ±5 × 10^−324。
+:::
 
 The JavaScript number format allows you to exactly represent all integers between −9,007,199,254,740,992 (−2^53) and 9,007,199,254,740,992 (2^53), inclusive. If you use integer values larger than this, you may lose precision in the trailing digits. Note, however, that certain operations in JavaScript (such as array indexing and the bitwise operators described in **Chapter 4**) are performed with 32-bit integers. If you need to exactly represent larger integers, see §3.2.5.
 
-When a number appears directly in a JavaScript program, it’s called a *numeric literal*. JavaScript supports numeric literals in several formats, as described in the following sections. Note that any numeric literal can be preceded by a minus sign (`-`) to make the number negative.
+::: tip 翻译
+JavaScript 的这种数值格式可以让我们准确表示 −9,007,199,254,740,992 (−2^53) 到 9,007,199,254,740,992 (2^53) 之间的所有整数（含首尾值）。如果你的数值超出了这个范围，那可能会在末尾的数字上损失一些精度。但要注意，JavaScript 中的某些操作（如第 4 章介绍的数组索引和位操作）是以 32 位整数计算的。如果想准确表示更大的整数，可以参考 3.2.5 节。
+:::
 
-### Integer Literals
+When a number appears directly in a JavaScript program, it’s called a _numeric literal_. JavaScript supports numeric literals in several formats, as described in the following sections. Note that any numeric literal can be preceded by a minus sign (`-`) to make the number negative.
+
+::: tip 翻译
+当数值真正出现在 JavaScript 程序中时，就叫作数值字面量(numeric literal)。JavaScript 支持几种形式的数值字面量，后面几节会介绍。注意，任何数值字面量前面都可以加上一个减号（-）来让该数值变为负数。
+:::
+
+### 整数字面量
 
 In a JavaScript program, a base-10 integer is written as a sequence of digits. For example:
 
+::: tip 翻译
+在 JavaScript 程序中，基数为 10 的整数可以直接写成数字序列。例如：
+:::
+
 ```js
-0
-3
-10000000
+0;
+3;
+10000000;
 ```
 
 In addition to base-10 integer literals, JavaScript recognizes hexadecimal (base-16) values. A hexadecimal literal begins with 0x or 0X, followed by a string of hexadecimal digits. A hexadecimal digit is one of the digits 0 through 9 or the letters a (or A) through f (or F), which represent values 10 through 15. Here are examples of hexadecimal integer literals:
 
+::: tip 翻译
+除了基数为 10 的整数字面量之外，JavaScript 也支持十六进制（基数是 16 的）值。十六进制字面量以`0x`或`0X`开头，后跟一个十六进制数字字符串。十六进制数字是数字 0 到 9 和字母 a（或 A）到 f（或 F），a 到 f 表示 10 到 15.下面是十六进制整数字面量的例子：
+:::
+
 ```js
-0xff // => 255: (15*16 + 15)
-0xBADCAFE // => 195939070
+0xff; // => 255: (15*16 + 15)
+0xbadcafe; // => 195939070
 ```
 
 In ES6 and later, you can also express integers in binary (base 2) or octal (base 8) using the prefixes `0b` and `0o` (or `0B` and `0O`) instead of `0x`:
 
+::: tip 翻译
+在 ES6 及之后的版本中，也可以通过二进制（基数为 2）或八进制（基数为 8）表示整数，分别使用前缀`0b`和`0o`（或`0B`和`0O`）：
+:::
+
 ```js
-0b10101 // => 21: (1*16 + 0*8 + 1*4 + 0*2 + 1*1)
-0o377 // => 255: (3*64 + 7*8 + 7*1)
+0b10101; // => 21: (1*16 + 0*8 + 1*4 + 0*2 + 1*1)
+0o377; // => 255: (3*64 + 7*8 + 7*1)
 ```
 
-### Floating-Point Literals
+### 符点字面量
 
 Floating-point literals can have a decimal point; they use the traditional syntax for real numbers. A real value is represented as the integral part of the number, followed by a decimal point and the fractional part of the number.
 
+::: tip 翻译
+浮点字面量可以包含小数点，它们对实数使用传统语法。实数值由数值的整数部分、小数点和数值的小数部分组成。
+:::
+
 Floating-point literals may also be represented using exponential notation: a real number followed by the letter e (or E), followed by an optional plus or minus sign, followed by an integer exponent. This notation represents the real number multiplied by 10 to the power of the exponent.
 
+::: tip 翻译
+浮点字面量也可以使用指数计数法表示，即实数值后面可以跟字母`e`（或`E`），跟一个可选的加号或减号，再跟一个整数指数。这种计数法表示的是实数值乘以 10 的指数次幂。
+:::
+
 More succinctly, the syntax is:
+
+::: tip 翻译
+更简洁的语法形式为:
+:::
 
 ```js
 [digits][.digits][(E|e)[(+|-)]digits]
@@ -85,11 +179,11 @@ More succinctly, the syntax is:
 For example:
 
 ```js
-3.14
-2345.6789
-.333333333333333333
-6.02e23 // 6.02 × 10²³
-1.4738223E-32 // 1.4738223 × 10⁻³²
+3.14;
+2345.6789;
+0.333333333333333333;
+6.02e23; // 6.02 × 10²³
+1.4738223e-32; // 1.4738223 × 10⁻³²
 ```
 
 > **Separators in Numeric Literals**
@@ -98,95 +192,136 @@ For example:
 >
 > ```js
 > let billion = 1_000_000_000; // Underscore as a thousands separator.
-> let bytes = 0x89_AB_CD_EF; // As a bytes separator.
+> let bytes = 0x89_ab_cd_ef; // As a bytes separator.
 > let bits = 0b0001_1101_0111; // As a nibble separator.
 > let fraction = 0.123_456_789; // Works in the fractional part, too.
 > ```
 >
 > At the time of this writing in early 2020, underscores in numeric literals are not yet formally standardized as part of JavaScript. But they are in the advanced stages of the standardization process and are implemented by all major browsers and by Node.
 
-### Arithmetic in JavaScript
+> **数值字面量中的分隔符**
+>
+> 可以用下划线将数值字面量分隔为容易看清的数字段：
+>
+> ```js
+> let billion = 1_000_000_000; // 以下划线作为千分位分隔符
+> let bytes = 0x89_ab_cd_ef; // 作为字节分隔符
+> let bits = 0b0001_1101_0111; // 作为半字节分隔符
+> let fraction = 0.123_456_789; // 也可以用在小数部分
+>
+> 在2020年年初写作本书时，数值字面量中像这样添加下划线还没有成为正式的JavaScript标准。但这个特性已经进入标准化流程的后期，而且已经被所有主流浏览器以及Node实现了。
+> ```
 
-JavaScript programs work with numbers using the arithmetic operators `.` that the language provides. These include `+` for addition, `-` for subtraction, `*` for multiplication, `/` for division, and `%` for modulo (remainder after division). ES2016 adds `**` for exponentiation. Full details on these and other operators can be found in **Chapter 4**.
+### JavaScript 中的算术
+
+JavaScript programs work with numbers using the arithmetic operators `.` that the language provides. These include `+` for addition, `-` for subtraction, `*` for multiplication, `/` for division, and `%` for modulo (remainder after division). ES2016 adds `**` for exponentiation. Full details on these and other operators can be found in [Chapter 4](./Chapter-04-Expressions_Operators.md).
+
+::: tip 翻译
+JavaScript 程序使用语言提供的算术操作符来操作数值，包括表示加法的`+`、表示减法的`-`、表示乘法的`*`、表示除法的`/`和表示取模（除法后的余数）的`%`。ES2016 增加了取幂的`**`。这些操作符以及更多操作符将在[第 4 章](./Chapter-04-Expressions_Operators.md)详细介绍。
+:::
 
 In addition to these basic arithmetic operators, JavaScript supports more complex mathematical operations through a set of functions and constants defined as properties of the `Math` object:
 
+::: tip 翻译
+除了上述基本的算术操作符之外，JavaScript 还通过`Math`对象的属性提供了一组函数和常量，以支持更复杂的数学计算：
+:::
+
 ```js
-Math.pow(2,53) // => 9007199254740992: 2 to the power 53
-Math.round(.6) // => 1.0: round to the nearest integer
-Math.ceil(.6) // => 1.0: round up to an integer
-Math.floor(.6) // => 0.0: round down to an integer
-Math.abs(-5) // => 5: absolute value
-Math.max(x,y,z) // Return the largest argument
-Math.min(x,y,z) // Return the smallest argument
-Math.random() // Pseudo-random number x where 0 <= x < 1.0
-Math.PI // π: circumference of a circle / diameter
-Math.E // e: The base of the natural logarithm
-Math.sqrt(3) // => 3**0.5: the square root of 3
-Math.pow(3, 1/3) // => 3**(1/3): the cube root of 3
-Math.sin(0) // Trigonometry: also Math.cos, Math.atan, etc.
-Math.log(10) // Natural logarithm of 10
-Math.log(100)/Math.LN10 // Base 10 logarithm of 100
-Math.log(512)/Math.LN2 // Base 2 logarithm of 512
-Math.exp(3) // Math.E cubed
+Math.pow(2, 53); // => 9007199254740992: 2 的53次方
+Math.round(0.6); // => 1.0: 舍入到最接近的整数
+Math.ceil(0.6); // => 1.0: 向上舍入到一个整数
+Math.floor(0.6); // => 0.0: 向下舍入到一个整数
+Math.abs(-5); // => 5: 绝对值
+Math.max(x, y, z); // 返回最大的参数
+Math.min(x, y, z); // 返回最小的参数
+Math.random(); // 伪随机数x，其中 0 <= x < 1.0
+Math.PI; // π: 圆周率
+Math.E; // e: 自然对数的底数
+Math.sqrt(3); // => 3**0.5: 3的平方根
+Math.pow(3, 1 / 3); // => 3**(1/3): 3的立方根
+Math.sin(0); // 三角函数：还有 Math.cos, Math.atan 等.
+Math.log(10); // 10的自然对数
+Math.log(100) / Math.LN10; // 以10为底100的对数
+Math.log(512) / Math.LN2; // 以2为底512的对数
+Math.exp(3); // Math.E 的立方
 ```
 
 ES6 defines more functions on the Math object:
 
+::: tip 翻译
+ES6 在`Math`对象上又定义了更多函数：
+:::
+
 ```js
-Math.cbrt(27) // => 3: cube root
-Math.hypot(3, 4) // => 5: square root of sum of squares of all arguments
-Math.log10(100) // => 2: Base-10 logarithm
-Math.log2(1024) // => 10: Base-2 logarithm
-Math.log1p(x) // Natural log of (1+x); accurate for very small x
-Math.expm1(x) // Math.exp(x)-1; the inverse of Math.log1p()
-Math.sign(x) // -1, 0, or 1 for arguments <, ==, or > 0
-Math.imul(2,3) // => 6: optimized multiplication of 32-bit integers
-Math.clz32(0xf) // => 28: number of leading zero bits in a 32-bit integer
-Math.trunc(3.9) // => 3: convert to an integer by truncating fractional part
-Math.fround(x) // Round to nearest 32-bit float number
-Math.sinh(x) // Hyperbolic sine. Also Math.cosh(), Math.tanh()
-Math.asinh(x) // Hyperbolic arcsine. Also Math.acosh(), Math.atanh()
+Math.cbrt(27); // => 3: 立方根
+Math.hypot(3, 4); // => 5: 所有参数平方和的平方根
+Math.log10(100); // => 2: 以10为底的对数
+Math.log2(1024); // => 10: 以2为底的对数
+Math.log1p(x); // (1+x)的自然对数；精确到非常小的x
+Math.expm1(x); // Math.exp(x)-1; Math.log1p()的逆运算
+Math.sign(x); // 当<、== 或 >0 的参数返回 -1, 0, 或1
+Math.imul(2, 3); // => 6: 优化的32位整数乘法
+Math.clz32(0xf); // => 28: 32位整数中前导0的位数
+Math.trunc(3.9); // => 3: 剪掉分数部分得到整数
+Math.fround(x); // 舍入到最接近的32位符点数
+Math.sinh(x); // 双曲线正弦. 还有 Math.cosh(), Math.tanh()
+Math.asinh(x); // 双曲线反正弦. 还有 Math.acosh(), Math.atanh()
 ```
 
 Arithmetic in JavaScript does not raise errors in cases of overflow, underflow, or division by zero. When the result of a numeric operation is larger than the largest representable number (overflow), the result is a special infinity value, `Infinity`. Similarly, when the absolute value of a negative value becomes larger than the absolute value of the largest representable negative number, the result is negative infinity, `-Infinity`. The infinite values behave as you would expect: adding, subtracting, multiplying, or dividing them by anything results in an infinite value (possibly with the sign reversed).
 
+::: tip 翻译
+JavaScript 中的算术在遇到上溢出、下溢出或被零除时不会发生错误。在数值操作的结果超过最大可表示数值时（上溢出），结果是一个特殊的无穷值`Infinity`。类似地，当某个负数的绝对值超过了最大可表示负数的绝对值时，结果是负无穷值`-Infinity`。这两个无穷值的行为跟我们的预期一样：任何数加、减、乘、除无穷值结果还是无穷值（只是符号可能相反）。
+:::
+
 Underflow occurs when the result of a numeric operation is closer to zero than the smallest representable number. In this case, JavaScript returns 0. If underflow occurs from a negative number, JavaScript returns a special value known as “negative zero.” This value is almost completely indistinguishable from regular zero and JavaScript programmers rarely need to detect it.
 
-Division by `zero` is not an error in JavaScript: it simply returns infinity or negative infinity. There is one exception, however: zero divided by zero does not have a welldefined value, and the result of this operation is the special not-a-number value, `NaN`. `NaN` also arises if you attempt to divide infinity by infinity, take the square root of a negative number, or use arithmetic operators with non-numeric operands that cannot be converted to numbers.
+::: tip 翻译
+下溢出发生在数值操作的结果比最小可表示数值更接近 0 的情况下。此时，JavaScript 返回 0。如果下溢出来自负数，JavaScript 返回一个被称为“负零”的特殊值。这个值与常规的零几乎完全无法区分，JavaScript 程序员极少需要检测它。
+:::
+
+Division by `zero` is not an error in JavaScript: it simply returns infinity or negative infinity. There is one exception, however: zero divided by zero does not have a well defined value, and the result of this operation is the special not-a-number value, `NaN`. `NaN` also arises if you attempt to divide infinity by infinity, take the square root of a negative number, or use arithmetic operators with non-numeric operands that cannot be converted to numbers.
+
+::: tip 翻译
+被零除在 JavaScript 中不是错误，只会简单地返回无穷或负无穷。不过有一个例外：0 除以 0 是没有意义的值，这个操作的结果是一个特殊的“非数值”（`NaN`，Not a Number）。此外，无穷除无穷、负数平方根或者用无法转换为数值的非数值作为算术操作符的操作数，结果也都是`NaN`。
+:::
 
 JavaScript predefines global constants `Infinity` and `NaN` to hold the positive infinity and not-a-number value, and these values are also available as properties of the Number object:
 
+::: tip 翻译
+JavaScript 预定义了全局常量`Infinity`和`NaN`以对应正无穷和非数值。这些值也可以通过 Number 对象的属性获取：
+:::
+
 ```js
-Infinity // A positive number too big to represent
-Number.POSITIVE_INFINITY // Same value
-1/0 // => Infinity
-Number.MAX_VALUE * 2 // => Infinity; overflow
--Infinity // A negative number too big to represent
-Number.NEGATIVE_INFINITY // The same value
--1/0 // => -Infinity
--Number.MAX_VALUE * 2 // => -Infinity
+Infinity; // 因为太大而无法表示的正数
+Number.POSITIVE_INFINITY; // 同上
+1 / 0; // => Infinity
+Number.MAX_VALUE * 2; // => Infinity; 溢出
+-Infinity; // 因为太大而无法表示的负数
+Number.NEGATIVE_INFINITY; // 同上
+-1 / 0; // => -Infinity
+-Number.MAX_VALUE * 2; // => -Infinity
 
-NaN // The not-a-number value
-Number.NaN // The same value, written another way
-0/0 // => NaN
-Infinity/Infinity // => NaN
+NaN; // 非数值
+Number.NaN; // 同上，写法不同
+0 / 0; // => NaN
+Infinity / Infinity; // => NaN
 
-Number.MIN_VALUE/2 // => 0: underflow
--Number.MIN_VALUE/2 // => -0: negative zero
--1/Infinity // -> -0: also negative 0
--0
+Number.MIN_VALUE / 2; // => 0: 下溢出
+-Number.MIN_VALUE / 2; // => -0: 负零
+-1 / Infinity; // -> -0: 也是负零
+-0;
 
-// The following Number properties are defined in ES6
-Number.parseInt() // Same as the global parseInt() function
-Number.parseFloat() // Same as the global parseFloat() function
-Number.isNaN(x) // Is x the NaN value?
-Number.isFinite(x) // Is x a number and finite?
-Number.isInteger(x) // Is x an integer?
-Number.isSafeInteger(x) // Is x an integer -(2**53) < x < 2**53?
-Number.MIN_SAFE_INTEGER // => -(2**53 - 1)
-Number.MAX_SAFE_INTEGER // => 2**53 - 1
-Number.EPSILON // => 2**-52: smallest difference between numbers
+// ES6定义了下列Number属性
+Number.parseInt(); // 同全局 parseInt() 函数
+Number.parseFloat(); // 同全局 parseFloat() 函数
+Number.isNaN(x); // 判断 x 是不是 NaN ?
+Number.isFinite(x); // 判断 x 是数值还是无穷 ?
+Number.isInteger(x); // 判断 x 是不是整数?
+Number.isSafeInteger(x); // 判断 x 是不是整数 -(2**53) < x < 2**53?
+Number.MIN_SAFE_INTEGER; // => -(2**53 - 1)
+Number.MAX_SAFE_INTEGER; // => 2**53 - 1
+Number.EPSILON; // => 2**-52: 数值与数值之间最小的差
 ```
 
 The not-a-number value has one unusual feature in JavaScript: it does not compare equal to any other value, including itself. This means that you can’t write `x === NaN` to determine whether the value of a variable `x` is `NaN`. Instead, you must write `x != x` or `Number.isNaN(x)`. Those expressions will be `true` if, and only if, `x` has the same value as the global constant `NaN`.
@@ -198,8 +333,8 @@ The negative zero value is also somewhat unusual. It compares equal (even using 
 ```js
 let zero = 0; // Regular zero
 let negz = -0; // Negative zero
-zero === negz // => true: zero and negative zero are equal
-1/zero === 1/negz // => false: Infinity and -Infinity are not equal
+zero === negz; // => true: zero and negative zero are equal
+1 / zero === 1 / negz; // => false: Infinity and -Infinity are not equal
 ```
 
 ### Binary Floating-Point and Rounding Errors
@@ -211,14 +346,14 @@ The IEEE-754 floating-point representation used by JavaScript (and just about ev
 JavaScript numbers have plenty of precision and can approximate 0.1 very closely. But the fact that this number cannot be represented exactly can lead to problems. Consider this code:
 
 ```js
-let x = .3 - .2; // thirty cents minus 20 cents
-let y = .2 - .1; // twenty cents minus 10 cents
-x === y // => false: the two values are not the same!
-x === .1 // => false: .3-.2 is not equal to .1
-y === .1 // => true: .2-.1 is equal to .1
+let x = 0.3 - 0.2; // thirty cents minus 20 cents
+let y = 0.2 - 0.1; // twenty cents minus 10 cents
+x === y; // => false: the two values are not the same!
+x === 0.1; // => false: .3-.2 is not equal to .1
+y === 0.1; // => true: .2-.1 is equal to .1
 ```
 
-Because of rounding error, the difference between the approximations of .3 and .2 is not exactly the same as the difference between the approximations of .2 and .1. It is important to understand that this problem is not specific to JavaScript: it affects any programming language that uses binary floating-point numbers. Also, note that the values `x` and `y` in the code shown here are *very* close to each other and to the correct value. The computed values are adequate for almost any purpose; the problem only arises when we attempt to compare values for equality.
+Because of rounding error, the difference between the approximations of .3 and .2 is not exactly the same as the difference between the approximations of .2 and .1. It is important to understand that this problem is not specific to JavaScript: it affects any programming language that uses binary floating-point numbers. Also, note that the values `x` and `y` in the code shown here are _very_ close to each other and to the correct value. The computed values are adequate for almost any purpose; the problem only arises when we attempt to compare values for equality.
 
 If these floating-point approximations are problematic for your programs, consider using scaled integers. For example, you might manipulate monetary values as integer cents rather than fractional dollars.
 
@@ -229,29 +364,33 @@ One of the newest features of JavaScript, defined in ES2020, is a new numeric ty
 BigInt literals are written as a string of digits followed by a lowercase letter `n`. By default, the are in base 10, but you can use the `0b`, `0o`, and `0x` prefixes for binary, octal, and hexadecimal BigInts:
 
 ```js
-1234n // A not-so-big BigInt literal
-0b111111n // A binary BigInt
-0o7777n // An octal BigInt
-0x8000000000000000n // => 2n**63n: A 64-bit integer
+1234n; // A not-so-big BigInt literal
+0b111111n; // A binary BigInt
+0o7777n; // An octal BigInt
+0x8000000000000000n; // => 2n**63n: A 64-bit integer
 ```
 
 You can use `BigInt()` as a function for converting regular JavaScript numbers or strings to BigInt values:
 
 ```js
-BigInt(Number.MAX_SAFE_INTEGER) // => 9007199254740991n
+BigInt(Number.MAX_SAFE_INTEGER); // => 9007199254740991n
 let string = "1" + "0".repeat(100); // 1 followed by 100 zeros.
-BigInt(string) // => 10n**100n: one googol
+BigInt(string); // => 10n**100n: one googol
 ```
 
 Arithmetic with BigInt values works like arithmetic with regular JavaScript numbers, except that division drops any remainder and rounds down (toward zero):
 
 ```js
-1000n + 2000n // => 3000n
-3000n - 2000n // => 1000n
-2000n * 3000n // => 6000000n
-3000n / 997n // => 3n: the quotient is 3
-3000n % 997n // => 9n: and the remainder is 9
-(2n ** 131071n) - 1n // A Mersenne prime with 39457 decimal digits
+1000n + 2000n; // => 3000n
+3000n - 2000n; // => 1000n
+2000n * 3000n; // => 6000000n
+3000n / 997n; // => 3n: the quotient is 3
+(3000n %
+  997n(
+    // => 9n: and the remainder is 9
+    2n ** 131071n
+  )) -
+  1n; // A Mersenne prime with 39457 decimal digits
 ```
 
 Although the standard `+`, `-`, `*`, `/`, `%`, and `**` operators work with BigInt, it is important to understand that you may not mix operands of type BigInt with regular number operands. This may seem confusing at first, but there is a good reason for it. If one numeric type was more general than the other, it would be easy to define arithmetic on mixed operands to simply return a value of the more general type. But neither type is more general than the other: BigInt can represent extraordinarily large values, making it more general than regular numbers. But BigInt can only represent integers, making the regular JavaScript number type more general. There is no way around this problem, so JavaScript sidesteps it by simply not allowing mixed operands to the arithmetic operators.
@@ -259,17 +398,17 @@ Although the standard `+`, `-`, `*`, `/`, `%`, and `**` operators work with BigI
 Comparison operators, by contrast, do work with mixed numeric types (but see §3.9.1 for more about the difference between `==` and `===`):
 
 ```js
-1 < 2n // => true
-2 > 1n // => true
-0 == 0n // => true
-0 === 0n // => false: the === checks for type equality as well
+1 < 2n; // => true
+2 > 1n; // => true
+0 == 0n; // => true
+0 === 0n; // => false: the === checks for type equality as well
 ```
 
 The bitwise operators (described in §4.8.3) generally work with BigInt operands. None of the functions of the `Math` object accept BigInt operands, however.
 
 ### Dates and Times
 
-JavaScript defines a simple Date class for representing and manipulating the numbers that represent dates and times. JavaScript Dates are objects, but they also have a numeric representation as a *timestamp* that specifies the number of elapsed milliseconds since January 1, 1970:
+JavaScript defines a simple Date class for representing and manipulating the numbers that represent dates and times. JavaScript Dates are objects, but they also have a numeric representation as a _timestamp_ that specifies the number of elapsed milliseconds since January 1, 1970:
 
 ```js
 let timestamp = Date.now(); // The current time as a timestamp (a number).
@@ -282,7 +421,7 @@ The Date class and its methods are covered in detail in §11.4. But we will see 
 
 ## Text
 
-The JavaScript type for representing text is the *string*. A string is an immutable ordered sequence of 16-bit values, each of which typically represents a Unicode character. The *length* of a string is the number of 16-bit values it contains. JavaScript’s strings (and its arrays) use zero-based indexing: the first 16-bit value is at position 0, the second at position 1, and so on. The *empty string* is the string of length 0. JavaScript does not have a special type that represents a single element of a string. To represent a single 16-bit value, simply use a string that has a length of 1.
+The JavaScript type for representing text is the _string_. A string is an immutable ordered sequence of 16-bit values, each of which typically represents a Unicode character. The _length_ of a string is the number of 16-bit values it contains. JavaScript’s strings (and its arrays) use zero-based indexing: the first 16-bit value is at position 0, the second at position 1, and so on. The _empty string_ is the string of length 0. JavaScript does not have a special type that represents a single element of a string. To represent a single 16-bit value, simply use a string that has a length of 1.
 
 > **Characters, Codepoints, and JavaScript Strings**
 >
@@ -291,26 +430,25 @@ The JavaScript type for representing text is the *string*. A string is an immuta
 > ```js
 > let euro = "€";
 > let love = "❤";
-> euro.length // => 1: this character has one 16-bit element
-> love.length // => 2: UTF-16 encoding of ❤ is "\ud83d\udc99"
+> euro.length; // => 1: this character has one 16-bit element
+> love.length; // => 2: UTF-16 encoding of ❤ is "\ud83d\udc99"
 > ```
 >
 > Most string-manipulation methods defined by JavaScript operate on 16-bit values, not characters. They do not treat surrogate pairs specially, they perform no normalization of the string, and don’t even ensure that a string is well-formed UTF-16.
 >
-> In ES6, however, strings are *iterable*, and if you use the `for/of` loop or `...` operator with a string, it will iterate the actual characters of the string, not the 16-bit values.
+> In ES6, however, strings are _iterable_, and if you use the `for/of` loop or `...` operator with a string, it will iterate the actual characters of the string, not the 16-bit values.
 
 ### String Literals
 
 To include a string in a JavaScript program, simply enclose the characters of the string within a matched pair of single or double quotes or backticks (`'` or `"` or <code>\`</code>). Double-quote characters and backticks may be contained within strings delimited by single-quote characters, and similarly for strings delimited by double quotes and backticks. Here are examples of string literals:
 
 ```js
-"" // The empty string: it has zero characters
-'testing'
-"3.14"
-'name="myform"'
-"Wouldn't you prefer O'Reilly's book?"
-"τ is the ratio of a circle's circumference to its radius"
-`"She said 'hi'", he said.`
+""; // The empty string: it has zero characters
+"testing";
+"3.14";
+'name="myform"';
+"Wouldn't you prefer O'Reilly's book?";
+"τ is the ratio of a circle's circumference to its radius"`"She said 'hi'", he said.`;
 ```
 
 Strings delimited with backticks are a feature of ES6, and allow JavaScript expressions to be embedded within (or interpolated into) the string literal. This expression interpolation syntax is covered in §3.3.4.
@@ -319,16 +457,14 @@ The original versions of JavaScript required string literals to be written on a 
 
 ```js
 // A string representing 2 lines written on one line:
-'two\nlines'
+"two\nlines";
 
 // A one-line string written on 3 lines:
 "one\
  long\
- line"
-
-// A two-line string written on two lines:
+ line" // A two-line string written on two lines:
 `the newline character at the end of this line
-is included literally in this string`
+is included literally in this string`;
 ```
 
 Note that when you use single quotes to delimit your strings, you must be careful with English contractions and possessives, such as can’t and O’Reilly’s. Since the apostrophe is the same as the single-quote character, you must use the backslash character (`\`) to “escape” any apostrophes that appear in single-quoted strings (escapes are explained in the next section).
@@ -341,40 +477,39 @@ In client-side JavaScript programming, JavaScript code may contain strings of HT
 
 ### Escape Sequences in String Literals
 
-The backslash character (`\`) has a special purpose in JavaScript strings. Combined with the character that follows it, it represents a character that is not otherwise representable within the string. For example, `\n` is an *escape sequence* that represents a newline character.
+The backslash character (`\`) has a special purpose in JavaScript strings. Combined with the character that follows it, it represents a character that is not otherwise representable within the string. For example, `\n` is an _escape sequence_ that represents a newline character.
 
 Another example, mentioned earlier, is the `\'` escape, which represents the single quote (or apostrophe) character. This escape sequence is useful when you need to include an apostrophe in a string literal that is contained within single quotes. You can see why these are called escape sequences: the backslash allows you to escape from the usual interpretation of the single-quote character. Instead of using it to mark the end of the string, you use it as an apostrophe:
 
 ```js
-'You\'re right, it can\'t be a quote'
+'You\'re right, it can\'t be a quote';
 ```
 
 Table 3-1 lists the JavaScript escape sequences and the characters they represent. Three escape sequences are generic and can be used to represent any character by specifying its Unicode character code as a hexadecimal number. For example, the sequence `\xA9` represents the copyright symbol, which has the Unicode encoding given by the hexadecimal number `A9`. Similarly, the `\u` escape represents an arbitrary Unicode character specified by four hexadecimal digits or one to five digits when the digits are enclosed in curly braces: `\u03c0` represents the character `π`, for example, and `\u{1f600}` represents the “grinning face” emoji.
 
-*Table 3-1. JavaScript escape sequences*
+_Table 3-1. JavaScript escape sequences_
 
-
-| Sequence | Character represented |
-|---|---|
-| \0 | The NUL character (\u0000) |
-| \b | Backspace (\u0008) |
-| \t | Horizontal tab (\u0009) |
-| \n | Newline (\u000A) |
-| \v | Vertical tab (\u000B) |
-| \f | Form feed (\u000C) |
-| \r | Carriage return (\u000D) |
-| \" | Double quote (\u0022) |
-| \' | Apostrophe or single quote (\u0027) |
-| \\ | Backslash (\u005C) |
-| \xnn | The Unicode character specified by the two hexadecimal digits nn |
-| \unnnn | The Unicode character specified by the four hexadecimal digits nnnn |
-| \u{n} | The Unicode character specified by the codepoint n, where n is one to six hexadecimal digits between 0 and 10FFFF (ES6). |
+| Sequence | Character represented                                                                                                    |
+| -------- | ------------------------------------------------------------------------------------------------------------------------ |
+| \0       | The NUL character (\u0000)                                                                                               |
+| \b       | Backspace (\u0008)                                                                                                       |
+| \t       | Horizontal tab (\u0009)                                                                                                  |
+| \n       | Newline (\u000A)                                                                                                         |
+| \v       | Vertical tab (\u000B)                                                                                                    |
+| \f       | Form feed (\u000C)                                                                                                       |
+| \r       | Carriage return (\u000D)                                                                                                 |
+| \"       | Double quote (\u0022)                                                                                                    |
+| \'       | Apostrophe or single quote (\u0027)                                                                                      |
+| \\       | Backslash (\u005C)                                                                                                       |
+| \xnn     | The Unicode character specified by the two hexadecimal digits nn                                                         |
+| \unnnn   | The Unicode character specified by the four hexadecimal digits nnnn                                                      |
+| \u{n}    | The Unicode character specified by the codepoint n, where n is one to six hexadecimal digits between 0 and 10FFFF (ES6). |
 
 If the `\` character precedes any character other than those shown in Table 3-1, the backslash is simply ignored (although future versions of the language may, of course, define new escape sequences). For example, `\#` is the same as `#`. Finally, as noted earlier, ES5 allows a backslash before a line break to break a string literal across multiple lines.
 
 ### Working with Strings
 
-One of the built-in features of JavaScript is the ability to *concatenate* strings. If you use the `+` operator with numbers, it adds them. But if you use this operator on strings, it joins them by appending the second to the first. For example:
+One of the built-in features of JavaScript is the ability to _concatenate_ strings. If you use the `+` operator with numbers, it adds them. But if you use this operator on strings, it joins them by appending the second to the first. For example:
 
 ```js
 let msg = "Hello, " + "world"; // Produces the string "Hello, world"
@@ -386,7 +521,7 @@ Strings can be compared with the standard `===` equality and `!==` inequality op
 To determine the length of a string—the number of 16-bit values it contains—use the length property of the string:
 
 ```js
-s.length
+s.length;
 ```
 
 In addition to this length property, JavaScript provides a rich API for working with strings:
@@ -395,49 +530,49 @@ In addition to this length property, JavaScript provides a rich API for working 
 let s = "Hello, world"; // Start with some text.
 
 // Obtaining portions of a string
-s.substring(1,4) // => "ell": the 2nd, 3rd, and 4th characters.
-s.slice(1,4) // => "ell": same thing
-s.slice(-3) // => "rld": last 3 characters
-s.split(", ") // => ["Hello", "world"]: split at delimiter string
+s.substring(1, 4); // => "ell": the 2nd, 3rd, and 4th characters.
+s.slice(1, 4); // => "ell": same thing
+s.slice(-3); // => "rld": last 3 characters
+s.split(", "); // => ["Hello", "world"]: split at delimiter string
 
 // Searching a string
-s.indexOf("l") // => 2: position of first letter l
-s.indexOf("l", 3) // => 3: position of first "l" at or after 3
-s.indexOf("zz") // => -1: s does not include the substring "zz"
-s.lastIndexOf("l") // => 10: position of last letter l
+s.indexOf("l"); // => 2: position of first letter l
+s.indexOf("l", 3); // => 3: position of first "l" at or after 3
+s.indexOf("zz"); // => -1: s does not include the substring "zz"
+s.lastIndexOf("l"); // => 10: position of last letter l
 
 // Boolean searching functions in ES6 and later
-s.startsWith("Hell") // => true: the string starts with these
-s.endsWith("!") // => false: s does not end with that
-s.includes("or") // => true: s includes substring "or"
+s.startsWith("Hell"); // => true: the string starts with these
+s.endsWith("!"); // => false: s does not end with that
+s.includes("or"); // => true: s includes substring "or"
 
 // Creating modified versions of a string
-s.replace("llo", "ya") // => "Heya, world"
-s.toLowerCase() // => "hello, world"
-s.toUpperCase() // => "HELLO, WORLD"
-s.normalize() // Unicode NFC normalization: ES6
-s.normalize("NFD") // NFD normalization. Also "NFKC", "NFKD"
+s.replace("llo", "ya"); // => "Heya, world"
+s.toLowerCase(); // => "hello, world"
+s.toUpperCase(); // => "HELLO, WORLD"
+s.normalize(); // Unicode NFC normalization: ES6
+s.normalize("NFD"); // NFD normalization. Also "NFKC", "NFKD"
 
 // Inspecting individual (16-bit) characters of a string
-s.charAt(0) // => "H": the first character
-s.charAt(s.length-1) // => "d": the last character
-s.charCodeAt(0) // => 72: 16-bit number at the specified position
-s.codePointAt(0) // => 72: ES6, works for codepoints > 16 bits
+s.charAt(0); // => "H": the first character
+s.charAt(s.length - 1); // => "d": the last character
+s.charCodeAt(0); // => 72: 16-bit number at the specified position
+s.codePointAt(0); // => 72: ES6, works for codepoints > 16 bits
 
 // String padding functions in ES2017
-"x".padStart(3) // => " x": add spaces on the left to a length of 3
-"x".padEnd(3) // => "x ": add spaces on the right to a length of 3
-"x".padStart(3, "*") // => "**x": add stars on the left to a length of 3
-"x".padEnd(3, "-") // => "x--": add dashes on the right to a length of 3
+"x".padStart(3); // => " x": add spaces on the left to a length of 3
+"x".padEnd(3); // => "x ": add spaces on the right to a length of 3
+"x".padStart(3, "*"); // => "**x": add stars on the left to a length of 3
+"x".padEnd(3, "-"); // => "x--": add dashes on the right to a length of 3
 
 // Space trimming functions. trim() is ES5; others ES2019
-" test ".trim() // => "test": remove spaces at start and end
-" test ".trimStart() // => "test ": remove spaces on left. Also trimLeft
-" test ".trimEnd() // => " test": remove spaces at right. Also trimRight
+" test ".trim(); // => "test": remove spaces at start and end
+" test ".trimStart(); // => "test ": remove spaces on left. Also trimLeft
+" test ".trimEnd(); // => " test": remove spaces at right. Also trimRight
 
 // Miscellaneous string methods
-s.concat("!") // => "Hello, world!": just use + operator instead
-"<>".repeat(5) // => "<><><><><>": concatenate n copies. ES6
+s.concat("!"); // => "Hello, world!": just use + operator instead
+"<>".repeat(5); // => "<><><><><>": concatenate n copies. ES6
 ```
 
 Remember that strings are immutable in JavaScript. Methods like `replace()` and `toUpperCase()` return new strings: they do not modify the string on which they are invoked.
@@ -446,8 +581,8 @@ Strings can also be treated like read-only arrays, and you can access individual
 
 ```js
 let s = "hello, world";
-s[0] // => "h"
-s[s.length-1] // => "d"
+s[0]; // => "h"
+s[s.length - 1]; // => "d"
 ```
 
 ### Template Literals
@@ -458,11 +593,11 @@ In ES6 and later, string literals can be delimited with backticks:
 let s = `hello world`;
 ```
 
-This is more than just another string literal syntax, however, because these *template literals* can include arbitrary JavaScript expressions. The final value of a string literal in backticks is computed by evaluating any included expressions, converting the values of those expressions to strings and combining those computed strings with the literal characters within the backticks:
+This is more than just another string literal syntax, however, because these _template literals_ can include arbitrary JavaScript expressions. The final value of a string literal in backticks is computed by evaluating any included expressions, converting the values of those expressions to strings and combining those computed strings with the literal characters within the backticks:
 
 ```js
 let name = "Bill";
-let greeting = `Hello ${ name }.`; // greeting == "Hello Bill."
+let greeting = `Hello ${name}.`; // greeting == "Hello Bill."
 ```
 
 Everything between the `${` and the matching `}` is interpreted as a JavaScript expression. Everything outside the curly braces is normal string literal text. The expression inside the braces is evaluated and then converted to a string and inserted into the template, replacing the dollar sign, the curly braces, and everything in between them.
@@ -487,8 +622,8 @@ A powerful but less commonly used feature of template literals is that, if a fun
 ES6 has one built-in tag function: `String.raw()`. It returns the text within backticks without any processing of backslash escapes:
 
 ```js
-`\n`.length // => 1: the string has a single newline character
-String.raw`\n`.length // => 2: a backslash character and the letter n
+`\n`.length; // => 1: the string has a single newline character
+String.raw`\n`.length; // => 2: a backslash character and the letter n
 ```
 
 Note that even though the tag portion of a tagged template literal is a function, there are no parentheses used in its invocation. In this very specific case, the backtick characters replace the open and close parentheses.
@@ -497,7 +632,7 @@ The ability to define your own template tag functions is a powerful feature of J
 
 ### Pattern Matching
 
-JavaScript defines a datatype known as a *regular expression* (or RegExp) for describing and matching patterns in strings of text. RegExps are not one of the fundamental datatypes in JavaScript, but they have a literal syntax like numbers and strings do, so they sometimes seem like they are fundamental. The grammar of regular expression literals is complex and the API they define is nontrivial. They are documented in detail in §11.3. Because RegExps are powerful and commonly used for text processing, however, this section provides a brief overview.
+JavaScript defines a datatype known as a _regular expression_ (or RegExp) for describing and matching patterns in strings of text. RegExps are not one of the fundamental datatypes in JavaScript, but they have a literal syntax like numbers and strings do, so they sometimes seem like they are fundamental. The grammar of regular expression literals is complex and the API they define is nontrivial. They are documented in detail in §11.3. Because RegExps are powerful and commonly used for text processing, however, this section provides a brief overview.
 
 Text between a pair of slashes constitutes a regular expression literal. The second slash in the pair can also be followed by one or more letters, which modify the meaning of the pattern. For example:
 
@@ -512,11 +647,11 @@ RegExp objects define a number of useful methods, and strings also have methods 
 ```js
 let text = "testing: 1, 2, 3"; // Sample text
 let pattern = /\d+/g; // Matches all instances of one or more digits
-pattern.test(text) // => true: a match exists
-text.search(pattern) // => 9: position of first match
-text.match(pattern) // => ["1", "2", "3"]: array of all matches
-text.replace(pattern, "#") // => "testing: #, #, #"
-text.split(/\D+/) // => ["","1","2","3"]: split on nondigits
+pattern.test(text); // => true: a match exists
+text.search(pattern); // => 9: position of first match
+text.match(pattern); // => ["1", "2", "3"]: array of all matches
+text.replace(pattern, "#"); // => "testing: #, #, #"
+text.split(/\D+/); // => ["","1","2","3"]: split on nondigits
 ```
 
 ## Boolean Values
@@ -526,7 +661,7 @@ A boolean value represents truth or falsehood, on or off, yes or no. There are o
 Boolean values are generally the result of comparisons you make in your JavaScript programs. For example:
 
 ```js
-a === 4
+a === 4;
 ```
 
 This code tests to see whether the value of the variable a is equal to the number `4`. If it is, the result of this comparison is the boolean value `true`. If a is not equal to `4`, the result of the comparison is `false`.
@@ -546,15 +681,14 @@ This code checks whether `a` equals `4`. If so, it adds `1` to `b`; otherwise, i
 As we’ll discuss in §3.9, any JavaScript value can be converted to a boolean value. The following values convert to, and therefore work like, `false`:
 
 ```js
-undefined
-null
-0
--0
-NaN
-"" // the empty string
+undefined;
+null;
+0 - 0;
+NaN;
+(""); // the empty string
 ```
 
-All other values, including all objects (and arrays) convert to, and work like, `true`. `false`, and the six values that convert to it, are sometimes called *falsy* values, and all other values are called *truthy*. Any time JavaScript expects a boolean value, a falsy value works like `false` and a truthy value works like `true`.
+All other values, including all objects (and arrays) convert to, and work like, `true`. `false`, and the six values that convert to it, are sometimes called _falsy_ values, and all other values are called _truthy_. Any time JavaScript expects a boolean value, a falsy value works like `false` and a truthy value works like `true`.
 
 As an example, suppose that the variable `o` either holds an object or the value `null`. You can test explicitly to see if `o` is non-null with an `if` statement like this:
 
@@ -576,7 +710,7 @@ The `&&` operator performs the Boolean AND operation. It evaluates to a truthy v
 
 ```js
 if ((x === 0 && y === 0) || !(z === 0)) {
- // x and y are both zero or z is non-zero
+  // x and y are both zero or z is non-zero
 }
 ```
 
@@ -599,13 +733,13 @@ Symbols were introduced in ES6 to serve as non-string property names. To underst
 ```js
 let strname = "string name"; // A string to use as a property name
 let symname = Symbol("propname"); // A Symbol to use as a property name
-typeof strname // => "string": strname is a string
-typeof symname // => "symbol": symname is a symbol
+typeof strname; // => "string": strname is a string
+typeof symname; // => "symbol": symname is a symbol
 let o = {}; // Create a new object
 o[strname] = 1; // Define a property with a string name
 o[symname] = 2; // Define a property with a Symbol name
-o[strname] // => 1: access the string-named property
-o[symname] // => 2: access the symbol-named property
+o[strname]; // => 1: access the string-named property
+o[symname]; // => 2: access the symbol-named property
 ```
 
 The Symbol type does not have a literal syntax. To obtain a Symbol value, you call the `Symbol()` function. This function never returns the same value twice, even when called with the same argument. This means that if you call `Symbol()` to obtain a Symbol value, you can safely use that value as a property name to add a new property to an object and do not need to worry that you might be overwriting an existing property with the same name. Similarly, if you use symbolic property names and do not share those symbols, you can be confident that other modules of code in your program will not accidentally overwrite your properties.
@@ -616,7 +750,7 @@ The `Symbol()` function takes an optional string argument and returns a unique S
 
 ```js
 let s = Symbol("sym_x");
-s.toString() // => "Symbol(sym_x)"
+s.toString(); // => "Symbol(sym_x)"
 ```
 
 `toString()` is the only interesting method of Symbol instances. There are two other Symbol-related functions you should know about, however. Sometimes when using Symbols, you want to keep them private to your own code so you have a guarantee that your properties will never conflict with properties used by other code. Other times, however, you might want to define a Symbol value and share it widely with other code. This would be the case, for example, if you were defining some kind of extension that you wanted other code to be able to participate in, as with the `Symbol.iterator` mechanism described earlier.
@@ -626,14 +760,14 @@ To serve this latter use case, JavaScript defines a global Symbol registry. The 
 ```js
 let s = Symbol.for("shared");
 let t = Symbol.for("shared");
-s === t // => true
-s.toString() // => "Symbol(shared)"
-Symbol.keyFor(t) // => "shared"
+s === t; // => true
+s.toString(); // => "Symbol(shared)"
+Symbol.keyFor(t); // => "shared"
 ```
 
 ## The Global Object
 
-The preceding sections have explained JavaScript’s primitive types and values. Object types—objects, arrays, and functions—are covered in chapters of their own later in this book. But there is one very important object value that we must cover now. The *global object* is a regular JavaScript object that serves a very important purpose: the properties of this object are the globally defined identifiers that are available to a JavaScript program. When the JavaScript interpreter starts (or whenever a web browser loads a new page), it creates a new global object and gives it an initial set of properties that define:
+The preceding sections have explained JavaScript’s primitive types and values. Object types—objects, arrays, and functions—are covered in chapters of their own later in this book. But there is one very important object value that we must cover now. The _global object_ is a regular JavaScript object that serves a very important purpose: the properties of this object are the globally defined identifiers that are available to a JavaScript program. When the JavaScript interpreter starts (or whenever a web browser loads a new page), it creates a new global object and gives it an initial set of properties that define:
 
 - Global constants like `undefined`, `Infinity`, and `NaN`
 - Global functions like `isNaN()`, `parseInt()` (§3.9.2), and `eval()` (§4.12)
@@ -655,19 +789,19 @@ There is a fundamental difference in JavaScript between primitive values (`undef
 ```js
 let s = "hello"; // Start with some lowercase text
 s.toUpperCase(); // Returns "HELLO", but doesn't alter s
-s // => "hello": the original string has not changed
+s; // => "hello": the original string has not changed
 ```
 
-Primitives are also compared by *value*: two values are the same only if they have the same value. This sounds circular for numbers, booleans, null, and undefined: there is no other way that they could be compared. Again, however, it is not so obvious for strings. If two distinct string values are compared, JavaScript treats them as equal if, and only if, they have the same length and if the character at each index is the same.
+Primitives are also compared by _value_: two values are the same only if they have the same value. This sounds circular for numbers, booleans, null, and undefined: there is no other way that they could be compared. Again, however, it is not so obvious for strings. If two distinct string values are compared, JavaScript treats them as equal if, and only if, they have the same length and if the character at each index is the same.
 
-Objects are different than primitives. First, they are *mutable*—their values can change:
+Objects are different than primitives. First, they are _mutable_—their values can change:
 
 ```js
 let o = { x: 1 }; // Start with an object
 o.x = 2; // Mutate it by changing the value of a property
 o.y = 3; // Mutate it again by adding a new property
 
-let a = [1,2,3]; // Arrays are also mutable
+let a = [1, 2, 3]; // Arrays are also mutable
 a[0] = 0; // Change the value of an array element
 a[3] = 4; // Add a new array element
 ```
@@ -675,28 +809,31 @@ a[3] = 4; // Add a new array element
 Objects are not compared by value: two distinct objects are not equal even if they have the same properties and values. And two distinct arrays are not equal even if they have the same elements in the same order:
 
 ```js
-let o = {x: 1}, p = {x: 1}; // Two objects with the same properties
-o === p // => false: distinct objects are never equal
-let a = [], b = []; // Two distinct, empty arrays
-a === b // => false: distinct arrays are never equal
+let o = { x: 1 },
+  p = { x: 1 }; // Two objects with the same properties
+o === p; // => false: distinct objects are never equal
+let a = [],
+  b = []; // Two distinct, empty arrays
+a === b; // => false: distinct arrays are never equal
 ```
 
-Objects are sometimes called *reference types* to distinguish them from JavaScript’s primitive types. Using this terminology, object values are *references*, and we say that objects are compared *by reference*: two object values are the same if and only if they *refer* to the same underlying object.
+Objects are sometimes called _reference types_ to distinguish them from JavaScript’s primitive types. Using this terminology, object values are _references_, and we say that objects are compared _by reference_: two object values are the same if and only if they _refer_ to the same underlying object.
 
 ```js
 let a = []; // The variable a refers to an empty array.
 let b = a; // Now b refers to the same array.
 b[0] = 1; // Mutate the array referred to by variable b.
-a[0] // => 1: the change is also visible through variable a.
-a === b // => true: a and b refer to the same object, so they are equal.
+a[0]; // => 1: the change is also visible through variable a.
+a === b; // => true: a and b refer to the same object, so they are equal.
 ```
 
 As you can see from this code, assigning an object (or array) to a variable simply assigns the reference: it does not create a new copy of the object. If you want to make a new copy of an object or array, you must explicitly copy the properties of the object or the elements of the array. This example demonstrates using a for loop (§5.4.3):
 
 ```js
-let a = ["a","b","c"]; // An array we want to copy
+let a = ["a", "b", "c"]; // An array we want to copy
 let b = []; // A distinct array we'll copy into
-for(let i = 0; i < a.length; i++) { // For each index of a[]
+for (let i = 0; i < a.length; i++) {
+  // For each index of a[]
   b[i] = a[i]; // Copy an element of a into b
 }
 let c = Array.from(b); // In ES6, copy arrays with Array.from()
@@ -708,7 +845,8 @@ Similarly, if we want to compare two distinct objects or arrays, we must compare
 function equalArrays(a, b) {
   if (a === b) return true; // Identical arrays are equal
   if (a.length !== b.length) return false; // Different-size arrays not equal
-  for(let i = 0; i < a.length; i++) { // Loop through all elements
+  for (let i = 0; i < a.length; i++) {
+    // Loop through all elements
     if (a[i] !== b[i]) return false; // If any differ, arrays not equal
   }
   return true; // Otherwise they are equal
@@ -722,37 +860,36 @@ JavaScript is very flexible about the types of values it requires. We’ve seen 
 Some examples:
 
 ```js
-10 + " objects" // => "10 objects": Number 10 converts to a string
-"7" * "4" // => 28: both strings convert to numbers
+10 + " objects"; // => "10 objects": Number 10 converts to a string
+"7" * "4"; // => 28: both strings convert to numbers
 let n = 1 - "x"; // n == NaN; string "x" can't convert to a number
-n + " objects" // => "NaN objects": NaN converts to string "NaN"
+n + " objects"; // => "NaN objects": NaN converts to string "NaN"
 ```
 
 Table 3-2 summarizes how values convert from one type to another in JavaScript. Bold entries in the table highlight conversions that you may find surprising. Empty cells indicate that no conversion is necessary and none is performed.
 
-*Table 3-2. JavaScript type conversions*
+_Table 3-2. JavaScript type conversions_
 
-
-| Value | to String | to Number | to Boolean |
-|---|:--|---|---|
-| undefined | "undefined" | NaN | false |
-| null | "null" | 0 | false |
-| true | "true" | 1 |  |
-| false | "false" | 0 |  |
-| ""(empty string) |  | 0 | false |
-| "1.2"(nonempty, numeric) |  | 1.2 | true |
-| "one"(nonempty, non-numeric) |  | NaN | true |
-| 0 | "0" |  | false |
-| -0 | "0" |  | false |
-| 1 (finite, non-zero) | "1" |  | true |
-| Infinity | "Infinity" |  | true |
-| -Infinity | "-Infinity" |  | true |
-| NaN | "NaN" |  | false |
-| {} (any object) | see §3.9.3 | see §3.9.3 | true |
-| [] (empty array) | "" | 0 | true |
-| [9] (one numeric element) | "9" | 9 | true |
-| ['a'] (any other array) | use join() method | NaN | true |
-| function() {} (any function) | see §3.9.3 | NaN | true |
+| Value                        | to String         | to Number  | to Boolean |
+| ---------------------------- | :---------------- | ---------- | ---------- |
+| undefined                    | "undefined"       | NaN        | false      |
+| null                         | "null"            | 0          | false      |
+| true                         | "true"            | 1          |            |
+| false                        | "false"           | 0          |            |
+| ""(empty string)             |                   | 0          | false      |
+| "1.2"(nonempty, numeric)     |                   | 1.2        | true       |
+| "one"(nonempty, non-numeric) |                   | NaN        | true       |
+| 0                            | "0"               |            | false      |
+| -0                           | "0"               |            | false      |
+| 1 (finite, non-zero)         | "1"               |            | true       |
+| Infinity                     | "Infinity"        |            | true       |
+| -Infinity                    | "-Infinity"       |            | true       |
+| NaN                          | "NaN"             |            | false      |
+| {} (any object)              | see §3.9.3        | see §3.9.3 | true       |
+| [] (empty array)             | ""                | 0          | true       |
+| [9] (one numeric element)    | "9"               | 9          | true       |
+| ['a'] (any other array)      | use join() method | NaN        | true       |
+| function() {} (any function) | see §3.9.3        | NaN        | true       |
 
 The primitive-to-primitive conversions shown in the table are relatively straightforward. Conversion to boolean was already discussed in §3.4. Conversion to strings is well defined for all primitive values. Conversion to numbers is just a little trickier. Strings that can be parsed as numbers convert to those numbers. Leading and trailing spaces are allowed, but any leading or trailing nonspace characters that are not part of a numeric literal cause the string-to-number conversion to produce `NaN`. Some numeric conversions may seem surprising: `true` converts to `1`, and `false` and the empty string convert to `0`.
 
@@ -763,10 +900,10 @@ Object-to-primitive conversion is somewhat more complicated, and it is the subje
 JavaScript has two operators that test whether two values are equal. The “strict equality operator,” `===`, does not consider its operands to be equal if they are not of the same type, and this is almost always the right operator to use when coding. But because JavaScript is so flexible with type conversions, it also defines the `==` operator with a flexible definition of equality. All of the following comparisons are true, for example:
 
 ```js
-null == undefined // => true: These two values are treated as equal.
-"0" == 0 // => true: String converts to a number before comparing.
-0 == false // => true: Boolean converts to number before comparing.
-"0" == false // => true: Both operands convert to 0 before comparing!
+null == undefined; // => true: These two values are treated as equal.
+"0" == 0; // => true: String converts to a number before comparing.
+0 == false; // => true: Boolean converts to number before comparing.
+"0" == false; // => true: Both operands convert to 0 before comparing!
 ```
 
 §4.9.1 explains exactly what conversions are performed by the `==` operator in order to determine whether two values should be considered equal.
@@ -780,9 +917,9 @@ Although JavaScript performs many type conversions automatically, you may someti
 The simplest way to perform an explicit type conversion is to use the `Boolean()`, `Number()`, and `String()` functions:
 
 ```js
-Number("3") // => 3
-String(false) // => "false": Or use false.toString()
-Boolean([]) // => true
+Number("3"); // => 3
+String(false); // => "false": Or use false.toString()
+Boolean([]); // => true
 ```
 
 Any value other than `null` or `undefined` has a `toString()` method, and the result of this method is usually the same as that returned by the `String()` function.
@@ -792,10 +929,11 @@ As an aside, note that the `Boolean()`, `Number()`, and `String()` functions can
 Certain JavaScript operators perform implicit type conversions and are sometimes used explicitly for the purpose of type conversion. If one operand of the `+` operator is a string, it converts the other one to a string. The unary `+` operator converts its operand to a number. And the unary `!` operator converts its operand to a boolean and negates it. These facts lead to the following type conversion idioms that you may see in some code:
 
 ```js
-x + "" // => String(x)
-+x // => Number(x)
-x-0 // => Number(x)
-!!x // => Boolean(x): Note double !
+x +
+  "" + // => String(x)
+  x; // => Number(x)
+x - 0; // => Number(x)
+!!x; // => Boolean(x): Note double !
 ```
 
 Formatting and parsing numbers are common tasks in computer programs, and JavaScript has specialized functions and methods that provide more precise control over number-to-string and string-to-number conversions.
@@ -812,14 +950,15 @@ let hex = "0x" + n.toString(16); // hex == "0x11"
 When working with financial or scientific data, you may want to convert numbers to strings in ways that give you control over the number of decimal places or the number of significant digits in the output, or you may want to control whether exponential notation is used. The Number class defines three methods for these kinds of number-to-string conversions. `toFixed()` converts a number to a string with a specified number of digits after the decimal point. It never uses exponential notation. `toExponential()` converts a number to a string using exponential notation, with one digit before the decimal point and a specified number of digits after the decimal point (which means that the number of significant digits is one larger than the value you specify). `toPrecision()` converts a number to a string with the number of significant digits you specify. It uses exponential notation if the number of significant digits is not large enough to display the entire integer portion of the number. Note that all three methods round the trailing digits or pad with zeros as appropriate. Consider the following examples:
 
 ```js
-let n = 123456.789; n.toFixed(0) // => "123457"
-n.toFixed(2) // => "123456.79"
-n.toFixed(5) // => "123456.78900"
-n.toExponential(1) // => "1.2e+5"
-n.toExponential(3) // => "1.235e+5"
-n.toPrecision(4) // => "1.235e+5"
-n.toPrecision(7) // => "123456.8"
-n.toPrecision(10) // => "123456.7890"
+let n = 123456.789;
+n.toFixed(0); // => "123457"
+n.toFixed(2); // => "123456.79"
+n.toFixed(5); // => "123456.78900"
+n.toExponential(1); // => "1.2e+5"
+n.toExponential(3); // => "1.235e+5"
+n.toPrecision(4); // => "1.235e+5"
+n.toPrecision(7); // => "123456.8"
+n.toPrecision(10); // => "123456.7890"
 ```
 
 In addition to the number-formatting methods shown here, the Intl.NumberFormat class defines a more general, internationalized number-formatting method. See §11.7.1 for details.
@@ -827,26 +966,26 @@ In addition to the number-formatting methods shown here, the Intl.NumberFormat c
 If you pass a string to the `Number()` conversion function, it attempts to parse that string as an integer or floating-point literal. That function only works for base-10 integers and does not allow trailing characters that are not part of the literal. The `parseInt()` and `parseFloat()` functions (these are global functions, not methods of any class) are more flexible. `parseInt()` parses only integers, while `parseFloat()` parses both integers and floating-point numbers. If a string begins with “0x” or “0X”, `parseInt()` interprets it as a hexadecimal number. Both `parseInt()` and parse `Float()` skip leading whitespace, parse as many numeric characters as they can, and ignore anything that follows. If the first nonspace character is not part of a valid numeric literal, they return `NaN`:
 
 ```js
-parseInt("3 blind mice") // => 3
-parseFloat(" 3.14 meters") // => 3.14
-parseInt("-12.34") // => -12
-parseInt("0xFF") // => 255
-parseInt("0xff") // => 255
-parseInt("-0XFF") // => -255
-parseFloat(".1") // => 0.1
-parseInt("0.1") // => 0
-parseInt(".1") // => NaN: integers can't start with "."
-parseFloat("$72.47") // => NaN: numbers can't start with "$"
+parseInt("3 blind mice"); // => 3
+parseFloat(" 3.14 meters"); // => 3.14
+parseInt("-12.34"); // => -12
+parseInt("0xFF"); // => 255
+parseInt("0xff"); // => 255
+parseInt("-0XFF"); // => -255
+parseFloat(".1"); // => 0.1
+parseInt("0.1"); // => 0
+parseInt(".1"); // => NaN: integers can't start with "."
+parseFloat("$72.47"); // => NaN: numbers can't start with "$"
 ```
 
 `parseInt()` accepts an optional second argument specifying the radix (base) of the number to be parsed. Legal values are between 2 and 36. For example:
 
 ```js
-parseInt("11", 2) // => 3: (1*2 + 1)
-parseInt("ff", 16) // => 255: (15*16 + 15)
-parseInt("zz", 36) // => 1295: (35*36 + 35)
-parseInt("077", 8) // => 63: (7*8 + 7)
-parseInt("077", 10) // => 77: (7*10 + 7)
+parseInt("11", 2); // => 3: (1*2 + 1)
+parseInt("ff", 16); // => 255: (15*16 + 15)
+parseInt("zz", 36); // => 1295: (35*36 + 35)
+parseInt("077", 8); // => 63: (7*8 + 7)
+parseInt("077", 10); // => 77: (7*10 + 7)
 ```
 
 ### Object to Primitive Conversions
@@ -862,7 +1001,7 @@ This algorithm returns a primitive value, preferring a string value, if a conver
 This algorithm returns a primitive value, preferring a number, if such a conversion is possible.
 
 **no-preference**
-This algorithm expresses no preference about what type of primitive value is desired, and classes can define their own conversions. Of the built-in JavaScript types, all except Date implement this algorithm as *prefer-number*. The Date class implements this algorithm as *prefer-string*.
+This algorithm expresses no preference about what type of primitive value is desired, and classes can define their own conversions. Of the built-in JavaScript types, all except Date implement this algorithm as _prefer-number_. The Date class implements this algorithm as _prefer-string_.
 
 The implementation of these object-to-primitive conversion algorithms is explained at the end of this section. First, however, we explain how the algorithms are used in JavaScript.
 
@@ -872,13 +1011,13 @@ Object-to-boolean conversions are trivial: all objects convert to `true`. Notice
 
 #### Object-to-string conversions
 
-When an object needs to be converted to a string, JavaScript first converts it to a primitive using the *prefer-string* algorithm, then converts the resulting primitive value to a string, if necessary, following the rules in Table 3-2.
+When an object needs to be converted to a string, JavaScript first converts it to a primitive using the _prefer-string_ algorithm, then converts the resulting primitive value to a string, if necessary, following the rules in Table 3-2.
 
 This kind of conversion happens, for example, if you pass an object to a built-in function that expects a string argument, if you call `String()` as a conversion function, and when you interpolate objects into template literals (§3.3.4).
 
 #### Object-to-number conversions
 
-When an object needs to be converted to a number, JavaScript first converts it to a primitive value using the *prefer-number* algorithm, then converts the resulting primitive value to a number, if necessary, following the rules in Table 3-2.
+When an object needs to be converted to a number, JavaScript first converts it to a primitive value using the _prefer-number_ algorithm, then converts the resulting primitive value to a number, if necessary, following the rules in Table 3-2.
 
 Built-in JavaScript functions and methods that expect numeric arguments convert object arguments to numbers in this way, and most (see the exceptions that follow) JavaScript operators that expect numeric operands convert objects to numbers in this way as well.
 
@@ -886,22 +1025,22 @@ Built-in JavaScript functions and methods that expect numeric arguments convert 
 
 Operators are covered in detail in **Chapter 4**. Here, we explain the special case operators that do not use the basic object-to-string and object-to-number conversions described earlier.
 
-The `+` operator in JavaScript performs numeric addition and string concatenation. If either of its operands is an object, JavaScript converts them to primitive values using the *no-preference* algorithm. Once it has two primitive values, it checks their types. If either argument is a string, it converts the other to a string and concatenates the strings. Otherwise, it converts both arguments to numbers and adds them.
+The `+` operator in JavaScript performs numeric addition and string concatenation. If either of its operands is an object, JavaScript converts them to primitive values using the _no-preference_ algorithm. Once it has two primitive values, it checks their types. If either argument is a string, it converts the other to a string and concatenates the strings. Otherwise, it converts both arguments to numbers and adds them.
 
-The `==` and `!=` operators perform equality and inequality testing in a loose way that allows type conversions. If one operand is an object and the other is a primitive value, these operators convert the object to primitive using the *no-preference* algorithm and then compare the two primitive values.
+The `==` and `!=` operators perform equality and inequality testing in a loose way that allows type conversions. If one operand is an object and the other is a primitive value, these operators convert the object to primitive using the _no-preference_ algorithm and then compare the two primitive values.
 
-Finally, the relational operators `<`, `<=`, `>`, and `>=` compare the order of their operands and can be used to compare both numbers and strings. If either operand is an object, it is converted to a primitive value using the *prefer-number* algorithm. Note, however, that unlike the object-to-number conversion, the primitive values returned by the *prefer-number* conversion are not then converted to numbers.
+Finally, the relational operators `<`, `<=`, `>`, and `>=` compare the order of their operands and can be used to compare both numbers and strings. If either operand is an object, it is converted to a primitive value using the _prefer-number_ algorithm. Note, however, that unlike the object-to-number conversion, the primitive values returned by the _prefer-number_ conversion are not then converted to numbers.
 
-Note that the numeric representation of Date objects is meaningfully comparable with `<` and `>`, but the string representation is not. For Date objects, the *no-preference* algorithm converts to a string, so the fact that JavaScript uses the *prefer-number* algorithm for these operators means that we can use them to compare the order of two Date objects.
+Note that the numeric representation of Date objects is meaningfully comparable with `<` and `>`, but the string representation is not. For Date objects, the _no-preference_ algorithm converts to a string, so the fact that JavaScript uses the _prefer-number_ algorithm for these operators means that we can use them to compare the order of two Date objects.
 
 #### The toString() and valueOf() methods
 
-All objects inherit two conversion methods that are used by object-to-primitive conversions, and before we can explain the *prefer-string*, *prefer-number*, and *no-preference* conversion algorithms, we have to explain these two methods.
+All objects inherit two conversion methods that are used by object-to-primitive conversions, and before we can explain the _prefer-string_, _prefer-number_, and _no-preference_ conversion algorithms, we have to explain these two methods.
 
 The first method is `toString()`, and its job is to return a string representation of the object. The default `toString()` method does not return a very interesting value (though we’ll find it useful in §14.4.3):
 
 ```js
-({x: 1, y: 2}).toString() // => "[object Object]"
+({ x: 1, y: 2 }).toString(); // => "[object Object]"
 ```
 
 Many classes define more specific versions of the `toString()` method. The `toString()` method of the Array class, for example, converts each array element to a string and joins the resulting strings together with commas in between. The `toString()` method of the Function class converts user-defined functions to strings of JavaScript source code. The Date class defines a `toString()` method that returns a human-readable (and JavaScript-parsable) date and time string. The RegExp class defines a `toString()` method that converts RegExp objects to a string that looks like a RegExp literal:
@@ -918,33 +1057,33 @@ The other object conversion function is called `valueOf()`. The job of this meth
 
 ```js
 let d = new Date(2010, 0, 1); // January 1, 2010, (Pacific time)
-d.valueOf() // => 1262332800000
+d.valueOf(); // => 1262332800000
 ```
 
 #### Object-to-primitive conversion algorithms
 
 With the `toString()` and `valueOf()` methods explained, we can now explain approximately how the three object-to-primitive algorithms work (the complete details are deferred until §14.4.7):
 
-- The *prefer-string* algorithm first tries the `toString()` method. If the method is defined and returns a primitive value, then JavaScript uses that primitive value (even if it is not a string!). If `toString()` does not exist or if it returns an object, then JavaScript tries the `valueOf()` method. If that method exists and returns a primitive value, then JavaScript uses that value. Otherwise, the conversion fails with a TypeError.
-- The *prefer-number* algorithm works like the *prefer-string* algorithm, except that it tries `valueOf()` first and `toString()` second.
-- The *no-preference* algorithm depends on the class of the object being converted. If the object is a Date object, then JavaScript uses the *prefer-string* algorithm. For any other object, JavaScript uses the *prefer-number* algorithm.
+- The _prefer-string_ algorithm first tries the `toString()` method. If the method is defined and returns a primitive value, then JavaScript uses that primitive value (even if it is not a string!). If `toString()` does not exist or if it returns an object, then JavaScript tries the `valueOf()` method. If that method exists and returns a primitive value, then JavaScript uses that value. Otherwise, the conversion fails with a TypeError.
+- The _prefer-number_ algorithm works like the _prefer-string_ algorithm, except that it tries `valueOf()` first and `toString()` second.
+- The _no-preference_ algorithm depends on the class of the object being converted. If the object is a Date object, then JavaScript uses the _prefer-string_ algorithm. For any other object, JavaScript uses the _prefer-number_ algorithm.
 
 The rules described here are true for all built-in JavaScript types and are the default rules for any classes you define yourself. §14.4.7 explains how you can define your own object-to-primitive conversion algorithms for the classes you define.
 
 Before we leave this topic, it is worth noting that the details of the prefer-number conversion explain why empty arrays convert to the number 0 and single-element arrays can also convert to numbers:
 
 ```js
-Number([]) // => 0: this is unexpected!
-Number([99]) // => 99: really?
+Number([]); // => 0: this is unexpected!
+Number([99]); // => 99: really?
 ```
 
-The object-to-number conversion first converts the object to a primitive using the *prefer-number* algorithm, then converts the resulting primitive value to a number. The *prefer-number* algorithm tries `valueOf()` first and then falls back on `toString()`. But the Array class inherits the default `valueOf()` method, which does not return a primitive value. So when we try to convert an array to a number, we end up invoking the `toString()` method of the array. Empty arrays convert to the empty string. And the empty string converts to the number 0. An array with a single element converts to the same string that that one element does. If an array contains a single number, that number is converted to a string, and then back to a number.
+The object-to-number conversion first converts the object to a primitive using the _prefer-number_ algorithm, then converts the resulting primitive value to a number. The _prefer-number_ algorithm tries `valueOf()` first and then falls back on `toString()`. But the Array class inherits the default `valueOf()` method, which does not return a primitive value. So when we try to convert an array to a number, we end up invoking the `toString()` method of the array. Empty arrays convert to the empty string. And the empty string converts to the number 0. An array with a single element converts to the same string that that one element does. If an array contains a single number, that number is converted to a string, and then back to a number.
 
 ## Variable Declaration and Assignment
 
-One of the most fundamental techniques of computer programming is the use of names—or *identifiers*—to represent values. Binding a name to a value gives us a way to refer to that value and use it in the programs we write. When we do this, we typically say that we are assigning a value to a *variable*. The term “variable” implies that new values can be assigned: that the value associated with the variable may vary as our program runs. If we permanently assign a value to a name, then we call that name a *constant* instead of a variable.
+One of the most fundamental techniques of computer programming is the use of names—or _identifiers_—to represent values. Binding a name to a value gives us a way to refer to that value and use it in the programs we write. When we do this, we typically say that we are assigning a value to a _variable_. The term “variable” implies that new values can be assigned: that the value associated with the variable may vary as our program runs. If we permanently assign a value to a name, then we call that name a _constant_ instead of a variable.
 
-Before you can use a variable or constant in a JavaScript program, you must *declare* it. In ES6 and later, this is done with the `let` and `const` keywords, which we explain next. Prior to ES6, variables were declared with var, which is more idiosyncratic and is explained later on in this section.
+Before you can use a variable or constant in a JavaScript program, you must _declare_ it. In ES6 and later, this is done with the `let` and `const` keywords, which we explain next. Prior to ES6, variables were declared with var, which is more idiosyncratic and is explained later on in this section.
 
 ### Declarations with let and const
 
@@ -965,8 +1104,11 @@ It is a good programming practice to assign an initial value to your variables w
 
 ```js
 let message = "hello";
-let i = 0, j = 0, k = 0;
-let x = 2, y = x*x; // Initializers can use previously declared variables
+let i = 0,
+  j = 0,
+  k = 0;
+let x = 2,
+  y = x * x; // Initializers can use previously declared variables
 ```
 
 If you don’t specify an initial value for a variable with the `let` statement, the variable is declared, but its value is `undefined` until your code assigns a value to it.
@@ -976,7 +1118,7 @@ To declare a constant instead of a variable, use `const` instead of let. `const`
 ```js
 const H0 = 74; // Hubble constant (km/s/Mpc)
 const C = 299792.458; // Speed of light in a vacuum (km/s)
-const AU = 1.496E8; // Astronomical Unit: distance to the sun (km)
+const AU = 1.496e8; // Astronomical Unit: distance to the sun (km)
 ```
 
 As the name implies, constants cannot have their values changed, and any attempt to do so causes a TypeError to be thrown.
@@ -992,23 +1134,23 @@ It is a common (but not universal) convention to declare constants using names w
 In **Chapter 5**, we’ll learn about the `for`, `for/in`, and `for/of` loop statements in JavaScript. Each of these loops includes a loop variable that gets a new value assigned to it on each iteration of the loop. JavaScript allows us to declare the loop variable as part of the loop syntax itself, and this is another common way to use `let`:
 
 ```js
-for(let i = 0, len = data.length; i < len; i++) console.log(data[i]);
-for(let datum of data) console.log(datum);
-for(let property in object) console.log(property);
+for (let i = 0, len = data.length; i < len; i++) console.log(data[i]);
+for (let datum of data) console.log(datum);
+for (let property in object) console.log(property);
 ```
 
 It may seem surprising, but you can also use `const` to declare the loop “variables” for `for/in` and `for/of` loops, as long as the body of the loop does not reassign a new value. In this case, the `const` declaration is just saying that the value is constant for the duration of one loop iteration:
 
 ```js
-for(const datum of data) console.log(datum);
-for(const property in object) console.log(property);
+for (const datum of data) console.log(datum);
+for (const property in object) console.log(property);
 ```
 
 #### Variable and constant scope
 
-The *scope* of a variable is the region of your program source code in which it is defined. Variables and constants declared with `let` and `const` are *block scoped*. This means that they are only defined within the block of code in which the `let` or `const` statement appears. JavaScript class and function definitions are blocks, and so are the bodies of `if/else` statements, `while` loops, `for` loops, and so on. Roughly speaking, if a variable or constant is declared within a set of curly braces, then those curly braces delimit the region of code in which the variable or constant is defined (though of course it is not legal to reference a variable or constant from lines of code that execute before the `let` or `const` statement that declares the variable). Variables and constants declared as part of a `for`, `for/in`, or `for/of` loop have the loop body as their scope, even though they technically appear outside of the curly braces.
+The _scope_ of a variable is the region of your program source code in which it is defined. Variables and constants declared with `let` and `const` are _block scoped_. This means that they are only defined within the block of code in which the `let` or `const` statement appears. JavaScript class and function definitions are blocks, and so are the bodies of `if/else` statements, `while` loops, `for` loops, and so on. Roughly speaking, if a variable or constant is declared within a set of curly braces, then those curly braces delimit the region of code in which the variable or constant is defined (though of course it is not legal to reference a variable or constant from lines of code that execute before the `let` or `const` statement that declares the variable). Variables and constants declared as part of a `for`, `for/in`, or `for/of` loop have the loop body as their scope, even though they technically appear outside of the curly braces.
 
-When a declaration appears at the top level, outside of any code blocks, we say it is a *global* variable or constant and has global scope. In Node and in client-side JavaScript modules (see **Chapter 10**), the scope of a global variable is the file that it is defined in. In traditional client-side JavaScript, however, the scope of a global variable is the HTML document in which it is defined. That is: if one `<script>` declares a global variable or constant, that variable or constant is defined in all of the `<script>` elements in that document (or at least all of the scripts that execute after the `let` or `const` statement executes).
+When a declaration appears at the top level, outside of any code blocks, we say it is a _global_ variable or constant and has global scope. In Node and in client-side JavaScript modules (see **Chapter 10**), the scope of a global variable is the file that it is defined in. In traditional client-side JavaScript, however, the scope of a global variable is the HTML document in which it is defined. That is: if one `<script>` declares a global variable or constant, that variable or constant is defined in all of the `<script>` elements in that document (or at least all of the scripts that execute after the `let` or `const` statement executes).
 
 #### Repeated declarations
 
@@ -1039,16 +1181,17 @@ In versions of JavaScript before ES6, the only way to declare a variable is with
 
 ```js
 var x;
-var data = [], count = data.length;
-for(var i = 0; i < count; i++) console.log(data[i]);
+var data = [],
+  count = data.length;
+for (var i = 0; i < count; i++) console.log(data[i]);
 ```
 
 Although `var` and `let` have the same syntax, there are important differences in the way they work:
 
 - Variables declared with `var` do not have block scope. Instead, they are scoped to the body of the containing function no matter how deeply nested they are inside that function.
--  If you use `var` outside of a function body, it declares a global variable. But global variables declared with var differ from globals declared with let in an important way. Globals declared with var are implemented as properties of the global object (§3.7). The global object can be referenced as globalThis. So if you write `var x = 2;` outside of a function, it is like you wrote `globalThis.x = 2;`. Note however, that the analogy is not perfect: the properties created with global `var` declarations cannot be deleted with the `delete` operator (§4.13.4). Global variables and constants declared with `let` and `const` are not properties of the global object.
--   Unlike variables declared with `let`, it is legal to declare the same variable multiple times with `var`. And because var variables have function scope instead of block scope, it is actually common to do this kind of redeclaration. The variable i is frequently used for integer values, and especially as the index variable of `for` loops. In a function with multiple for loops, it is typical for each one to begin `for(var i = 0; ...`. Because var does not scope these variables to the loop body, each of these loops is (harmlessly) re-declaring and re-initializing the same variable.
--   One of the most unusual features of var declarations is known as *hoisting*. When a variable is declared with `var`, the declaration is lifted up (or “hoisted”) to the top of the enclosing function. The initialization of the variable remains where you wrote it, but the definition of the variable moves to the top of the function. So variables declared with var can be used, without error, anywhere in the enclosing function. If the initialization code has not run yet, then the value of the variable may be `undefined`, but you won’t get an error if you use the variable before it is initialized. (This can be a source of bugs and is one of the important misfeatures that let corrects: if you declare a variable with let but attempt to use it before the `let` statement runs, you will get an actual error instead of just seeing an `undefined` value.)
+- If you use `var` outside of a function body, it declares a global variable. But global variables declared with var differ from globals declared with let in an important way. Globals declared with var are implemented as properties of the global object (§3.7). The global object can be referenced as globalThis. So if you write `var x = 2;` outside of a function, it is like you wrote `globalThis.x = 2;`. Note however, that the analogy is not perfect: the properties created with global `var` declarations cannot be deleted with the `delete` operator (§4.13.4). Global variables and constants declared with `let` and `const` are not properties of the global object.
+- Unlike variables declared with `let`, it is legal to declare the same variable multiple times with `var`. And because var variables have function scope instead of block scope, it is actually common to do this kind of redeclaration. The variable i is frequently used for integer values, and especially as the index variable of `for` loops. In a function with multiple for loops, it is typical for each one to begin `for(var i = 0; ...`. Because var does not scope these variables to the loop body, each of these loops is (harmlessly) re-declaring and re-initializing the same variable.
+- One of the most unusual features of var declarations is known as _hoisting_. When a variable is declared with `var`, the declaration is lifted up (or “hoisted”) to the top of the enclosing function. The initialization of the variable remains where you wrote it, but the definition of the variable moves to the top of the function. So variables declared with var can be used, without error, anywhere in the enclosing function. If the initialization code has not run yet, then the value of the variable may be `undefined`, but you won’t get an error if you use the variable before it is initialized. (This can be a source of bugs and is one of the important misfeatures that let corrects: if you declare a variable with let but attempt to use it before the `let` statement runs, you will get an actual error instead of just seeing an `undefined` value.)
 
 > **Using Undeclared Variables**
 >
@@ -1058,15 +1201,15 @@ Although `var` and `let` have the same syntax, there are important differences i
 
 ### Destructuring Assignment
 
-ES6 implements a kind of compound declaration and assignment syntax known as *destructuring assignment*. In a destructuring assignment, the value on the righthand side of the equals sign is an array or object (a “structured” value), and the lefthand side specifies one or more variable names using a syntax that mimics array and object literal syntax. When a destructuring assignment occurs, one or more values are extracted (“destructured”) from the value on the right and stored into the variables named on the left. Destructuring assignment is perhaps most commonly used to initialize variables as part of a `const`, `let`, or `var` declaration statement, but it can also be done in regular assignment expressions (with variables that have already been declared). And, as we’ll see in §8.3.5, destructuring can also be used when defining the parameters to a function.
+ES6 implements a kind of compound declaration and assignment syntax known as _destructuring assignment_. In a destructuring assignment, the value on the righthand side of the equals sign is an array or object (a “structured” value), and the lefthand side specifies one or more variable names using a syntax that mimics array and object literal syntax. When a destructuring assignment occurs, one or more values are extracted (“destructured”) from the value on the right and stored into the variables named on the left. Destructuring assignment is perhaps most commonly used to initialize variables as part of a `const`, `let`, or `var` declaration statement, but it can also be done in regular assignment expressions (with variables that have already been declared). And, as we’ll see in §8.3.5, destructuring can also be used when defining the parameters to a function.
 
 Here are simple destructuring assignments using arrays of values:
 
 ```js
-let [x,y] = [1,2]; // Same as let x=1, y=2
-[x,y] = [x+1,y+1]; // Same as x = x + 1, y = y + 1
-[x,y] = [y,x]; // Swap the value of the two variables
-[x,y] // => [3,2]: the incremented and swapped values
+let [x, y] = [1, 2]; // Same as let x=1, y=2
+[x, y] = [x + 1, y + 1]; // Same as x = x + 1, y = y + 1
+[x, y] = [y, x]; // Swap the value of the two variables
+[x, y]; // => [3,2]: the incremented and swapped values
 ```
 
 Notice how destructuring assignment makes it easy to work with functions that return arrays of values:
@@ -1074,23 +1217,23 @@ Notice how destructuring assignment makes it easy to work with functions that re
 ```js
 // Convert [x,y] coordinates to [r,theta] polar coordinates
 function toPolar(x, y) {
-  return [Math.sqrt(x*x+y*y), Math.atan2(y,x)];
+  return [Math.sqrt(x * x + y * y), Math.atan2(y, x)];
 }
 
 // Convert polar to Cartesian coordinates
 function toCartesian(r, theta) {
-  return [r*Math.cos(theta), r*Math.sin(theta)];
+  return [r * Math.cos(theta), r * Math.sin(theta)];
 }
 
-let [r,theta] = toPolar(1.0, 1.0); // r == Math.sqrt(2); theta == Math.PI/4
-let [x,y] = toCartesian(r,theta); // [x, y] == [1.0, 1,0]
+let [r, theta] = toPolar(1.0, 1.0); // r == Math.sqrt(2); theta == Math.PI/4
+let [x, y] = toCartesian(r, theta); // [x, y] == [1.0, 1,0]
 ```
 
 We saw that variables and constants can be declared as part of JavaScript’s various `for` loops. It is possible to use variable destructuring in this context as well. Here is a code that loops over the name/value pairs of all properties of an object and uses destructuring assignment to convert those pairs from two-element arrays into individual variables:
 
 ```js
 let o = { x: 1, y: 2 }; // The object we'll loop over
-for(const [name, value] of Object.entries(o)) {
+for (const [name, value] of Object.entries(o)) {
   console.log(name, value); // Prints "x 1" and "y 2"
 }
 ```
@@ -1098,15 +1241,15 @@ for(const [name, value] of Object.entries(o)) {
 The number of variables on the left of a destructuring assignment does not have to match the number of array elements on the right. Extra variables on the left are set to `undefined`, and extra values on the right are ignored. The list of variables on the left can include extra commas to skip certain values on the right:
 
 ```js
-let [x,y] = [1]; // x == 1; y == undefined
-[x,y] = [1,2,3]; // x == 1; y == 2
-[,x,,y] = [1,2,3,4]; // x == 2; y == 4
+let [x, y] = [1]; // x == 1; y == undefined
+[x, y] = [1, 2, 3]; // x == 1; y == 2
+[, x, , y] = [1, 2, 3, 4]; // x == 2; y == 4
 ```
 
 If you want to collect all unused or remaining values into a single variable when destructuring an array, use three dots (`...`) before the last variable name on the lefthand side:
 
 ```js
-let [x, ...y] = [1,2,3,4]; // y == [2,3,4]
+let [x, ...y] = [1, 2, 3, 4]; // y == [2,3,4]
 ```
 
 We’ll see three dots used this way again in §8.3.2, where they are used to indicate that all remaining function arguments should be collected into a single array.
@@ -1114,10 +1257,10 @@ We’ll see three dots used this way again in §8.3.2, where they are used to in
 Destructuring assignment can be used with nested arrays. In this case, the lefthand side of the assignment should look like a nested array literal:
 
 ```js
-let [a, [b, c]] = [1, [2,2.5], 3]; // a == 1; b == 2; c == 2.5
+let [a, [b, c]] = [1, [2, 2.5], 3]; // a == 1; b == 2; c == 2.5
 ```
 
-A powerful feature of array destructuring is that it does not actually require an array! You can use any *iterable* object (**Chapter 12**) on the righthand side of the assignment; any object that can be used with a `for/of` loop (§5.4.4) can also be destructured:
+A powerful feature of array destructuring is that it does not actually require an array! You can use any _iterable_ object (**Chapter 12**) on the righthand side of the assignment; any object that can be used with a `for/of` loop (§5.4.4) can also be destructured:
 
 ```js
 let [first, ...rest] = "Hello"; // first == "H"; rest == ["e","l","l","o"]
@@ -1126,15 +1269,15 @@ let [first, ...rest] = "Hello"; // first == "H"; rest == ["e","l","l","o"]
 Destructuring assignment can also be performed when the righthand side is an object value. In this case, the lefthand side of the assignment looks something like an object literal: a comma-separated list of variable names within curly braces:
 
 ```js
-let transparent = {r: 0.0, g: 0.0, b: 0.0, a: 1.0}; // A RGBA color
-let {r, g, b} = transparent; // r == 0.0; g == 0.0; b == 0.0
+let transparent = { r: 0.0, g: 0.0, b: 0.0, a: 1.0 }; // A RGBA color
+let { r, g, b } = transparent; // r == 0.0; g == 0.0; b == 0.0
 ```
 
 The next example copies global functions of the `Math` object into variables, which might simplify code that does a lot of trigonometry:
 
 ```js
 // Same as const sin=Math.sin, cos=Math.cos, tan=Math.tan
-const {sin, cos, tan} = Math;
+const { sin, cos, tan } = Math;
 ```
 
 Notice in the code here that the `Math` object has many properties other than the three that are destructured into individual variables. Those that are not named are simply ignored. If the lefthand side of this assignment had included a variable whose name was not a property of `Math`, that variable would simply be assigned `undefined`.
@@ -1151,17 +1294,23 @@ I find that object destructuring syntax becomes too complicated to be useful whe
 Destructuring assignment becomes even more complicated when it is used with nested objects, or arrays of objects, or objects of arrays, but it is legal:
 
 ```js
-let points = [{x: 1, y: 2}, {x: 3, y: 4}]; // An array of two point objects
-let [{x: x1, y: y1}, {x: x2, y: y2}] = points; // destructured into 4 variables.
-(x1 === 1 && y1 === 2 && x2 === 3 && y2 === 4) // => true
+let points = [
+  { x: 1, y: 2 },
+  { x: 3, y: 4 },
+]; // An array of two point objects
+let [{ x: x1, y: y1 }, { x: x2, y: y2 }] = points; // destructured into 4 variables.
+x1 === 1 && y1 === 2 && x2 === 3 && y2 === 4; // => true
 ```
 
 Or, instead of destructuring an array of objects, we could destructure an object of arrays:
 
 ```js
-let points = { p1: [1,2], p2: [3,4] }; // An object with 2 array props
-let { p1: [x1, y1], p2: [x2, y2] } = points; // destructured into 4 vars
-(x1 === 1 && y1 === 2 && x2 === 3 && y2 === 4) // => true
+let points = { p1: [1, 2], p2: [3, 4] }; // An object with 2 array props
+let {
+  p1: [x1, y1],
+  p2: [x2, y2],
+} = points; // destructured into 4 vars
+x1 === 1 && y1 === 2 && x2 === 3 && y2 === 4; // => true
 ```
 
 Complex destructuring syntax like this can be hard to write and hard to read, and you may be better off just writing out your assignments explicitly with traditional code like `let x1 = points.p1[0];`.
@@ -1172,11 +1321,17 @@ Complex destructuring syntax like this can be hard to write and hard to read, an
 >
 > ```js
 > // Start with a data structure and a complex destructuring
-> let points = [{x: 1, y: 2}, {x: 3, y: 4}];
-> let [{x: x1, y: y1}, {x: x2, y: y2}] = points;
+> let points = [
+>   { x: 1, y: 2 },
+>   { x: 3, y: 4 },
+> ];
+> let [{ x: x1, y: y1 }, { x: x2, y: y2 }] = points;
 >
 > // Check your destructuring syntax by flipping the assignment around
-> let points2 = [{x: x1, y: y1}, {x: x2, y: y2}]; // points2 == points
+> let points2 = [
+>   { x: x1, y: y1 },
+>   { x: x2, y: y2 },
+> ]; // points2 == points
 > ```
 
 ## Summary
