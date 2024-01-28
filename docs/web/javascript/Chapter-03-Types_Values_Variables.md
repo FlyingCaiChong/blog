@@ -326,98 +326,162 @@ Number.EPSILON; // => 2**-52: 数值与数值之间最小的差
 
 The not-a-number value has one unusual feature in JavaScript: it does not compare equal to any other value, including itself. This means that you can’t write `x === NaN` to determine whether the value of a variable `x` is `NaN`. Instead, you must write `x != x` or `Number.isNaN(x)`. Those expressions will be `true` if, and only if, `x` has the same value as the global constant `NaN`.
 
+::: tip 翻译
+非数值在 JavaScript 中有一个不同寻常的特性：它与任何值比较都不相等，也不等于自己。这意味着不能通过`x === NaN`来确定某个变量`x`的值是`NaN`。相反，此时必须写成`x != x`或 `Number.isNaN(x)`。这两个表达式当且仅当`x`与全局常量`NaN`具有相同值时才返回`true`。
+:::
+
 The global function `isNaN()` is similar to `Number.isNaN()`. It returns `true` if its argument is `NaN`, or if that argument is a non-numeric value that cannot be converted to a number. The related function `Number.isFinite()` returns true if its argument is a number other than `NaN`, `Infinity`, or `-Infinity`. The global `isFinite()` function returns `true` if its argument is, or can be converted to, a finite number.
+
+::: tip 翻译
+全局函数`isNaN()`与`Number.isNaN()`类似。它会在参数是`NaN`时，或者在参数是无法转换为数值的非数值时返回`true`。相关的函数`Number.isFinite()`在参数不是`NaN`、`Infinity`或`-Infinity`时返回`true`。全局`isFinite()`函数在参数是有限数或者可以转换为有限数时返回`true`。
+:::
 
 The negative zero value is also somewhat unusual. It compares equal (even using JavaScript’s strict equality test) to positive zero, which means that the two values are almost indistinguishable, except when used as a divisor:
 
+::: tip 翻译
+负零值也有点不同寻常。它与正零值相等（即便使用 JavaScript 的严格相等比较），这意味着除了作为除数使用，几乎无法区分这两个值：
+:::
+
 ```js
-let zero = 0; // Regular zero
-let negz = -0; // Negative zero
-zero === negz; // => true: zero and negative zero are equal
-1 / zero === 1 / negz; // => false: Infinity and -Infinity are not equal
+let zero = 0; // 常规的零
+let negz = -0; // 负零
+zero === negz; // => true: 零等于负零
+1 / zero === 1 / negz; // => false: Infinity 与 -Infinity 不等
 ```
 
-### Binary Floating-Point and Rounding Errors
+### 二进制浮点数与舍入错误
 
 There are infinitely many real numbers, but only a finite number of them (18,437,736,874,454,810,627, to be exact) can be represented exactly by the JavaScript floating-point format. This means that when you’re working with real numbers in JavaScript, the representation of the number will often be an approximation of the actual number.
 
+::: tip 翻译
+实数有无限多个，但 JavaScript 的浮点格式只能表示其中有限个（确切地说，是 18,437,736,874,454,810,627 个）。这意味着在通过 JavaScript 操作实数时，数值表示的经常是实际数值的近似值。
+:::
+
 The IEEE-754 floating-point representation used by JavaScript (and just about every other modern programming language) is a binary representation, which can exactly represent fractions like `1/2`, `1/8`, and `1/1024`. Unfortunately, the fractions we use most commonly (especially when performing financial calculations) are decimal fractions: `1/10`, `1/100`, and so on. Binary floating-point representations cannot exactly represent numbers as simple as `0.1`.
+
+::: tip 翻译
+JavaScript（以及所有现代编程语言）使用的 IEEE-754 浮点表示法是一种二进制表示法，这种表示法可以精确地表示如`1/2`、`1/8`和`1/1024`等分数。然而，我们最常用的分数（特别是在进行财务计算时）是十进制分数：`1/10`、`1/100`，等等。二进制浮点表示法无法精确表示哪怕`0.1`这么简单的数。
+:::
 
 JavaScript numbers have plenty of precision and can approximate 0.1 very closely. But the fact that this number cannot be represented exactly can lead to problems. Consider this code:
 
+::: tip 翻译
+虽然 JavaScript 数值有足够大的精度，能够非常近似地表示`0.1`，但无法精确地表示。这可能导致一些问题。比如以下代码：
+:::
+
 ```js
-let x = 0.3 - 0.2; // thirty cents minus 20 cents
-let y = 0.2 - 0.1; // twenty cents minus 10 cents
-x === y; // => false: the two values are not the same!
-x === 0.1; // => false: .3-.2 is not equal to .1
-y === 0.1; // => true: .2-.1 is equal to .1
+let x = 0.3 - 0.2; // 30美分减20美分
+let y = 0.2 - 0.1; // 20美分减10美分
+x === y; // => false: 这两个值不一样！
+x === 0.1; // => false: .3-.2 不等于 .1
+y === 0.1; // => true: .2-.1 等于 .1
 ```
 
 Because of rounding error, the difference between the approximations of .3 and .2 is not exactly the same as the difference between the approximations of .2 and .1. It is important to understand that this problem is not specific to JavaScript: it affects any programming language that uses binary floating-point numbers. Also, note that the values `x` and `y` in the code shown here are _very_ close to each other and to the correct value. The computed values are adequate for almost any purpose; the problem only arises when we attempt to compare values for equality.
 
+::: tip 翻译
+由于舍入错误，`.3`和`.2`近似值的差与`.2`和`.1`近似值的差并不相等。这并不是 JavaScript 独有的问题，而是所有使用二进制浮点数的编程语言共同的问题。同样，也要注意代码中 x 和 y 的值极其接近，它们也都极其接近正确的值。这个计算得到的值完全能够满足任何需要，切记不要试图比较它们的相等性。
+:::
+
 If these floating-point approximations are problematic for your programs, consider using scaled integers. For example, you might manipulate monetary values as integer cents rather than fractional dollars.
 
-### Arbitrary Precision Integers with BigInt
+::: tip 翻译
+如果浮点近似值对你的程序而言是个问题，可以考虑使用等量整数。例如，计算与钱数有关的数值时可以使用整数形式的美分，而不是零点几美元。
+:::
+
+### 通过 BigInt 表示任意精度整数
 
 One of the newest features of JavaScript, defined in ES2020, is a new numeric type known as BigInt. As of early 2020, it has been implemented in Chrome, Firefox, Edge, and Node, and there is an implementation in progress in Safari. As the name implies, BigInt is a numeric type whose values are integers. The type was added to JavaScript mainly to allow the representation of 64-bit integers, which are required for compatibility with many other programming languages and APIs. But BigInt values can have thousands or even millions of digits, should you have need to work with numbers that large. (Note, however, that BigInt implementations are not suitable for cryptography because they do not attempt to prevent timing attacks.)
 
-BigInt literals are written as a string of digits followed by a lowercase letter `n`. By default, the are in base 10, but you can use the `0b`, `0o`, and `0x` prefixes for binary, octal, and hexadecimal BigInts:
+::: tip 翻译
+ES2020 为 JavaScript 定义了一种新的数值类型 BigInt。2020 年年初，Chrome、Firefox、Edge 和 Node 都实现了这个类型，Safari 也在实现中。顾名思义，BigInt 这种数值类型的值是整数。之所以增加这个类型，主要是为了表示 64 位整数，这对于兼容很多其他语言和 API 是必需的。但 BigInt 值可能有数千甚至数百万个数字，可以满足对大数的需求（不过，BigInt 的实现并不适合加密，因为它们没有考虑防止时序攻击）。
+:::
+
+BigInt literals are written as a string of digits followed by a lowercase letter `n`. By default, the are in base 10, but you can use the `0b`, `0o`, and `0x` prefixes for binary, octal, and hexadecimal BigInt:
+
+::: tip 翻译
+BigInt 字面量写作一串数字后跟小写字母`n`。默认情况下，基数是`10`，但可以通过前缀`0b`、`0o`和`0x`来表示二进制、八进制和十六进制 BigInt：
+:::
 
 ```js
-1234n; // A not-so-big BigInt literal
-0b111111n; // A binary BigInt
-0o7777n; // An octal BigInt
-0x8000000000000000n; // => 2n**63n: A 64-bit integer
+1234n; // 一个不太大的BigInt字面量
+0b111111n; // 二进制BigInt
+0o7777n; // 八进制BigInt
+0x8000000000000000n; // => 2n**63n: 一个64位整数
 ```
 
 You can use `BigInt()` as a function for converting regular JavaScript numbers or strings to BigInt values:
 
+::: tip 翻译
+可以用 `BigInt()`函数把常规 JavaScript 数值或字符串转换为 BigInt 值：
+:::
+
 ```js
 BigInt(Number.MAX_SAFE_INTEGER); // => 9007199254740991n
-let string = "1" + "0".repeat(100); // 1 followed by 100 zeros.
-BigInt(string); // => 10n**100n: one googol
+let string = "1" + "0".repeat(100); // 1 后跟  100 个零.
+BigInt(string); // => 10n**100n: 一个天文数字
 ```
 
 Arithmetic with BigInt values works like arithmetic with regular JavaScript numbers, except that division drops any remainder and rounds down (toward zero):
+
+::: tip 翻译
+BigInt 值的算术运算与常规 JavaScript 数值的算术运算类似，只不过除法会丢弃余数并且会向下（向零）舍入：
+:::
 
 ```js
 1000n + 2000n; // => 3000n
 3000n - 2000n; // => 1000n
 2000n * 3000n; // => 6000000n
-3000n / 997n; // => 3n: the quotient is 3
-(3000n %
-  997n(
-    // => 9n: and the remainder is 9
-    2n ** 131071n
-  )) -
-  1n; // A Mersenne prime with 39457 decimal digits
+3000n / 997n; // => 3n: 商是 3
+3000n % 997n; // 9n: 余数是 9
+2n ** 131071n - 1n; // 有 39457 位数字的梅森素数
 ```
 
 Although the standard `+`, `-`, `*`, `/`, `%`, and `**` operators work with BigInt, it is important to understand that you may not mix operands of type BigInt with regular number operands. This may seem confusing at first, but there is a good reason for it. If one numeric type was more general than the other, it would be easy to define arithmetic on mixed operands to simply return a value of the more general type. But neither type is more general than the other: BigInt can represent extraordinarily large values, making it more general than regular numbers. But BigInt can only represent integers, making the regular JavaScript number type more general. There is no way around this problem, so JavaScript sidesteps it by simply not allowing mixed operands to the arithmetic operators.
 
+::: tip 翻译
+虽然标准的`+`、`-`、`*`、`/`、`%`和`**`操作符可以用于 BigInt，但不能混用 BigInt 操作数和常规数值操作数。乍一看这个规则有点奇怪，但实际上是合理的。如果一种数值类型比另一种更通用，则比较容易定义混合操作数的计算并返回更通用的类型。但上述两种类型都不比另一种更通用：BigInt 可以表示超大值，因此它比常规数值更通用。但 BigInt 只能表示整数，这样看常规 JavaScript 数值类型反而更通用。这个问题无论如何也解决不了，因此 JavaScript 搁置了这个问题，只是简单地不允许在使用算术操作符时混用这两种类型的操作数。
+:::
+
 Comparison operators, by contrast, do work with mixed numeric types (but see §3.9.1 for more about the difference between `==` and `===`):
+
+::: tip 翻译
+相对来说，比较操作符允许混合操作数类型（关于`==`和`===`的区别，可以参考 3.9.1 节）：
+:::
 
 ```js
 1 < 2n; // => true
 2 > 1n; // => true
 0 == 0n; // => true
-0 === 0n; // => false: the === checks for type equality as well
+0 === 0n; // => false:  === 也检查类型是否相等l
 ```
 
 The bitwise operators (described in §4.8.3) generally work with BigInt operands. None of the functions of the `Math` object accept BigInt operands, however.
 
-### Dates and Times
+::: tip 翻译
+位操作符（4.8.3 节介绍）通常可以用于 BigInt 操作数。但`Math`对象的任何函数都不接收 BigInt 操作数。
+:::
+
+### 日期和时间
 
 JavaScript defines a simple Date class for representing and manipulating the numbers that represent dates and times. JavaScript Dates are objects, but they also have a numeric representation as a _timestamp_ that specifies the number of elapsed milliseconds since January 1, 1970:
 
+::: tip 翻译
+JavaScript 为表示和操作与日期及时间相关的数据而定义了简单的 Date 类。JavaScript 的 Date 是对象，但也有数值表示形式，即自 1970 年 1 月 1 日起至今的毫秒数，也叫 _时间戳_：
+:::
+
 ```js
-let timestamp = Date.now(); // The current time as a timestamp (a number).
-let now = new Date(); // The current time as a Date object.
-let ms = now.getTime(); // Convert to a millisecond timestamp.
-let iso = now.toISOString(); // Convert to a string in standard format.
+let timestamp = Date.now(); // 当前时间的时间戳（数值）
+let now = new Date(); // 当前时间的日期对象
+let ms = now.getTime(); // 转换为毫秒时间戳
+let iso = now.toISOString(); // 转换为标准格式的字符串
 ```
 
 The Date class and its methods are covered in detail in §11.4. But we will see Date objects again in §3.9.3 when we examine the details of JavaScript type conversions.
+
+::: tip 翻译
+Date 类及其方法在 11.4 节有详细介绍。但在 3.9.3 节探讨 JavaScript 类型转换时，我们也会提到 Date 对象。
+:::
 
 ## Text
 
