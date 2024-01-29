@@ -961,37 +961,69 @@ Full details on these operators are in §4.10.
 4.10 节将全面详细地介绍这几个操作符。
 :::
 
-## null and undefined
+## null 与 undefined
 
 `null` is a language keyword that evaluates to a special value that is usually used to indicate the absence of a value. Using the `typeof` operator on `null` returns the string “object”, indicating that null can be thought of as a special object value that indicates “no object”. In practice, however, `null` is typically regarded as the sole member of its own type, and it can be used to indicate “no value” for numbers and strings as well as objects. Most programming languages have an equivalent to JavaScript’s `null`: you may be familiar with it as `NULL`, `nil`, or `None`.
 
+::: tip 翻译
+`null`是一个语言关键字，求值为一个特殊值，通常用于表示某个值不存在。对`null`使用`typeof`操作符返回字符串"object"，表明可以将`null`看成一种特殊对象，表示“没有对象”。但在实践中，`null`通常被当作它自己类型的唯一成员，可以用来表示数值、字符串以及对象“没有值”。多数编程语言都有一个与 JavaScript 的`null`等价的值，比如`NULL`、`nil`或`None`。
+:::
+
 JavaScript also has a second value that indicates absence of value. The `undefined` value represents a deeper kind of absence. It is the value of variables that have not been initialized and the value you get when you query the value of an object property or array element that does not exist. The `undefined` value is also the return value of functions that do not explicitly return a value and the value of function parameters for which no argument is passed. `undefined` is a predefined global constant (not a language keyword like null, though this is not an important distinction in practice) that is initialized to the `undefined` value. If you apply the `typeof` operator to the undefined value, it returns “undefined”, indicating that this value is the sole member of a special type.
+
+::: tip 翻译
+JavaScript 中的 `undefined` 也表示值不存在，但 `undefined` 表示一种更深层次的不存在。具体来说，变量的值未初始化时就是 `undefined`，在查询不存在的对象属性或数组元素时也会得到 `undefined`。另外，没有明确返回值的函数返回的值是 `undefined`，没有传值的函数参数的值也是 `undefined`。`undefined` 是一个预定义的全局常量（而非像 `null` 那样的语言关键字，不过在实践中这个区别并不重要），这个常量的初始化值就是 `undefined`。对 `undefined` 应用 `typeof` 操作符会返回"undefined"，表示这个值是该特殊类型的唯一成员。
+:::
 
 Despite these differences, `null` and `undefined` both indicate an absence of value and can often be used interchangeably. The equality operator `==` considers them to be equal. (Use the strict equality operator `===` to distinguish them.) Both are falsy values: they behave like `false` when a boolean value is required. Neither `null` nor `undefined` have any properties or methods. In fact, using `.` or `[]` to access a property or method of these values causes a TypeError.
 
+::: tip 翻译
+抛开细微的差别，`null`和`undefined`都可以表示某个值不存在，经常被混用。相等操作符`==`认为它们相等（要区分它们，必须使用全等操作符`===`）。因为它们俩都是假性值，在需要布尔值的情况下，它们都可以当作`false`使用。`null`和`undefined`都没有属性或方法。事实上，使用`.`或`[]`访问这两个值的属性或方法会导致 TypeError。
+:::
+
 I consider `undefined` to represent a system-level, unexpected, or error-like absence of value and `null` to represent a program-level, normal, or expected absence of value. I avoid using `null` and `undefined` when I can, but if I need to assign one of these values to a variable or property or pass or return one of these values to or from a function, I usually use `null`. Some programmers strive to avoid `null` entirely and use `undefined` in its place wherever they can.
+
+::: tip 翻译
+我认为可以用`undefined`表示一种系统级别、意料之外或类似错误的没有值，可以用`null`表示程序级别、正常或意料之中的没有值。实际编码中，我会尽量避免使用`null`和`undefined`，如果需要给某个变量或属性赋这样一个值，或者需要向函数传入或从函数中返回这样一个值，我通常使用`null`。有些程序员则极力避免使用`null`，而倾向于使用`undefined`。
+:::
 
 ## Symbols
 
 Symbols were introduced in ES6 to serve as non-string property names. To understand Symbols, you need to know that JavaScript’s fundamental Object type is an unordered collection of properties, where each property has a name and a value. Property names are typically (and until ES6, were exclusively) strings. But in ES6 and later, Symbols can also serve this purpose:
 
+::: tip 翻译
+符号（Symbol）是 ES6 新增的一种原始类型，用作非字符串的属性名。要理解符号，需要了解 JavaScript 的基础类型 Object 是一个属性的无序集合，其中每个属性都有一个名字和一个值。属性名通常是（在 ES6 之前一直必须是）字符串。但在 ES6 和之后的版本中，符号也可以作为属性名：
+:::
+
 ```js
-let strname = "string name"; // A string to use as a property name
-let symname = Symbol("propname"); // A Symbol to use as a property name
-typeof strname; // => "string": strname is a string
-typeof symname; // => "symbol": symname is a symbol
-let o = {}; // Create a new object
-o[strname] = 1; // Define a property with a string name
-o[symname] = 2; // Define a property with a Symbol name
-o[strname]; // => 1: access the string-named property
-o[symname]; // => 2: access the symbol-named property
+let strname = "string name"; // 可以用作属性名的字符串
+let symname = Symbol("propname"); //可以用作属性名的符号
+typeof strname; // => "string": strname 是字符串
+typeof symname; // => "symbol": symname 是符号
+let o = {}; // 创建一个新对象
+o[strname] = 1; // 使用字符串名定义一个属性
+o[symname] = 2; // 使用符号名定义一个属性
+o[strname]; // => 1: 访问字符串名字的属性
+o[symname]; // => 2: 访问符号名字的属性
 ```
 
 The Symbol type does not have a literal syntax. To obtain a Symbol value, you call the `Symbol()` function. This function never returns the same value twice, even when called with the same argument. This means that if you call `Symbol()` to obtain a Symbol value, you can safely use that value as a property name to add a new property to an object and do not need to worry that you might be overwriting an existing property with the same name. Similarly, if you use symbolic property names and do not share those symbols, you can be confident that other modules of code in your program will not accidentally overwrite your properties.
 
+::: tip 翻译
+Symbol 类型没有字面量语法。要获取一个 Symbol 值，需要调用`Symbol()`函数。这个函数永远不会返回相同的值，即使每次传入的参数都一样。这意味着可以将调用`Symbol()`取得的符号值安全地用于为对象添加新属性，而无须担心可能重写已有的同名属性。类似地，如果定义了符号属性但没有共享相关符号，也可以确信程序中的其他代码不会意外重写这个属性。
+:::
+
 In practice, Symbols serve as a language extension mechanism. When ES6 introduced the `for/of` loop (§5.4.4) and iterable objects (**Chapter 12**), it needed to define standard method that classes could implement to make themselves iterable. But standardizing any particular string name for this iterator method would have broken existing code, so a symbolic name was used instead. As we’ll see in **Chapter 12**, `Symbol.iterator` is a Symbol value that can be used as a method name to make an object iterable.
 
+::: tip 翻译
+实践中，符号通常用作一种语言扩展机制。ES6 新增了`for/of`循环（参见 5.4.4 节）和可迭代对象（参见第 12 章），为此就需要定义一种标准的机制让类可以实现，从而把自身变得可迭代。但选择任何特定的字符串作为这个迭代器方法的名字都有可能破坏已有的代码。为此，符号名应运而生。正如第 12 章会介绍的，`Symbol.iterator`是一个符号值，可用作一个方法名，让对象变得可迭代。
+:::
+
 The `Symbol()` function takes an optional string argument and returns a unique Symbol value. If you supply a string argument, that string will be included in the output of the Symbol’s `toString()` method. Note, however, that calling `Symbol()` twice with the same string produces two completely different Symbol values.
+
+::: tip 翻译
+`Symbol()`函数可选地接收一个字符串参数，返回唯一的符号值。如果提供了字符串参数，那么调用返回符号值的`toString()`方法得到的结果中会包含该字符串。不过要注意，以相同的字符串调用两次`Symbol()`会产生两个完全不同的符号值。
+:::
 
 ```js
 let s = Symbol("sym_x");
@@ -1000,7 +1032,15 @@ s.toString(); // => "Symbol(sym_x)"
 
 `toString()` is the only interesting method of Symbol instances. There are two other Symbol-related functions you should know about, however. Sometimes when using Symbols, you want to keep them private to your own code so you have a guarantee that your properties will never conflict with properties used by other code. Other times, however, you might want to define a Symbol value and share it widely with other code. This would be the case, for example, if you were defining some kind of extension that you wanted other code to be able to participate in, as with the `Symbol.iterator` mechanism described earlier.
 
+::: tip 翻译
+符号值唯一有趣的方法就是`toString()`。不过，还应该知道两个与符号相关的函数。在使用符号时，我们有时希望它们对代码是私有的，从而可以确保你的代码的属性永远不会与其他代码的属性发生冲突。但有时我们也希望定义一些可以与其他代码共享的符号值。例如，我们定义了某种扩展，希望别人的代码也可以使用，就像前面提到的`Symbol.iterator`机制一样。
+:::
+
 To serve this latter use case, JavaScript defines a global Symbol registry. The `Symbol.for()` function takes a string argument and returns a Symbol value that is associated with the string you pass. If no Symbol is already associated with that string, then a new one is created and returned; otherwise, the already existing Symbol is returned. That is, the `Symbol.for()` function is completely different than the `Symbol()` function: `Symbol()` never returns the same value twice, but `Symbol.for()` always returns the same value when called with the same string. The string passed to `Symbol.for()` appears in the output of `toString()` for the returned Symbol, and it can also be retrieved by calling `Symbol.keyFor()` on the returned Symbol.
+
+::: tip 翻译
+为了定义一些可以与其他代码共享的符号值，JavaScript 定义了一个全局符号注册表。`Symbol.for()`函数接收一个字符串参数，返回一个与该字符串关联的符号值。如果没有符号与该字符串关联，则会创建并返回一个新符号；否则，就会返回已有的符号。换句话说，`Symbol.for()`与`Symbol()`完全不同：`Symbol()`永远不会返回相同的值，而在以相同的字符串调用时`Symbol.for()`始终返回相同的值。传给`Symbol.for()`的字符串会出现在`toString()`（返回符号值）的输出中。而且，这个字符串也可以通过将返回的符号传给`Symbol.keyFor()`来得到：
+:::
 
 ```js
 let s = Symbol.for("shared");
