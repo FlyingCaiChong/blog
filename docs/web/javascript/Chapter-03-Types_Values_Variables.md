@@ -848,11 +848,19 @@ text.replace(pattern, "#"); // => "testing: #, #, #"
 text.split(/\D+/); // => ["","1","2","3"]:基于非数字拆分
 ```
 
-## Boolean Values
+## 布尔值
 
 A boolean value represents truth or falsehood, on or off, yes or no. There are only two possible values of this type. The reserved words `true` and `false` evaluate to these two values.
 
+::: tip 翻译
+布尔值表示真或假、开或关、是或否。这个类型只有两个值：`true` 和 `false` 。
+:::
+
 Boolean values are generally the result of comparisons you make in your JavaScript programs. For example:
+
+::: tip 翻译
+布尔值在 JavaScript 中通常是比较操作的结果。例如：
+:::
 
 ```js
 a === 4;
@@ -860,7 +868,15 @@ a === 4;
 
 This code tests to see whether the value of the variable a is equal to the number `4`. If it is, the result of this comparison is the boolean value `true`. If a is not equal to `4`, the result of the comparison is `false`.
 
+::: tip 翻译
+以上代码测试变量`a`的值是否等于数值`4`。如果是，则返回`true`；否则返回`false`。
+:::
+
 Boolean values are commonly used in JavaScript control structures. For example, the `if/else` statement in JavaScript performs one action if a boolean value is `true` and another action if the value is `false`. You usually combine a comparison that creates a boolean value directly with a statement that uses it. The result looks like this:
+
+::: tip 翻译
+布尔值在 JavaScript 常用于控制结构。例如，JavaScript 中的`if/else`语句在布尔值为`true`时会执行一种操作，而在值为`false`时会执行另一种操作。我们经常把产生布尔值的比较表达式直接放在使用布尔值的语句中。结果类似如下：
+:::
 
 ```js
 if (a === 4) {
@@ -872,7 +888,15 @@ if (a === 4) {
 
 This code checks whether `a` equals `4`. If so, it adds `1` to `b`; otherwise, it adds `1` to `a`.
 
+::: tip 翻译
+以上代码检查`a`是否等于`4`，如果等于，则给`b`加`1`；否则，给`a`加`1`。
+:::
+
 As we’ll discuss in §3.9, any JavaScript value can be converted to a boolean value. The following values convert to, and therefore work like, `false`:
+
+::: tip 翻译
+正如 3.9 节将会介绍的，JavaScript 的任何值都可以转换为布尔值。下面的这些值都会转换为（因而可以被用作）布尔值`false`：
+:::
 
 ```js
 undefined;
@@ -884,7 +908,15 @@ NaN;
 
 All other values, including all objects (and arrays) convert to, and work like, `true`. `false`, and the six values that convert to it, are sometimes called _falsy_ values, and all other values are called _truthy_. Any time JavaScript expects a boolean value, a falsy value works like `false` and a truthy value works like `true`.
 
+::: tip 翻译
+所有其他值，包括所有对象（和数组）都转换为（可以被用作）布尔值`true`。`false`和可以转换为它的 6 个值有时候也被称为假性值（falsy），而所有其他值则被称为真性值（truthy）。在任何 JavaScript 期待布尔值的时候，假性值都可以当作`false`，而真性值都可以当作`true`。
+:::
+
 As an example, suppose that the variable `o` either holds an object or the value `null`. You can test explicitly to see if `o` is non-null with an `if` statement like this:
+
+::: tip 翻译
+例如，假设变量`o`要么保存一个对象，要么是值`null`。可以通过一个`if`语句像下面这样检测`o`是否为非空：
+:::
 
 ```js
 if (o !== null) ...
@@ -892,23 +924,42 @@ if (o !== null) ...
 
 The not-equal operator `!==` compares o to `null` and evaluates to either `true` or `false`. But you can omit the comparison and instead rely on the fact that `null` is falsy and objects are truthy:
 
+::: tip 翻译
+使用不全等操作符`!==`比较`o`和`null`，求值结果要么是`true`要么是`false`。不过，也可以省略比较，直接依赖`null`是假性值而对象是真性值这个事实：
+:::
+
 ```js
 if (o) ...
 ```
 
 In the first case, the body of the `if` will be executed only if `o` is not `null`. The second case is less strict: it will execute the body of the `if` only if `o` is not `false` or any falsy value (such as `null` or `undefined`). Which `if` statement is appropriate for your program really depends on what values you expect to be assigned to `o`. If you need to distinguish `null` from `0` and `""`, then you should use an explicit comparison.
 
+::: tip 翻译
+第一种情况下，`if`语句的主体只有在`o`不是`null`时才会被执行。第二种情况没那么严格，只要`o`不是`false`或任何其他假性值（如`null`或`undefined`），`if`语句的主体就会执行。哪种`if`语句适合你的程序取决于你期待`o`中保存什么值。如果需要区分`null`和`0`、`""`，那么就应该使用比较表达式。
+:::
+
 Boolean values have a `toString()` method that you can use to convert them to the strings “true” or “false”, but they do not have any other useful methods. Despite the trivial API, there are three important boolean operators.
+
+::: tip 翻译
+布尔值有一个`toString()`方法，可用于将自己转换为字符串"true"或"false"。除此之外，布尔值再没有其他有用的方法了。除了这个极其简单的 API，还有三种重要的布尔值操作符。
+:::
 
 The `&&` operator performs the Boolean AND operation. It evaluates to a truthy value if and only if both of its operands are truthy; it evaluates to a falsy value otherwise. The `||` operator is the Boolean OR operation: it evaluates to a truthy value if either one (or both) of its operands is truthy and evaluates to a falsy value if both operands are falsy. Finally, the unary `!` operator performs the Boolean NOT operation: it evaluates to true if its operand is falsy and evaluates to false if its operand is truthy. For example:
 
+::: tip 翻译
+`&&`操作符执行布尔与操作，当且仅当两个操作数都为真时，求值结果才是真；任何一个操作数为假，结果都为假。`||`操作符执行布尔或操作，任何一个操作数为真，求值结果就是真；只有当两个操作数均为假时，结果才是假。一元的`！`操作符执行布尔非操作，如果操作数是假则结果为`true`；如果操作数是真则结果为`false`。例如：
+:::
+
 ```js
 if ((x === 0 && y === 0) || !(z === 0)) {
-  // x and y are both zero or z is non-zero
-}
+  // x和y均为0，或者z不是0
 ```
 
 Full details on these operators are in §4.10.
+
+::: tip 翻译
+4.10 节将全面详细地介绍这几个操作符。
+:::
 
 ## null and undefined
 
