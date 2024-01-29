@@ -483,9 +483,14 @@ The Date class and its methods are covered in detail in §11.4. But we will see 
 Date 类及其方法在 11.4 节有详细介绍。但在 3.9.3 节探讨 JavaScript 类型转换时，我们也会提到 Date 对象。
 :::
 
-## Text
+## 文本
 
 The JavaScript type for representing text is the _string_. A string is an immutable ordered sequence of 16-bit values, each of which typically represents a Unicode character. The _length_ of a string is the number of 16-bit values it contains. JavaScript’s strings (and its arrays) use zero-based indexing: the first 16-bit value is at position 0, the second at position 1, and so on. The _empty string_ is the string of length 0. JavaScript does not have a special type that represents a single element of a string. To represent a single 16-bit value, simply use a string that has a length of 1.
+
+::: tip 翻译
+JavaScript 中表示文本的类型是 String，即字符串。字符串是 16 位值的不可修改的有序序列，其中每个值都表示一个 Unicode 字符。字符串的 length 属性是它包含的 16 位值的个数。JavaScript 的
+字符串（以及数组）使用基于零的索引，因此第一个 16 位值的索引是 0，第二个值的索引是 1，以此类推。空字符串是长度为 0 的字符串。JavaScript 没有表示单个字符串元素的专门类型。要表示一个 16 位值，使用长度为 1 的字符串即可。
+:::
 
 > **Characters, Codepoints, and JavaScript Strings**
 >
@@ -502,12 +507,31 @@ The JavaScript type for representing text is the _string_. A string is an immuta
 >
 > In ES6, however, strings are _iterable_, and if you use the `for/of` loop or `...` operator with a string, it will iterate the actual characters of the string, not the 16-bit values.
 
-### String Literals
+> **字符、码点和 JavaScript 字符串**
+>
+> JavaScript 使用 Unicode 字符集的 UTF-16 编码，因此 JavaScript 字符串是无符号 16 位值的序列。最常用的 Unicode 字符（即“基本多语言平面”中的字符）的码点（codepoint）是 16 位的，可以用字符串中的一个元素来表示。码点超出 16 位的 Unicode 字符使用 UTF-16 规则编码为两个 16 位值的序列（称为 surrogate pair，即“代理对”）。这意味着一个长度为 2（两个 16 位值）的 JavaScript 字符串可能表示的只是一个 Unicode 字符：
+>
+> ```js
+> let euro = "€";
+> let love = "❤";
+> euro.length; // => 1: 这个字符是一个16位的元素
+> love.length; // => 2: ❤ 的UTF-16编码是 "\ud83d\udc99"
+> ```
+>
+> JavaScript 的字符串操作方法一般操作的是 16 位值，而不是字符。换句话说，它们不会特殊对待代理对，不对字符串进行归一化，甚至不保证字符串是格式正确的 UTF-16。
+>
+> 但在 ES6 中，字符串是可迭代的，如果对字符串使用`for/of`循环或`...`操作符，迭代的是字符而不是 16 位值。
+
+### 字符串字面量
 
 To include a string in a JavaScript program, simply enclose the characters of the string within a matched pair of single or double quotes or backticks (`'` or `"` or <code>\`</code>). Double-quote characters and backticks may be contained within strings delimited by single-quote characters, and similarly for strings delimited by double quotes and backticks. Here are examples of string literals:
 
+::: tip 翻译
+要在 JavaScript 程序中包含字符串，可以把字符串放到一对匹配的单引号、双引号或者反引号（'、"或`）中。双引号字符和反引号可以出现在由单引号定界的字符串中，同理由双引号和反引号定界的字符串里也可以包含另外两种引号。下面是几个字符串字面量的例子：
+:::
+
 ```js
-""; // The empty string: it has zero characters
+""; // 空字符串，即有零个字符
 "testing";
 "3.14";
 'name="myform"';
@@ -517,39 +541,69 @@ To include a string in a JavaScript program, simply enclose the characters of th
 
 Strings delimited with backticks are a feature of ES6, and allow JavaScript expressions to be embedded within (or interpolated into) the string literal. This expression interpolation syntax is covered in §3.3.4.
 
+::: tip 翻译
+使用反引号定界字符串是 ES6 的特性，允许在字符串字面量中包含（或插入）JavaScript 表达式。3.3.4 节将介绍这种表达式插值语法。
+:::
+
 The original versions of JavaScript required string literals to be written on a single line, and it is common to see JavaScript code that creates long strings by concatenating single-line strings with the `+` operator. As of ES5, however, you can break a string literal across multiple lines by ending each line but the last with a backslash (`\`). Neither the backslash nor the line terminator that follow it are part of the string literal. If you need to include a newline character in a single-quoted or double-quoted string literal, use the character sequence `\n` (documented in the next section). The ES6 backtick syntax allows strings to be broken across multiple lines, and in this case, the line terminators are part of the string literal:
 
+::: tip 翻译
+JavaScript 最早的版本要求字符串字面量必须写在一行，使用`+`操作符把单行字符串拼接成长字符串的 JavaScript 代码随处可见。到了 ES5，我们可以在每行末尾加一个反斜杠（`\`）从而把字符串字面量写到多行上。这个反斜杠和它后面的行终结符都不属于字符串字面量。如果需要在单引号或双引号字符串中包含换行符，需要使用字符序列`\n`（下一节讲述）。ES6 的反引号语法支持跨行字符串，而行终结符也是字符串字面量的一部分：
+:::
+
 ```js
-// A string representing 2 lines written on one line:
+// 写在一行但表示两行的字符串：
 "two\nlines";
 
-// A one-line string written on 3 lines:
+// 写在三行但只有一行的字符串：
 "one\
  long\
- line" // A two-line string written on two lines:
+ line";
+
+// 写在两行实际也是两行的字符串：
 `the newline character at the end of this line
 is included literally in this string`;
 ```
 
 Note that when you use single quotes to delimit your strings, you must be careful with English contractions and possessives, such as can’t and O’Reilly’s. Since the apostrophe is the same as the single-quote character, you must use the backslash character (`\`) to “escape” any apostrophes that appear in single-quoted strings (escapes are explained in the next section).
 
-In client-side JavaScript programming, JavaScript code may contain strings of HTML code, and HTML code may contain strings of JavaScript code. Like JavaScript, HTML uses either single or double quotes to delimit its strings. Thus, when combining JavaScript and HTML, it is a good idea to use one style of quotes for JavaScript and the other style for HTML. In the following example, the string “Thank you” is singlequoted within a JavaScript expression, which is then double-quoted within an HTML event-handler attribute:
+::: tip 翻译
+注意，在使用单引号定界字符串时，必须注意英文中的缩写和所有格，比如 can't 和 O'Reilly 中的单引号。因为这里的撇号就是单引号，所以必须使用反斜杠字符（`\`）“转义”单引号中出现的所有撇号（下一节讲解转义）。
+:::
+
+In client-side JavaScript programming, JavaScript code may contain strings of HTML code, and HTML code may contain strings of JavaScript code. Like JavaScript, HTML uses either single or double quotes to delimit its strings. Thus, when combining JavaScript and HTML, it is a good idea to use one style of quotes for JavaScript and the other style for HTML. In the following example, the string “Thank you” is single quoted within a JavaScript expression, which is then double-quoted within an HTML event-handler attribute:
+
+::: tip 翻译
+在客户端 JavaScript 编程中，JavaScript 代码中可能包含 HTML 代码的字符串，而 HTML 代码中也可能包含 JavaScript 代码。与 JavaScript 类似，HTML 使用单引号或双引号来定界字符串。为此，如果要将 JavaScript 和 HTML 代码混合在一起，最好 JavaScript 和 HTML 分别使用不同的引号。在下面的例子中，JavaScript 表达式中的字符串“Thank you”使用了单引号，而 HTML 事件处理程序属性则使用了双引号：
+:::
 
 ```html
 <button onclick="alert('Thank you')">Click Me</button>
 ```
 
-### Escape Sequences in String Literals
+### 字符串字面量中的转义序列
 
 The backslash character (`\`) has a special purpose in JavaScript strings. Combined with the character that follows it, it represents a character that is not otherwise representable within the string. For example, `\n` is an _escape sequence_ that represents a newline character.
 
+::: tip 翻译
+反斜杠在 JavaScript 字符串中有特殊的作用：它与后面的字符组合在一起，可以在字符串中表示一个无法直接表示的字符。例如，`\n`是一个表示换行符的转义序列。
+:::
+
 Another example, mentioned earlier, is the `\'` escape, which represents the single quote (or apostrophe) character. This escape sequence is useful when you need to include an apostrophe in a string literal that is contained within single quotes. You can see why these are called escape sequences: the backslash allows you to escape from the usual interpretation of the single-quote character. Instead of using it to mark the end of the string, you use it as an apostrophe:
+
+::: tip 翻译
+前面还提到了另一个例子`\'`，表示单引号（或撇号）字符。这种转义序列在以单引号定界字符串时，可以用来在字符串中包含撇号。之所以称之为转义序列，就是反斜杠转换了通常意义上单引号的含义。转义之后，它不再表示字符串结束，而是表示撇号：
+:::
 
 ```js
 'You\'re right, it can\'t be a quote';
 ```
 
 Table 3-1 lists the JavaScript escape sequences and the characters they represent. Three escape sequences are generic and can be used to represent any character by specifying its Unicode character code as a hexadecimal number. For example, the sequence `\xA9` represents the copyright symbol, which has the Unicode encoding given by the hexadecimal number `A9`. Similarly, the `\u` escape represents an arbitrary Unicode character specified by four hexadecimal digits or one to five digits when the digits are enclosed in curly braces: `\u03c0` represents the character `π`, for example, and `\u{1f600}` represents the “grinning face” emoji.
+
+::: tip 翻译
+表 3-1 列出了 JavaScript 中的转义序列及它们表示的字符。其中 3 个转义序列是通用的，可以指定十六进制数字形式的 Unicode 字符编码来表示任何字符。例如，`\xA9`表示版权符号，其中包含十六进制数字形式的 Unicode 编码`A9`。类似地，`\u`表示通过 4 位十六进制数字指定的任意 Unicode 字符，如果数字包含在一对花括号中，则是 1 到 6 位数字。例如，`\u03c0`表示字符`π`，`\u{1f600}`表示“开口笑”表情符号。
+:::
 
 _Table 3-1. JavaScript escape sequences_
 
@@ -571,9 +625,17 @@ _Table 3-1. JavaScript escape sequences_
 
 If the `\` character precedes any character other than those shown in Table 3-1, the backslash is simply ignored (although future versions of the language may, of course, define new escape sequences). For example, `\#` is the same as `#`. Finally, as noted earlier, ES5 allows a backslash before a line break to break a string literal across multiple lines.
 
-### Working with Strings
+::: tip 翻译
+如果字符`\`位于任何表 3-1 之外的字符前面，则这个反斜杠会被忽略（当然，语言将来的版本有可能定义新转义序列）。例如，`\#`等同于`#`。最后，如前所述，ES5 允许把反斜杠放在换行符前面从而将一个字符串字面量拆成多行。
+:::
+
+### 使用字符串
 
 One of the built-in features of JavaScript is the ability to _concatenate_ strings. If you use the `+` operator with numbers, it adds them. But if you use this operator on strings, it joins them by appending the second to the first. For example:
+
+::: tip 翻译
+拼接字符串是 JavaScript 的一个内置特性。如果对数值使用`+`操作符，那数值会相加。如果对字符串使用`+`操作符，那字符串会拼接起来（第二个在第一个后面）。例如：
+:::
 
 ```js
 let msg = "Hello, " + "world"; // Produces the string "Hello, world"
@@ -582,66 +644,86 @@ let greeting = "Welcome to my blog," + " " + name;
 
 Strings can be compared with the standard `===` equality and `!==` inequality operators: two strings are equal if and only if they consist of exactly the same sequence of 16-bit values. Strings can also be compared with the `<`, `<=`, `>`, and `>=` operators. String comparison is done simply by comparing the 16-bit values. (For more robust locale-aware string comparison and sorting, see §11.7.3.)
 
+::: tip 翻译
+可以使用标准的全等`===`和不全等`!==`操作符比较字符串。只有当这两个字符串具有完全相同的 16 位值的序列时才相等。字符串也可以使用`<`、`<=`、`>`和`>=`操作符来比较。字符串比较是通过比较 16 位值完成的（要了解更多关于更可靠的地区相关字符串的比较，可以参考 11.7.3 节）。
+:::
+
 To determine the length of a string—the number of 16-bit values it contains—use the length property of the string:
+
+::: tip 翻译
+要确定一个字符串的长度（即字符串包含的 16 位值的个数），可以使用字符串的`length`属性：
+:::
 
 ```js
 s.length;
 ```
 
-In addition to this length property, JavaScript provides a rich API for working with strings:
+In addition to this `length` property, JavaScript provides a rich API for working with strings:
+
+::: tip 翻译
+除了`length`属性之外，JavaScript 还提供了操作字符串的丰富 API：
+:::
 
 ```js
-let s = "Hello, world"; // Start with some text.
+let s = "Hello, world"; // 先声明一个字符串.
 
-// Obtaining portions of a string
-s.substring(1, 4); // => "ell": the 2nd, 3rd, and 4th characters.
-s.slice(1, 4); // => "ell": same thing
-s.slice(-3); // => "rld": last 3 characters
-s.split(", "); // => ["Hello", "world"]: split at delimiter string
+// 取得字符串的一部分
+s.substring(1, 4); // => "ell": 第2～4个字符.
+s.slice(1, 4); // => "ell": 同上
+s.slice(-3); // => "rld": 最后3个字符
+s.split(", "); // => ["Hello", "world"]: 从定界符处拆开
 
-// Searching a string
-s.indexOf("l"); // => 2: position of first letter l
-s.indexOf("l", 3); // => 3: position of first "l" at or after 3
-s.indexOf("zz"); // => -1: s does not include the substring "zz"
-s.lastIndexOf("l"); // => 10: position of last letter l
+// 搜索字符串
+s.indexOf("l"); // => 2: 第一个字母 l 的位置
+s.indexOf("l", 3); // => 3: 位置3后面第一个"l"的位置
+s.indexOf("zz"); // => -1: s 并不包含子串 "zz"
+s.lastIndexOf("l"); // => 10: 最后一个字母 l 的位置
 
-// Boolean searching functions in ES6 and later
-s.startsWith("Hell"); // => true: the string starts with these
-s.endsWith("!"); // => false: s does not end with that
-s.includes("or"); // => true: s includes substring "or"
+// ES6及之后版本中的布尔值搜索函数
+s.startsWith("Hell"); // => true: 字符串是以这些字符开头的
+s.endsWith("!"); // => false: s不是以它结尾的
+s.includes("or"); // => true: s 包含子串 "or"
 
-// Creating modified versions of a string
+// 创建字符串的修改版本
 s.replace("llo", "ya"); // => "Heya, world"
 s.toLowerCase(); // => "hello, world"
 s.toUpperCase(); // => "HELLO, WORLD"
-s.normalize(); // Unicode NFC normalization: ES6
-s.normalize("NFD"); // NFD normalization. Also "NFKC", "NFKD"
+s.normalize(); // Unicode NFC 归一化: ES6 新增
+s.normalize("NFD"); // NFD 归一化. 还有 "NFKC", "NFKD"
 
-// Inspecting individual (16-bit) characters of a string
-s.charAt(0); // => "H": the first character
-s.charAt(s.length - 1); // => "d": the last character
-s.charCodeAt(0); // => 72: 16-bit number at the specified position
-s.codePointAt(0); // => 72: ES6, works for codepoints > 16 bits
+// 访问字符串中的个别（16位值）字符
+s.charAt(0); // => "H": 第一个字符
+s.charAt(s.length - 1); // => "d": 最后一个字符
+s.charCodeAt(0); // => 72: 指定位置的16位数值
+s.codePointAt(0); // => 72: ES6, 适用于码点大于16位的情形
 
-// String padding functions in ES2017
-"x".padStart(3); // => " x": add spaces on the left to a length of 3
-"x".padEnd(3); // => "x ": add spaces on the right to a length of 3
-"x".padStart(3, "*"); // => "**x": add stars on the left to a length of 3
-"x".padEnd(3, "-"); // => "x--": add dashes on the right to a length of 3
+// ES2017 新增的字符串填充函数
+"x".padStart(3); // => " x": 在左侧添加空格，让字符串长度变成3
+"x".padEnd(3); // => "x ": 在右侧添加空格，让字符串长度变成3
+"x".padStart(3, "*"); // => "**x":在左侧添加星号，让字符串长度变成3
+"x".padEnd(3, "-"); // => "x--": 在右侧添加破折号，让字符串长度变成3
 
-// Space trimming functions. trim() is ES5; others ES2019
-" test ".trim(); // => "test": remove spaces at start and end
-" test ".trimStart(); // => "test ": remove spaces on left. Also trimLeft
-" test ".trimEnd(); // => " test": remove spaces at right. Also trimRight
+// 删除空格函数，trim()是ES5就有的，其他是 ES2019 增加的
+" test ".trim(); // => "test":删除开头和末尾的空格
+" test ".trimStart(); // => "test ": 删除左侧空格，也叫 trimLeft
+" test ".trimEnd(); // => " test":删除右侧空格， 也叫 trimRight
 
-// Miscellaneous string methods
-s.concat("!"); // => "Hello, world!": just use + operator instead
-"<>".repeat(5); // => "<><><><><>": concatenate n copies. ES6
+// 未分类字符串方法
+s.concat("!"); // => "Hello, world!": 可以用 +操作符代替
+"<>".repeat(5); // => "<><><><><>": 拼接n次. ES6新增
 ```
 
 Remember that strings are immutable in JavaScript. Methods like `replace()` and `toUpperCase()` return new strings: they do not modify the string on which they are invoked.
 
+::: tip 翻译
+记住，JavaScript 中的字符串是不可修改的。像 `replace()` 和 `toUpperCase()` 这样的方法都返回新字符串，它们并不会修改调用它们的字符串。
+:::
+
 Strings can also be treated like read-only arrays, and you can access individual characters (16-bit values) from a string using square brackets instead of the `charAt()` method:
+
+::: tip 翻译
+字符串也可以被当成只读数组，使用方括号而非 `charAt()` 方法访问字符串中个别的字符（16 位值）：
+:::
 
 ```js
 let s = "hello, world";
@@ -649,15 +731,23 @@ s[0]; // => "h"
 s[s.length - 1]; // => "d"
 ```
 
-### Template Literals
+### 模版字面量
 
 In ES6 and later, string literals can be delimited with backticks:
+
+::: tip 翻译
+在 ES6 及之后的版本中，字符串字面量可以用反引号来定界：
+:::
 
 ```js
 let s = `hello world`;
 ```
 
 This is more than just another string literal syntax, however, because these _template literals_ can include arbitrary JavaScript expressions. The final value of a string literal in backticks is computed by evaluating any included expressions, converting the values of those expressions to strings and combining those computed strings with the literal characters within the backticks:
+
+::: tip 翻译
+不过，这不仅仅是一种新的字符串字面量语法，因为模板字面量可以包含任意 JavaScript 表达式。反引号中字符串字面量最终值的计算，涉及对其中包含的所有表达式求值、将这些表达式的值转换为字符串，然后再把这些字符串与反引号中的字面量组合：
+:::
 
 ```js
 let name = "Bill";
@@ -666,7 +756,15 @@ let greeting = `Hello ${name}.`; // greeting == "Hello Bill."
 
 Everything between the `${` and the matching `}` is interpreted as a JavaScript expression. Everything outside the curly braces is normal string literal text. The expression inside the braces is evaluated and then converted to a string and inserted into the template, replacing the dollar sign, the curly braces, and everything in between them.
 
+::: tip 翻译
+位于 `${` 和对应的 `}` 之间的内容都被当作 JavaScript 表达式来解释。而位于这对花括号之外的则是常规字符串字面量。括号内的表达式会被求值，然后转换为字符串并插入模板中，替换美元字符、花括号以及花括号中的所有内容。
+:::
+
 A template literal may include any number of expressions. It can use any of the escape characters that normal strings can, and it can span any number of lines, with no special escaping required. The following template literal includes four JavaScript expressions, a Unicode escape sequence, and at least four newlines (the expression values may include newlines as well):
+
+::: tip 翻译
+模板字面量可以包含任意数量的表达式，可以包含任何常规字符串中可以出现的转义字符，也可以跨任意多行而无须特殊转义。下面的模板字面量包含 4 个 JavaScript 表达式、1 个 Unicode 转义序列和至少 4 个换行符（表达式的值也可能包含换行符）：
+:::
 
 ```js
 let errorMessage = `\
@@ -679,43 +777,75 @@ ${exception.stack}
 
 The backslash at the end of the first line here escapes the initial newline so that the resulting string begins with the Unicode ✘ character (`\u2718`) rather than a newline.
 
-#### Tagged template literals
+::: tip 翻译
+这里第一行末尾的反斜杠转义了第一个换行符，因此最终字符串的第一个字符是 Unicode 字符 ✘（`\u2718`）而非换行符。
+:::
+
+#### 标签化模版字面量
 
 A powerful but less commonly used feature of template literals is that, if a function name (or “tag”) comes right before the opening backtick, then the text and the values of the expressions within the template literal are passed to the function. The value of this “tagged template literal” is the return value of the function. This could be used, for example, to apply HTML or SQL escaping to the values before substituting them into the text.
 
+::: tip 翻译
+模板字面量有一个强大但不太常用的特性：如果在开头的反引号前面有一个函数名（标签），那么模板字面量中的文本和表达式的值将作为参数传给这个函数。“标签化模板字面量”（tagged template literal）的值就是这个函数的返回值。这个特性可以用于先对某些值进行 HTML 或 SQL 转义，然后再把它们插入文本。
+:::
+
 ES6 has one built-in tag function: `String.raw()`. It returns the text within backticks without any processing of backslash escapes:
 
+::: tip 翻译
+ES6 提供了一个内置的标签函数：`String.raw()`。这个函数返回反引号中未经处理的文本，即不会处理任何反斜杠转义：
+:::
+
 ```js
-`\n`.length; // => 1: the string has a single newline character
-String.raw`\n`.length; // => 2: a backslash character and the letter n
+`\n`.length; // => 1: 字符串中只包含一个换行符
+String.raw`\n`.length; // => 2: 一个反斜杠字符和一个字母n
 ```
 
 Note that even though the tag portion of a tagged template literal is a function, there are no parentheses used in its invocation. In this very specific case, the backtick characters replace the open and close parentheses.
 
+::: tip 翻译
+注意，即使标签化模板字面量的标签部分是函数，在调用这个函数时也没有圆括号。在这种非常特别的情况下，反引号字符充当开头和末尾的圆括号。
+:::
+
 The ability to define your own template tag functions is a powerful feature of JavaScript. These functions do not need to return strings, and they can be used like constructors, as if defining a new literal syntax for the language. We’ll see an example in §14.5.
 
-### Pattern Matching
+::: tip 翻译
+可以自定义模板标签函数是 JavaScript 的一个非常强大的特性。这些函数不需要返回字符串，可以被当成构造函数使用，就像为语言本身定义了一种新的字面量语法一样。14.5 节将介绍这样一个例子。
+:::
+
+### 模式匹配
 
 JavaScript defines a datatype known as a _regular expression_ (or RegExp) for describing and matching patterns in strings of text. RegExps are not one of the fundamental datatypes in JavaScript, but they have a literal syntax like numbers and strings do, so they sometimes seem like they are fundamental. The grammar of regular expression literals is complex and the API they define is nontrivial. They are documented in detail in §11.3. Because RegExps are powerful and commonly used for text processing, however, this section provides a brief overview.
 
+::: tip 翻译
+JavaScript 定义了一种被称为正则表达式（或 RegExp）的数据类型，用于描述和匹配文本中的字符串模式。RegExp 不是 JavaScript 中的基础类型，但具有类似数值和字符串的字面量语法，因此它们有时候看起来像是基础类型。正则表达式字面量的语法很复杂，它们定义的 API 也没那么简单。11.3 节将详细讲述这些内容。由于 RegExp 很强大，且常用于文本处理，因此本节将简单地介绍一下。
+:::
+
 Text between a pair of slashes constitutes a regular expression literal. The second slash in the pair can also be followed by one or more letters, which modify the meaning of the pattern. For example:
 
+::: tip 翻译
+一对斜杠之间的文本构成正则表达式字面量。这对斜杠中的第二个后面也可以跟一个或多个字母，用于修改模式的含义。例如：
+:::
+
 ```js
-/^HTML/; // Match the letters H T M L at the start of a string
-/[1-9][0-9]*/; // Match a nonzero digit, followed by any # of digits
-/\bjavascript\b/i; // Match "javascript" as a word, case-insensitive
+/^HTML/; // 匹配字符串开头的字母 HTML
+/[1-9][0-9]*/; // 匹配非0数字，后面跟着任意数字
+/\bjavascript\b/i; // 匹配 "javascript" 这个词，不区分大小写
 ```
 
 RegExp objects define a number of useful methods, and strings also have methods that accept RegExp arguments. For example:
 
+::: tip 翻译
+RegExp 对象定义了一些有用的方法，而字符串也有接收 RegExp 参数的方法。例如：
+:::
+
 ```js
-let text = "testing: 1, 2, 3"; // Sample text
-let pattern = /\d+/g; // Matches all instances of one or more digits
-pattern.test(text); // => true: a match exists
-text.search(pattern); // => 9: position of first match
-text.match(pattern); // => ["1", "2", "3"]: array of all matches
+let text = "testing: 1, 2, 3"; // 示例文本
+let pattern = /\d+/g; // 匹配一个或多个数字
+pattern.test(text); // => true: 存在匹配项
+text.search(pattern); // => 9: 第一个匹配项的位置
+text.match(pattern); // => ["1", "2", "3"]: 所有匹配项的数组
 text.replace(pattern, "#"); // => "testing: #, #, #"
-text.split(/\D+/); // => ["","1","2","3"]: split on nondigits
+text.split(/\D+/); // => ["","1","2","3"]:基于非数字拆分
 ```
 
 ## Boolean Values
