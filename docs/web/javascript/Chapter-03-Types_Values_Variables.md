@@ -1050,7 +1050,7 @@ s.toString(); // => "Symbol(shared)"
 Symbol.keyFor(t); // => "shared"
 ```
 
-## The Global Object
+## 全局对象
 
 The preceding sections have explained JavaScript’s primitive types and values. Object types—objects, arrays, and functions—are covered in chapters of their own later in this book. But there is one very important object value that we must cover now. The _global object_ is a regular JavaScript object that serves a very important purpose: the properties of this object are the globally defined identifiers that are available to a JavaScript program. When the JavaScript interpreter starts (or whenever a web browser loads a new page), it creates a new global object and gives it an initial set of properties that define:
 
@@ -1059,13 +1059,38 @@ The preceding sections have explained JavaScript’s primitive types and values.
 - Constructor functions like `Date()`, `RegExp()`, `String()`, `Object()`, and `Array()` (§3.9.2)
 - Global objects like Math and JSON (§6.8)
 
+::: tip 翻译
+前几节解释了 JavaScript 的原始类型和值。本书会各用一章来介绍对象类型（对象、数组和函数），但现在必须介绍一个非常重要的对象值：全局对象。全局对象的属性是全局性定义的标识符，可以在 JavaScript 程序的任何地方使用。JavaScript 解释器启动后（或每次浏览器加载新页面时），都会创建一个新的全局对象并为其添加一组初始的属性，定义了：
+
+- `undefined`、`Infinity`和`NaN`这样的全局常量；
+- `isNaN()`、`parseInt()`（见 3.9.2 节）和`eval()`（见 4.12 节）这样的全局函数；
+- `Date()`、`RegExp()`、`String()`、`Object()`和`Array()`（见 3.9.2 节）这样的构造函数；
+- Math 和 JSON（见 6.8 节）这样的全局对象。
+  :::
+
 The initial properties of the global object are not reserved words, but they deserve to be treated as if they are. This chapter has already described some of these global properties. Most of the others will be covered elsewhere in this book.
+
+::: tip 翻译
+全局对象的初始属性并不是保留字，但它们应该都被当成保留字。本章已经介绍过其中一些全局属性了，剩下的更多属性将在本书其他章节介绍。
+:::
 
 In Node, the global object has a property named `global` whose value is the global object itself, so you can always refer to the global object by the name `global` in Node programs.
 
-In web browsers, the Window object serves as the global object for all JavaScript code contained in the browser window it represents. This global Window object has a selfreferential `window` property that can be used to refer to the global object. The Window object defines the core global properties, but it also defines quite a few other globals that are specific to web browsers and client-side JavaScript. Web worker threads (§15.13) have a different global object than the Window with which they are associated. Code in a worker can refer to its global object as `self`.
+::: tip 翻译
+在 Node 中，全局对象有一个名为`global`的属性，其值为全局对象本身，因此在 Node 程序中始终可以通过`global`来引用全局对象。
+:::
+
+In web browsers, the Window object serves as the global object for all JavaScript code contained in the browser window it represents. This global Window object has a self referential `window` property that can be used to refer to the global object. The Window object defines the core global properties, but it also defines quite a few other globals that are specific to web browsers and client-side JavaScript. Web worker threads (§15.13) have a different global object than the Window with which they are associated. Code in a worker can refer to its global object as `self`.
+
+::: tip 翻译
+在浏览器中，Window 对象对浏览器窗口中的所有 JavaScript 代码而言，充当了全局对象的角色。这个全局的 Window 对象有一个自引用的`window`属性，可以引用全局对象。Window 对象定义了核心全局属性，也定义了其他一些特定于浏览器和客户端 JavaScript 的全局值。15.13 节介绍的工作线程有自己不同的全局对象（不是 Window）。工作线程中的代码可以通过`self`来引用它们的全局对象。
+:::
 
 ES2020 finally defines `globalThis` as the standard way to refer to the global object in any context. As of early 2020, this feature has been implemented by all modern browsers and by Node.
+
+::: tip 翻译
+ES2020 最终定义了`globalThis`作为在任何上下文中引用全局对象的标准方式。2020 年初，所有现代浏览器和 Node 都实现了这个特性。
+:::
 
 ## Immutable Primitive Values and Mutable Object References
 
