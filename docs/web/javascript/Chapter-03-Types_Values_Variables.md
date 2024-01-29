@@ -1092,74 +1092,102 @@ ES2020 finally defines `globalThis` as the standard way to refer to the global o
 ES2020 最终定义了`globalThis`作为在任何上下文中引用全局对象的标准方式。2020 年初，所有现代浏览器和 Node 都实现了这个特性。
 :::
 
-## Immutable Primitive Values and Mutable Object References
+## 不可修改的原始值与可修改的对象引用
 
 There is a fundamental difference in JavaScript between primitive values (`undefined`, `null`, booleans, numbers, and strings) and objects (including arrays and functions). Primitives are immutable: there is no way to change (or “mutate”) a primitive value. This is obvious for numbers and booleans—it doesn’t even make sense to change the value of a number. It is not so obvious for strings, however. Since strings are like arrays of characters, you might expect to be able to alter the character at any specified index. In fact, JavaScript does not allow this, and all string methods that appear to return a modified string are, in fact, returning a new string value. For example:
 
+::: tip 翻译
+JavaScript 中的原始值（`undefined`、`null`、布尔值、数值和字符串）与对象（包括数组和函数）有一个本质的区别。原始值是不可修改的，即没有办法改变原始值。对于数值和布尔值，这一点很好理解：修改一个数值的值没什么用。可是，对于字符串，这一点就不太好理解了。因为字符串类似字符数组，我们或许认为可以修改某个索引位置的字符。事实上，JavaScript 不允许这么做。所有看起来返回一个修改后字符串的字符串方法，实际上返回的都是一个新字符串。例如：
+:::
+
 ```js
-let s = "hello"; // Start with some lowercase text
-s.toUpperCase(); // Returns "HELLO", but doesn't alter s
-s; // => "hello": the original string has not changed
+let s = "hello"; // 一个全部小写的字符串
+s.toUpperCase(); // 返回 "HELLO", 但不会修改s
+s; // => "hello": 原始字符串并未改变
 ```
 
 Primitives are also compared by _value_: two values are the same only if they have the same value. This sounds circular for numbers, booleans, null, and undefined: there is no other way that they could be compared. Again, however, it is not so obvious for strings. If two distinct string values are compared, JavaScript treats them as equal if, and only if, they have the same length and if the character at each index is the same.
 
+::: tip 翻译
+原始值是按值比较的，即两个值只有在它们的值相同的时候才是相同的。对于数值、布尔值、`null`和`undefined`来说，这话听起来确实有点绕。其实很好理解，例如，在比较两个不同的字符串时，当且仅当这两个字符串长度相同并且每个索引的字符也相同时，JavaScript 才认为它们相等。
+:::
+
 Objects are different than primitives. First, they are _mutable_—their values can change:
 
-```js
-let o = { x: 1 }; // Start with an object
-o.x = 2; // Mutate it by changing the value of a property
-o.y = 3; // Mutate it again by adding a new property
+::: tip 翻译
+对象不同于原始值，对象是可修改的，即它们的值可以改变：
+:::
 
-let a = [1, 2, 3]; // Arrays are also mutable
-a[0] = 0; // Change the value of an array element
-a[3] = 4; // Add a new array element
+```js
+let o = { x: 1 }; // 先声明一个对象
+o.x = 2; // 修改： 改变它的一个属性的值
+o.y = 3; // 修改： 为它添加一个新属性
+
+let a = [1, 2, 3]; // 数组也是可修改的
+a[0] = 0; // 修改：改变数组中一个元素的值
+a[3] = 4; // 修改：为数组添加一个新元素
 ```
 
 Objects are not compared by value: two distinct objects are not equal even if they have the same properties and values. And two distinct arrays are not equal even if they have the same elements in the same order:
 
+::: tip 翻译
+对象不是按值比较的，两个不同的对象即使拥有完全相同的属性和值，它们也不相等。同样，两个不同的数组，即使每个元素都相同，顺序也相同，它们也不相等：
+:::
+
 ```js
 let o = { x: 1 },
-  p = { x: 1 }; // Two objects with the same properties
-o === p; // => false: distinct objects are never equal
+  p = { x: 1 }; // 两个对象，拥有相同的属性
+o === p; // => false:不同的对象永远也不会相等
 let a = [],
-  b = []; // Two distinct, empty arrays
-a === b; // => false: distinct arrays are never equal
+  b = []; // 两个不同的空数组
+a === b; // => false:不同的数组永远也不会相等
 ```
 
 Objects are sometimes called _reference types_ to distinguish them from JavaScript’s primitive types. Using this terminology, object values are _references_, and we say that objects are compared _by reference_: two object values are the same if and only if they _refer_ to the same underlying object.
 
+::: tip 翻译
+对象有时候被称作引用类型（reference type），以区别于 JavaScript 的原始类型。基于这一术语，对象值就是引用，对象是按引用比较的。换句话说，两个对象值当且仅当它们引用同一个底层对象时，才是相等的。
+:::
+
 ```js
-let a = []; // The variable a refers to an empty array.
-let b = a; // Now b refers to the same array.
-b[0] = 1; // Mutate the array referred to by variable b.
-a[0]; // => 1: the change is also visible through variable a.
-a === b; // => true: a and b refer to the same object, so they are equal.
+let a = []; // 这个变量引用一个空数组
+let b = a; // 现在b引用了同一个数组
+b[0] = 1; // 修改变量b引用的数组
+a[0]; // => 1:  变化也能通过变量a看到
+a === b; // => true: a和b引用同一个对象，所以它们相等
 ```
 
-As you can see from this code, assigning an object (or array) to a variable simply assigns the reference: it does not create a new copy of the object. If you want to make a new copy of an object or array, you must explicitly copy the properties of the object or the elements of the array. This example demonstrates using a for loop (§5.4.3):
+As you can see from this code, assigning an object (or array) to a variable simply assigns the reference: it does not create a new copy of the object. If you want to make a new copy of an object or array, you must explicitly copy the properties of the object or the elements of the array. This example demonstrates using a `for` loop (§5.4.3):
+
+::: tip 翻译
+从上面的代码可以看出，把对象（或数组）赋值给一个变量，其实是在赋值引用，并不会创建对象的新副本。如果想创建对象或数组的新副本，必须显式复制对象的属性或数组的元素。下面的例子使用`for`循环（参见 5.4.3 节）演示了这个过程：
+:::
 
 ```js
-let a = ["a", "b", "c"]; // An array we want to copy
-let b = []; // A distinct array we'll copy into
+let a = ["a", "b", "c"]; // 想要复制的源数组
+let b = []; // 要复制到的另一个数组
 for (let i = 0; i < a.length; i++) {
-  // For each index of a[]
-  b[i] = a[i]; // Copy an element of a into b
+  // 对a[]中的每个索引
+  b[i] = a[i]; // 把a的元素复制到b中
 }
-let c = Array.from(b); // In ES6, copy arrays with Array.from()
+let c = Array.from(b); // 在ES6中，可以使用 Array.from() 复制数组
 ```
 
 Similarly, if we want to compare two distinct objects or arrays, we must compare their properties or elements. This code defines a function to compare two arrays:
 
+::: tip 翻译
+类似地，如果要比较两个不同的对象或数组，必须比较它们的属性或元素。以下代码定义了一个比较两个数组的函数：
+:::
+
 ```js
 function equalArrays(a, b) {
-  if (a === b) return true; // Identical arrays are equal
-  if (a.length !== b.length) return false; // Different-size arrays not equal
+  if (a === b) return true; // 同一个数组相等
+  if (a.length !== b.length) return false; // 大小不同的数组不相等
   for (let i = 0; i < a.length; i++) {
-    // Loop through all elements
-    if (a[i] !== b[i]) return false; // If any differ, arrays not equal
+    // 循环遍历所有元素
+    if (a[i] !== b[i]) return false; // 有任何差异，两个数组都不相等
   }
-  return true; // Otherwise they are equal
+  return true; // 否则，两个数组相等
 }
 ```
 
