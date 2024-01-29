@@ -1595,15 +1595,27 @@ The object-to-number conversion first converts the object to a primitive using t
 对象到数值的转换首先使用偏数值算法把对象转换为一个原始值，然后再把得到的原始值转换为数值。偏数值算法先尝试`valueOf()`，将`toString()`作为备用。Array 类继承了默认的`valueOf()`方法，该方法不返回原始值。因此在尝试将数组转换为数值时，最终会调用`toString()`方法。空数组转换为空字符串。而空字符串转换为数值 0。只有一个元素的数组转换为该元素对应的字符串。如果数组只包含一个数值，则该数值先转换为字符串，再转换回数值。
 :::
 
-## Variable Declaration and Assignment
+## 变量声明与赋值
 
 One of the most fundamental techniques of computer programming is the use of names—or _identifiers_—to represent values. Binding a name to a value gives us a way to refer to that value and use it in the programs we write. When we do this, we typically say that we are assigning a value to a _variable_. The term “variable” implies that new values can be assigned: that the value associated with the variable may vary as our program runs. If we permanently assign a value to a name, then we call that name a _constant_ instead of a variable.
 
+::: tip 翻译
+计算机编程中最基本的一个技术就是使用名字（或标识符）表示值。绑定名字和值为我们提供了一种引用值和在程序中使用值的方式。对于绑定名字和值，我们通常会说把值赋给变量。术语“变量”意味着可以为其赋予新值，也就是说与变量关联的值在程序运行时可能会变化。如果把一个值永久地赋给一个名字，那么可以称该名字为常量而不是变量。
+:::
+
 Before you can use a variable or constant in a JavaScript program, you must _declare_ it. In ES6 and later, this is done with the `let` and `const` keywords, which we explain next. Prior to ES6, variables were declared with var, which is more idiosyncratic and is explained later on in this section.
 
-### Declarations with let and const
+::: tip 翻译
+在 JavaScript 中使用变量或常量前，必须先声明它。在 ES6 及之后的版本中，这是通过`let`和`const`关键字来完成的，接下来我们会介绍。在 ES6 之前，变量是通过`var`声明的，这个关键字更特殊一些，将在本节后面介绍。
+:::
+
+### 使用 let 和 const 声明
 
 In modern JavaScript (ES6 and later), variables are declared with the `let` keyword, like this:
+
+::: tip 翻译
+在现代 JavaScript（ES6 及之后）中，变量是通过`let`关键字声明的：
+:::
 
 ```js
 let i;
@@ -1612,11 +1624,19 @@ let sum;
 
 You can also declare multiple variables in a single `let` statement:
 
+::: tip 翻译
+也可以使用一条`let`语句声明多个变量：
+:::
+
 ```js
 let i, sum;
 ```
 
 It is a good programming practice to assign an initial value to your variables when you declare them, when this is possible:
+
+::: tip 翻译
+声明变量的同时（如果可能）也为其赋予一个初始值是个好的编程习惯：
+:::
 
 ```js
 let message = "hello";
@@ -1624,22 +1644,38 @@ let i = 0,
   j = 0,
   k = 0;
 let x = 2,
-  y = x * x; // Initializers can use previously declared variables
+  y = x * x; // 初始化语句可以使用前面声明的变量
 ```
 
 If you don’t specify an initial value for a variable with the `let` statement, the variable is declared, but its value is `undefined` until your code assigns a value to it.
 
+::: tip 翻译
+如果在`let`语句中不为变量指定初始值，变量也会被声明，但在被赋值之前它的值是`undefined`。
+:::
+
 To declare a constant instead of a variable, use `const` instead of let. `const` works just like `let` except that you must initialize the constant when you declare it:
 
+::: tip 翻译
+要声明常量而非变量，则要使用`const`而非`let`。`const`与`let`类似，区别在于`const`必须在声明时初始化常量：
+:::
+
 ```js
-const H0 = 74; // Hubble constant (km/s/Mpc)
-const C = 299792.458; // Speed of light in a vacuum (km/s)
-const AU = 1.496e8; // Astronomical Unit: distance to the sun (km)
+const H0 = 74; // 哈勃常数 (km/s/Mpc)
+const C = 299792.458; // 真空中的光速 (km/s)
+const AU = 1.496e8; // 天文单位：地球与太阳之间的平均距离 (km)
 ```
 
 As the name implies, constants cannot have their values changed, and any attempt to do so causes a TypeError to be thrown.
 
+::: tip 翻译
+顾名思义，常量的值是不能改变的，尝试给常量重新赋值会抛出 TypeError。
+:::
+
 It is a common (but not universal) convention to declare constants using names with all capital letters such as `H0` or `HTTP_NOT_FOUND` as a way to distinguish them from variables.
+
+::: tip 翻译
+声明常量的一个常见（但并非普遍性）的约定是全部字母大写，如`H0`或`HTTP_NOT_FOUND`，以区别于变量。
+:::
 
 > **When to Use const**
 >
@@ -1647,7 +1683,17 @@ It is a common (but not universal) convention to declare constants using names w
 >
 > In one approach, we use `const` only for values that must not change. In the other, we use `const` for any value that does not happen to change. I prefer the former approach in my own code.
 
-In **Chapter 5**, we’ll learn about the `for`, `for/in`, and `for/of` loop statements in JavaScript. Each of these loops includes a loop variable that gets a new value assigned to it on each iteration of the loop. JavaScript allows us to declare the loop variable as part of the loop syntax itself, and this is another common way to use `let`:
+> **何时使用 const**
+>
+> 关于使用`const`关键字有两种论调。一种论调是只在值基本不会改变的情况下使用`const`，比如物理常数、程序版本号，或用于标识文件类型的字节序。另一种论调认为程序中很多所谓的变量实际上在程序运行时并不会改变。为此，应该全部使用`const`声明，然后如果发现确实需要允许值改变，再改成`let`。这样有助于避免因为意外修改变量而导致出现 bug。
+>
+> 在第一种情况下，我们只对那些必须不变的值使用`const`。另一种情况下，对任何不会变化的值使用`const`。我本人在写代码时倾向前一种思路。
+
+In [Chapter 5](./Chapter-05-Statements.md), we’ll learn about the `for`, `for/in`, and `for/of` loop statements in JavaScript. Each of these loops includes a loop variable that gets a new value assigned to it on each iteration of the loop. JavaScript allows us to declare the loop variable as part of the loop syntax itself, and this is another common way to use `let`:
+
+::: tip 翻译
+在[第 5 章](./Chapter-05-Statements.md)中，我们会学习 JavaScript 中的`for`、`for/in`和`for/of`循环语句。其中每种循环都包含一个循环变量，在循环的每次迭代中都会取得一个新值。JavaScript 允许在循环语法中声明这个循环变量，这也是`let`另一个常见的使用场景：
+:::
 
 ```js
 for (let i = 0, len = data.length; i < len; i++) console.log(data[i]);
@@ -1657,43 +1703,67 @@ for (let property in object) console.log(property);
 
 It may seem surprising, but you can also use `const` to declare the loop “variables” for `for/in` and `for/of` loops, as long as the body of the loop does not reassign a new value. In this case, the `const` declaration is just saying that the value is constant for the duration of one loop iteration:
 
+::: tip 翻译
+虽然看起来有点怪，但也可以使用`const`声明`for/in`和`for/of`中的这些循环“变量”，只要保证在循环体内不给它重新赋值即可。此时，`const`声明的只是一次循环迭代期间的常量值：
+:::
+
 ```js
 for (const datum of data) console.log(datum);
 for (const property in object) console.log(property);
 ```
 
-#### Variable and constant scope
+#### 变量与常量作用域
 
 The _scope_ of a variable is the region of your program source code in which it is defined. Variables and constants declared with `let` and `const` are _block scoped_. This means that they are only defined within the block of code in which the `let` or `const` statement appears. JavaScript class and function definitions are blocks, and so are the bodies of `if/else` statements, `while` loops, `for` loops, and so on. Roughly speaking, if a variable or constant is declared within a set of curly braces, then those curly braces delimit the region of code in which the variable or constant is defined (though of course it is not legal to reference a variable or constant from lines of code that execute before the `let` or `const` statement that declares the variable). Variables and constants declared as part of a `for`, `for/in`, or `for/of` loop have the loop body as their scope, even though they technically appear outside of the curly braces.
 
-When a declaration appears at the top level, outside of any code blocks, we say it is a _global_ variable or constant and has global scope. In Node and in client-side JavaScript modules (see **Chapter 10**), the scope of a global variable is the file that it is defined in. In traditional client-side JavaScript, however, the scope of a global variable is the HTML document in which it is defined. That is: if one `<script>` declares a global variable or constant, that variable or constant is defined in all of the `<script>` elements in that document (or at least all of the scripts that execute after the `let` or `const` statement executes).
+::: tip 翻译
+变量的作用域（scope）是程序源代码中一个区域，在这个区域内变量有定义。通过`let`和`const`声明的变量和常量具有块作用域。这意味着它们只在`let`和`const`语句所在的代码块中有定义。JavaScript 类和函数的函数体是代码块，`if/else`语句的语句体、`while`和`for`循环的循环体都是代码块。粗略地讲，如果变量或常量声明在一对花括号中，那这对花括号就限定了该变量或常量有定义的代码区域（当然，在声明变量或常量的`let`或`const`语句之前的代码行中引用这些变量或常量也是不合法的）。作为`for`、`for/in`或`for/of`循环的一部分声明的变量和常量，以循环体作为它们的作用域，即使它们实际上位于花括号外部。
+:::
 
-#### Repeated declarations
+When a declaration appears at the top level, outside of any code blocks, we say it is a _global_ variable or constant and has global scope. In Node and in client-side JavaScript modules (see [Chapter 10](./Chapter-10-Modules.md)), the scope of a global variable is the file that it is defined in. In traditional client-side JavaScript, however, the scope of a global variable is the HTML document in which it is defined. That is: if one `<script>` declares a global variable or constant, that variable or constant is defined in all of the `<script>` elements in that document (or at least all of the scripts that execute after the `let` or `const` statement executes).
+
+::: tip 翻译
+如果声明位于顶级，在任何代码块外部，则称其为全局变量或常量，具有全局作用域。在 Node 和客户端 JavaScript 模块中（参见[第 10 章](./Chapter-10-Modules.md)），全局变量的作用域是定义它们的文件。但在传统客户端 JavaScript 中，全局变量的作用域是定义它们的 HTML 文档。换句话说，如果有`<script>`标签声明了一个全局变量或常量，则该变量或常量在同一个文档的任何`<script>`元素中（或者至少在`let`和`const`语句执行之后执行的所有脚本中）都有定义。
+:::
+
+#### 重复声明
 
 It is a syntax error to use the same name with more than one `let` or `const` declaration in the same scope. It is legal (though a practice best avoided) to declare a new variable with the same name in a nested scope:
 
+::: tip 翻译
+在同一个作用域中使用多个`let`或`const`声明同一个名字是语法错误。在嵌套作用域中声明同名变量是合法的（尽管实践中最好不要这么做）：
+:::
+
 ```js
-const x = 1; // Declare x as a global constant
+const x = 1; // 声明x为全局常量
 if (x === 1) {
-  let x = 2; // Inside a block x can refer to a different value
-  console.log(x); // Prints 2
+  let x = 2; // 在同一个代码块中，x可以引用不同的值
+  console.log(x); // 打印 2
 }
-console.log(x); // Prints 1: we're back in the global scope now
-let x = 3; // ERROR! Syntax error trying to re-declare x
+console.log(x); // Prints 1: 现在又回到了全局作用域
+let x = 3; // 错误！重新声明x会导致语法错误
 ```
 
-#### Declarations and types
+#### 声明与类型
 
 If you’re used to statically typed languages such as C or Java, you may think that the primary purpose of variable declarations is to specify the type of values that may be assigned to a variable. But, as you have seen, there is no type associated with JavaScript’s variable declarations. A JavaScript variable can hold a value of any type. For example, it is perfectly legal (but generally poor programming style) in JavaScript to assign a number to a variable and then later assign a string to that variable:
+
+::: tip 翻译
+如果你使用过静态类型语言（如 C 或 Java），可能认为变量声明的主要目的是为变量指定可以赋予它的值的类型。但我们也看到了，JavaScript 的变量声明与值的类型无关。JavaScript 变量可以保存任何类型的值。例如，在 JavaScript 中，给一个变量赋一个数值，然后再给它赋一个字符串是合法的：
+:::
 
 ```js
 let i = 10;
 i = "ten";
 ```
 
-### Variable Declarations with var
+### 使用 var 的变量声明
 
 In versions of JavaScript before ES6, the only way to declare a variable is with the `var` keyword, and there is no way to declare constants. The syntax of `var` is just like the syntax of `let`:
+
+::: tip 翻译
+在 ES6 之前的 JavaScript 中，声明变量的唯一方式是使用`var`关键字，无法声明常量。`var`的语法与`let`的语法相同：
+:::
 
 ```js
 var x;
@@ -1709,34 +1779,61 @@ Although `var` and `let` have the same syntax, there are important differences i
 - Unlike variables declared with `let`, it is legal to declare the same variable multiple times with `var`. And because var variables have function scope instead of block scope, it is actually common to do this kind of redeclaration. The variable i is frequently used for integer values, and especially as the index variable of `for` loops. In a function with multiple for loops, it is typical for each one to begin `for(var i = 0; ...`. Because var does not scope these variables to the loop body, each of these loops is (harmlessly) re-declaring and re-initializing the same variable.
 - One of the most unusual features of var declarations is known as _hoisting_. When a variable is declared with `var`, the declaration is lifted up (or “hoisted”) to the top of the enclosing function. The initialization of the variable remains where you wrote it, but the definition of the variable moves to the top of the function. So variables declared with var can be used, without error, anywhere in the enclosing function. If the initialization code has not run yet, then the value of the variable may be `undefined`, but you won’t get an error if you use the variable before it is initialized. (This can be a source of bugs and is one of the important misfeatures that let corrects: if you declare a variable with let but attempt to use it before the `let` statement runs, you will get an actual error instead of just seeing an `undefined` value.)
 
+::: tip 翻译
+虽然`var`和`let`有相同的语法，但它们也有重要的区别。
+
+- 使用`var`声明的变量不具有块作用域。这种变量的作用域仅限于包含函数的函数体，无论它们在函数中嵌套的层次有多深。
+- 如果在函数体外部使用`var`，则会声明一个全局变量。但通过`var`声明的全局变量与通过 let 声明的全局变量有一个重要区别。通过`var`声明的全局变量被实现为全局对象（见 3.7 节）的属性。全局对象可以通过`globalThis`引用。因此，如果你在函数外部写了`var x = 2;`，就相当于写了`globalThis.x = 2;`。不过要注意，这么类比并不完全恰当。因为通过全局`var`创建的这个属性不能使用`delete`操作符（见 4.13.4 节）删除。通过`let`和`const`声明的全局变量和常量不是全局对象的属性。
+- 与通过`let`声明的变量不同，使用`var`多次声明同名变量是合法的。而且由于`var`变量具有函数作用域而不是块作用域，这种重新声明实际上是很常见的。变量 i 经常用于保存整数值，特别是经常用作`for`循环的索引变量。在有多个`for`循环的函数中，每个循环通常都以`for(var i = 0; ...`开头。因为`var`并不会把这些变量的作用域限定在循环体内，每次循环都会（无害地）重新声明和重新初始化同一个变量。
+- `var`声明的一个最不同寻常的特性是作用域提升（hoisting）。在使用`var`声明变量时，该声明会被提高（或提升）到包含函数译注 1 的顶部。但变量的初始化仍然在代码所在位置完成，只有变量的定义转移到了函数顶部。因此对使用`var`声明的变量，可以在包含函数内部的任何地方使用而不会报错。如果初始化代码尚未运行，则变量的值可能是`undefined`，但在初始化之前是可以使用变量而不报错的（这会成为一个 bug 来源，也是`let`要纠正的一个最重要的错误特性。如果使用`let`声明了一个变量，但试图在`let`语句运行前使用该变量则会导致错误，而不是得到`undefined`值）。
+  :::
+
 > **Using Undeclared Variables**
 >
 > In strict mode (§5.6.3), if you attempt to use an undeclared variable, you’ll get a reference error when you run your code. Outside of strict mode, however, if you assign a value to a name that has not been declared with `let`, `const`, or `var`, you’ll end up creating a new global variable. It will be a global no matter now deeply nested within functions and blocks your code is, which is almost certainly not what you want, is bug-prone, and is one of the best reasons for using strict mode!
 >
 > Global variables created in this accidental way are like global variables declared with `var`: they define properties of the global object. But unlike the properties defined by proper `var` declarations, these properties can be deleted with the `delete` operator (§4.13.4).
 
-### Destructuring Assignment
+> **使用未声明的变量**
+>
+> 在严格模式下（参见 5.6.3 节），如果试图使用未声明的变量，那代码运行时会触发引用错误。但在严格模式外部，如果将一个值赋给尚未使用`let`、`const`或`var`声明的名字，则会创建一个新全局变量。而且，无论这个赋值语句在函数或代码块中被嵌套了多少次，都会创建一个全局变量。这肯定不是我们想要的，非常容易招致缺陷，也是推荐使用严格模式一个最好的理由。
+>
+> 以这种意外方式创建的全局变量类似使用`var`声明的全局变量，都定义全局对象的属性。但与通过恰当的`var`声明定义的属性不同，这些属性可以通过`delete`操作（参见 4.13.4 节）删除。
+
+### 解构赋值
 
 ES6 implements a kind of compound declaration and assignment syntax known as _destructuring assignment_. In a destructuring assignment, the value on the righthand side of the equals sign is an array or object (a “structured” value), and the lefthand side specifies one or more variable names using a syntax that mimics array and object literal syntax. When a destructuring assignment occurs, one or more values are extracted (“destructured”) from the value on the right and stored into the variables named on the left. Destructuring assignment is perhaps most commonly used to initialize variables as part of a `const`, `let`, or `var` declaration statement, but it can also be done in regular assignment expressions (with variables that have already been declared). And, as we’ll see in §8.3.5, destructuring can also be used when defining the parameters to a function.
 
+::: tip 翻译
+ES6 实现了一种复合声明与赋值语法，叫作解构赋值（destructuring assignment）。在解构赋值中，等号右手端的值是数组或对象（“结构化”的值），而左手端通过模拟数组或对象字面量语法指定一个或多个变量。在解构赋值发生时，会从右侧的值中提取（解构）出一个或多个值，并保存到左侧列出的变量中。解构赋值可能最常用于在`const`、`let`或`var`声明语句中初始化变量，但也可以在常规赋值表达式中使用（给已声明的变量赋值）。而且，正如 8.3.5 节将会介绍的，解构也可以在定义函数参数时使用。
+:::
+
 Here are simple destructuring assignments using arrays of values:
 
+::: tip 翻译
+下面是解构数组值的一段示例代码：
+:::
+
 ```js
-let [x, y] = [1, 2]; // Same as let x=1, y=2
-[x, y] = [x + 1, y + 1]; // Same as x = x + 1, y = y + 1
-[x, y] = [y, x]; // Swap the value of the two variables
-[x, y]; // => [3,2]: the incremented and swapped values
+let [x, y] = [1, 2]; // 相当于 let x=1, y=2
+[x, y] = [x + 1, y + 1]; // 相当于 x = x + 1, y = y + 1
+[x, y] = [y, x]; // 交换两个变量的值
+[x, y]; // => [3,2]: 递增和交换后的值
 ```
 
 Notice how destructuring assignment makes it easy to work with functions that return arrays of values:
 
+::: tip 翻译
+解构赋值让使用返回数组的函数变得异常便捷：
+:::
+
 ```js
-// Convert [x,y] coordinates to [r,theta] polar coordinates
+// 将[x,y]坐标转换为[r,theta]极坐标
 function toPolar(x, y) {
   return [Math.sqrt(x * x + y * y), Math.atan2(y, x)];
 }
 
-// Convert polar to Cartesian coordinates
+// 将极坐标转换为笛卡尔坐标
 function toCartesian(r, theta) {
   return [r * Math.cos(theta), r * Math.sin(theta)];
 }
@@ -1747,14 +1844,22 @@ let [x, y] = toCartesian(r, theta); // [x, y] == [1.0, 1,0]
 
 We saw that variables and constants can be declared as part of JavaScript’s various `for` loops. It is possible to use variable destructuring in this context as well. Here is a code that loops over the name/value pairs of all properties of an object and uses destructuring assignment to convert those pairs from two-element arrays into individual variables:
 
+::: tip 翻译
+前面我们看到了，可以在 JavaScript 的各种`for`循环中声明变量和常量。同样也可以在这个上下文中使用变量解构赋值。下面这段代码循环遍历了一个对象所有属性的名/值对，并使用解构赋值将两个元素的数组转换为单个变量：
+:::
+
 ```js
-let o = { x: 1, y: 2 }; // The object we'll loop over
+let o = { x: 1, y: 2 }; // 要遍历的对象
 for (const [name, value] of Object.entries(o)) {
-  console.log(name, value); // Prints "x 1" and "y 2"
+  console.log(name, value); // 打印 "x 1" 和 "y 2"
 }
 ```
 
 The number of variables on the left of a destructuring assignment does not have to match the number of array elements on the right. Extra variables on the left are set to `undefined`, and extra values on the right are ignored. The list of variables on the left can include extra commas to skip certain values on the right:
+
+::: tip 翻译
+解构赋值左侧变量的个数不一定与右侧数组中元素的个数相同。左侧多余的变量会被设置为`undefined`，而右侧多余的值会被忽略。左侧的变量列表可以包含额外的逗号，以跳过右侧的某些值：
+:::
 
 ```js
 let [x, y] = [1]; // x == 1; y == undefined
@@ -1762,7 +1867,11 @@ let [x, y] = [1]; // x == 1; y == undefined
 [, x, , y] = [1, 2, 3, 4]; // x == 2; y == 4
 ```
 
-If you want to collect all unused or remaining values into a single variable when destructuring an array, use three dots (`...`) before the last variable name on the lefthand side:
+If you want to collect all unused or remaining values into a single variable when destructuring an array, use three dots (`...`) before the last variable name on the left hand side:
+
+::: tip 翻译
+在解构赋值时，如果你想把所有未使用或剩余的值收集到一个变量中，可以在左侧最后一个变量名前面加上 3 个点（`...`）：
+:::
 
 ```js
 let [x, ...y] = [1, 2, 3, 4]; // y == [2,3,4]
@@ -1770,13 +1879,25 @@ let [x, ...y] = [1, 2, 3, 4]; // y == [2,3,4]
 
 We’ll see three dots used this way again in §8.3.2, where they are used to indicate that all remaining function arguments should be collected into a single array.
 
+::: tip 翻译
+8.3.2 节中还会看到以这种方式使用 3 个点，但那时是用于把函数所有剩余参数收集到一个数组中。
+:::
+
 Destructuring assignment can be used with nested arrays. In this case, the lefthand side of the assignment should look like a nested array literal:
+
+::: tip 翻译
+解构赋值可用于嵌套数组。此时，赋值的左侧看起来也应该像一个嵌套的数组字面量：
+:::
 
 ```js
 let [a, [b, c]] = [1, [2, 2.5], 3]; // a == 1; b == 2; c == 2.5
 ```
 
-A powerful feature of array destructuring is that it does not actually require an array! You can use any _iterable_ object (**Chapter 12**) on the righthand side of the assignment; any object that can be used with a `for/of` loop (§5.4.4) can also be destructured:
+A powerful feature of array destructuring is that it does not actually require an array! You can use any _iterable_ object ([Chapter 12](./Chapter-12-Iterators_Generators.md)) on the righthand side of the assignment; any object that can be used with a `for/of` loop (§5.4.4) can also be destructured:
+
+::: tip 翻译
+数组解构的一个强大特性是它并不要求必须是数组！实际上，赋值的右侧可以是任何可迭代对象（参见[第 12 章](./Chapter-12-Iterators_Generators.md)），任何可以在`for/of`循环（参见 5.4.4 节）中使用的对象也可以被解构：
+:::
 
 ```js
 let [first, ...rest] = "Hello"; // first == "H"; rest == ["e","l","l","o"]
@@ -1784,52 +1905,84 @@ let [first, ...rest] = "Hello"; // first == "H"; rest == ["e","l","l","o"]
 
 Destructuring assignment can also be performed when the righthand side is an object value. In this case, the lefthand side of the assignment looks something like an object literal: a comma-separated list of variable names within curly braces:
 
+::: tip 翻译
+解构赋值在右侧是对象值的情况下也可以执行。此时，赋值的左侧看起来就像一个对象字面量，即一个包含在花括号内的逗号分隔的变量名列表：
+:::
+
 ```js
-let transparent = { r: 0.0, g: 0.0, b: 0.0, a: 1.0 }; // A RGBA color
+let transparent = { r: 0.0, g: 0.0, b: 0.0, a: 1.0 }; // 一个 RGBA 颜色对象
 let { r, g, b } = transparent; // r == 0.0; g == 0.0; b == 0.0
 ```
 
 The next example copies global functions of the `Math` object into variables, which might simplify code that does a lot of trigonometry:
 
+::: tip 翻译
+下面这个例子展示了如何把`Math`对象的全局函数复制到变量中，这样可以简化需要大量三角计算的代码：
+:::
+
 ```js
-// Same as const sin=Math.sin, cos=Math.cos, tan=Math.tan
+// 相当于 const sin=Math.sin, cos=Math.cos, tan=Math.tan
 const { sin, cos, tan } = Math;
 ```
 
-Notice in the code here that the `Math` object has many properties other than the three that are destructured into individual variables. Those that are not named are simply ignored. If the lefthand side of this assignment had included a variable whose name was not a property of `Math`, that variable would simply be assigned `undefined`.
+Notice in the code here that the `Math` object has many properties other than the three that are destructured into individual variables. Those that are not named are simply ignored. If the left hand side of this assignment had included a variable whose name was not a property of `Math`, that variable would simply be assigned `undefined`.
+
+::: tip 翻译
+注意，代码中`Math`对象的属性远远不止解构赋值给个别变量的这 3 个。那些没有提到名字的属性都被忽略了。如果赋值的左侧包含一个不是`Math`属性的变量名，该变量将被赋值`undefined`。
+:::
 
 In each of these object destructuring examples, we have chosen variable names that match the property names of the object we’re destructuring. This keeps the syntax simple and easy to understand, but it is not required. Each of the identifiers on the lefthand side of an object destructuring assignment can also be a colon-separated pair of identifiers, where the first is the name of the property whose value is to be assigned and the second is the name of the variable to assign it to:
 
+::: tip 翻译
+在上面每个对象解构的例子中，我们都选择了与要解构对象的属性一致的变量名。这样可以保持语法简单且容易理解，但这并不是必需的。对象解构赋值左侧的每个标识符都可以是一个冒号分隔的标识符对，其中第一个标识符是要解构其值的属性名，第二个标识符是要把值赋给它的变量名：
+:::
+
 ```js
-// Same as const cosine = Math.cos, tangent = Math.tan;
+// 相当于 const cosine = Math.cos, tangent = Math.tan;
 const { cos: cosine, tan: tangent } = Math;
 ```
 
 I find that object destructuring syntax becomes too complicated to be useful when the variable names and property names are not the same, and I tend to avoid the shorthand in this case. If you choose to use it, remember that property names are always on the left of the colon, in both object literals and on the left of an object destructuring assignment.
 
+::: tip 翻译
+我发现如果变量名和属性名不一样，对象解构语法会变得过于复杂，反而导致用处不大。所以在这种情况下我通常不会使用简写形式。如果你选择使用，要记住属性名一定是在冒号左侧，无论是在对象字面量中，还是在对象解构赋值的左侧。
+:::
+
 Destructuring assignment becomes even more complicated when it is used with nested objects, or arrays of objects, or objects of arrays, but it is legal:
+
+::: tip 翻译
+在使用嵌套对象、对象的数组，或数组的对象时，解构赋值甚至会变得更复杂，但都是合法的：
+:::
 
 ```js
 let points = [
   { x: 1, y: 2 },
   { x: 3, y: 4 },
-]; // An array of two point objects
-let [{ x: x1, y: y1 }, { x: x2, y: y2 }] = points; // destructured into 4 variables.
+]; // 两个坐标点对象的数组
+let [{ x: x1, y: y1 }, { x: x2, y: y2 }] = points; // 解构到4个变量中
 x1 === 1 && y1 === 2 && x2 === 3 && y2 === 4; // => true
 ```
 
 Or, instead of destructuring an array of objects, we could destructure an object of arrays:
 
+::: tip 翻译
+如果不是解构对象的数组，也可以解构数组的对象：
+:::
+
 ```js
-let points = { p1: [1, 2], p2: [3, 4] }; // An object with 2 array props
+let points = { p1: [1, 2], p2: [3, 4] }; // 有两个数组属性的对象
 let {
   p1: [x1, y1],
   p2: [x2, y2],
-} = points; // destructured into 4 vars
+} = points; // 解构到4个变量中
 x1 === 1 && y1 === 2 && x2 === 3 && y2 === 4; // => true
 ```
 
 Complex destructuring syntax like this can be hard to write and hard to read, and you may be better off just writing out your assignments explicitly with traditional code like `let x1 = points.p1[0];`.
+
+::: tip 翻译
+类似这样的复杂解构语法既难写又难理解，甚至还不如使用类似`let x1 = points.p1[0];`这样的传统代码更简单易懂。
+:::
 
 > **Understanding Complex Destructuring**
 >
@@ -1850,7 +2003,26 @@ Complex destructuring syntax like this can be hard to write and hard to read, an
 > ]; // points2 == points
 > ```
 
-## Summary
+> **理解复杂解构**
+>
+> 如果你发现自己维护的代码中使用了复杂的解构赋值，可以通过一些规律来应对这种复杂性。首先，想象一下常规（单值）赋值。在赋值之后，你可以从赋值的左侧取得变量名，然后在自己的代码中作为表达式使用，这个表达式会被求值为赋给它的值。解构赋值其实也一样。解构赋值的左侧看起来像是一个数组字面量或对象字面量（参见 6.2.1 节和 6.10 节）。在赋值之后，左侧也类似于一个有效的数组字面量或对象字面量。为验证你写的解构赋值是正确的，可以尝试在另一个赋值表达式的右侧使用解构赋值的左侧：
+>
+> ```js
+> // 先定义一个数据结构并进行复杂的解构赋值
+> let points = [
+>   { x: 1, y: 2 },
+>   { x: 3, y: 4 },
+> ];
+> let [{ x: x1, y: y1 }, { x: x2, y: y2 }] = points;
+>
+> // 通过翻转赋值的两端来验证你的解构语法
+> let points2 = [
+>   { x: x1, y: y1 },
+>   { x: x2, y: y2 },
+> ]; // points2 == points
+> ```
+
+## 总结
 
 Some key points to remember about this chapter:
 
@@ -1859,3 +2031,13 @@ Some key points to remember about this chapter:
 - The differences between immutable primitive types and mutable reference types.
 - How JavaScript converts values implicitly from one type to another and how you can do so explicitly in your programs.
 - How to declare and initialize constants and variables (including with destructuring assignment) and the lexical scope of the variables and constants you declare.
+
+::: tip 翻译
+本章的要点如下:
+
+- 如何在 JavaScript 中编写及操作数值和文本字符串。
+- 如何使用 JavaScript 的其他原始类型：布尔值、Symbol、`null`和`undefined`。
+- 不可修改的原始类型与可修改的引用类型之间的区别。
+- JavaScript 如何隐式将值从一种类型转换为另一种类型，以及如何在自己的程序中显式进行类型转换。
+- 如何声明和初始化常量和变量（包括解构赋值），以及你声明变量和常量的词法作用域。
+  :::
