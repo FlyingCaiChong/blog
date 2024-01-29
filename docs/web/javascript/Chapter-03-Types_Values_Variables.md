@@ -1191,20 +1191,28 @@ function equalArrays(a, b) {
 }
 ```
 
-## Type Conversions
+## 类型转换
 
 JavaScript is very flexible about the types of values it requires. We’ve seen this for booleans: when JavaScript expects a boolean value, you may supply a value of any type, and JavaScript will convert it as needed. Some values (“truthy” values) convert to `true` and others (“falsy” values) convert to `false`. The same is true for other types: if JavaScript wants a string, it will convert whatever value you give it to a string. If JavaScript wants a number, it will try to convert the value you give it to a number (or to NaN if it cannot perform a meaningful conversion).
+
+::: tip 翻译
+JavaScript 对待自己所需值的类型非常灵活。这一点我们在介绍布尔值时已经看到了。JavaScript 需要一个布尔值，而你可能提供了其他类型的值，JavaScript 会根据需要转换这个值。有些值（真性值）转换为`true`，有些值（假性值）转换为`false`。对其他类型也是如此：如果 JavaScript 想要字符串，它就会把你提供的任何值都转换为字符串。如果 JavaScript 想要数值，它也会尝试把你给的值转换为一个数值（如果无法进行有意义的转换就转换为`NaN`）。
+:::
 
 Some examples:
 
 ```js
-10 + " objects"; // => "10 objects": Number 10 converts to a string
-"7" * "4"; // => 28: both strings convert to numbers
-let n = 1 - "x"; // n == NaN; string "x" can't convert to a number
-n + " objects"; // => "NaN objects": NaN converts to string "NaN"
+10 + " objects"; // => "10 objects": 数值10转换为字符串
+"7" * "4"; // => 28: 两个字符串都转换为数值
+let n = 1 - "x"; // n == NaN; 字符串 'x' 无法转换为数值
+n + " objects"; // => "NaN objects": NaN转换为字符串 "NaN"
 ```
 
 Table 3-2 summarizes how values convert from one type to another in JavaScript. Bold entries in the table highlight conversions that you may find surprising. Empty cells indicate that no conversion is necessary and none is performed.
+
+::: tip 翻译
+表 3-2 总结了 JavaScript 中类型之间的转换关系。表中加粗的内容是可能会让人觉得意外的转换目标。空单元格表示没有转换必要，因此什么操作也不会发生。
+:::
 
 _Table 3-2. JavaScript type conversions_
 
@@ -1231,28 +1239,56 @@ _Table 3-2. JavaScript type conversions_
 
 The primitive-to-primitive conversions shown in the table are relatively straightforward. Conversion to boolean was already discussed in §3.4. Conversion to strings is well defined for all primitive values. Conversion to numbers is just a little trickier. Strings that can be parsed as numbers convert to those numbers. Leading and trailing spaces are allowed, but any leading or trailing nonspace characters that are not part of a numeric literal cause the string-to-number conversion to produce `NaN`. Some numeric conversions may seem surprising: `true` converts to `1`, and `false` and the empty string convert to `0`.
 
+::: tip 翻译
+表中展示的原始值到原始值的转换相对容易理解。转换为布尔值的情况在 3.4 节讨论过。转换为字符串的情况对所有原始值都是有明确定义的。转换为数值就稍微有点微妙了。可以解析为数值的字符串会转换为对应的数值。字符串开头和末尾可以有空格，但开头或末尾任何不属于数值字面量的非空格字符，都会导致字符串到数值的转换产生`NaN`。有些数值转换的结果可能会让人不可思议，比如`true`转换为`1`，而`false`和空字符串都转换为`0`。
+:::
+
 Object-to-primitive conversion is somewhat more complicated, and it is the subject of §3.9.3.
 
-### Conversions and Equality
+::: tip 翻译
+对象到原始值的转换要复杂一些，我们会在 3.9.3 节介绍。
+:::
+
+### 转换与相等
 
 JavaScript has two operators that test whether two values are equal. The “strict equality operator,” `===`, does not consider its operands to be equal if they are not of the same type, and this is almost always the right operator to use when coding. But because JavaScript is so flexible with type conversions, it also defines the `==` operator with a flexible definition of equality. All of the following comparisons are true, for example:
 
+::: tip 翻译
+JavaScript 有两个操作符用于测试两个值是否相等。一个是严格相等操作符`===`，如果两个值不是同一种类型，那么这个操作符就不会判定它们相等。但由于 JavaScript 在类型转换上很灵活，所以它也定义了`==`操作符，这个操作符判定相等的标准相当灵活。比如说，下列所有比较的结果都是`true`：
+:::
+
 ```js
-null == undefined; // => true: These two values are treated as equal.
-"0" == 0; // => true: String converts to a number before comparing.
-0 == false; // => true: Boolean converts to number before comparing.
-"0" == false; // => true: Both operands convert to 0 before comparing!
+null == undefined; // => true: 这两个值被判定为相等
+"0" == 0; // => true: 字符串在比较前会转换为数值
+0 == false; // => true: 布尔值在比较前会转换为数值
+"0" == false; // => true: 两个操作数载比较前都转换为0
 ```
 
 §4.9.1 explains exactly what conversions are performed by the `==` operator in order to determine whether two values should be considered equal.
 
+::: tip 翻译
+4.9.1 节解释了为判定两个值是否相等，`==`操作符都执行了哪些转换。
+:::
+
 Keep in mind that convertibility of one value to another does not imply equality of those two values. If `undefined` is used where a boolean value is expected, for example, it will convert to false. But this does not mean that `undefined == false`. JavaScript operators and statements expect values of various types and perform conversions to those types. The if statement converts `undefined` to `false`, but the `==` operator never attempts to convert its operands to booleans.
 
-### Explicit Conversions
+::: tip 翻译
+但要记住，一个值可以转换为另一个值并不意味着这两个值是相等的。比如，如果`undefined`用在了期待布尔值的地方，那它会被转换为`false`。但这并不意味着`undefined == false`。JavaScript 操作符和语句期待不同类型的值，因此会执行以这些类型为目标类型的转换。`if`语句将`undefined`转换为`false`，但`==`操作符永远不会将其操作数转换为布尔值。
+:::
+
+### 显式转换
 
 Although JavaScript performs many type conversions automatically, you may sometimes need to perform an explicit conversion, or you may prefer to make the conversions explicit to keep your code clearer.
 
+::: tip 翻译
+尽管 JavaScript 会自动执行很多类型的转换，但有时候我们也需要进行显式转换，或者有意进行显式转换以保证代码清晰。
+:::
+
 The simplest way to perform an explicit type conversion is to use the `Boolean()`, `Number()`, and `String()` functions:
+
+::: tip 翻译
+执行显示类型转换的最简单方法就是使用`Boolean()`、`Number()`和`String()`函数：
+:::
 
 ```js
 Number("3"); // => 3
@@ -1262,9 +1298,21 @@ Boolean([]); // => true
 
 Any value other than `null` or `undefined` has a `toString()` method, and the result of this method is usually the same as that returned by the `String()` function.
 
+::: tip 翻译
+除`null`和`undefined`之外的所有值都有`toString()`方法，这个方法返回的结果通常与`String()`函数返回的结果相同。
+:::
+
 As an aside, note that the `Boolean()`, `Number()`, and `String()` functions can also be invoked—with `new`—as constructor. If you use them this way, you’ll get a “wrapper” object that behaves just like a primitive boolean, number, or string value. These wrapper objects are a historical leftover from the earliest days of JavaScript, and there is never really any good reason to use them.
 
+::: tip 翻译
+顺便说一下，`Boolean()`、`Number()`和`String()`函数也可以被当作构造函数通过`new`关键字来使用。如果你这样使用它们，那会得到一个与原始布尔值、数值和字符串值类似的“包装”对象。这种包装对象是早期 JavaScript 的历史遗存，已经没有必要再使用它们了。
+:::
+
 Certain JavaScript operators perform implicit type conversions and are sometimes used explicitly for the purpose of type conversion. If one operand of the `+` operator is a string, it converts the other one to a string. The unary `+` operator converts its operand to a number. And the unary `!` operator converts its operand to a boolean and negates it. These facts lead to the following type conversion idioms that you may see in some code:
+
+::: tip 翻译
+某些 JavaScript 操作符会执行隐式类型转换，有时候可以利用这一点完成类型转换。如果+操作符有一个操作数是字符串，那它会把另一个操作数转换为字符串。一元操作符+会把自己的操作数转换为数值。而一元操作符!会把自己的操作数转换为布尔值，然后再取反。这些事实导致我们常常会在某些代码中看到如下类型转换的用法：
+:::
 
 ```js
 x +
@@ -1276,7 +1324,15 @@ x - 0; // => Number(x)
 
 Formatting and parsing numbers are common tasks in computer programs, and JavaScript has specialized functions and methods that provide more precise control over number-to-string and string-to-number conversions.
 
+::: tip 翻译
+格式化和解析数值是计算机程序中常见的错误来源，而 JavaScript 为数值到字符串和字符串到数值的转换提供了特殊函数和方法，能够对转换进行更精确的控制。
+:::
+
 The `toString()` method defined by the Number class accepts an optional argument that specifies a radix, or base, for the conversion. If you do not specify the argument, the conversion is done in base 10. However, you can also convert numbers in other bases (between 2 and 36). For example:
+
+::: tip 翻译
+Number 类定义的`toString()`方法接收一个可选的参数，用于指定一个基数或底数。如果不指定这个参数，转换的默认基数为 10。当然也可以按照其他基数（2 到 36）来转换数值。例如：
+:::
 
 ```js
 let n = 17;
@@ -1286,6 +1342,10 @@ let hex = "0x" + n.toString(16); // hex == "0x11"
 ```
 
 When working with financial or scientific data, you may want to convert numbers to strings in ways that give you control over the number of decimal places or the number of significant digits in the output, or you may want to control whether exponential notation is used. The Number class defines three methods for these kinds of number-to-string conversions. `toFixed()` converts a number to a string with a specified number of digits after the decimal point. It never uses exponential notation. `toExponential()` converts a number to a string using exponential notation, with one digit before the decimal point and a specified number of digits after the decimal point (which means that the number of significant digits is one larger than the value you specify). `toPrecision()` converts a number to a string with the number of significant digits you specify. It uses exponential notation if the number of significant digits is not large enough to display the entire integer portion of the number. Note that all three methods round the trailing digits or pad with zeros as appropriate. Consider the following examples:
+
+::: tip 翻译
+在使用金融或科学数据时，可能需要控制转换后得到的字符串的小数位的个数或者有效数字的个数，或者需要控制是否采用指数记数法。Number 类为这些数值到字符串的转换定义了 3 种方法。`toFixed()`把数值转换为字符串时可以指定小数点后面的位数。这个方法不使用指数记数法。`toExponential()`使用指数记数法将数值转换为字符串，结果是小数点前 1 位，小数点后为指定位数（意味着有效数字个数比你指定的值多 1 位）。`toPrecision()`按照指定的有效数字个数将数值转换为字符串。如果有效数字个数不足以显示数值的整数部分，它会使用指数记数法。注意，这三种方法必要时都会舍去末尾的数字或者补零。来看下面的例子：
+:::
 
 ```js
 let n = 123456.789;
@@ -1301,7 +1361,15 @@ n.toPrecision(10); // => "123456.7890"
 
 In addition to the number-formatting methods shown here, the Intl.NumberFormat class defines a more general, internationalized number-formatting method. See §11.7.1 for details.
 
+::: tip 翻译
+除了这里介绍的数值格式化方法，`Intl.NumberFormat`类定义了一个更通用、更国际化的数值格式化方法，详见 11.7.1 节。
+:::
+
 If you pass a string to the `Number()` conversion function, it attempts to parse that string as an integer or floating-point literal. That function only works for base-10 integers and does not allow trailing characters that are not part of the literal. The `parseInt()` and `parseFloat()` functions (these are global functions, not methods of any class) are more flexible. `parseInt()` parses only integers, while `parseFloat()` parses both integers and floating-point numbers. If a string begins with “0x” or “0X”, `parseInt()` interprets it as a hexadecimal number. Both `parseInt()` and parse `Float()` skip leading whitespace, parse as many numeric characters as they can, and ignore anything that follows. If the first nonspace character is not part of a valid numeric literal, they return `NaN`:
+
+::: tip 翻译
+如果把字符串传给`Number()`转换函数，它会尝试把字符串当成整数或浮点数字面量来解析。这个函数只能处理基数为 10 的整数，不允许末尾出现无关字符。`parseInt()`和`parseFloat()`函数（都是全局函数，不是任何类的方法）则更灵活一些。`parseInt()`只解析整数，而`parseFloat()`既解析整数也解析浮点数。如果字符串以`0x`或`0X`开头，`parseInt()`会将其解析为十六进制数值。`parseInt()`和`parseFloat()`都会跳过开头的空格，尽量多地解析数字字符，忽略后面的无关字符。如果第一个非空格字符不是有效的数值字面量，它们会返回`NaN`：
+:::
 
 ```js
 parseInt("3 blind mice"); // => 3
@@ -1318,6 +1386,10 @@ parseFloat("$72.47"); // => NaN: numbers can't start with "$"
 
 `parseInt()` accepts an optional second argument specifying the radix (base) of the number to be parsed. Legal values are between 2 and 36. For example:
 
+::: tip 翻译
+`parseInt()`接收可选的第二个参数，用于指定要解析数值的底（基）数，合法的值是 2 到 36。例如：
+:::
+
 ```js
 parseInt("11", 2); // => 3: (1*2 + 1)
 parseInt("ff", 16); // => 255: (15*16 + 15)
@@ -1326,62 +1398,144 @@ parseInt("077", 8); // => 63: (7*8 + 7)
 parseInt("077", 10); // => 77: (7*10 + 7)
 ```
 
-### Object to Primitive Conversions
+### 对象到原始值转换
 
 The previous sections have explained how you can explicitly convert values of one type to another type and have explained JavaScript’s implicit conversions of values from one primitive type to another primitive type. This section covers the complicated rules that JavaScript uses to convert objects to primitive values. It is long and obscure, and if this is your first reading of this chapter, you should feel free to skip ahead to §3.10.
 
+::: tip 翻译
+前几节解释了如何将一种类型的值显式转换为另一种类型，也解释了 JavaScript 中原始类型值之间的隐式转换。本节介绍 JavaScript 将对象转换为原始值时遵循的复杂规则。这些规则冗长、晦涩，建议先看 3.10 节。
+:::
+
 One reason for the complexity of JavaScript’s object-to-primitive conversions is that some types of objects have more than one primitive representation. Date objects, for example, can be represented as strings or as numeric timestamps. The JavaScript specification defines three fundamental algorithms for converting objects to primitive values:
+
+::: tip 翻译
+JavaScript 对象到原始值转换的复杂性，主要原因在于某些对象类型有不止一种原始值的表示。比如，Date 对象可以用字符串表示，也可以用时间戳表示。JavaScript 规范定义了对象到原始值转换的 3 种基本算法。
+:::
 
 **prefer-string**
 This algorithm returns a primitive value, preferring a string value, if a conversion to string is possible.
 
+::: tip 翻译
+**偏字符串**
+
+该算法返回原始值，而且只要可能就返回字符串。
+:::
+
 **prefer-number**
 This algorithm returns a primitive value, preferring a number, if such a conversion is possible.
+
+::: tip 翻译
+**偏数值**
+
+该算法返回原始值，而且只要可能就返回数值。
+:::
 
 **no-preference**
 This algorithm expresses no preference about what type of primitive value is desired, and classes can define their own conversions. Of the built-in JavaScript types, all except Date implement this algorithm as _prefer-number_. The Date class implements this algorithm as _prefer-string_.
 
+::: tip 翻译
+**无偏好**
+
+该算法不倾向于任何原始值类型，而是由类定义自己的转换规则。JavaScript 内置类型除了 Date 类都实现了偏数值算法。Date 类实现了偏字符串算法。
+:::
+
 The implementation of these object-to-primitive conversion algorithms is explained at the end of this section. First, however, we explain how the algorithms are used in JavaScript.
 
-#### Object-to-boolean conversions
+::: tip 翻译
+这些对象到原始值算法的实现将在本节最后再解释。这里我们需要先了解一下这些算法在 JavaScript 中的用法。
+:::
+
+#### 对象转换为布尔值
 
 Object-to-boolean conversions are trivial: all objects convert to `true`. Notice that this conversion does not require the use of the object-to-primitive algorithms described, and that it literally applies to all objects, including empty arrays and even the wrapper object `new Boolean(false)`.
 
-#### Object-to-string conversions
+::: tip 翻译
+对象到布尔值的转换很简单：所有对象都转换为 `true`。注意，这个转换不需要使用前面介绍的对象到原始值的转换算法，而是直接适用于所有对象。包括空数组，甚至包括`new Boolean(false)`这样的包装对象。
+:::
+
+#### 对象转换为字符串
 
 When an object needs to be converted to a string, JavaScript first converts it to a primitive using the _prefer-string_ algorithm, then converts the resulting primitive value to a string, if necessary, following the rules in Table 3-2.
 
+::: tip 翻译
+在将对象转换为字符串时，JavaScript 首先使用偏字符串算法将它转换为一个原始值，然后将得到的原始值再转换为字符串，如有必要则按表 3-2 中的规则执行。
+:::
+
 This kind of conversion happens, for example, if you pass an object to a built-in function that expects a string argument, if you call `String()` as a conversion function, and when you interpolate objects into template literals (§3.3.4).
 
-#### Object-to-number conversions
+::: tip 翻译
+这种转换会发生在把对象传给一个接收字符串参数的内置函数时，比如将`String()`作为转换函数，或者将对象插入模板字面量中（参见 3.3.4 节）时就会发生这种转换。
+:::
+
+#### 对象转换为数值
 
 When an object needs to be converted to a number, JavaScript first converts it to a primitive value using the _prefer-number_ algorithm, then converts the resulting primitive value to a number, if necessary, following the rules in Table 3-2.
 
+::: tip 翻译
+当需要把对象转换为数值时，JavaScript 首先使用偏数值算法将它转换为一个原始值，然后将得到的原始值再转换为数值，如有必要则按表 3-2 中的规则执行。
+:::
+
 Built-in JavaScript functions and methods that expect numeric arguments convert object arguments to numbers in this way, and most (see the exceptions that follow) JavaScript operators that expect numeric operands convert objects to numbers in this way as well.
 
-#### Special case operator conversions
+::: tip 翻译
+接收数值参数的内置 JavaScript 函数和方法都以这种方式将对象转换为数值，而除数值操作符之外的多数（参见下面的例外情况）JavaScript 操作符也按照这种方式把对象转换为数值。
+:::
 
-Operators are covered in detail in **Chapter 4**. Here, we explain the special case operators that do not use the basic object-to-string and object-to-number conversions described earlier.
+#### 操作符转换特例
+
+Operators are covered in detail in [Chapter 4](./Chapter-04-Expressions_Operators.md). Here, we explain the special case operators that do not use the basic object-to-string and object-to-number conversions described earlier.
+
+::: tip 翻译
+操作符将在[第 4 章](./Chapter-04-Expressions_Operators.md)详细介绍。在此，我们只介绍那些不遵循上述基本的对象到字符串或对象到数值转换规则的操作符特例。
+:::
 
 The `+` operator in JavaScript performs numeric addition and string concatenation. If either of its operands is an object, JavaScript converts them to primitive values using the _no-preference_ algorithm. Once it has two primitive values, it checks their types. If either argument is a string, it converts the other to a string and concatenates the strings. Otherwise, it converts both arguments to numbers and adds them.
 
+::: tip 翻译
+首先，JavaScript 中的`+`操作符执行数值加法和字符串拼接。如果一个操作数是对象，那 JavaScript 会使用无偏好算法将对象转换为原始值。如果两个操作数都是原始值，则会先检查它们的类型。如果有一个参数是字符串，则把另一个原始值也转换为字符串并拼接两个字符串。否则，把两个参数都转换为数值并把它们相加。
+:::
+
 The `==` and `!=` operators perform equality and inequality testing in a loose way that allows type conversions. If one operand is an object and the other is a primitive value, these operators convert the object to primitive using the _no-preference_ algorithm and then compare the two primitive values.
+
+::: tip 翻译
+其次，`==`和`!=`操作符以允许类型转换的宽松方式执行相等和不相等测试。如果一个操作数是对象，另一个操作数是原始值，则这两个操作符会使用无偏好算法将对象转换为原始值，然后再比较两个原始值。
+:::
 
 Finally, the relational operators `<`, `<=`, `>`, and `>=` compare the order of their operands and can be used to compare both numbers and strings. If either operand is an object, it is converted to a primitive value using the _prefer-number_ algorithm. Note, however, that unlike the object-to-number conversion, the primitive values returned by the _prefer-number_ conversion are not then converted to numbers.
 
+::: tip 翻译
+最后，关系操作符`<`、`<=`、`>`和`>=`比较操作数的顺序，既可以比较数值，也可以比较字符串。如果操作数中有一个是对象，则会使用偏数值算法将对象转换为原始值。不过要注意，与对象到数值转换不同，这个偏数值算法返回的原始值不会再被转换为数值。
+:::
+
 Note that the numeric representation of Date objects is meaningfully comparable with `<` and `>`, but the string representation is not. For Date objects, the _no-preference_ algorithm converts to a string, so the fact that JavaScript uses the _prefer-number_ algorithm for these operators means that we can use them to compare the order of two Date objects.
 
-#### The toString() and valueOf() methods
+::: tip 翻译
+注意，Date 对象的数值表示是可以使用`<`和`>`进行有意义的比较的，但它的字符串表示则不行。对于 Date 对象，无偏好算法会将其转换为字符串，而 JavaScript 中这两个操作符会使用偏数值算法的事实意味着我们可以比较两个 Date 对象的顺序。
+:::
+
+#### toString() 和 valueOf() 方法
 
 All objects inherit two conversion methods that are used by object-to-primitive conversions, and before we can explain the _prefer-string_, _prefer-number_, and _no-preference_ conversion algorithms, we have to explain these two methods.
 
+::: tip 翻译
+所有对象都会继承两个在对象到原始值转换时使用的方法，在接下来解释偏字符串、偏数值和无偏好转换算法前，我们必须先解释这两个方法。
+:::
+
 The first method is `toString()`, and its job is to return a string representation of the object. The default `toString()` method does not return a very interesting value (though we’ll find it useful in §14.4.3):
+
+::: tip 翻译
+第一个方法`toString()`的任务是返回对象的字符串表示。默认情况下，`toString()`方法不会返回特别的值（虽然 14.4.3 节会用到这个默认值）：
+:::
 
 ```js
 ({ x: 1, y: 2 }).toString(); // => "[object Object]"
 ```
 
 Many classes define more specific versions of the `toString()` method. The `toString()` method of the Array class, for example, converts each array element to a string and joins the resulting strings together with commas in between. The `toString()` method of the Function class converts user-defined functions to strings of JavaScript source code. The Date class defines a `toString()` method that returns a human-readable (and JavaScript-parsable) date and time string. The RegExp class defines a `toString()` method that converts RegExp objects to a string that looks like a RegExp literal:
+
+::: tip 翻译
+很多类都定义了自己特有的`toString()`版本。比如，Array 类的`toString()`方法会将数组的每个元素转换为字符串，然后再使用逗号作为分隔符将它们拼接起来。Function 类的`toString()`方法会将用户定义的函数转换为 JavaScript 源代码的字符串。Date 类定义的`toString()`方法返回一个人类友好（且 JavaScript 可解析）的日期和时间字符串。RegExp 类定义的`toString()`方法会将 RegExp 对象转换为一个看起来像 RegExp 字面量的字符串：
+:::
 
 ```js
 [1,2,3].toString() // => "1,2,3"
@@ -1393,12 +1547,16 @@ d.toString() // => "Wed Jan 01 2020 00:00:00 GMT-0800 (Pacific Standard Time)"
 
 The other object conversion function is called `valueOf()`. The job of this method is less well defined: it is supposed to convert an object to a primitive value that represents the object, if any such primitive value exists. Objects are compound values, and most objects cannot really be represented by a single primitive value, so the default `valueOf()` method simply returns the object itself rather than returning a primitive. Wrapper classes such as String, Number, and Boolean define `valueOf()` methods that simply return the wrapped primitive value. Arrays, functions, and regular expressions simply inherit the default method. Calling `valueOf()` for instances of these types simply returns the object itself. The Date class defines a `valueOf()` method that returns the date in its internal representation: the number of milliseconds since January 1, 1970:
 
+::: tip 翻译
+另一个对象转换函数叫 `valueOf()`。这个方法的任务并没有太明确的定义，大体上可以认为它是把对象转换为代表对象的原始值（如果存在这样一个原始值）。对象是复合值，且多数对象不能真正通过一个原始值来表示，因此 `valueOf()`方法默认情况下只返回对象本身，而非返回原始值。String、Number 和 Boolean 这样的包装类定义的 `valueOf()`方法也只是简单地返回被包装的原始值。Array、Function 和 RegExp 简单地继承默认方法。在这些类型的实例上调用`valueOf()`会返回对象本身。Date 对象定义的`valueOf()`方法返回日期的内部表示形式：自 1970 年 1 月 1 日至今的毫秒数：
+:::
+
 ```js
 let d = new Date(2010, 0, 1); // January 1, 2010, (Pacific time)
 d.valueOf(); // => 1262332800000
 ```
 
-#### Object-to-primitive conversion algorithms
+#### 对象到原始值转换算法
 
 With the `toString()` and `valueOf()` methods explained, we can now explain approximately how the three object-to-primitive algorithms work (the complete details are deferred until §14.4.7):
 
@@ -1406,9 +1564,25 @@ With the `toString()` and `valueOf()` methods explained, we can now explain appr
 - The _prefer-number_ algorithm works like the _prefer-string_ algorithm, except that it tries `valueOf()` first and `toString()` second.
 - The _no-preference_ algorithm depends on the class of the object being converted. If the object is a Date object, then JavaScript uses the _prefer-string_ algorithm. For any other object, JavaScript uses the _prefer-number_ algorithm.
 
+::: tip 翻译
+解释完`toString()`和`valueOf()`方法后，现在我们可以大致地解释前面三个对象到原始值转换算法的实现了（完整的细节见 14.4.7 节）。
+
+- 偏字符串算法首先尝试`toString()`方法。如果这个方法有定义且返回原始值，则 JavaScript 使用该原始值（即使这个值不是字符串）。如果`toString()`不存在，或者存在但返回对象，则 JavaScript 尝试`valueOf()`方法。如果这个方法存在且返回原始值，则 JavaScript 使用该值。否则，转换失败，报 TypeError。
+- 偏数值算法与偏字符串算法类似，只不过是先尝试`valueOf()`方法，再尝试`toString()`方法。
+- 无偏好算法取决于被转换对象的类。如果是一个 Date 对象，则 JavaScript 使用偏字符串算法。如果是其他类型的对象，则 JavaScript 使用偏数值算法。
+  :::
+
 The rules described here are true for all built-in JavaScript types and are the default rules for any classes you define yourself. §14.4.7 explains how you can define your own object-to-primitive conversion algorithms for the classes you define.
 
+::: tip 翻译
+以上规则适用于所有内置 JavaScript 类型，也是我们所有自定义类的默认规则。14.4.7 解释了如何在自定义类中定义自己的对象到原始值转换算法。
+:::
+
 Before we leave this topic, it is worth noting that the details of the prefer-number conversion explain why empty arrays convert to the number 0 and single-element arrays can also convert to numbers:
+
+::: tip 翻译
+在结束类型转换的讨论之前，有必要补充说明一下。偏数值转换规则的细节可以解释为什么空数组会转换为数值 0，而单元素数组也可以转换为数值：
+:::
 
 ```js
 Number([]); // => 0: this is unexpected!
@@ -1416,6 +1590,10 @@ Number([99]); // => 99: really?
 ```
 
 The object-to-number conversion first converts the object to a primitive using the _prefer-number_ algorithm, then converts the resulting primitive value to a number. The _prefer-number_ algorithm tries `valueOf()` first and then falls back on `toString()`. But the Array class inherits the default `valueOf()` method, which does not return a primitive value. So when we try to convert an array to a number, we end up invoking the `toString()` method of the array. Empty arrays convert to the empty string. And the empty string converts to the number 0. An array with a single element converts to the same string that that one element does. If an array contains a single number, that number is converted to a string, and then back to a number.
+
+::: tip 翻译
+对象到数值的转换首先使用偏数值算法把对象转换为一个原始值，然后再把得到的原始值转换为数值。偏数值算法先尝试`valueOf()`，将`toString()`作为备用。Array 类继承了默认的`valueOf()`方法，该方法不返回原始值。因此在尝试将数组转换为数值时，最终会调用`toString()`方法。空数组转换为空字符串。而空字符串转换为数值 0。只有一个元素的数组转换为该元素对应的字符串。如果数组只包含一个数值，则该数值先转换为字符串，再转换回数值。
+:::
 
 ## Variable Declaration and Assignment
 
