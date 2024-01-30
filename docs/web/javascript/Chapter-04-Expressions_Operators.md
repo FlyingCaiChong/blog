@@ -570,11 +570,19 @@ No other JavaScript operators have side effects, but function invocation and obj
 其他 JavaScript 操作符都没有副效应，但函数调用和对象创建表达式是否有副效应，取决于函数或构造函数体内是否使用了有副效应的操作符。
 :::
 
-### Operator Precedence
+### 操作符优先级
 
 The operators listed in Table 4-1 are arranged in order from high precedence to low precedence, with horizontal lines separating groups of operators at the same precedence level. Operator precedence controls the order in which operations are performed. Operators with higher precedence (nearer the top of the table) are performed before those with lower precedence (nearer to the bottom).
 
+::: tip 翻译
+表 4-1 中的操作符是按照优先级从高到低的顺序排列的，表中横线分组了相同优先级的操作符。操作符优先级控制操作符被执行的顺序。优先级高（靠近表格顶部）的操作符先于优先级低（靠近表格底部）的操作符执行。
+:::
+
 Consider the following expression:
+
+::: tip 翻译
+来看下面这个表达式：
+:::
 
 ```js
 w = x + y * z;
@@ -582,7 +590,15 @@ w = x + y * z;
 
 The multiplication operator `*` has a higher precedence than the addition operator `+`, so the multiplication is performed before the addition. Furthermore, the assignment operator `=` has the lowest precedence, so the assignment is performed after all the operations on the right side are completed.
 
+::: tip 翻译
+其中乘法操作符`*`比加法操作符`+`优先级高，因此乘法计算先于加法执行。另外，赋值操作符`=`的优先级最低，因此赋值会在右侧所有操作都执行完之后才会执行。
+:::
+
 Operator precedence can be overridden with the explicit use of parentheses. To force the addition in the previous example to be performed first, write:
+
+::: tip 翻译
+操作符优先级可以通过圆括号显式改写。比如，要强制先执行上例中的加法计算，可以这样写：
+:::
 
 ```js
 w = (x + y) * z;
@@ -590,22 +606,42 @@ w = (x + y) * z;
 
 Note that property access and invocation expressions have higher precedence than any of the operators listed in Table 4-1. Consider this expression:
 
+::: tip 翻译
+注意，属性访问和调用表达式的优先级高于表 4-1 中列出的任何操作符。看下面的例子：
+:::
+
 ```js
-// my is an object with a property named functions whose value is an
-// array of functions. We invoke function number x, passing it argument
-// y, and then we ask for the type of the value returned.
+// my 是一个有function属性的对象，function属性
+// 是一个函数的数组。这里调用了x号函数，并传给它
+// 参数y，然后再求值函数调用返回值的类型。
 typeof my.functions[x](y);
 ```
 
 Although `typeof` is one of the highest-priority operators, the `typeof` operation is performed on the result of the property access, array index, and function invocation, all of which have higher priority than operators.
 
+::: tip 翻译
+尽管`typeof`是优先级最高的操作符，但`typeof`操作符要基于属性访问、数组索引和函数调用的结果执行，这些操作的优先级全部高于操作符。
+:::
+
 In practice, if you are at all unsure about the precedence of your operators, the simplest thing to do is to use parentheses to make the evaluation order explicit. The rules that are important to know are these: multiplication and division are performed before addition and subtraction, and assignment has very low precedence and is almost always performed last.
 
-When new operators are added to JavaScript, they do not always fit naturally into this precedence scheme. The `??` operator (§4.13.2) is shown in the table as lowerprecedence than `||` and `&&`, but, in fact, its precedence relative to those operators is not defined, and ES2020 requires you to explicitly use parentheses if you mix `??` with either `||` or `&&`. Similarly, the new `**` exponentiation operator does not have a welldefined precedence relative to the unary negation operator, and you must use parentheses when combining negation with exponentiation.
+::: tip 翻译
+实践中，如果你完全不确定自己所用操作符的优先级，最简单的办法是使用圆括号明确求值顺序。最重要的规则在于：乘和除先于加和减执行，而赋值优先级很低，几乎总是最后才执行。
+:::
 
-### Operator Associativity
+When new operators are added to JavaScript, they do not always fit naturally into this precedence scheme. The `??` operator (§4.13.2) is shown in the table as lower precedence than `||` and `&&`, but, in fact, its precedence relative to those operators is not defined, and ES2020 requires you to explicitly use parentheses if you mix `??` with either `||` or `&&`. Similarly, the new `**` exponentiation operator does not have a well defined precedence relative to the unary negation operator, and you must use parentheses when combining negation with exponentiation.
+
+::: tip 翻译
+JavaScript 新增的操作符并不总是符合这个优先级模式。比如在表 4-1 中，`??`操作符（参见 4.13.2 节）比`||`和`&&`优先级低，而实际上它相对于这两个操作符的优先级并没有定义，ES2020 要求在混用`??`和`||`或`&&`时使用必须使用圆括号。类似地，新的幂操作符`**`相对于一元负值操作符的优先级也没有明确定义，因此在同时求负值和求幂时也必须使用圆括号。
+:::
+
+### 操作符结合性
 
 In Table 4-1, the column labeled A specifies the _associativity_ of the operator. A value of L specifies left-to-right associativity, and a value of R specifies right-to-left associativity. The associativity of an operator specifies the order in which operations of the same precedence are performed. Left-to-right associativity means that operations are performed from left to right. For example, the subtraction operator has left-to-right associativity, so:
+
+::: tip 翻译
+在表 4-1 中，“结合性”标明了操作符的结合性。“左”表示结合性为从左到右，“右”表示结合性为从右到左。操作符结合性规定了相同优先级操作的执行顺序。左结合意味着操作从左到右执行。例如，减操作符具有左结合性，因此：
+:::
 
 ```js
 w = x - y - z;
@@ -613,14 +649,22 @@ w = x - y - z;
 
 is the same as:
 
+::: tip 翻译
+就等价于：
+:::
+
 ```js
 w = x - y - z;
 ```
 
 On the other hand, the following expressions:
 
-```js
-y = a ** (b ** c);
+::: tip 翻译
+另一方面，下列表达式：
+:::
+
+```
+y = a ** b ** c;
 x = ~-y;
 w = x = y = z;
 q = a ? b : c ? d : e ? f : g;
@@ -628,20 +672,36 @@ q = a ? b : c ? d : e ? f : g;
 
 are equivalent to:
 
-```js
-y = a ** (b ** c);
-x = ~-y;
-w = x = y = z;
-q = a ? b : c ? d : e ? f : g;
+::: tip 翻译
+等价于：
+:::
+
+```
+y = (a ** (b ** c));
+x = ~(-y);
+w = (x = (y = z));
+q = a ? b : (c ? d : (e ? f : g));
 ```
 
 because the exponentiation, unary, assignment, and ternary conditional operators have right-to-left associativity.
 
-### Order of Evaluation
+::: tip 翻译
+因为幂、一元、赋值和三元条件操作符具有右结合性。
+:::
 
-Operator precedence and associativity specify the order in which operations are performed in a complex expression, but they do not specify the order in which the subexpressions are evaluated. JavaScript always evaluates expressions in strictly left-toright order. In the expression `w = x + y * z`, for example, the subexpression `w` is evaluated first, followed by `x`, `y`, and `z`. Then the values of `y` and `z` are multiplied, added to the value of `x`, and assigned to the variable or property specified by expression `w`. Adding parentheses to the expressions can change the relative order of the multiplication, addition, and assignment, but not the left-to-right order of evaluation.
+### 求值顺序
+
+Operator precedence and associativity specify the order in which operations are performed in a complex expression, but they do not specify the order in which the subexpressions are evaluated. JavaScript always evaluates expressions in strictly left-to-right order. In the expression `w = x + y * z`, for example, the subexpression `w` is evaluated first, followed by `x`, `y`, and `z`. Then the values of `y` and `z` are multiplied, added to the value of `x`, and assigned to the variable or property specified by expression `w`. Adding parentheses to the expressions can change the relative order of the multiplication, addition, and assignment, but not the left-to-right order of evaluation.
+
+::: tip 翻译
+操作符的优先级和结合性规定了复杂表达式中操作的执行顺序，但它们没有规定子表达式的求值顺序。JavaScript 始终严格按照从左到右的顺序对表达式求值。例如，在表达式`w = x + y * z`中，子表达式`w`首先被求值，再对`x`、`y`和`z`求值。然后将`y`和`z`相乘，加到`x`上，再把结果赋值给表达式`w`表示的变量或属性。在表达式中使用圆括号可以改变乘法、加法和赋值的相对顺序，但不会改变从左到右的求值顺序。
+:::
 
 Order of evaluation only makes a difference if any of the expressions being evaluated has side effects that affect the value of another expression. If expression `x` increments a variable that is used by expression `z`, then the fact that `x` is evaluated before `z` is important.
+
+::: tip 翻译
+求值顺序只在一种情况下会造成差异，即被求值的表达式具有副效应，这会影响其他表达式的求值。比如，表达式`x`递增一个变量，而表达式`z`会使用这个变量，此时保证`x`先于`z`被求值就很重要了。
+:::
 
 ## Arithmetic Expressions
 
