@@ -1249,104 +1249,200 @@ In order to understand how the `instanceof` operator works, you must understand 
 要理解`instanceof`的工作原理，必须理解“原型链”。原型链是 JavaScript 的继承机制，6.3.2 节有详细介绍。为了对表达式`o instanceof f`求值，JavaScript 会求值`f.prototype`，然后在`o`的原型链上查找这个值。如果找到了，则`o`是`f`（或`f`的子类）的实例，`instanceof`返回`true`。如果`f.prototype`不是`o`原型链上的一个值，则`o`不是`f`的实例，`instanceof`返回`false`。
 :::
 
-## Logical Expressions
+## 逻辑表达式
 
 The logical operators `&&`, `||`, and `!` perform Boolean algebra and are often used in conjunction with the relational operators to combine two relational expressions into one more complex expression. These operators are described in the subsections that follow. In order to fully understand them, you may want to review the concept of “truthy” and “falsy” values introduced in §3.4.
 
-### Logical AND(&&)
+::: tip 翻译
+逻辑操作符`&&`、`||`和`!`执行布尔代数操作，经常与关系操作符一起使用，把两个关系表达式组合为更复杂的表达式。接下来几小节介绍这些操作符。为彻底理解它们，建议大家回顾一下 3.4 节介绍的“真性值”和“假性值”的概念。
+:::
+
+### 逻辑与 (&&)
 
 The `&&` operator can be understood at three different levels. At the simplest level, when used with boolean operands, `&&` performs the Boolean AND operation on the two values: it returns `true` if and only if both its first operand and its second operand are `true`. If one or both of these operands is `false`, it returns `false`.
 
+::: tip 翻译
+`&&`操作符可以从不同层次来理解。最简单的情况下，在与布尔操作数共同使用时，`&&`对两个值执行布尔与操作：当且仅当第一个操作数为`true`并且第二个操作数也为`true`时，才返回`true`。如果有一个操作数是`false`，或者两个操作数都是`false`，它返回`false`。
+:::
+
 `&&` is often used as a conjunction to join two relational expressions:
 
+::: tip 翻译
+`&&`经常用于连接两个关系表达式：
+:::
+
 ```js
-x === 0 && y === 0; // true if, and only if, x and y are both 0
+x === 0 && y === 0; // 当且仅当x和y都是0时，整个表达式才为true
 ```
 
 Relational expressions always evaluate to `true` or `false`, so when used like this, the `&&` operator itself returns `true` or `false`. Relational operators have higher precedence than `&&` (and `||`), so expressions like these can safely be written without parentheses.
 
+::: tip 翻译
+关系表达式始终返回`true`或`false`，因此在像这样使用时，`&&`操作符本身也返回`true`或`false`。关系操作符的优先级高于`&&`（以及`||`），因此类似这样的表达式可以不带圆括号。
+:::
+
 But `&&` does not require that its operands be boolean values. Recall that all JavaScript values are either “truthy” or “falsy.” (See §3.4 for details. The falsy values are `false`, `null`, `undefined`, `0`, `-0`, `NaN`, and `""`. All other values, including all objects, are truthy.) The second level at which `&&` can be understood is as a Boolean AND operator for truthy and falsy values. If both operands are truthy, the operator returns a truthy value. Otherwise, one or both operands must be falsy, and the operator returns a falsy value. In JavaScript, any expression or statement that expects a boolean value will work with a truthy or falsy value, so the fact that `&&` does not always return `true` or `false` does not cause practical problems.
 
-Notice that this description says that the operator returns “a truthy value” or “a falsy value” but does not specify what that value is. For that, we need to describe `&&` at the third and final level. This operator starts by evaluating its first operand, the expression on its left. If the value on the left is falsy, the value of the entire expression must also be falsy, so && simply returns the value on the left and does not even evaluate the expression on the right.
+::: tip 翻译
+但`&&`不要求其操作数是布尔值。我们知道，所有 JavaScript 值要么是“真值”，要么是“假值”（详见 3.4 节。假值包括`false`、`null`、`undefined`、`0`、`-0`、`NaN`和`""`。所有其他值，包括所有对象都是真值）。理解`&&`的第二个层次是它对真值和假值执行布尔与操作。如果两个操作数都是真值，`&&`返回一个真值；否则（一个或两个操作数是假值），`&&`返回假值。在 JavaScript 中，期待布尔值的任何表达式或语句都可以处理真值或假值，因此`&&`并不总返回`true`或`false`的事实在实践中并不会导致出现问题。
+:::
 
-On the other hand, if the value on the left is truthy, then the overall value of the expression depends on the value on the righthand side. If the value on the right is truthy, then the overall value must be truthy, and if the value on the right is falsy, then the overall value must be falsy. So when the value on the left is truthy, the `&&` operator evaluates and returns the value on the right:
+Notice that this description says that the operator returns “a truthy value” or “a falsy value” but does not specify what that value is. For that, we need to describe `&&` at the third and final level. This operator starts by evaluating its first operand, the expression on its left. If the value on the left is falsy, the value of the entire expression must also be falsy, so `&&` simply returns the value on the left and does not even evaluate the expression on the right.
+
+::: tip 翻译
+注意，上面谈到`&&`返回“一个真值”或“一个假值”时并没有说明这个值是什么。对此，需要从第三个层次上来理解`&&`。这个操作符首先对第一个操作数即它左边的表达式求值，如果左边的值是假值，则整个表达式的值也一定是假值，因此`&&`返回它左侧的值，不再求值它右侧的表达式。
+:::
+
+On the other hand, if the value on the left is truthy, then the overall value of the expression depends on the value on the right-hand side. If the value on the right is truthy, then the overall value must be truthy, and if the value on the right is falsy, then the overall value must be falsy. So when the value on the left is truthy, the `&&` operator evaluates and returns the value on the right:
+
+::: tip 翻译
+另一方面，如果`&&`左侧的值是真值，则整个表达式的值取决于右侧的值。如果右侧的值是真值，则整个表达式的值一定是真值；如果右侧的值是假值，则整个表达式的值一定是假值。因此，在左侧的值为真值时，`&&`操作符求值并返回它右侧的值：
+:::
 
 ```js
 let o = { x: 1 };
 let p = null;
-o && o.x; // => 1: o is truthy, so return value of o.x
-p && p.x; // => null: p is falsy, so return it and don't evaluate p.x
+o && o.x; // => 1: o 是真值，此时返回 o.x 的值
+p && p.x; // => null: p 是价值，因此返回它，不对p.x求值
 ```
 
 It is important to understand that `&&` may or may not evaluate its right-side operand. In this code example, the variable `p` is set to `null`, and the expression `p.x` would, if evaluated, cause a TypeError. But the code uses `&&` in an idiomatic way so that `p.x` is evaluated only if `p` is truthy—not `null` or `undefined`.
 
+::: tip 翻译
+这里关键是要理解，`&&`可能会（也可能不会）对其右侧操作数求值。在这个代码示例中，变量`p`的值为`null`，表达式`p.x`如果被求值会导致 TypeError。但代码中以惯用方式利用`&&`只在`p`为真值（不是`null`或`undefined`）时才对`p.x`求值。
+:::
+
 The behavior of `&&` is sometimes called short circuiting, and you may sometimes see code that purposely exploits this behavior to conditionally execute code. For example, the following two lines of JavaScript code have equivalent effects:
 
+::: tip 翻译
+`&&`的这种行为有时候也被称为短路，可能你也会看到有代码利用这种行为条件式地执行代码。例如，以下两行 JavaScript 代码效果相同：
+:::
+
 ```js
-if (a === b) stop(); // Invoke stop() only if a === b
-a === b && stop(); // This does the same thing
+if (a === b) stop(); // 只有 a === b时 才调用 stop()
+a === b && stop(); // 效果和上面一样
 ```
 
-In general, you must be careful whenever you write an expression with side effects (assignments, increments, decrements, or function invocations) on the righthand side of `&&`. Whether those side effects occur depends on the value of the lefthand side.
+In general, you must be careful whenever you write an expression with side effects (assignments, increments, decrements, or function invocations) on the right-hand side of `&&`. Whether those side effects occur depends on the value of the left-hand side.
+
+::: tip 翻译
+一般来说，必须注意`&&`右侧包含副效应（赋值、递增、递减或函数调用）的表达式。无论其副效应是否依赖左侧的值。
+:::
 
 Despite the somewhat complex way that this operator actually works, it is most commonly used as a simple Boolean algebra operator that works on truthy and falsy values.
 
-### Logical OR(||)
+::: tip 翻译
+尽管这个操作符的工作方式比较复杂，但它最常见的用法还是对真值和假值执行布尔代数计算。
+:::
+
+### 逻辑或 (||)
 
 The `||` operator performs the Boolean OR operation on its two operands. If one or both operands is truthy, it returns a truthy value. If both operands are falsy, it returns a falsy value.
 
+::: tip 翻译
+`||`操作符对它的操作数执行布尔或操作。如果有一个操作数是真值，这个操作符就返回真值。如果两个操作数都是假值，它就返回假值。
+:::
+
 Although the `||` operator is most often used simply as a Boolean OR operator, it, like the && operator, has more complex behavior. It starts by evaluating its first operand, the expression on its left. If the value of this first operand is truthy, it short-circuits and returns that truthy value without ever evaluating the expression on the right. If, on the other hand, the value of the first operand is falsy, then `||` evaluates its second operand and returns the value of that expression.
+
+::: tip 翻译
+尽管`||`操作符最常用作简单的布尔或操作符，但它与&&类似，也有更复杂的行为。它首先会对第一个操作数，即它左侧的表达式求值。如果第一个操作数的值是真值，`||`就会短路，直接返回该真值，不再对右侧表达式求值。而如果第一个操作数的值是假值，则`||`会求值其第二个操作数并返回该表达式的值。
+:::
 
 As with the `&&` operator, you should avoid right-side operands that include side effects, unless you purposely want to use the fact that the right-side expression may not be evaluated.
 
+::: tip 翻译
+与`&&`操作符一样，应该避免让右侧操作数包含副效应，除非是有意利用右侧表达式可能不会被求值的事实。
+:::
+
 An idiomatic usage of this operator is to select the first truthy value in a set of alternatives:
 
+::: tip 翻译
+这个操作符的习惯用法是在一系列备选项中选择第一个真值：
+:::
+
 ```js
-// If maxWidth is truthy, use that. Otherwise, look for a value in
-// the preferences object. If that is not truthy, use a hardcoded constant.
+// 如果maxWidth时真值，就使用它；否则，看看preferences对象。
+// 如果preferences里也没有真值，就使用硬编码的常量
 let max = maxWidth || preferences.maxWidth || 500;
 ```
 
 Note that if 0 is a legal value for `maxWidth`, then this code will not work correctly, since 0 is a falsy value. See the `??` operator (§4.13.2) for an alternative.
 
+::: tip 翻译
+注意，如果 0 是`maxWidth`的有效值，则以上代码可能有问题，因为 0 是个假值。此时可以使用`??`操作符（参见 4.13.2 节）。
+:::
+
 Prior to ES6, this idiom is often used in functions to supply default values for parameters:
 
+::: tip 翻译
+在 ES6 之前，这个惯用法经常用于在函数中给参数提供默认值：
+:::
+
 ```js
-// Copy the properties of o to p, and return p
+// 复制o的属性给p,返回p
 function copy(o, p) {
-  p = p || {}; // If no object passed for p, use a newly created object.
-  // function body goes here
+  p = p || {}; // 如果没有传入对象p,使用新创建的对象
+  // 这里是函数体
 }
 ```
 
 In ES6 and later, however, this trick is no longer needed because the default parameter value could simply be written in the function definition itself: `function copy(o, p={}) { ... }`.
 
-### Logical NOT(!)
+::: tip 翻译
+不过在 ES6 及之后的版本中，这个技巧已经没有必要了，因为默认参数可以直接写在函数定义中：`function copy(o, p={}) { ... }`。
+:::
+
+### 逻辑非 (!)
 
 The `!` operator is a unary operator; it is placed before a single operand. Its purpose is to invert the boolean value of its operand. For example, if `x` is truthy, `!x` evaluates to `false`. If `x` is falsy, then `!x` is `true`.
 
-Unlike the `&&` and `||` operators, the `!` operator converts its operand to a boolean value (using the rules described in **Chapter 3**) before inverting the converted value. This means that `!` always returns `true` or `false` and that you can convert any value `x` to its equivalent boolean value by applying this operator twice: `!!x` (see §3.9.2).
+::: tip 翻译
+`!`操作符是个一元操作符，出现在操作数前面。这个操作符的目的是反转其操作数的布尔值。例如，如果`x`是真值，`!x`会求值为`false`。如果`x`是假值，`!x`求值为`true`。
+:::
+
+Unlike the `&&` and `||` operators, the `!` operator converts its operand to a boolean value (using the rules described in [Chapter 3](./Chapter-03-Types_Values_Variables.md)) before inverting the converted value. This means that `!` always returns `true` or `false` and that you can convert any value `x` to its equivalent boolean value by applying this operator twice: `!!x` (see §3.9.2).
+
+::: tip 翻译
+与`&&`和`||`不同，`!`操作符将其操作数转换为布尔值（使用[第 3 章](./Chapter-03-Types_Values_Variables.md)介绍的规则），然后再反转得到的布尔值。这意味着`!`始终返回`true`或`false`，而要取得任何值`x`对应的布尔值，只要对`x`应用这个操作符两次即可：`!!x`（参见 3.9.2 节）。
+:::
 
 As a unary operator, `!` has high precedence and binds tightly. If you want to invert the value of an expression like `p && q`, you need to use parentheses: `!(p && q)`. It is worth noting two laws of Boolean algebra here that we can express using JavaScript syntax:
 
+::: tip 翻译
+作为一元操作符，`!`优先级较高。如果想反转表达式`p && q`的值，需要使用圆括号：`!( p && q)`。有必要说一下，可以通过如下 JavaScript 语法来表达布尔代数的两个法则：
+:::
+
 ```js
-// DeMorgan's Laws
-!(p && q) === (!p || !q); // => true: for all values of p and q
-!(p || q) === (!p && !q); // => true: for all values of p and q
+// 德摩根定律
+!(p && q) === (!p || !q); // => true: p和q可以是任何值
+!(p || q) === (!p && !q); // => true: p和q可以是任何值
 ```
 
-## Assignment Expressions
+## 赋值表达式
 
 JavaScript uses the `=` operator to assign a value to a variable or property. For example:
 
+::: tip 翻译
+JavaScript 使用 `=` 操作符为变量或属性赋值。例如：
+:::
+
 ```js
-i = 0; // Set the variable i to 0.
-o.x = 1; // Set the property x of object o to 1.
+i = 0; // 设置变量i为0
+o.x = 1; // 设置对象o的属性x为1
 ```
 
 The `=` operator expects its left-side operand to be an lvalue: a variable or object property (or array element). It expects its right-side operand to be an arbitrary value of any type. The value of an assignment expression is the value of the right-side operand. As a side effect, the `=` operator assigns the value on the right to the variable or property on the left so that future references to the variable or property evaluate to the value.
 
+::: tip 翻译
+`=`操作符期待其左侧操作数是一个左值，即变量或对象属性或数组元素。它期待右侧操作数是任意类型的任意值。赋值表达式的值是右侧操作数的值。作为副效应，`=`操作符将右侧的值赋给左侧的变量或属性，以便将来对该变量或属性的引用可以求值为这个值。
+:::
+
 Although assignment expressions are usually quite simple, you may sometimes see the value of an assignment expression used as part of a larger expression. For example, you can assign and test a value in the same expression with code like this:
+
+::: tip 翻译
+尽管赋值表达式通常很简单，但有时候你可能也会看到一个大型表达式中会用到赋值表达式的值。例如，可以像下面这样在同一个表达式中赋值并测试这个值：
+:::
 
 ```js
 (a = b) === 0;
@@ -1354,15 +1450,27 @@ Although assignment expressions are usually quite simple, you may sometimes see 
 
 If you do this, be sure you are clear on the difference between the `=` and `===` operators! Note that `=` has very low precedence, and parentheses are usually necessary when the value of an assignment is to be used in a larger expression.
 
+::: tip 翻译
+如果你要这样做，最好真正明白`=`和`===`操作符的区别。注意，`=`的优先级很低，在较大的表达式中使用赋值的值通常需要使用圆括号。
+:::
+
 The assignment operator has right-to-left associativity, which means that when multiple assignment operators appear in an expression, they are evaluated from right to left. Thus, you can write code like this to assign a single value to multiple variables:
 
+::: tip 翻译
+赋值操作符具有右结合性，这意味着如果一个表达式中出现多个赋值操作符，它们会从右向左求值。因此，可以通过如下代码将一个值赋给多个变量：
+:::
+
 ```js
-i = j = k = 0; // Initialize 3 variables to 0
+i = j = k = 0; // 把3个变量都初始化为0
 ```
 
-### Assignment with Operation
+### 通过操作赋值
 
 Besides the normal `=` assignment operator, JavaScript supports a number of other assignment operators that provide shortcuts by combining assignment with some other operation. For example, the `+=` operator performs addition and assignment. The following expression:
+
+::: tip 翻译
+除了常规的`=`赋值操作符，JavaScript 还支持其他一些赋值操作符，这些操作符通过组合赋值和其他操作符提供了快捷操作。例如，`+=`操作符执行加法和赋值操作。下面这个表达式：
+:::
 
 ```js
 total += salesTax;
@@ -1370,13 +1478,25 @@ total += salesTax;
 
 is equivalent to this one:
 
+::: tip 翻译
+等价于：
+:::
+
 ```js
 total = total + salesTax;
 ```
 
 As you might expect, the `+=` operator works for numbers or strings. For numeric operands, it performs addition and assignment; for string operands, it performs concatenation and assignment.
 
+::: tip 翻译
+可能你也想到了，`+=`操作符可以处理数值和字符串。对数值操作数，它执行加法并赋值；对字符串操作数，它执行拼接并赋值。
+:::
+
 Similar operators include `-=`, `*=`, `&=`, and so on. Table 4-2 lists them all.
+
+::: tip 翻译
+类似的操作符还有`-=`、`*=`、`&=`，等等。表 4-2 列出了全部这样的操作符。
+:::
 
 _Table 4-2. Assignment operators_
 
@@ -1397,11 +1517,19 @@ _Table 4-2. Assignment operators_
 
 In most cases, the expression:
 
+::: tip 翻译
+多数情况下，表达式：
+:::
+
 ```js
 a op= b
 ```
 
 where `op` is an operator, is equivalent to the expression:
+
+::: tip 翻译
+（其中`op`是操作符）都等价于表达式：
+:::
 
 ```js
 a = a op b
@@ -1409,14 +1537,22 @@ a = a op b
 
 In the first line, the expression a is evaluated once. In the second, it is evaluated twice. The two cases will differ only if a includes side effects such as a function call or an increment operator. The following two assignments, for example, are not the same:
 
+::: tip 翻译
+在第一行，表达式`a`只被求值一次。而在第二行，它会被求值两次。这两种情况只有在`a`包含副效应（如函数调用或递增操作符）时才会有区别。比如，下面这两个表达式就不一样了：
+:::
+
 ```js
 data[i++] *= 2;
 data[i++] = data[i++] * 2;
 ```
 
-## Evaluation Expressions
+## 求值表达式
 
 Like many interpreted languages, JavaScript has the ability to interpret strings of JavaScript source code, evaluating them to produce a value. JavaScript does this with the global function `eval()`:
+
+::: tip 翻译
+与很多解释型语言一样，JavaScript 有能力解释 JavaScript 源代码字符串，对它们求值以产生一个值。JavaScript 是通过全局函数`eval()`来对源代码字符串求值的：
+:::
 
 ```js
 eval("3+2"); // => 5
@@ -1424,7 +1560,15 @@ eval("3+2"); // => 5
 
 Dynamic evaluation of strings of source code is a powerful language feature that is almost never necessary in practice. If you find yourself using `eval()`, you should think carefully about whether you really need to use it. In particular, `eval()` can be a security hole, and you should never pass any string derived from user input to `eval()`. With a language as complicated as JavaScript, there is no way to sanitize user input to make it safe to use with `eval()`. Because of these security issues, some web servers use the HTTP “Content-Security-Policy” header to disable `eval()` for an entire website.
 
+::: tip 翻译
+对源代码字符串的动态求值是一个强大的语言特性，但这种特性在实际项目当中几乎用不到。如果你发现自己在使用`eval()`，那应该好好思考一下到底是不是真需要使用它。特别地，`eval()`可能会成为安全漏洞，为此永远不要把来自用户输入的字符串交给它执行。对于像 JavaScript 这么复杂的语言，无法对用户输入脱敏，因此无法保证在`eval()`中安全地使用。由于这些安全问题，某些 Web 服务器使用 HTTP 的"Content-Security-Policy"头部对整个网站禁用`eval()`。
+:::
+
 The subsections that follow explain the basic use of `eval()` and explain two restricted versions of it that have less impact on the optimizer.
+
+::: tip 翻译
+接下来几小节将解释`eval()`的基本用法，并解释它的两个对优化程序影响不大的受限版本。
+:::
 
 > **Is eval() a Function or an Operator**
 >
@@ -1437,13 +1581,36 @@ The subsections that follow explain the basic use of `eval()` and explain two re
 >
 > If this is allowed, then the interpreter can’t know for sure which functions call `eval()`, so it cannot optimize aggressively. This issue could have been avoided if `eval()` was an operator (and a reserved word). We’ll learn (in §4.12.2 and §4.12.3) about restrictions placed on `eval()` to make it more operator-like.
 
+> **eval()是函数还是操作符？**
+>
+> `eval()`是一个函数，但之所以在讲表达式的本章介绍它，是因为它其实应该是个操作符。JavaScript 语言最初的版本定义了一个`eval()`函数，而从那时起，语言设计者和解释器开发者一直对它加以限制，导致它越来越像操作符。现代 JavaScript 解释器会执行大量代码分析和优化。一般来说，如果一个函数调用`eval()`，则解释器将无法再优化该函数。把`eval()`定义为函数的问题在于可以给它起不同的名字：
+>
+> ```js
+> let f = eval;
+> let g = f;
+> ```
+>
+> 如果可以这样，那么解释器无法确定哪个函数会调用`eval()`，也就无法激进优化。假如`eval()`是个操作符（即保留字），那这个问题就可以避免。后面（4.12.2 节和 4.12.3 节）会介绍对`eval()`的限制，而这些限制也让它更像操作符。
+
 ### eval()
 
-`eval()` expects one argument. If you pass any value other than a string, it simply returns that value. If you pass a string, it attempts to parse the string as JavaScript code, throwing a SyntaxError if it fails. If it successfully parses the string, then it evaluates the code and returns the value of the last expression or statement in the string or undefined if the last expression or statement had no value. If the evaluated string throws an exception, that exception propogates from the call to `eval()`.
+`eval()` expects one argument. If you pass any value other than a string, it simply returns that value. If you pass a string, it attempts to parse the string as JavaScript code, throwing a SyntaxError if it fails. If it successfully parses the string, then it evaluates the code and returns the value of the last expression or statement in the string or undefined if the last expression or statement had no value. If the evaluated string throws an exception, that exception propagates from the call to `eval()`.
+
+::: tip 翻译
+`eval()`期待一个参数。如果给它传入任何非字符串值，它会简单地返回这个值。如果传入字符串，它会尝试把这个字符串当成 JavaScript 代码来解析，解析失败会抛出 SyntaxError。如果解析字符串成功，它会求值代码并返回该字符串中最后一个表达式或语句的值；如果最后一个表达式或语句没有值则返回`undefined`。如果求值字符串抛出异常，该异常会从调用`eval()`的地方传播出来。
+:::
 
 The key thing about `eval()` (when invoked like this) is that it uses the variable environment of the code that calls it. That is, it looks up the values of variables and defines new variables and functions in the same way that local code does. If a function defines a local variable `x` and then calls `eval("x")`, it will obtain the value of the local variable. If it calls `eval("x=1")`, it changes the value of the local variable. And if the function calls `eval("var y = 3;")`, it declares a new local variable `y`. On the other hand, if the evaluated string uses `let` or `const`, the variable or constant declared will be local to the evaluation and will not be defined in the calling environment.
 
+::: tip 翻译
+对于`eval()`（在像这样调用时），关键在于它会使用调用它的代码的变量环境。也就是说，它会像本地代码一样查找变量的值、定义新变量和函数。如果一个函数定义了一个局部变量`x`，然后调用了`eval("x")`，那它会取得这个局部变量的值。如果这个函数调用了`eval("var y = 3;")`，则会声明一个新局部变量`y`。另外，如果被求值的字符串使用了`let`或`const`，则声明的变量或常量会被限制在求值的局部作用域内，不会定义到调用环境中。
+:::
+
 Similarly, a function can declare a local function with code like this:
+
+::: tip 翻译
+类似地，函数也可以像下面这样声明一个局部函数：
+:::
 
 ```js
 eval("function f() { return x+1; }");
@@ -1451,66 +1618,117 @@ eval("function f() { return x+1; }");
 
 If you call `eval()` from top-level code, it operates on global variables and global functions, of course.
 
+::: tip 翻译
+如果在顶级代码中调用`eval()`，则它操作的一定是全局变量和全局函数。
+:::
+
 Note that the string of code you pass to `eval()` must make syntactic sense on its own: you cannot use it to paste code fragments into a function. It makes no sense to write `eval("return;")`, for example, because return is only legal within functions, and the fact that the evaluated string uses the same variable environment as the calling function does not make it part of that function. If your string would make sense as a standalone script (even a very short one like `x=0` ), it is legal to pass to `eval()`. Otherwise, `eval()` will throw a SyntaxError.
 
-### Global eval()
+::: tip 翻译
+注意，传给`eval()`的代码字符串本身必须从语法上说得通：不能使用它向函数中粘贴代码片段。比如，`eval("return;")`是没有意义的，因为 return 只在函数中是合法的，即使被求值的字符串使用与调用函数相同的变量环境，这个字符串也不会成为函数的一部分。只要这个字符串本身可以作为独立的脚本运行（即使像`x=0`这么短），都可以合法地传给`eval()`。否则，`eval()`将抛出 SyntaxError。
+:::
+
+### 全局 eval()
 
 It is the ability of `eval()` to change local variables that is so problematic to JavaScript optimizers. As a workaround, however, interpreters simply do less optimization on any function that calls `eval()`. But what should a JavaScript interpreter do, however, if a script defines an alias for `eval()` and then calls that function by another name? The JavaScript specification declares that when `eval()` is invoked by any name other than “eval”, it should evaluate the string as if it were top-level global code. The evaluated code may define new global variables or global functions, and it may set global variables, but it will not use or modify any variables local to the calling function, and will not, therefore, interfere with local optimizations.
 
-A “direct eval” is a call to the `eval()` function with an expression that uses the exact, unqualified name “eval” (which is beginning to feel like a reserved word). Direct calls to `eval()` use the variable environment of the calling context. Any other call—an indirect call—uses the global object as its variable environment and cannot read,
-write, or define local variables or functions. (Both direct and indirect calls can define new variables only with var. Uses of let and const inside an evaluated string create variables and constants that are local to the evaluation and do not alter the calling or global environment.)
+::: tip 翻译
+之所以`eval()`会干扰 JavaScript 的优化程序，是因为它能够修改局部变量。不过作为应对，解释器也不会过多优化调用`eval()`的函数。那么，如果某脚本为`eval()`定义了别名，然后又通过另一个名字调用这个函数，JavaScript 解释器该怎么做呢？JavaScript 规范中说，如果`eval()`被以“eval”之外的其他名字调用时，它应该把字符串当成顶级全局代码来求值。被求值的代码可能定义新全局变量或全局函数，可能修改全局变量，但它不会再使用或修改调用函数的局部变量。因此也就不会妨碍局部优化。
+:::
+
+A “direct eval” is a call to the `eval()` function with an expression that uses the exact, unqualified name “eval” (which is beginning to feel like a reserved word). Direct calls to `eval()` use the variable environment of the calling context. Any other call—an indirect call—uses the global object as its variable environment and cannot read, write, or define local variables or functions. (Both direct and indirect calls can define new variables only with var. Uses of let and const inside an evaluated string create variables and constants that are local to the evaluation and do not alter the calling or global environment.)
+
+::: tip 翻译
+相对而言，使用名字“eval”来调用`eval()`函数就叫作“直接 eval”（这样就有点保留字的感觉了）。直接调用`eval()`使用的是调用上下文的变量环境。任何其他调用方式，包括间接调用，都使用全局对象作为变量环境，因而不能读、写或定义局部变量或函数（无论直接调用还是间接调用都只能通过 var 来定义新变量。在被求值的字符串中使用 let 和 const 创建的变量和常量会被限定在求值的局部作用域内，不会修改调用或全局环境）。
+:::
 
 The following code demonstrates:
 
+::: tip 翻译
+下面来看几个例子：
+:::
+
 ```js
-const geval = eval; // Using another name does a global eval
+const geval = eval; //使用另一个名字，实现全局求值
 let x = "global",
-  y = "global"; // Two global variables
+  y = "global"; // 两个全局变量
 function f() {
-  // This function does a local eval
-  let x = "local"; // Define a local variable
-  eval("x += 'changed';"); // Direct eval sets local variable
-  return x; // Return changed local variable
+  // 这个函数直接调用eval()
+  let x = "local"; // 定义一个局部变量
+  eval("x += 'changed';"); // 直接调用修改局部变量
+  return x; // 返回修改后的局部变量
 }
 function g() {
-  // This function does a global eval
-  let y = "local"; // A local variable
-  geval("y += 'changed';"); // Indirect eval sets global variable
-  return y; // Return unchanged local variable
+  // 这个函数全局（间接）调用eval()
+  let y = "local"; //定义一个局部变量
+  geval("y += 'changed';"); //间接调用修改全局变量
+  return y; // 返回未修改的局部变量
 }
-console.log(f(), x); // Local variable changed: prints "localchanged global":
-console.log(g(), y); // Global variable changed: prints "local globalchanged":
+console.log(f(), x); // 局部变量变了，打印 "localchanged global":
+console.log(g(), y); // 全局变量变了，打印 "local globalchanged":
 ```
 
 Notice that the ability to do a global eval is not just an accommodation to the needs of the optimizer; it is actually a tremendously useful feature that allows you to execute strings of code as if they were independent, top-level scripts. As noted at the beginning of this section, it is rare to truly need to evaluate a string of code. But if you do find it necessary, you are more likely to want to do a global eval than a local eval.
 
-### Strict eval()
+::: tip 翻译
+注意，这种全局求值的能力不仅仅是为了适应优化程序的需求，同时也是一种极其有用的特性，可以让我们把代码字符串作为独立、顶级的脚本来执行。正如本节开始时提到的，真正需要求值代码字符串的场景非常少。假如你必须使用`eval()`，那很可能应该使用它的全局求值而不是局部求值。
+:::
+
+### 严格 eval()
 
 Strict mode (see §5.6.3) imposes further restrictions on the behavior of the `eval()` function and even on the use of the identifier “eval”. When `eval()` is called from strict-mode code, or when the string of code to be evaluated itself begins with a “use strict” directive, then `eval()` does a local eval with a private variable environment. This means that in strict mode, evaluated code can query and set local variables, but it cannot define new variables or functions in the local scope.
 
+::: tip 翻译
+严格模式（参见 5.6.3 节）对`eval()`函数增加了更多限制，甚至对标识符“eval”的使用也进行了限制。当我们在严格模式下调用`eval()`时，或者当被求值的代码字符串以“use strict”指令开头时，`eval()`会基于一个私有变量环境进行局部求值。这意味着在严格模式下，被求值的代码可以查询和设置局部变量，但不能在局部作用域中定义新变量或函数。
+:::
+
 Furthermore, strict mode makes `eval()` even more operator-like by effectively making “eval” into a reserved word. You are not allowed to overwrite the `eval()` function with a new value. And you are not allowed to declare a variable, function, function parameter, or catch block parameter with the name “eval”
 
-## Miscellaneous Operators
+::: tip 翻译
+另外，严格模式让`eval()`变得更像操作符，因为“eval”在严格模式下会变成保留字。此时不能再使用新值来重写`eval()`函数。换句话说，通过名字“eval”来声明变量、函数、函数参数或捕获块参数都是不允许的。
+:::
+
+## 其他操作符
 
 JavaScript supports a number of other miscellaneous operators, described in the following sections.
 
-### The Conditional Operator (?:)
+::: tip 翻译
+JavaScript 还支持另外一些操作符，接下来几节介绍它们。
+:::
+
+### 条件操作符 (?:)
 
 The conditional operator is the only ternary operator (three operands) in JavaScript and is sometimes actually called the ternary operator. This operator is sometimes written `?:`, although it does not appear quite that way in code. Because this operator has three operands, the first goes before the `?`, the second goes between the `?` and the `:`, and the third goes after the `:`. It is used like this:
 
+::: tip 翻译
+条件操作符是 JavaScript 唯一一个三元操作符（有三个操作数），因此有时候也被叫作三元操作符。这个操作符有时候会被写作`?:`，尽管它在代码中并不是这样的。这个操作符有三个操作数，第一个在`?`前面，第二个在`?`和`:`中间，第三个在`:`后面。因此在代码中一般是这样的：
+:::
+
 ```js
-x > 0 ? x : -x; // The absolute value of x
+x > 0 ? x : -x; // x的绝对值
 ```
 
 The operands of the conditional operator may be of any type. The first operand is evaluated and interpreted as a boolean. If the value of the first operand is truthy, then the second operand is evaluated, and its value is returned. Otherwise, if the first operand is falsy, then the third operand is evaluated and its value is returned. Only one of the second and third operands is evaluated; never both.
 
+::: tip 翻译
+条件操作符的操作数可以是任意类型。第一个操作数被求值并解释为一个布尔值。如果第一个操作数的值是真值，那么就求值第二个操作数，并返回它的值。否则，求值第三个操作数并返回它的值。第二个或第三个操作数只有一个会被求值，不可能两个都被求值。
+:::
+
 While you can achieve similar results using the `if` statement (§5.3.1), the `?:` operator often provides a handy shortcut. Here is a typical usage, which checks to be sure that a variable is defined (and has a meaningful, truthy value) and uses it if so or provides a default value if not:
+
+::: tip 翻译
+可以使用`if`语句（参见 5.3.1 节）实现类似的结果，但`?:`操作符更简洁。下面展示了它的典型应用，其中检查了变量如果有定义（一个有意义的真值）就使用它，否则就提供一个默认值：
+:::
 
 ```js
 greeting = "hello " + (username ? username : "there");
 ```
 
 This is equivalent to, but more compact than, the following `if` statement:
+
+::: tip 翻译
+这行代码等价于下面的`if`语句，但更简洁：
+:::
 
 ```js
 greeting = "hello ";
@@ -1521,9 +1739,13 @@ if (username) {
 }
 ```
 
-### First-Defined (??)
+### 先定义 (??)
 
 The first-defined operator `??` evaluates to its first defined operand: if its left operand is not `null` and not `undefined`, it returns that value. Otherwise, it returns the value of the right operand. Like the `&&` and `||` operators, `??` is short-circuiting: it only evaluates its second operand if the first operand evaluates to `null` or `undefined`. If the expression `a` has no side effects, then the expression `a ?? b` is equivalent to:
+
+::: tip 翻译
+先定义（first-defined）操作符`??`求值其先定义的操作数，如果其左操作数不是`null`或`undefined`，就返回该值。否则，它会返回右操作数的值。与`&&`或`||`操作符类似，`??`是短路的：它只在第一个操作数求值为`null`或`undefined`时才会求值第二个操作数。如果表达式 a 没有副效应，那么表达式`a ?? b`等价于：
+:::
 
 ```js
 a !== null && a !== undefined ? a : b;
@@ -1531,46 +1753,74 @@ a !== null && a !== undefined ? a : b;
 
 `??` is a useful alternative to `||` (§4.10.2) when you want to select the first _defined_ operand rather than the first truthy operand. Although `||` is nominally a logical OR operator, it is also used idiomatically to select the first non-falsy operand with code like this:
 
+::: tip 翻译
+`??`是对`||`（参见 4.10.2 节）的一个有用的替代，适合选择先定义的操作数，而不是第一个为真值的操作数。尽管`||`名义上是个逻辑或操作符，习惯上也会使用它选择第一个非假值操作数，比如：
+:::
+
 ```js
-// If maxWidth is truthy, use that. Otherwise, look for a value in
-// the preferences object. If that is not truthy, use a hardcoded constant.
+// 如果maxWidth是真值，就使用它；否则，看看preferences对象。
+// 如果Preferences里也没有真值，就使用硬编码的常量
 let max = maxWidth || preferences.maxWidth || 500;
 ```
 
 The problem with this idiomatic use is that zero, the empty string, and false are all falsy values that may be perfectly valid in some circumstances. In this code example, if `maxWidth` is zero, that value will be ignored. But if we change the `||` operator to `??`, we end up with an expression where zero is a valid value:
 
+::: tip 翻译
+这种习惯用法的问题在于，0、空字符串和`false`都是假值，但这些值在某些情况下是完全有效的。对上面的代码示例来说，`maxWidth`如果等于 0，该值就会被忽略。如果我们把`||`操作符改为`??`，那么对这个表达式来说，0 也会成为有效的值：
+:::
+
 ```js
-// If maxWidth is defined, use that. Otherwise, look for a value in
-// the preferences object. If that is not defined, use a hardcoded constant.
+// 如果maxWidth有定义，就使用它；否则，看看preferences对象。
+// 如果Preferences里也没有定义，就使用硬编码的常量
 let max = maxWidth ?? preferences.maxWidth ?? 500;
 ```
 
 Here are more examples showing how `??` works when the first operand is falsy. If that operand is falsy but defined, then `??` returns it. It is only when the first operand is “nullish” (i.e., `null` or `undefined`) that this operator evaluates and returns the second operand:
 
+::: tip 翻译
+下面再看几个例子，其中`??`的第一个操作数都是假值。如果这个操作数是假值但有定义，`??`仍然返回这个值。只有当第一个操作数“缺值”（nullish）时（即`null`或`undefined`），这个操作符才会求值并返回第二个操作数：
+:::
+
 ```js
 let options = { timeout: 0, title: "", verbose: false, n: null };
-options.timeout ?? 1000; // => 0: as defined in the object
-options.title ?? "Untitled"; // => "": as defined in the object
-options.verbose ?? true; // => false: as defined in the object
-options.quiet ?? false; // => false: property is not defined
-options.n ?? 10; // => 10: property is null
+options.timeout ?? 1000; // => 0: 在对象中有定义
+options.title ?? "Untitled"; // => "": 在对象中有定义
+options.verbose ?? true; // => false: 在对象中有定义
+options.quiet ?? false; // => false: 属性没有定义
+options.n ?? 10; // => 10: 属性值是null
 ```
 
 Note that the `timeout`, `title`, and `verbose` expressions here would have different values if we used `||` instead of `??`.
 
+::: tip 翻译
+注意，如果我们使用`||`而不是`??`，这里的`timeout`、`title`和`verbose`表达式会求值为不同的结果。
+:::
+
 The `??` operator is similar to the `&&` and `||` operators but does not have higher precedence or lower precedence than they do. If you use it in an expression with either of those operators, you must use explicit parentheses to specify which operation you want to perform first:
 
+::: tip 翻译
+`??`操作符与`&&`和`||`操作符类似，但优先级并不比它们更高或更低。如果表达式中混用了`??`和它们中的任何一个，必须使用圆括号说明先执行哪个操作：
+:::
+
 ```js
-(a ?? b) || c // ?? first, then ||
-a ?? (b || c) // || first, then ??
-a ?? b || c // SyntaxError: parentheses are required
+(a ?? b) || c // ?? x先执行，然后执行||
+a ?? (b || c) // || 先执行，然后执行 ??
+a ?? b || c // SyntaxError: 必须有圆括号
 ```
 
 The `??` operator is defined by ES2020, and as of early 2020, is newly supported by current or beta versions of all major browsers. This operator is formally called the “nullish coalescing” operator, but I avoid that term because this operator selects one of its operands but does not “coalesce” them in any way that I can see.
 
-### The typeof Operator
+::: tip 翻译
+`??`操作符是 ES2020 定义的，在 2020 年初已经得到所有主流浏览器当前和预览版的支持。这个操作符正式的名字叫“缺值合并”（nullish coalescing）操作符，但我没有使用这个叫法。因为这个操作符会选择自己的一个操作数，但我并没有看到它会“合并”操作数。
+:::
+
+### typeof 操作符
 
 `typeof` is a unary operator that is placed before its single operand, which can be of any type. Its value is a string that specifies the type of the operand. Table 4-3 specifies the value of the `typeof` operator for any JavaScript value.
+
+::: tip 翻译
+`typeof`是个一元操作符，放在自己的操作数前面，这个操作数可以是任意类型。`typeof`操作符的值是一个字符串，表明操作数的类型。表 4-3 列出了所有 JavaScript 值在应用`typeof`操作符后得到的值。
+:::
 
 _Table 4-3. Values returned by the typeof operator_
 
@@ -1588,63 +1838,115 @@ _Table 4-3. Values returned by the typeof operator_
 
 You might use the `typeof` operator in an expression like this:
 
+::: tip 翻译
+可以像下面这样在表达式中使用`typeof`操作符：
+:::
+
 ```js
-// If the value is a string, wrap it in quotes, otherwise, convert
+// 如果value是字符串，把它包含在引号中，否则把它转换为字符串
 typeof value === "string" ? "'" + value + "'" : value.toString();
 ```
 
 Note that `typeof` returns “object” if the operand value is `null`. If you want to distinguish `null` from objects, you’ll have to explicitly test for this special-case value.
 
+::: tip 翻译
+注意，如果操作数的值是`null`，`typeof`返回“object”。如果想区分`null`和对象，必须显式测试这个特殊值。
+:::
+
 Although JavaScript functions are a kind of object, the `typeof` operator considers functions to be sufficiently different that they have their own return value.
+
+::: tip 翻译
+尽管 JavaScript 函数是一种对象，`typeof`操作符也认为函数不一样，因为它们有自己的返回值。
+:::
 
 Because `typeof` evaluates to “object” for all object and array values other than functions, it is useful only to distinguish objects from other, primitive types. In order to distinguish one class of object from another, you must use other techniques, such as the `instanceof` operator (see §4.9.4), the `class` attribute (see §14.4.3), or the `constructor` property (see §9.2.2 and §14.3).
 
-### The delete Operator
+::: tip 翻译
+因为对除函数之外的所有对象和数组值，`typeof`都求值为“object”，所以可以只用它来区分对象和其他原始类型。而要区分不同对象的类，必须使用其他方法，例如`instanceof`操作符（参见 4.9.4 节）、`class`特性（参见 14.4.3 节），或者`constructor`属性（参见 9.2.2 节和 14.3 节）。
+:::
+
+### delete 操作符
 
 `delete` is a unary operator that attempts to delete the object property or array element specified as its operand. Like the assignment, increment, and decrement operators, `delete` is typically used for its property deletion side effect and not for the value it returns. Some examples:
 
-```js
-let o = { x: 1, y: 2 }; // Start with an object
-delete o.x; // Delete one of its properties
-"x" in o; // => false: the property does not exist anymore
+::: tip 翻译
+`delete`是一元操作符，尝试删除其操作数指定的对象属性或数组元素。与赋值、递增和递减操作符一样，使用`delete`通常也是为了发挥其属性删除的副效应，而不是使用它返回的值。来看几个例子：
+:::
 
-let a = [1, 2, 3]; // Start with an array
-delete a[2]; // Delete the last element of the array
-2 in a; // => false: array element 2 doesn't exist anymore
-a.length; // => 3: note that array length doesn't change, though
+```js
+let o = { x: 1, y: 2 }; // 先定义一个对象
+delete o.x; // 删除它的属性
+"x" in o; // => false: 这个属性不存在了
+
+let a = [1, 2, 3]; // 定义一个数组
+delete a[2]; // 删除数组的最后一个元素
+2 in a; // => false: 数组元素2不存在了
+a.length; // => 3: 但要注意，数组的长度没有变化
 ```
 
 Note that a deleted property or array element is not merely set to the `undefined` value. When a property is deleted, the property ceases to exist. Attempting to read a nonexistent property returns `undefined`, but you can test for the actual existence of a property with the in operator (§4.9.3). Deleting an array element leaves a “hole” in the array and does not change the array’s length. The resulting array is _sparse_ (§7.3).
 
+::: tip 翻译
+注意，被删除的属性或数组元素不仅会被设置为`undefined`值。当删除一个属性时，这个属性就不复存在了。尝试读取不存在的属性会返回`undefined`，但可以通过 in 操作符（参见 4.9.3）测试某个属性是否存在。删除某个数组元素会在数组中留下一个“坑”，并不改变数组的长度。结果数组是一个稀疏数组（参见 7.3 节）。
+:::
+
 `delete` expects its operand to be an lvalue. If it is not an lvalue, the operator takes no action and returns `true`. Otherwise, `delete` attempts to delete the specified lvalue. delete returns `true` if it successfully deletes the specified lvalue. Not all properties can be deleted, however: non-configurable properties (§14.1) are immune from deletion.
+
+::: tip 翻译
+`delete`期待它的操作数是个左值。如果操作数不是左值，`delete`什么也不做，且返回`true`。否则，`delete`尝试删除指定的左值。如果删除成功则返回`true`。但是并非所有属性都是可以删除的：不可配置属性（参见 14.1 节）就无法删除。
+:::
 
 In strict mode, `delete` raises a SyntaxError if its operand is an unqualified identifier such as a variable, function, or function parameter: it only works when the operand is a property access expression (§4.4). Strict mode also specifies that `delete` raises a TypeError if asked to delete any non-configurable (i.e., nondeleteable) property. Outside of strict mode, no exception occurs in these cases, and `delete` simply returns `false` to indicate that the operand could not be deleted.
 
+::: tip 翻译
+在严格模式下，`delete`的操作数如果是未限定标识符，比如变量、函数或函数参数，就会导致 SyntaxError。此时，`delete`操作符只能作用于属性访问表达式（参见 4.4 节）。严格模式也会在`delete`尝试删除不可配置（即不可删除）属性时抛出 TypeError。但在严格模式之外，这两种情况都不会发生异常，`delete`只是简单地返回`false`，表示不能删除操作数。
+:::
+
 Here are some example uses of the `delete` operator:
+
+::: tip 翻译
+下面是几个使用`delete`操作符的例子：
+:::
 
 ```js
 let o = { x: 1, y: 2 };
-delete o.x; // Delete one of the object properties; returns true.
-typeof o.x; // Property does not exist; returns "undefined".
-delete o.x; // Delete a nonexistent property; returns true.
-delete 1; // This makes no sense, but it just returns true.
-// Can't delete a variable; returns false, or SyntaxError in strict mode.
+delete o.x; // 删除对象的一个属性：返回true.
+typeof o.x; // 属性不存在；返回 "undefined".
+delete o.x; // 删除不存在的属性；返回 true.
+delete 1; // 这样做毫无意义，但会返回true.
+// 不能删除变量，返回false,或在严格模式下报SyntaxError
 delete o;
-// Undeletable property: returns false, or TypeError in strict mode.
+// 不可删除的属性：返回false，或在严格模式下抛出 TypeError
 delete Object.prototype;
 ```
 
 We’ll see the `delete` operator again in §6.4.
 
-### The await Operator
+::: tip 翻译
+我们会在 6.4 节再看到`delete`操作符。
+:::
 
-`await` was introduced in ES2017 as a way to make asynchronous programming more natural in JavaScript. You will need to read **Chapter 13** to understand this operator. Briefly, however, `await` expects a Promise object (representing an asynchronous computation) as its sole operand, and it makes your program behave as if it were waiting for the asynchronous computation to complete (but it does this without actually blocking, and it does not prevent other asynchronous operations from proceeding at the same time). The value of the `await` operator is the fulfillment value of the Promise object. Importantly, `await` is only legal within functions that have been declared asynchronous with the `async` keyword. Again, see **Chapter 13** for full details.
+### await 操作符
 
-### The void Operator
+`await` was introduced in ES2017 as a way to make asynchronous programming more natural in JavaScript. You will need to read [Chapter 13](./Chapter-13-Asynchronous.md) to understand this operator. Briefly, however, `await` expects a Promise object (representing an asynchronous computation) as its sole operand, and it makes your program behave as if it were waiting for the asynchronous computation to complete (but it does this without actually blocking, and it does not prevent other asynchronous operations from proceeding at the same time). The value of the `await` operator is the fulfillment value of the Promise object. Importantly, `await` is only legal within functions that have been declared asynchronous with the `async` keyword. Again, see [Chapter 13](./Chapter-13-Asynchronous.md) for full details.
+
+::: tip 翻译
+`await`是 ES2017 增加的，用于让 JavaScript 中的异步编程更自然。要理解这个操作符，需要阅读[第 13 章](./Chapter-13-Asynchronous.md)。但简单来说，`await`期待一个 Promise 对象（表示异步计算）作为其唯一操作数，可以让代码看起来像是在等待异步计算完成（但实际上它不会阻塞主线程，不会妨碍其他异步操作进行）。`await`操作符的值是 Promise 对象的兑现值。关键在于，`await`只能出现在已经通过`async`关键字声明为异步的函数中。同样，要了解完整的细节，参见[第 13 章](./Chapter-13-Asynchronous.md)。
+:::
+
+### void 操作符
 
 `void` is a unary operator that appears before its single operand, which may be of any type. This operator is unusual and infrequently used; it evaluates its operand, then discards the value and returns `undefined`. Since the operand value is discarded, using the `void` operator makes sense only if the operand has side effects.
 
-The `void` operator is so obscure that it is difficult to come up with a practical example of its use. One case would be when you want to define a function that returns nothing but also uses the arrow function shortcut syntax (see §8.1.3) where the body of the function is a single expression that is evaluated and returned. If you are evaluating the expression solely for its side effects and do not want to return its value, then the simplest thing is to use curly braces around the function body. But, as an alternative, you could also use the void operator in this case:
+::: tip 翻译
+`void`是一元操作符，出现在它的操作数前面，这个操作数可以是任意类型。`void`是个与众不同的操作符，用处不多：它求值自己的操作数，然后丢弃这个值并返回`undefined`。由于操作数的值会被丢弃，只有在操作数有副效应时才有必要使用`void`操作符。
+:::
+
+The `void` operator is so obscure that it is difficult to come up with a practical example of its use. One case would be when you want to define a function that returns nothing but also uses the arrow function shortcut syntax (see §8.1.3) where the body of the function is a single expression that is evaluated and returned. If you are evaluating the expression solely for its side effects and do not want to return its value, then the simplest thing is to use curly braces around the function body. But, as an alternative, you could also use the `void` operator in this case:
+
+::: tip 翻译
+`void`操作符太难解释，也很难给出一个实际的例子说明它的用法。一种情况是你要定义一个函数，这个函数什么也不返回，但却使用了箭头函数的简写语法（参见 8.1.3 节），其中函数体是一个会被求值并返回的表达式。如果你只想对这个表达式求值，不想返回它的值，那最简单的方法是用花括号把函数体包起来。此时，作为替代也可以使用`void`操作符：
+:::
 
 ```js
 let counter = 0;
@@ -1653,9 +1955,13 @@ increment(); // => undefined
 counter; // => 1
 ```
 
-### The comma Operator (,)
+### 逗号操作符 (,)
 
 The comma operator is a binary operator whose operands may be of any type. It evaluates its left operand, evaluates its right operand, and then returns the value of the right operand. Thus, the following line:
+
+::: tip 翻译
+逗号操作符是二元操作符，其操作数可以是任意类型。这个操作符会求值其左操作数，求值其右操作数，然后返回右操作数的值。因此，下面这行代码：
+:::
 
 ```js
 (i = 0), (j = 1), (k = 2);
@@ -1663,24 +1969,32 @@ The comma operator is a binary operator whose operands may be of any type. It ev
 
 evaluates to 2 and is basically equivalent to:
 
+::: tip 翻译
+求值为 2，基本上等价于：
+:::
+
 ```js
 i = 0;
 j = 1;
 k = 2;
 ```
 
-The lefthand expression is always evaluated, but its value is discarded, which means that it only makes sense to use the comma operator when the lefthand expression has side effects. The only situation in which the comma operator is commonly used is with a for loop (§5.4.3) that has multiple loop variables:
+The left-hand expression is always evaluated, but its value is discarded, which means that it only makes sense to use the comma operator when the left-hand expression has side effects. The only situation in which the comma operator is commonly used is with a `for` loop (§5.4.3) that has multiple loop variables:
+
+::: tip 翻译
+换句话说，逗号左侧的操作数始终会被求值，但这个值会被丢弃。而这也意味着只有当左侧表达式有副效应时才有必要使用逗号操作符。逗号操作符唯一常见的使用场景就是有多个循环变量的`for`循环（参见 5.4.3 节）：
+:::
 
 ```js
-// The first comma below is part of the syntax of the let statement
-// The second comma is the comma operator: it lets us squeeze 2
-// expressions (i++ and j--) into a statement (the for loop) that expects 1.
+// 下面第一个逗号是let语句语法的一部分
+// 第二个逗号是逗号操作符，它让我们把两个表达式（i++与j--）
+// 放到了本来期待一个表达式的语句（for循环）中
 for (let i = 0, j = 10; i < j; i++, j--) {
   console.log(i + j);
 }
 ```
 
-## Summary
+## 总结
 
 This chapter covers a wide variety of topics, and there is lots of reference material here that you may want to reread in the future as you continue to learn JavaScript. Some key points to remember, however, are these:
 
@@ -1691,3 +2005,15 @@ This chapter covers a wide variety of topics, and there is lots of reference mat
 - JavaScript defines operators for arithmetic, comparisons, Boolean logic, assignment, and bit manipulation, along with some miscellaneous operators, including the ternary conditional operator.
 - The JavaScript `+` operator is used to both add numbers and concatenate strings.
 - The logical operators `&&` and `||` have special “short-circuiting” behavior and sometimes only evaluate one of their arguments. Common JavaScript idioms require you to understand the special behavior of these operators.
+
+::: tip 翻译
+本章介绍了很多内容，其中包含很多参考资料，可以让你在学习 JavaScript 的过程中反复阅读。下面是其中必须记住的一些要点：
+
+- 表达式是 JavaScript 程序中的短语。
+- 任何表达式都可以求值为一个 JavaScript 值。
+- 表达式除了产生一个值，也可以有副效应（如变量赋值）。
+- 字面量、变量引用和属性访问等简单表达式可以与操作符组合，以产生更大的表达式。
+- JavaScript 为算术、比较、布尔逻辑、赋值和位操作定义了操作符，还有其他一些操作符，包括三元条件操作符。
+- JavaScript 的`+`操作符既可用于数值加法，也可用于字符串拼接。
+- 逻辑操作符`&&`和`||`具有特殊的“短路”行为，有时候只会求值它们的一个参数。要熟悉 JavaScript 的惯用做法，必须理解这些操作符的这种特殊行为。
+  :::
