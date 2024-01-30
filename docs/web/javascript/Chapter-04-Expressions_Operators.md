@@ -703,25 +703,57 @@ Order of evaluation only makes a difference if any of the expressions being eval
 求值顺序只在一种情况下会造成差异，即被求值的表达式具有副效应，这会影响其他表达式的求值。比如，表达式`x`递增一个变量，而表达式`z`会使用这个变量，此时保证`x`先于`z`被求值就很重要了。
 :::
 
-## Arithmetic Expressions
+## 算术表达式
 
 This section covers the operators that perform arithmetic or other numerical manipulations on their operands. The exponentiation, multiplication, division, and subtraction operators are straightforward and are covered first. The addition operator gets a subsection of its own because it can also perform string concatenation and has some unusual type conversion rules. The unary operators and the bitwise operators are also covered in subsections of their own.
 
+::: tip 翻译
+本节介绍对操作数执行算术或其他数值操作的操作符。首先介绍幂、乘、除和减这几个简单直观的操作符。之后会介绍加操作符，因为它也执行字符串转换，且具有不同寻常的类型转换规则。一元操作符和位操作符也会在之后介绍。
+:::
+
 Most of these arithmetic operators (except as noted as follows) can be used with BigInt (see §3.2.5) operands or with regular numbers, as long as you don’t mix the two types.
+
+::: tip 翻译
+多数算术操作符（除了下面提到的）都可以用于 BigInt（参见 3.2.5 节）操作数或常规数值，前提是不能混用两种类型。
+:::
 
 The basic arithmetic operators are `**` (exponentiation), `*` (multiplication), `/` (division), `%` (modulo: remainder after division), `+` (addition), and `-` (subtraction). As noted, we’ll discuss the `+` operator in a section of its own. The other five basic operators simply evaluate their operands, convert the values to numbers if necessary, and then compute the power, product, quotient, remainder, or difference. Non-numeric operands that cannot convert to numbers convert to the `NaN` value. If either operand is (or converts to) `NaN`, the result of the operation is (almost always) `NaN`.
 
+::: tip 翻译
+基本的算术操作符是`**`（幂）、`*`（乘）、`/`（除）、`%`（模：除后的余数）、`+`（加）和`-`（减）。如前所述，我们会在单独一节讨论`+`操作符。另外 5 个基本操作符都会对自己的操作数进行求值，必要时将操作数转换为数值，然后计算幂、积、商、余和差。无法转换为数值的非数值操作数则转换为`NaN`。如果有操作数是（或被转换成）`NaN`，则操作结果（几乎始终）是`NaN`。
+:::
+
 The `**` operator has higher precedence than `*`, `/`, and `%` (which in turn have higher precedence than `+` and `-`). Unlike the other operators, `**` works right-to-left, so `2**2**3` is the same as `2**8`, not `4**3`. There is a natural ambiguity to expressions like `-3**2`. Depending on the relative precedence of unary minus and exponentiation, that expression could mean `(-3)**2` or `-(3**2)`. Different languages handle this differently, and rather than pick sides, JavaScript simply makes it a syntax error to omit parentheses in this case, forcing you to write an unambiguous expression. `**` is JavaScript’s newest arithmetic operator: it was added to the language with ES2016. The `Math.pow()` function has been available since the earliest versions of JavaScript, however, and it performs exactly the same operation as the `**` operator.
+
+::: tip 翻译
+`**`操作符的优先级高于`*`、`/`和`%`（后三个的优先级又高于`+`和`-`）。与其他操作符不同，`**`具有右结合性，即`2**2**3`相当于`2**8`而非`4**3`。另外，类似`-3**2`这样的表达式本质上是有歧义的。取决于一元减号和幂操作的相对优先级，这个表达式可能意味着`(-3)**2`，也可能意味着`-(3**2)`。对于这种情况，不同语言的处理方式也不同。JavaScript 认为这种情况下不写括号就是语法错误，强制你自己消除表达式的歧义。`**`是 JavaScript 中最新的操作符，是 ES2016 中增加的。但`Math.pow()`函数在 JavaScript 很早的版本中就有了，它与`**`操作符执行完全相同的操作。
+:::
 
 The `/` operator divides its first operand by its second. If you are used to programming languages that distinguish between integer and floating-point numbers, you might expect to get an integer result when you divide one integer by another. In JavaScript, however, all numbers are floating-point, so all division operations have floating-point results: `5/2` evaluates to `2.5`, not `2`. Division by zero yields positive or negative infinity, while `0/0` evaluates to `NaN`: neither of these cases raises an error.
 
+::: tip 翻译
+`/`操作符用第二个操作数除第一个操作数。如果你习惯了区分整数和浮点数的编程语言，应该知道整数相除得到整数。但在 JavaScript 中，所有数值都是浮点数，因此所有除法操作得到的都是浮点数，比如 `5/2` 得到 `2.5` 而不是 `2`。被 `0` 除得到正无穷或负无穷，而 `0/0` 求值为 `NaN`。这两种情况都不是错误。
+:::
+
 The `%` operator computes the first operand modulo the second operand. In other words, it returns the remainder after whole-number division of the first operand by the second operand. The sign of the result is the same as the sign of the first operand. For example, `5 % 2` evaluates to `1`, and `-5 % 2` evaluates to `-1`.
+
+::: tip 翻译
+`%`操作符计算第一个操作数对第二个操作数取模的结果。换句话说，它返回第一个操作数被第二个操作数整除之后的余数。结果的符号与第一个操作数相同。例如，`5 % 2`求值为`1`，而`-5 % 2`求值为`-1`。
+:::
 
 While the modulo operator is typically used with integer operands, it also works for floating-point values. For example, `6.5 % 2.1` evaluates to `0.2`.
 
-### The + Operator
+::: tip 翻译
+虽然模操作数通常用于整数，但也可以用于浮点数。比如，`6.5 % 2.1`求值为`0.2`。
+:::
+
+### + 操作符
 
 The binary `+` operator adds numeric operands or concatenates string operands:
+
+::: tip 翻译
+二元 `+` 操作符用于计算数值操作数的和或者拼接字符串操作数：
+:::
 
 ```js
 1 + 2; // => 3
@@ -731,25 +763,45 @@ The binary `+` operator adds numeric operands or concatenates string operands:
 
 When the values of both operands are numbers, or are both strings, then it is obvious what the `+` operator does. In any other case, however, type conversion is necessary, and the operation to be performed depends on the conversion performed. The conversion rules for `+` give priority to string concatenation: if either of the operands is a string or an object that converts to a string, the other operand is converted to a string and concatenation is performed. Addition is performed only if neither operand is string-like.
 
+::: tip 翻译
+如果两个操作数都是数值或都是字符串，`+`操作符执行后的结果自不必说。但除这两种情况之外的任何情况，都会涉及类型转换，而实际执行的操作取决于类型转换的结果。`+`操作符优先字符串拼接：只要有操作数是字符串或可以转换为字符串的对象，另一个操作数也会被转换为字符串并执行拼接操作。只有任何操作数都不是字符串或类字符串值时才会执行加法操作。
+:::
+
 Technically, the `+` operator behaves like this:
 
 - If either of its operand values is an object, it converts it to a primitive using the object-to-primitive algorithm described in §3.9.3. Date objects are converted by their `toString()` method, and all other objects are converted via `valueOf()`, if that method returns a primitive value. However, most objects do not have a useful `valueOf()` method, so they are converted via `toString()` as well.
 - After object-to-primitive conversion, if either operand is a string, the other is converted to a string and concatenation is performed.
 - Otherwise, both operands are converted to numbers (or to `NaN`) and addition is performed.
 
+::: tip 翻译
+严格来讲，`+`操作符的行为如下所示:
+
+- 如果有一个操作数是对象，则 `+` 操作符使用 3.9.3 节介绍的对象到原始值的算法把该操作数转换为原始值。`Date` 对象用 `toString()`方法来转换，其他所有对象通过 `valueOf()`转换（如果这个方法返回原始值）。不过，多数对象并没有 `valueOf()`方法，因此它们也会通过 `toString()`方法转换。
+- 完成对象到原始值的转换后，如果有操作数是字符串，另一个操作数也会被转换为字符串并进行拼接。
+- 否则，两个操作数都被转换为数值（或`NaN`），计算加法。
+  :::
+
 Here are some examples:
 
+::: tip 翻译
+下面是几个例子：
+:::
+
 ```js
-1 + 2; // => 3: addition
-"1" + "2"; // => "12": concatenation
-"1" + 2; // => "12": concatenation after number-to-string
-1 + {}; // => "1[object Object]": concatenation after object-to-string
-true + true; // => 2: addition after boolean-to-number
-2 + null; // => 2: addition after null converts to 0
-2 + undefined; // => NaN: addition after undefined converts to NaN
+1 + 2; // => 3: 加法
+"1" + "2"; // => "12": 拼接
+"1" + 2; // => "12": 数值转换为字符串后再拼接
+1 + {}; // => "1[object Object]": 对象转换为字符串后再拼接
+true + true; // => 2: 布尔值转换为字符串后计算加法
+2 + null; // => 2: null转换为0后计算加法
+2 + undefined; // => NaN: undefined转换为NaN后计算加法
 ```
 
 Finally, it is important to note that when the `+` operator is used with strings and numbers, it may not be associative. That is, the result may depend on the order in which operations are performed.
+
+::: tip 翻译
+最后，很重要的一点是要注意 `+` 操作符在用于字符串和数值时，可能不遵守结合性。换句话说，结果取决于操作执行的顺序。
+:::
 
 For example:
 
@@ -760,78 +812,185 @@ For example:
 
 The first line has no parentheses, and the `+` operator has left-to-right associativity, so the two numbers are added first, and their sum is concatenated with the string. In the second line, parentheses alter this order of operations: the number 2 is concatenated with the string to produce a new string. Then the number 1 is concatenated with the new string to produce the final result.
 
-### Unary Arithmetic Operators
+::: tip 翻译
+第一行没有圆括号，`+` 操作符表现出左结合性，即两个数值先相加，然后它们的和再与字符串拼接。第二行中的圆括号改变了操作执行的顺序：数值 2 先与字符串拼接产生一个新字符串，然后数值 1 再与新字符串拼接得到最终结果。
+:::
+
+### 一元算术操作符
 
 Unary operators modify the value of a single operand to produce a new value. In JavaScript, the unary operators all have high precedence and are all right-associative. The arithmetic unary operators described in this section (`+`, `-`, `++`, and `--`) all convert their single operand to a number, if necessary. Note that the punctuation characters `+` and `-` are used as both unary and binary operators.
 
+::: tip 翻译
+一元操作符修改一个操作数的值以产生一个新值。在 JavaScript 中，一元操作符全部具有高优先级和右结合性。本节介绍的算术一元操作符（`+`、`-`、`++`和`--`）都在必要时将自己唯一的操作数转换为数值。注意，操作符`+`和`-`既是一元操作符，也是二元操作符。
+:::
+
 The unary arithmetic operators are the following:
+
+::: tip 翻译
+一元算术操作符如下所示：
+:::
 
 **Unary plus(+)**
 
 The unary plus operator converts its operand to a number (or to `NaN`) and returns that converted value. When used with an operand that is already a number, it doesn’t do anything. This operator may not be used with BigInt values, since they cannot be converted to regular numbers.
 
+::: tip 翻译
+**一元加（+）**
+
+一元加操作符将其操作数转换为数值（或`NaN`）并返回转换后的值。如果操作数是数值，则它什么也不做。由于 BigInt 值不能转换为常规数值，因此这个操作符不应该用于 BigInt。
+:::
+
 **Unary minus(-)**
 
 When `-` is used as a unary operator, it converts its operand to a number, if necessary, and then changes the sign of the result.
+
+::: tip 翻译
+**一元减（-）**
+
+当`-`用作一元操作符时，它在必要时将操作数转换为数值，然后改变结果的符号。
+:::
 
 **Increment(++)**
 
 The `++` operator increments (i.e., adds 1 to) its single operand, which must be an lvalue (a variable, an element of an array, or a property of an object). The operator converts its operand to a number, adds 1 to that number, and assigns the incremented value back into the variable, element, or property.
 
-The return value of the `++` operator depends on its position relative to the operand. When used before the operand, where it is known as the pre-increment operator, it increments the operand and evaluates to the incremented value of that operand. When used after the operand, where it is known as the postincrement operator, it increments its operand but evaluates to the _unincremented_ value of that operand. Consider the difference between these two lines of code:
+::: tip 翻译
+**递增（++）**
+
+`++`操作符递增其操作数（也就是加 1），这个操作数必须是一个左值（变量、数组元素或对象属性）。这个操作符将其操作数转换为数值，在这个数值上加 1，然后将递增后的数值再赋值回这个变量、元素或属性。
+:::
+
+The return value of the `++` operator depends on its position relative to the operand. When used before the operand, where it is known as the pre-increment operator, it increments the operand and evaluates to the incremented value of that operand. When used after the operand, where it is known as the post increment operator, it increments its operand but evaluates to the _unincremented_ value of that operand. Consider the difference between these two lines of code:
+
+::: tip 翻译
+`++`操作符的返回值取决于它与操作数的相对位置。如果位于操作数前面，则可以称其为前递增操作符，即先递增操作数，再求值为该操作数递增后的值。如果位于操作数后面，则可以称其为后递增操作符，即它也会递增操作数，但仍然求值为该操作数未递增的值。看看下面两行代码，注意它们的差异：
+:::
 
 ```js
 let i = 1,
-  j = ++i; // i and j are both 2
+  j = ++i; // i 和 j都是2
 let n = 1,
-  m = n++; // n is 2, m is 1
+  m = n++; // n是2，m是1
 ```
 
 Note that the expression `x++` is not always the same as `x=x+1`. The `++` operator never performs string concatenation: it always converts its operand to a number and increments it. If `x` is the string “1”, `++x` is the number 2, but `x+1` is the string “11”.
 
+::: tip 翻译
+这说明，表达式`x++`不一定等价于`x=x+1`。`++`操作符不会执行字符串拼接，而始终会将其操作数转换为数值。如果`x`是字符串“1”，`++x`就是数值 2，但`x+1`则是字符串“11”。
+:::
+
 Also note that, because of JavaScript’s automatic semicolon insertion, you cannot insert a line break between the post-increment operator and the operand that precedes it. If you do so, JavaScript will treat the operand as a complete statement by itself and insert a semicolon before it.
 
+::: tip 翻译
+另外也要注意，由于 JavaScript 会自动插入分号，因此不能在后递增操作符和它前面的操作数之间插入换行符。如果插入了换行符，JavaScript 会将操作数当成一条完整的语句，在它后面插入一个分号。
+:::
+
 This operator, in both its pre- and post-increment forms, is most commonly used to increment a counter that controls a `for` loop (§5.4.3).
+
+::: tip 翻译
+这个操作符（包括其前、后递增形式）主要用于在`for`循环（参见 5.4.3 节）中控制计数器递增。
+:::
 
 **Decrement(--)**
 
 The `--` operator expects an lvalue operand. It converts the value of the operand to a number, subtracts 1, and assigns the decremented value back to the operand. Like the `++` operator, the return value of `--` depends on its position relative to the operand. When used before the operand, it decrements and returns the decremented value. When used after the operand, it decrements the operand but returns the _undecremented_ value. When used after its operand, no line break is allowed between the operand and the operator.
 
-### Bitwise Operators
+::: tip 翻译
+
+**递减（--）**
+
+`--`操作符也期待左值操作数。它会将这个操作数转换为数值，减 1，然后把递减后的值再赋值给操作数。与`++`操作符类似，`--`返回的值取决于它与操作数的相对位置。如果位于操作数前面，它递减并返回递减后的值。如果位于操作数后面，它递减操作数，但返回未递减的值。在位于操作数后面时，操作数与操作符之间不能有换行符。
+:::
+
+### 位操作符
 
 The bitwise operators perform low-level manipulation of the bits in the binary representation of numbers. Although they do not perform traditional arithmetic operations, they are categorized as arithmetic operators here because they operate on numeric operands and return a numeric value. Four of these operators perform Boolean algebra on the individual bits of the operands, behaving as if each bit in each operand were a boolean value (1=true, 0=false). The other three bitwise operators are used to shift bits left and right. These operators are not commonly used in JavaScript programming, and if you are not familiar with the binary representation of integers, including the two’s complement representation of negative integers, you can probably skip this section.
 
+::: tip 翻译
+位操作符对数值的二进制表示执行低级位操作。尽管它们执行的不是我们熟悉的算术计算，但由于它们操作的是数值操作数且返回数值，所以也可以把它们归类为算术操作符。4 个位操作符对操作数的个别二进制位执行布尔代数计算，即将操作数中的每一位当成布尔值来对待（1 为`true`，0 为`false`）。另外 3 个位操作符用于左右移位。位操作符在 JavaScript 编程中不太常用，如果对整数的二进制表示（包括负整数的二进制补码表示）不熟悉，可以考虑先跳过这一节。
+:::
+
 The bitwise operators expect integer operands and behave as if those values were represented as 32-bit integers rather than 64-bit floating-point values. These operators convert their operands to numbers, if necessary, and then coerce the numeric values to 32-bit integers by dropping any fractional part and any bits beyond the 32nd. The shift operators require a right-side operand between 0 and 31. After converting this operand to an unsigned 32-bit integer, they drop any bits beyond the 5th, which yields a number in the appropriate range. Surprisingly, `NaN`, `Infinity`, and `-Infinity` all convert to 0 when used as operands of these bitwise operators.
 
+::: tip 翻译
+位操作符期待整数操作数，而且将它们当成 32 位整数而非 64 位浮点值。这些操作符必要时将它们的操作数转换为数值，然后再将得到的数值强制转换为 32 位整数，即丢弃小数部分和第 32 位以外的部分。移位操作符要求右侧操作数介于 0 到 31 之间。在把操作数转换为无符号 32 位整数后，它们会丢弃第 5 位以外的位，得到一个近似相等的数值。令人惊讶的是，`NaN`、`Infinity`和`-Infinity`在作为这些位操作符的操作数时都会转换为 0。
+:::
+
 All of these bitwise operators except `>>>` can be used with regular number operands or with BigInt (see §3.2.5) operands.
+
+::: tip 翻译
+除了`>>>`之外的所有位操作符都可以用于常规数据或 BigInt（参见 3.2.5 节）操作数。
+:::
 
 **Bitwise AND(&)**
 
 The `&` operator performs a Boolean AND operation on each bit of its integer arguments. A bit is set in the result only if the corresponding bit is set in both operands. For example, `0x1234 & 0x00FF` evaluates to `0x0034`.
 
+::: tip 翻译
+**按位与（&）**
+
+`&`操作符对其整数参数的每一位执行布尔与操作。只有两个操作数对应的位都为 1，结果中对应的位才为 1。例如，`0x1234 & 0x00FF`求值为`0x0034`。
+:::
+
 **Bitwise OR(|)**
 
 The `|` operator performs a Boolean OR operation on each bit of its integer arguments. A bit is set in the result if the corresponding bit is set in one or both of the operands. For example, `0x1234 | 0x00FF` evaluates to `0x12FF`.
+
+::: tip 翻译
+**按位或（|）**
+
+`|`操作符对其整数参数的每一位执行布尔或操作。两个操作数中对应的位都为 1 或有一个为 1，结果中对应的位就为 1。例如，`0x1234 | 0x00FF`求值为`0x12FF`。
+:::
 
 **Bitwise XOR(^)**
 
 The `^` operator performs a Boolean exclusive OR operation on each bit of its integer arguments. Exclusive OR means that either operand one is true or operand two is true, but not both. A bit is set in this operation’s result if a corresponding bit is set in one (but not both) of the two operands. For example, `0xFF00 ^ 0xF0F0` evaluates to `0x0FF0`.
 
+::: tip 翻译
+**按位异或（^）**
+
+`^`操作符对其整数参数的每一位执行布尔异或操作。异或的意思就是要么操作数一为`true`，要么操作数二为`true`，二者不能同时为`true`。两个操作数中对应的位只有一个为 1，结果中对应的位就为 1。例如，`0xFF00 ^ 0xF0F0`求值为`0x0FF0`。
+:::
+
 **Bitwise NOT(~)**
 
 The `~` operator is a unary operator that appears before its single integer operand. It operates by reversing all bits in the operand. Because of the way signed integers are represented in JavaScript, applying the `~` operator to a value is equivalent to changing its sign and subtracting 1. For example, `~0x0F` evaluates to `0xFFFFFFF0`, or −16.
+
+::: tip 翻译
+**按位取反（~）**
+
+`~`操作符是一元操作符，要出现在其操作数前面。按位非的结果是反转操作数中的所有位。因为 JavaScript 表示有符号整数的方式，对一个值应用`~`操作符等于修改其符号并减 1。例如，`~0x0F`求值为`0xFFFFFFF0`，即-16。
+:::
 
 **Shift left(<<)**
 
 The `<<` operator moves all bits in its first operand to the left by the number of places specified in the second operand, which should be an integer between 0 and 31. For example, in the operation `a << 1`, the first bit (the ones bit) of a becomes the second bit (the twos bit), the second bit of a becomes the third, etc. A zero is used for the new first bit, and the value of the 32nd bit is lost. Shifting a value left by one position is equivalent to multiplying by 2, shifting two positions is equivalent to multiplying by 4, and so on. For example, `7 << 2` evaluates to 28.
 
+::: tip 翻译
+**左移（<<）**
+
+`<<`操作符将第一个操作数的所有位向左移动第二个操作数指定的位数，第二个操作数应该是介于 0 到 31 之间的整数。例如，在`a<<1`操作中，`a`的第 1 位变成第 2 位，`a`的第 2 位变成第 3 位，以此类推。新的第 1 位会填充 0，第 32 位的值丢弃。将一个值左移 1 位等于这个值乘以 2，左移 2 位等于乘以 4，以此类推。例如，`7<<2`求值为 28。
+:::
+
 **Shift right with sign(>>)**
 
 The `>>` operator moves all bits in its first operand to the right by the number of places specified in the second operand (an integer between 0 and 31). Bits that are shifted off the right are lost. The bits filled in on the left depend on the sign bit of the original operand, in order to preserve the sign of the result. If the first operand is positive, the result has zeros placed in the high bits; if the first operand is negative, the result has ones placed in the high bits. Shifting a positive value right one place is equivalent to dividing by 2 (discarding the remainder), shifting right two places is equivalent to integer division by 4, and so on. `7 >> 1` evaluates to 3, for example, but note that and `−7 >> 1` evaluates to −4.
 
+::: tip 翻译
+**有符号位移（>>）**
+
+`>>`操作符将第一个操作数的所有位向右移动第二个操作数指定的位数（介于 0 到 31 之间）。移出右边的位会被丢弃。填充到左边的位取决于原始操作数的符号，以便结果保持相同的符号。如果第一个操作数是正值，则结果的高位填充 0；如果第一个操作数是负值，则结果的高位填充 1。将一个正值右移 1 位等于这个值除以 2（丢弃余数），右移 2 位等于除以 4，以此类推。例如，`7>>1`求值为 3，`-7 >> 1`求值为-4。
+:::
+
 **Shift right with zero fill(>>>)**
 
 The `>>>` operator is just like the `>>` operator, except that the bits shifted in on the left are always zero, regardless of the sign of the first operand. This is useful when you want to treat signed 32-bit values as if they are unsigned integers. `−1 >> 4` evaluates to `−1`, but `−1 >>> 4` evaluates to `0x0FFFFFFF`, for example. This is the only one of the JavaScript bitwise operators that cannot be used with BigInt values. BigInt does not represent negative numbers by setting the high bit the way that 32-bit integers do, and this operator only makes sense for that particular two’s complement representation.
+
+::: tip 翻译
+**零填充右移（>>>）**
+
+`>>>`操作符与`>>`操作符类似，只不过无论第一个操作数的符号是什么，左侧移动的位始终填充 0。如果想把有符号 32 位值看成无符号整数，那可以使用这个操作符。例如，`-1 >> 4`求值为-1，而`-1 >>>4`求值为`0x0FFFFFFF`。这是 JavaScript 中唯一一个不能用于 BigInt 的位操作符。BigInt 不像 32 位整数那样通过设置高位的方式表示负值，这个操作符只对特定的补码表示有意义。
+:::
 
 ## Relational Expressions
 
