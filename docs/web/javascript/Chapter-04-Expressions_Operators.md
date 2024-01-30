@@ -992,24 +992,47 @@ The `>>>` operator is just like the `>>` operator, except that the bits shifted 
 `>>>`操作符与`>>`操作符类似，只不过无论第一个操作数的符号是什么，左侧移动的位始终填充 0。如果想把有符号 32 位值看成无符号整数，那可以使用这个操作符。例如，`-1 >> 4`求值为-1，而`-1 >>>4`求值为`0x0FFFFFFF`。这是 JavaScript 中唯一一个不能用于 BigInt 的位操作符。BigInt 不像 32 位整数那样通过设置高位的方式表示负值，这个操作符只对特定的补码表示有意义。
 :::
 
-## Relational Expressions
+## 关系表达式
 
-This section describes JavaScript’s relational operators. These operators test for a relationship (such as “equals,” “less than,” or “property of ”) between two values and return `true` or `false` depending on whether that relationship exists. Relational expressions always evaluate to a boolean value, and that value is often used to control the flow of program execution in `if`, `while`, and `for` statements (see **Chapter 5**). The subsections that follow document the equality and inequality operators, the comparison operators, and JavaScript’s other two relational operators, in and `instanceof`.
+This section describes JavaScript’s relational operators. These operators test for a relationship (such as “equals,” “less than,” or “property of ”) between two values and return `true` or `false` depending on whether that relationship exists. Relational expressions always evaluate to a boolean value, and that value is often used to control the flow of program execution in `if`, `while`, and `for` statements (see [Chapter 5](./Chapter-05-Statements.md)). The subsections that follow document the equality and inequality operators, the comparison operators, and JavaScript’s other two relational operators, in and `instanceof`.
 
-### Equality and Inequality Operators
+::: tip 翻译
+本节介绍 JavaScript 的关系操作符。这些操作符测试两个值之间的关系（如“等于”“小于”或“是……的属性”），并依据相应关系是否存在返回`true`或`false`。关系表达式始终求值为布尔值，而该值经常用于控制程序的执行流，如在`if`、`while`和`for`语句（参见[第 5 章](./Chapter-05-Statements.md)）中使用。接下来几小节将介绍相等和不相等操作符、比较操作符和 JavaScript 的另外两个关系操作符`in`和`instanceof`。
+:::
+
+### 相等与不相等操作符
 
 The `==` and `===` operators check whether two values are the same, using two different definitions of sameness. Both operators accept operands of any type, and both return `true` if their operands are the same and `false` if they are different. The `===` operator is known as the strict equality operator (or sometimes the identity operator), and it checks whether its two operands are “identical” using a strict definition of sameness. The `==` operator is known as the equality operator; it checks whether its two operands are “equal” using a more relaxed definition of sameness that allows type conversions.
 
+::: tip 翻译
+`==`和`===`操作符分别用两个相同的标准检查两个值是否相同。这两个操作符都接受任意类型的操作数，都在自己的操作数相同时返回`true`，不同时返回`false`。`===`操作符被称为严格相等操作符（或者全等操作符），它根据严格相同的定义检查两个操作数是否“完全相同”。`==`操作符被称为相等操作符，它根据更宽松的（允许类型转换的）相同定义检查两个操作数是否“相等”。
+:::
+
 The `!=` and `!==` operators test for the exact opposite of the `==` and `===` operators. The `!=` inequality operator returns `false` if two values are equal to each other according to `==` and returns `true` otherwise. The `!==` operator returns `false` if two values are strictly equal to each other and returns `true` otherwise. As you’ll see in §4.10, the `!` operator computes the Boolean NOT operation. This makes it easy to remember that `!=` and `!==` stand for “not equal to” and “not strictly equal to.”
+
+::: tip 翻译
+`!=`和`!==`操作符测试的关系与`==`和`===`恰好相反。`!=`不相等操作符在两个值用`==`测试相等时返回`false`，否则返回`true`。`!==`操作符在两个值严格相等时返回`false`，否则返回`true`。正如 4.10 节将介绍的，!操作符计算布尔非操作的值。因此很容易记住`!=`和`!==`分别表示“不相等”和“不严格相等”。
+:::
 
 > **The =, ==, and === operators**
 >
 > JavaScript supports `=`, `==`, and `===` operators. Be sure you understand the differences between these assignment, equality, and strict equality operators, and be careful to use the correct one when coding! Although it is tempting to read all three operators as “equals,” it may help to reduce confusion if you read “gets” or “is assigned” for `=`, “is equal to” for `==`, and “is strictly equal to” for `===`.
+>
 > The `==` operator is a legacy feature of JavaScript and is widely considered to be a source of bugs. You should almost always use `===` instead of `==`, and `!==` instead of `!=`.
+
+> **=、==和===操作符**
+>
+> JavaScript 支持`=`、`==`和`===`操作符，它们分别用于赋值、测试相等和严格相等。在实际编码中，一定要确保正确使用它们。表面上看它们都是“等于号”，为了好区分，可以把`=`理解为“取得”或“赋值给”，把`==`理解成“等于”，把`===`理解成“严格等于”。
+>
+> `==`操作符是 JavaScript 早期的特性，被普遍认为是个隐患。因此实践中应该坚持使用`===`而不使用`==`，使用`!==`而不使用`!=`。
 
 As mentioned in §3.8, JavaScript objects are compared by reference, not by value. An object is equal to itself, but not to any other object. If two distinct objects have the same number of properties, with the same names and values, they are still not equal. Similarly, two arrays that have the same elements in the same order are not equal to each other.
 
-#### Strict equality
+::: tip 翻译
+正如 3.8 节所说，JavaScript 对象是按引用而不是按值比较的。对象与自己相等，但与其他任何对象都不相等。即使两个对象有同样多的属性，每个属性的名字和值也相同，那它们也不相等。类似地，两个数组即使元素相同、顺序相同，它们也不相等。
+:::
+
+#### 严格相等
 
 The strict equality operator `===` evaluates its operands, then compares the two values as follows, performing no type conversion:
 
@@ -1021,7 +1044,19 @@ The strict equality operator `===` evaluates its operands, then compares the two
 - If both values are strings and contain exactly the same 16-bit values (see the sidebar in §3.3) in the same positions, they are equal. If the strings differ in length or content, they are not equal. Two strings may have the same meaning and the same visual appearance, but still be encoded using different sequences of 16-bit values. JavaScript performs no Unicode normalization, and a pair of strings like this is not considered equal to the `===` or `==` operators.
 - If both values refer to the same object, array, or function, they are equal. If they refer to different objects, they are not equal, even if both objects have identical properties.
 
-#### Equality with type conversion
+::: tip 翻译
+严格相等操作符`===`求值其操作数，然后按下列步骤比较两个值，不做类型转换：
+
+- 如果两个值类型不同，则不相等。
+- 如果两个值都是`null`或都是`undefined`，则相等。
+- 如果两个值都是布尔值`true`或都是布尔值`false`，则相等。
+- 如果一个或两个值是`NaN`，则不相等（虽然有点意外，但`NaN`确实不等于任何其他值，也包括`NaN`自身！要检查某个值`x`是不是`NaN`，使用`x !== x`或全局`isNaN()`函数）。
+- 如果两个值都是数值且值相同，则相等。如果一个值是`0`而另一个是`-0`，则也相等。
+- 如果两个值都是字符串且相同位置包含完全相同的 16 位值（参见 3.3 节），则相等。如果两个字符串长度或内容不同，则不相等。两个字符串有可能看起来相同，也表示同样的意思，但底层编码却使用不同的 16 位值序列。JavaScript 不会执行 Unicode 归一化操作，像这样的两个字符串用`===`或`==`操作符都不会判定相等。
+- 如果两个值引用同一个对象、数组或函数，则相等。如果它们引用不同的对象，即使两个对象有完全相同的属性，也不相等。
+  :::
+
+#### 基于类型转换的相等
 
 The equality operator `==` is like the strict equality operator, but it is less strict. If the values of the two operands are not the same type, it attempts some type conversions and tries the comparison again:
 
@@ -1033,7 +1068,23 @@ The equality operator `==` is like the strict equality operator, but it is less 
   - If one value is an object and the other is a number or string, convert the object to a primitive using the algorithm described in §3.9.3 and try the comparison again. An object is converted to a primitive value by either its `toString()` method or its `valueOf()` method. The built-in classes of core JavaScript attempt `valueOf()` conversion before `toString()` conversion, except for the Date class, which performs `toString()` conversion.
   - Any other combinations of values are not equal.
 
+::: tip 翻译
+相等操作符`==`与严格相等类似，但没那么严格。如果两个操作数的值类型不同，它会尝试做类型转换，然后再比较。
+
+- 如果两个值类型相同，则按照前面的规则测试它们是否严格相等。如果严格相等，则相等。如果不严格相等，则不相等。
+- 如果两个值类型不同，`==`操作符仍然可能认为它们相等。此时它会使用以下规则，基于类型转换来判定相等关系：
+  - 如果一个值是`null`，另一个值是`undefined`，则相等。
+  - 如果一个值是数值，另一个值是字符串，把字符串转换为数值，再比较转换后的数值。
+  - 如果有一个值为`true`，把它转换为 1，再比较。如果有一个值为`false`，把它转换为 0，再比较。
+  - 如果一个值是对象，另一个值是数值或字符串，先使用 3.9.3 节描述的算法把对象转换为原始值，再比较。对象转换为原始值时要么使用其`toString()`方法，要么使用其`valueOf()`方法。JavaScript 内置的核心类先尝试使用`valueOf()`，再尝试`toString()`。但 Date 类是个例外，这个类执行`toString()`转换。
+  - 其他任何值的组合都不相等。
+    :::
+
 As an example of testing for equality, consider the comparison:
+
+::: tip 翻译
+下面来看一个比较相等的例子：
+:::
 
 ```js
 "1" == true; // => true
@@ -1041,27 +1092,63 @@ As an example of testing for equality, consider the comparison:
 
 This expression evaluates to `true`, indicating that these very different-looking values are in fact equal. The boolean value true is first converted to the number 1, and the comparison is done again. Next, the string "1" is converted to the number 1. Since both values are now the same, the comparison returns `true`.
 
-### Comparison Operators
+::: tip 翻译
+这个表达式求值为`true`，意味着这两个看起来完全不一样的值实际上相等。布尔值`true`首先被转换为数值 1 然后再比较。而字符串"1"也被转换为数值 1。此时两个值相等，因此比较返回`true`。
+:::
+
+### 比较操作符
 
 The comparison operators test the relative order (numerical or alphabetical) of their two operands:
+
+::: tip 翻译
+比较操作符测试操作数的相对顺序（数值或字母表顺序）:
+:::
 
 **Less than(<)**
 
 The `<` operator evaluates to `true` if its first operand is less than its second operand; otherwise, it evaluates to `false`.
 
+::: tip 翻译
+**小于（<）**
+
+`<`操作符在第一个操作数小于第二个操作数时求值为`true`，否则求值为`false`。
+:::
+
 **Greater than(>)**
 
 The `>` operator evaluates to `true` if its first operand is greater than its second operand; otherwise, it evaluates to `false`.
+
+::: tip 翻译
+**大于（>）**
+
+`>`操作符在第一个操作数大于第二个操作数时求值为`true`，否则求值为`false`。
+:::
 
 **Less than or equal(<=)**
 
 The `<=` operator evaluates to `true` if its first operand is less than or equal to its second operand; otherwise, it evaluates to `false`.
 
+::: tip 翻译
+**小于等于（<=）**
+
+`<=`操作符在第一个操作数小于或等于第二个操作数时求值为`true`，否则求值为`false`。
+:::
+
 **Greater than or equal(>=)**
 
 The `>=` operator evaluates to `true` if its first operand is greater than or equal to its second operand; otherwise, it evaluates to `false`.
 
+::: tip 翻译
+**大于等于（>=）**
+
+`>=`操作符在第一个操作数大于或等于第二个操作数时求值为`true`，否则求值为`false`。
+:::
+
 The operands of these comparison operators may be of any type. Comparison can be performed only on numbers and strings, however, so operands that are not numbers or strings are converted.
+
+::: tip 翻译
+这几个比较操作符的操作数可能是任何类型。但比较只能针对数值和字符串，因此不是数值或字符串的操作数会被转换类型。
+:::
 
 Comparison and conversion occur as follows:
 
@@ -1069,58 +1156,98 @@ Comparison and conversion occur as follows:
 - If, after any required object-to-primitive conversion, both operands are strings, the two strings are compared, using alphabetical order, where “alphabetical order” is defined by the numerical order of the 16-bit Unicode values that make up the strings.
 - If, after object-to-primitive conversion, at least one operand is not a string, both operands are converted to numbers and compared numerically. `0` and `-0` are considered equal. `Infinity` is larger than any number other than itself, and `-Infinity` is smaller than any number other than itself. If either operand is (or converts to) `NaN`, then the comparison operator always returns `false`. Although the arithmetic operators do not allow BigInt values to be mixed with regular numbers, the comparison operators do allow comparisons between numbers and BigInts.
 
+::: tip 翻译
+比较和转换规则如下：
+
+- 如果有操作数求值为对象，该对象会按照 3.9.3 节的描述被转换为原始值。即如果它的 `valueOf()`方法返回原始值，就使用这个值，否则就使用它的 `toString()`方法返回的值。
+- 如果在完成对象到原始值的转换后两个操作数都是字符串，则使用字母表顺序比较这两个字符串，其中“字母表顺序”就是组成字符串的 16 位 Unicode 值的数值顺序。
+- 如果在完成对象到原始值的转换后至少有一个操作数不是字符串，则两个操作数都会被转换为数值并按照数值顺序来比较。`0`和`-0`被认为相等。`Infinity`比它本身之外的任何数都大，`-Infinity`比它本身之外的任何数都小。如果有一个操作数是（或转换后是）`NaN`，则这些比较操作符都返回`false`。虽然算术操作符不允许 BigInt 值与常规数值混用，但比较操作符允许数值与 BigInt 进行比较。
+  :::
+
 Remember that JavaScript strings are sequences of 16-bit integer values, and that string comparison is just a numerical comparison of the values in the two strings. The numerical encoding order defined by Unicode may not match the traditional collation order used in any particular language or locale. Note in particular that string comparison is case-sensitive, and all capital ASCII letters are “less than” all lowercase ASCII letters. This rule can cause confusing results if you do not expect it. For example, according to the `<` operator, the string “Zoo” comes before the string “aardvark”.
+
+::: tip 翻译
+记住，JavaScript 字符串是 16 位整数值的序列，而字符串比较就是比较两个字符串的数值序列。Unicode 定义的这个数值编码顺序不一定与特定语言或地区使用的传统校正顺序（collation order）匹配。特别要注意字符串比较是区分大小写的，而所有大写 ASCII 字母比所有小写 ASCII 字母都小。如果不留意，这条规则很可能导致令人不解的结果。例如，根据`<`操作符，字符串“Zoo”会排在字符串“aardvark”前面。
+:::
 
 For a more robust string-comparison algorithm, try the `String.localeCompare()` method, which also takes locale-specific definitions of alphabetical order into account. For case-insensitive comparisons, you can convert the strings to all lowercase or all uppercase using `String.toLowerCase()` or `String.toUpperCase()`. And, for a more general and better localized string comparison tool, use the Intl.Collator class described in §11.7.3.
 
+::: tip 翻译
+如果需要更可靠的字符串比较算法，可以用`String.localeCompare()`方法，这个方法也会考虑特定地区的字母表顺序。要执行不区分大小写的比较，可以使用`String.toLowerCase()`或`String.toUpperCase()`把字符串转换为全小写或全大写。如果需要更通用和更好的本地化字符串比较工具，可以使用 11.7.3 节介绍的 Intl.Collator 类。
+:::
+
 Both the `+` operator and the comparison operators behave differently for numeric and string operands. `+` favors strings: it performs concatenation if either operand is a string. The comparison operators favor numbers and only perform string comparison if both operands are strings:
 
+::: tip 翻译
+`+`操作符和比较操作符同样都会对数值和字符串操作数区别对待。`+`偏向字符串，即只要有一个操作数是字符串，它就会执行拼接操作。而比较操作符偏向数值，只有两个操作数均为字符串时才按字符串处理：
+:::
+
 ```js
-1 + 2; // => 3: addition.
-"1" + "2"; // => "12": concatenation.
-"1" + 2; // => "12": 2 is converted to "2".
-11 < 3; // => false: numeric comparison.
-"11" < "3"; // => true: string comparison.
-"11" < 3; // => false: numeric comparison, "11" converted to 11.
-"one" < 3; // => false: numeric comparison, "one" converted to NaN.
+1 + 2; // => 3: 相加.
+"1" + "2"; // => "12": 拼接.
+"1" + 2; // => "12": 2 会转换为 "2".
+11 < 3; // => false: 数值比较
+"11" < "3"; // => true: 字符串比较
+"11" < 3; // => false: 数值比较, "11" 会转换为 11.
+"one" < 3; // => false: 数值比较, "one" 转换为 NaN.
 ```
 
 Finally, note that the `<=` (less than or equal) and `>=` (greater than or equal) operators do not rely on the equality or strict equality operators for determining whether two values are “equal.” Instead, the less-than-or-equal operator is simply defined as “not greater than,” and the greater-than-or-equal operator is defined as “not less than.” The one exception occurs when either operand is (or converts to) `NaN`, in which case, all four comparison operators return `false`.
 
-### The in Operator
+::: tip 翻译
+最后，注意`<=`（小于或等于）和`>=`（大于或等于）操作符不依赖相等或严格相等操作符确定两个值是否“相等”。其中，小于或等于操作符只是简单地定义为“不大于”，而大于或等于操作符则定义为“不小于”。还有一个例外情形，即只要有一个操作数是（或可以转换为）`NaN`，则全部 4 个比较操作符都返回`false`。
+:::
+
+### in 操作符
 
 The `in` operator expects a left-side operand that is a string, symbol, or value that can be converted to a string. It expects a right-side operand that is an object. It evaluates to true if the left-side value is the name of a property of the right-side object. For example:
 
-```js
-let point = { x: 1, y: 1 }; // Define an object
-"x" in point; // => true: object has property named "x"
-"z" in point; // => false: object has no "z" property.
-"toString" in point; // => true: object inherits toString method
-
-let data = [7, 8, 9]; // An array with elements (indices) 0, 1, and 2
-"0" in data; // => true: array has an element "0"
-1 in data; // => true: numbers are converted to strings
-3 in data; // => false: no element 3
-```
-
-### The instanceof Operator
-
-The `instanceof` operator expects a left-side operand that is an object and a right-side operand that identifies a class of objects. The operator evaluates to `true` if the leftside object is an instance of the right-side class and evaluates to `false` otherwise. **Chapter 9** explains that, in JavaScript, classes of objects are defined by the constructor function that initializes them. Thus, the right-side operand of instanceof should be a function. Here are examples:
+::: tip 翻译
+`in`操作符期待左侧操作数是字符串、符号或可以转换为字符串的值，期待右侧操作数是对象。如果左侧的值是右侧的对象的属性名，则`in`返回`true`。例如：
+:::
 
 ```js
-let d = new Date(); // Create a new object with the Date() constructor
-d instanceof Date; // => true: d was created with Date()
-d instanceof Object; // => true: all objects are instances of Object
-d instanceof Number; // => false: d is not a Number object
-let a = [1, 2, 3]; // Create an array with array literal syntax
-a instanceof Array; // => true: a is an array
-a instanceof Object; // => true: all arrays are objects
-a instanceof RegExp; // => false: arrays are not regular expressions
+let point = { x: 1, y: 1 }; // 定义对象
+"x" in point; // => true: 对象中有名为 "x" 的属性
+"z" in point; // => false: 对象没有名为 "z" 的属性.
+"toString" in point; // => true: 对象继承了toString方法
+
+let data = [7, 8, 9]; // 数组，有元素（索引） 0, 1, 和 2
+"0" in data; // => true: 数组有元素 "0"
+1 in data; // => true: 数组会转换为字符串
+3 in data; // => false: 没有元素 3
 ```
 
-Note that all objects are instances of `Object`. `instanceof` considers the “superclasses” when deciding whether an object is an instance of a class. If the left-side operand of `instanceof` is not an object, `instanceof` returns `false`. If the righthand side is not a class of objects, it throws a `TypeError`.
+### instanceof 操作符
+
+The `instanceof` operator expects a left-side operand that is an object and a right-side operand that identifies a class of objects. The operator evaluates to `true` if the left-side object is an instance of the right-side class and evaluates to `false` otherwise. [Chapter 9](./Chapter-09-Classes.md) explains that, in JavaScript, classes of objects are defined by the constructor function that initializes them. Thus, the right-side operand of instanceof should be a function. Here are examples:
+
+::: tip 翻译
+`instanceof`操作符期待左侧操作数是对象，右侧操作数是对象类的标识。这个操作符在左侧对象是右侧类的实例时求值为`true`，否则求值为`false`。[第 9 章](./Chapter-09-Classes.md)解释了，在 JavaScript 中，对象类是通过初始化它们的构造函数定义的。因而，`instanceof`的右侧操作数应该是一个函数。下面看几个例子：
+:::
+
+```js
+let d = new Date(); // 通过 Date() 构造函数创建一个新对象
+d instanceof Date; // => true: d 是通过 Date() 创建的
+d instanceof Object; // => true: 虽有对象都是 Object 的实例
+d instanceof Number; // => false: d 不是 Number 对象
+let a = [1, 2, 3]; // 通过数组字面量语法创建一个数组
+a instanceof Array; // => true: a 是一个数组
+a instanceof Object; // => true: 所有数组都是对象
+a instanceof RegExp; // => false: 数组不是正则表达式
+```
+
+Note that all objects are instances of `Object`. `instanceof` considers the “superclasses” when deciding whether an object is an instance of a class. If the left-side operand of `instanceof` is not an object, `instanceof` returns `false`. If the right-hand side is not a class of objects, it throws a `TypeError`.
+
+::: tip 翻译
+注意，所有对象都是`Object`的实例。`instanceof`在确定对象是不是某个类的实例时会考虑“超类”。如果`instanceof`的左侧操作数不是对象，它会返回`false`。如果右侧操作数不是对象的类，它会抛出`TypeError`。
+:::
 
 In order to understand how the `instanceof` operator works, you must understand the “prototype chain.” This is JavaScript’s inheritance mechanism, and it is described in §6.3.2. To evaluate the expression `o instanceof f`, JavaScript evaluates `f.prototype`, and then looks for that value in the prototype chain of `o`. If it finds it, then `o` is an instance of `f` (or of a subclass of `f`) and the operator returns `true`. If `f.prototype` is not one of the values in the prototype chain of `o`, then `o` is not an instance of `f` and `instanceof` returns `false`.
+
+::: tip 翻译
+要理解`instanceof`的工作原理，必须理解“原型链”。原型链是 JavaScript 的继承机制，6.3.2 节有详细介绍。为了对表达式`o instanceof f`求值，JavaScript 会求值`f.prototype`，然后在`o`的原型链上查找这个值。如果找到了，则`o`是`f`（或`f`的子类）的实例，`instanceof`返回`true`。如果`f.prototype`不是`o`原型链上的一个值，则`o`不是`f`的实例，`instanceof`返回`false`。
+:::
 
 ## Logical Expressions
 
