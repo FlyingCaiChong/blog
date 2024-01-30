@@ -2,24 +2,58 @@
 title: 第五章 语句
 ---
 
-# Chapter 5 Statements
+# Chapter 5 语句
 
-**Chapter 4** described expressions as JavaScript phrases. By that analogy, statements are JavaScript sentences or commands. Just as English sentences are terminated and separated from one another with periods, JavaScript statements are terminated with semicolons (§2.6). Expressions are evaluated to produce a value, but statements are executed to make something happen.
+[Chapter 4](./Chapter-04-Expressions_Operators.md) described expressions as JavaScript phrases. By that analogy, statements are JavaScript sentences or commands. Just as English sentences are terminated and separated from one another with periods, JavaScript statements are terminated with semicolons (§2.6). Expressions are evaluated to produce a value, but statements are executed to make something happen.
+
+::: tip 翻译
+[第 4 章](./Chapter-04-Expressions_Operators.md)把 JavaScript 中的表达式称作短语。那语句就是 JavaScript 中的句子或命令。就像英语句子用句点来结尾和分隔一样，JavaScript 语句以分号（参见 2.6 节）结尾。表达式被求值后产生一个值，而语句在被执行后会导致某事件发生。
+:::
 
 One way to “make something happen” is to evaluate an expression that has side effects. Expressions with side effects, such as assignments and function invocations, can stand alone as statements, and when used this way are known as _expression statements_. A similar category of statements are the _declaration statements_ that declare new variables and define new functions.
 
+::: tip 翻译
+一种“导致某事件发生”的方式是求值一个有副效应的表达式。像赋值或函数调用这样有副效应的表达式本身就可以作为语句，在像这样使用时就被称为表达式语句。另一种与之类似的语句是声明语句，用于声明变量和定义新函数。
+:::
+
 JavaScript programs are nothing more than a sequence of statements to execute. By default, the JavaScript interpreter executes these statements one after another in the order they are written. Another way to “make something happen” is to alter this default order of execution, and JavaScript has a number of statements or _control structures_ that do just this:
+
+::: tip 翻译
+JavaScript 程序就是一系列待执行的语句。默认情况下，JavaScript 解释器按照它们在源代码中的顺序逐个执行这些语句。另一种“导致某事件发生”的方式是改变这个默认的执行顺序，为此，JavaScript 提供了一些语句或者叫控制结构。
+:::
 
 _Conditionals_
 Statements like `if` and `switch` that make the JavaScript interpreter execute or skip other statements depending on the value of an expression
 
+::: tip 翻译
+_条件_
+
+像`if`和`switch`这样的语句让 JavaScript 解释器根据某个表达式的值选择执行或跳过其他语句。
+:::
+
 _Loops_
 Statements like `while` and `for` that execute other statements repetitively
+
+::: tip 翻译
+_循环_
+
+像`while`和`for`这样的语句会重复执行其他语句。
+:::
 
 _Jumps_
 Statements like `break`, `return`, and `throw` that cause the interpreter to jump to another part of the program
 
+::: tip 翻译
+_跳转_
+
+像`break`、`return`和`throw`这样的语句会导致解释器跳转到程序的其他部分。
+:::
+
 The sections that follow describe the various statements in JavaScript and explain their syntax. Table 5-1, at the end of the chapter, summarizes the syntax. A JavaScript program is simply a sequence of statements, separated from one another with semicolons, so once you are familiar with the statements of JavaScript, you can begin writing JavaScript programs.
+
+::: tip 翻译
+本章各节将依次介绍 JavaScript 中的各种语句，以及它们的语法。本章末尾的表 5-1 总结了这些语法。JavaScript 程序就是一系列语句，以分号作为分隔符。因此只要熟悉 JavaScript 的语句，就可以上手写 JavaScript 程序。
+:::
 
 ## Expression Statements
 
