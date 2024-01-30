@@ -191,10 +191,10 @@ x = null; // Null是一个特殊值，意思是“没有值”
 x = undefined; // Undefined也是一个特殊值，与null类似
 ```
 
-Two other very important types that JavaScript programs can manipulate are objects and arrays. These are the subjects of Chapters 6 and 7, but they are so important that you’ll see them many times before you reach those chapters:
+Two other very important types that JavaScript programs can manipulate are objects and arrays. These are the subjects of [Chapters 6](./Chapter-06-Objects.md) and [7](./Chapter-07-Arrays.md), but they are so important that you’ll see them many times before you reach those chapters:
 
 ::: tip 翻译
-JavaScript 程序可以操作的另外两个非常重要的类型是对象和数组，分别将在第 6 章和第 7 章中介绍。不过，因为它们实在太重要了，所以在那两章之前你也会多次看到它们。
+JavaScript 程序可以操作的另外两个非常重要的类型是对象和数组，分别将在[第 6 章](./Chapter-06-Objects.md)和[第 7 章](./Chapter-07-Arrays.md)中介绍。不过，因为它们实在太重要了，所以在那两章之前你也会多次看到它们。
 :::
 
 ```js
@@ -306,18 +306,11 @@ x > y; // => false: 大于操作符
 x >= y; // => false: 大于或等于操作符
 "two" === "three"; // => false: 两个字符串不相同
 "two" > "three"; // => true: "tw" 按字母表顺序大于 "th"
-(false ===
-  (x > y)(
-    // => true: false 等于 false
+false === x > y; // => true: false 等于 false
 
-    // 逻辑操作符组合或反转布尔值
-    x === 2
-  ) &&
-  (y === 3)(
-    // => true：两个比较都为true。&& 是逻辑与
-    x > 3
-  )) ||
-  y < 3; // => false: 两个比较都不是true。|| 是逻辑或
+// 逻辑操作符组合或反转布尔值
+x === 2 && y === 3; // => true：两个比较都为true。&& 是逻辑与
+x > 3 || y < 3; // => false: 两个比较都不是true。|| 是逻辑或
 !(x === y); // => true: ! 用于反转布尔值
 ```
 
@@ -327,10 +320,10 @@ If JavaScript expressions are like phrases, then JavaScript _statements_ are lik
 如果 JavaScript 表达式像短语，那 JavaScript 语句就像完整的句子。语句是[第 5 章](./Chapter-05-Statements.md)的主题。简单地说，表达式只用于计算值，什么也不做，即不以任何方式改变程序的状态。而语句没有值，但却会改变状态。前面我们已经看到了变量声明和赋值语句。另外还有一类语句叫控制结构，例如条件和循环。在介绍完函数之后，我们会看到它们的示例。
 :::
 
-A _function_ is a named and parameterized block of JavaScript code that you define once, and can then invoke over and over again. Functions aren’t covered formally until **Chapter 8**, but like objects and arrays, you’ll see them many times before you get to that chapter. Here are some simple examples:
+A _function_ is a named and parameterized block of JavaScript code that you define once, and can then invoke over and over again. Functions aren’t covered formally until [Chapter 8](./Chapter-08-Functions.md), but like objects and arrays, you’ll see them many times before you get to that chapter. Here are some simple examples:
 
 ::: tip 翻译
-函数是一个有名字、有参数的 JavaScript 代码块，只要定义一次就可以反复调用。第 8 章会正式介绍函数，但在之前你也会多次看到它们，就像对象和数组一样。下面是几个简单的示例：
+函数是一个有名字、有参数的 JavaScript 代码块，只要定义一次就可以反复调用。[第 8 章](./Chapter-08-Functions.md)会正式介绍函数，但在之前你也会多次看到它们，就像对象和数组一样。下面是几个简单的示例：
 :::
 
 ```js
@@ -353,7 +346,7 @@ square(plus1(y)); // => 16: 在一个表达式中调用两个函数
 In ES6 and later, there is a shorthand syntax for defining functions. This concise syntax uses `=>` to separate the argument list from the function body, so functions defined this way are known as _arrow functions_. Arrow functions are most commonly used when you want to pass an unnamed function as an argument to another function. The preceding code looks like this when rewritten to use arrow functions:
 
 ::: tip 翻译
-在 ES6 及之后，有一种定义函数的简写方式。这种简洁的语法使用 `=>` 来分隔参数列表和函数体，因此以这种方式定义的函数被称为箭头函数。箭头函数经常用于把一个未命名函数作为参数传给另一个函数。前面的函数用箭头函数重写后如下所示：
+在 ES6 及之后，有一种定义函数的简写方式。这种简洁的语法使用 `=>` 来分隔参数列表和函数体，因此以这种方式定义的函数被称为 _箭头函数_。箭头函数经常用于把一个未命名函数作为参数传给另一个函数。前面的函数用箭头函数重写后如下所示：
 :::
 
 ```js

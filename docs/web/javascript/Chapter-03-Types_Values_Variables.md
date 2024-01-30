@@ -66,10 +66,10 @@ JavaScript 支持面向对象的编程风格。粗略地说，这意味着不用
 a.sort(); // sort(a)的面向对象版
 ```
 
-Method definition is covered in **Chapter 9**. Technically, it is only JavaScript objects that have methods. But numbers, strings, boolean, and symbol values behave as if they have methods. In JavaScript, `null` and `undefined` are the only values that methods cannot be invoked on.
+Method definition is covered in [Chapter 9](./Chapter-09-Classes.md). Technically, it is only JavaScript objects that have methods. But numbers, strings, boolean, and symbol values behave as if they have methods. In JavaScript, `null` and `undefined` are the only values that methods cannot be invoked on.
 
 ::: tip 翻译
-第 9 章将介绍如何定义方法。从技术角度来讲，只有 JavaScript 对象才有方法。但数值、字符串、布尔值和符号表现得似乎它们也有方法。在 JavaScript 中，只有`null`和`undefined`是不能调用方法的值。
+[第 9 章](./Chapter-09-Classes.md)将介绍如何定义方法。从技术角度来讲，只有 JavaScript 对象才有方法。但数值、字符串、布尔值和符号表现得似乎它们也有方法。在 JavaScript 中，只有`null`和`undefined`是不能调用方法的值。
 :::
 
 JavaScript’s object types are _mutable_ and its primitive types are _immutable_. A value of a mutable type can change: a JavaScript program can change the values of object properties and array elements. Numbers, booleans, symbols, null, and undefined are immutable—it doesn’t even make sense to talk about changing the value of a number, for example. Strings can be thought of as arrays of characters, and you might expect them to be mutable. In JavaScript, however, strings are immutable: you can access the text at any index of a string, but JavaScript provides no way to alter the text of an existing string. The differences between mutable and immutable values are explored further in §3.8.
@@ -104,16 +104,16 @@ JavaScript’s primary numeric type, Number, is used to represent integers and t
 JavaScript 的主要数值类型 Number 用于表示整数和近似实数。JavaScript 使用 IEEE 754 标准定义的 64 位符点格式表示数值，这意味着 JavaScript 可以表示的最大整数是 ±1.7976931348623157 × 10^308，最小整数是 ±5 × 10^−324。
 :::
 
-The JavaScript number format allows you to exactly represent all integers between −9,007,199,254,740,992 (−2^53) and 9,007,199,254,740,992 (2^53), inclusive. If you use integer values larger than this, you may lose precision in the trailing digits. Note, however, that certain operations in JavaScript (such as array indexing and the bitwise operators described in **Chapter 4**) are performed with 32-bit integers. If you need to exactly represent larger integers, see §3.2.5.
+The JavaScript number format allows you to exactly represent all integers between −9,007,199,254,740,992 (−2^53) and 9,007,199,254,740,992 (2^53), inclusive. If you use integer values larger than this, you may lose precision in the trailing digits. Note, however, that certain operations in JavaScript (such as array indexing and the bitwise operators described in [Chapter 4](./Chapter-04-Expressions_Operators.md)) are performed with 32-bit integers. If you need to exactly represent larger integers, see §3.2.5.
 
 ::: tip 翻译
-JavaScript 的这种数值格式可以让我们准确表示 −9,007,199,254,740,992 (−2^53) 到 9,007,199,254,740,992 (2^53) 之间的所有整数（含首尾值）。如果你的数值超出了这个范围，那可能会在末尾的数字上损失一些精度。但要注意，JavaScript 中的某些操作（如第 4 章介绍的数组索引和位操作）是以 32 位整数计算的。如果想准确表示更大的整数，可以参考 3.2.5 节。
+JavaScript 的这种数值格式可以让我们准确表示 −9,007,199,254,740,992 (−2^53) 到 9,007,199,254,740,992 (2^53) 之间的所有整数（含首尾值）。如果你的数值超出了这个范围，那可能会在末尾的数字上损失一些精度。但要注意，JavaScript 中的某些操作（如[第 4 章](./Chapter-04-Expressions_Operators.md)介绍的数组索引和位操作）是以 32 位整数计算的。如果想准确表示更大的整数，可以参考 3.2.5 节。
 :::
 
 When a number appears directly in a JavaScript program, it’s called a _numeric literal_. JavaScript supports numeric literals in several formats, as described in the following sections. Note that any numeric literal can be preceded by a minus sign (`-`) to make the number negative.
 
 ::: tip 翻译
-当数值真正出现在 JavaScript 程序中时，就叫作数值字面量(numeric literal)。JavaScript 支持几种形式的数值字面量，后面几节会介绍。注意，任何数值字面量前面都可以加上一个减号（-）来让该数值变为负数。
+当数值真正出现在 JavaScript 程序中时，就叫作数值字面量(numeric literal)。JavaScript 支持几种形式的数值字面量，后面几节会介绍。注意，任何数值字面量前面都可以加上一个减号（`-`）来让该数值变为负数。
 :::
 
 ### 整数字面量
@@ -488,8 +488,7 @@ Date 类及其方法在 11.4 节有详细介绍。但在 3.9.3 节探讨 JavaScr
 The JavaScript type for representing text is the _string_. A string is an immutable ordered sequence of 16-bit values, each of which typically represents a Unicode character. The _length_ of a string is the number of 16-bit values it contains. JavaScript’s strings (and its arrays) use zero-based indexing: the first 16-bit value is at position 0, the second at position 1, and so on. The _empty string_ is the string of length 0. JavaScript does not have a special type that represents a single element of a string. To represent a single 16-bit value, simply use a string that has a length of 1.
 
 ::: tip 翻译
-JavaScript 中表示文本的类型是 String，即字符串。字符串是 16 位值的不可修改的有序序列，其中每个值都表示一个 Unicode 字符。字符串的 length 属性是它包含的 16 位值的个数。JavaScript 的
-字符串（以及数组）使用基于零的索引，因此第一个 16 位值的索引是 0，第二个值的索引是 1，以此类推。空字符串是长度为 0 的字符串。JavaScript 没有表示单个字符串元素的专门类型。要表示一个 16 位值，使用长度为 1 的字符串即可。
+JavaScript 中表示文本的类型是 String，即字符串。字符串是 16 位值的不可修改的有序序列，其中每个值都表示一个 Unicode 字符。字符串的 `length` 属性是它包含的 16 位值的个数。JavaScript 的字符串（以及数组）使用基于零的索引，因此第一个 16 位值的索引是 0，第二个值的索引是 1，以此类推。空字符串是长度为 0 的字符串。JavaScript 没有表示单个字符串元素的专门类型。要表示一个 16 位值，使用长度为 1 的字符串即可。
 :::
 
 > **Characters, Codepoints, and JavaScript Strings**
@@ -527,7 +526,7 @@ JavaScript 中表示文本的类型是 String，即字符串。字符串是 16 �
 To include a string in a JavaScript program, simply enclose the characters of the string within a matched pair of single or double quotes or backticks (`'` or `"` or <code>\`</code>). Double-quote characters and backticks may be contained within strings delimited by single-quote characters, and similarly for strings delimited by double quotes and backticks. Here are examples of string literals:
 
 ::: tip 翻译
-要在 JavaScript 程序中包含字符串，可以把字符串放到一对匹配的单引号、双引号或者反引号（'、"或`）中。双引号字符和反引号可以出现在由单引号定界的字符串中，同理由双引号和反引号定界的字符串里也可以包含另外两种引号。下面是几个字符串字面量的例子：
+要在 JavaScript 程序中包含字符串，可以把字符串放到一对匹配的单引号、双引号或者反引号（`'`、`"`或<code>\`</code>）中。双引号字符和反引号可以出现在由单引号定界的字符串中，同理由双引号和反引号定界的字符串里也可以包含另外两种引号。下面是几个字符串字面量的例子：
 :::
 
 ```js
@@ -1013,10 +1012,10 @@ The Symbol type does not have a literal syntax. To obtain a Symbol value, you ca
 Symbol 类型没有字面量语法。要获取一个 Symbol 值，需要调用`Symbol()`函数。这个函数永远不会返回相同的值，即使每次传入的参数都一样。这意味着可以将调用`Symbol()`取得的符号值安全地用于为对象添加新属性，而无须担心可能重写已有的同名属性。类似地，如果定义了符号属性但没有共享相关符号，也可以确信程序中的其他代码不会意外重写这个属性。
 :::
 
-In practice, Symbols serve as a language extension mechanism. When ES6 introduced the `for/of` loop (§5.4.4) and iterable objects (**Chapter 12**), it needed to define standard method that classes could implement to make themselves iterable. But standardizing any particular string name for this iterator method would have broken existing code, so a symbolic name was used instead. As we’ll see in **Chapter 12**, `Symbol.iterator` is a Symbol value that can be used as a method name to make an object iterable.
+In practice, Symbols serve as a language extension mechanism. When ES6 introduced the `for/of` loop (§5.4.4) and iterable objects ([Chapter 12](./Chapter-12-Iterators_Generators.md)), it needed to define standard method that classes could implement to make themselves iterable. But standardizing any particular string name for this iterator method would have broken existing code, so a symbolic name was used instead. As we’ll see in [Chapter 12](./Chapter-12-Iterators_Generators.md), `Symbol.iterator` is a Symbol value that can be used as a method name to make an object iterable.
 
 ::: tip 翻译
-实践中，符号通常用作一种语言扩展机制。ES6 新增了`for/of`循环（参见 5.4.4 节）和可迭代对象（参见第 12 章），为此就需要定义一种标准的机制让类可以实现，从而把自身变得可迭代。但选择任何特定的字符串作为这个迭代器方法的名字都有可能破坏已有的代码。为此，符号名应运而生。正如第 12 章会介绍的，`Symbol.iterator`是一个符号值，可用作一个方法名，让对象变得可迭代。
+实践中，符号通常用作一种语言扩展机制。ES6 新增了`for/of`循环（参见 5.4.4 节）和可迭代对象（参见[第 12 章](./Chapter-12-Iterators_Generators.md)），为此就需要定义一种标准的机制让类可以实现，从而把自身变得可迭代。但选择任何特定的字符串作为这个迭代器方法的名字都有可能破坏已有的代码。为此，符号名应运而生。正如[第 12 章](./Chapter-12-Iterators_Generators.md)会介绍的，`Symbol.iterator`是一个符号值，可用作一个方法名，让对象变得可迭代。
 :::
 
 The `Symbol()` function takes an optional string argument and returns a unique Symbol value. If you supply a string argument, that string will be included in the output of the Symbol’s `toString()` method. Note, however, that calling `Symbol()` twice with the same string produces two completely different Symbol values.
@@ -1311,7 +1310,7 @@ As an aside, note that the `Boolean()`, `Number()`, and `String()` functions can
 Certain JavaScript operators perform implicit type conversions and are sometimes used explicitly for the purpose of type conversion. If one operand of the `+` operator is a string, it converts the other one to a string. The unary `+` operator converts its operand to a number. And the unary `!` operator converts its operand to a boolean and negates it. These facts lead to the following type conversion idioms that you may see in some code:
 
 ::: tip 翻译
-某些 JavaScript 操作符会执行隐式类型转换，有时候可以利用这一点完成类型转换。如果+操作符有一个操作数是字符串，那它会把另一个操作数转换为字符串。一元操作符+会把自己的操作数转换为数值。而一元操作符!会把自己的操作数转换为布尔值，然后再取反。这些事实导致我们常常会在某些代码中看到如下类型转换的用法：
+某些 JavaScript 操作符会执行隐式类型转换，有时候可以利用这一点完成类型转换。如果`+`操作符有一个操作数是字符串，那它会把另一个操作数转换为字符串。一元操作符`+`会把自己的操作数转换为数值。而一元操作符`!`会把自己的操作数转换为布尔值，然后再取反。这些事实导致我们常常会在某些代码中看到如下类型转换的用法：
 :::
 
 ```js

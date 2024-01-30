@@ -1,41 +1,79 @@
 ---
-title: 第四章 表达式和运算符
+title: 第四章 表达式与操作符
 ---
 
-# Chapter 4 Expressions and Operators
+# 表达式与操作符
+
+[[toc]]
 
 This chapter documents JavaScript expressions and the operators with which many of those expressions are built. An _expression_ is a phrase of JavaScript that can be _evaluated_ to produce a value. A constant embedded literally in your program is a very simple kind of expression. A variable name is also a simple expression that evaluates to whatever value has been assigned to that variable. Complex expressions are built from simpler expressions. An array access expression, for example, consists of one expression that evaluates to an array followed by an open square bracket, an expression that evaluates to an integer, and a close square bracket. This new, more complex expression evaluates to the value stored at the specified index of the specified array. Similarly, a function invocation expression consists of one expression that evaluates to a function object and zero or more additional expressions that are used as the arguments to the function.
 
+::: tip 翻译
+本章讲述 JavaScript 表达式和用于构建各种表达式的操作符。表达式是一个可以被求值并产生一个值的 JavaScript 短语。直接嵌入在程序中的常量是最简单的表达式。变量名也是简单的表达式，可以求值为之前赋给它的值。复杂表达式由简单表达式构成。比如，数组访问表达式由一个求值为数组的表达式、一个左方括号、一个求值为整数的表达式和一个右方括号构成。这个新的更复杂的表达式求值为保存在指定数组的指定索引位置的值。类似地，函数调用表达式由一个求值为函数对象的表达式和零或多个作为函数参数的表达式构成。
+:::
+
 The most common way to build a complex expression out of simpler expressions is with an _operator_. An operator combines the values of its operands (usually two of them) in some way and evaluates to a new value. The multiplication operator `*` is a simple example. The expression `x * y` evaluates to the product of the values of the expressions `x` and `y`. For simplicity, we sometimes say that an operator _returns_ a value rather than “evaluates to” a value.
+
+::: tip 翻译
+基于简单表达式构建复杂表达式最常见的方式是使用操作符。操作符以某种方式组合其操作数的值（通常有两个），然后求值为一个新值。以乘法操作符 `*` 为例。表达式 `x * y` 求值为表达式 `x` 和 `y` 值的积。为简单起见，有时也说操作符返回值，而不是“求值为”一个值。
+:::
 
 This chapter documents all of JavaScript’s operators, and it also explains expressions (such as array indexing and function invocation) that do not use operators. If you already know another programming language that uses C-style syntax, you’ll find that the syntax of most of JavaScript’s expressions and operators is already familiar to you.
 
-## Primary Expressions
+::: tip 翻译
+本章讲述所有 JavaScript 操作符，也会解释不使用操作符的表达式（如数组索引和函数调用）。如果你熟悉其他使用 C 风格语法的编程语言，那一定会觉得 JavaScript 中多数表达式和操作符的语法并不陌生。
+:::
+
+## 主表达式
 
 The simplest expressions, known as _primary expressions_, are those that stand alone—they do not include any simpler expressions. Primary expressions in JavaScript are constant or _literal_ values, certain language keywords, and variable references.
 
+::: tip 翻译
+最简单的表达式称为主表达式（primary expression），即那些独立存在，不再包含更简单表达式的表达式。JavaScript 中的主表达式包括常量或字面量值、某些语言关键字和变量引用。
+:::
+
 Literals are constant values that are embedded directly in your program. They look like these:
 
+::: tip 翻译
+字面量是可以直接嵌入在程序中的常量值。例如：
+:::
+
 ```js
-1.23 // A number literal
-"hello" // A string literal
-/pattern/ // A regular expression literal
+1.23 // 数值字面量
+"hello" // 字符串字面量
+/pattern/ // 正则表达式字面量
 ```
 
 JavaScript syntax for number literals was covered in §3.2. String literals were documented in §3.3. The regular expression literal syntax was introduced in §3.3.5 and will be documented in detail in §11.3.
 
+::: tip 翻译
+3.2 节介绍了 JavaScript 数值字面量的语法。3.3 节介绍了字符串字面量的语法。3.3.5 节介绍了正则表达式字面量的语法，另外 11.3 节还会详细介绍。
+:::
+
 Some of JavaScript’s reserved words are primary expressions:
 
+::: tip 翻译
+JavaScript 的一些保留字也是主表达式：
+:::
+
 ```js
-true; // Evalutes to the boolean true value
-false; // Evaluates to the boolean false value
-null; // Evaluates to the null value
-this; // Evaluates to the "current" object
+true; // 求值为布尔值true
+false; // 求值为布尔值false
+null; // 求值为null值
+this; // 求值为“当前”对象
 ```
 
-We learned about `true`, `false`, and `null` in §3.4 and §3.5. Unlike the other keywords, this is not a constant—it evaluates to different values in different places in the program. The `this` keyword is used in object-oriented programming. Within the body of a method, `this` evaluates to the object on which the method was invoked. See §4.5, **Chapter 8** (especially §8.2.2), and **Chapter 9** for more on `this`.
+We learned about `true`, `false`, and `null` in §3.4 and §3.5. Unlike the other keywords, this is not a constant—it evaluates to different values in different places in the program. The `this` keyword is used in object-oriented programming. Within the body of a method, `this` evaluates to the object on which the method was invoked. See §4.5, [Chapter 8](./Chapter-08-Functions.md) (especially §8.2.2), and [Chapter 9](./Chapter-09-Classes.md) for more on `this`.
+
+::: tip 翻译
+我们在 3.4 节和 3.5 节学习了 `true`、`false` 和 `null`。与其他关键字不同，`this` 不是常量，它在程序中的不同地方会求值为不同的值。`this` 是面向对象编程中使用的关键字。在方法体中，`this` 求值为调用方法的对象。要了解关于 `this` 的更多信息，可以参考 4.5 节、[第 8 章](./Chapter-08-Functions.md)（特别是 8.2.2 节）和[第 9 章](./Chapter-09-Classes.md)。
+:::
 
 Finally, the third type of primary expression is a reference to a variable, constant, or property of the global object:
+
+::: tip 翻译
+最后，第三种主表达式是变量、常量或全局对象属性的引用：
+:::
 
 ```js
 i; // Evaluates to the value of the variable i.
@@ -45,17 +83,34 @@ undefined; // The value of the "undefined" property of the global object
 
 When any identifier appears by itself in a program, JavaScript assumes it is a variable or constant or property of the global object and looks up its value. If no variable with that name exists, an attempt to evaluate a nonexistent variable throws a ReferenceError instead.
 
-## Object and Array Initializers
+::: tip 翻译
+当程序中出现任何独立的标识符时，JavaScript 假设它是一个变量或常量或全局对象的属性，并查询它的值。如果不存在该名字的变量，则求值不存在的变量会导致抛出 ReferenceError。
+:::
+
+## 对象和数组初始化程序
 
 _Object_ and _array initializers_ are expressions whose value is a newly created object or array. These initializer expressions are sometimes called _object literals_ and _array literals_. Unlike true literals, however, they are not primary expressions, because they include a number of subexpressions that specify property and element values. Array initializers have a slightly simpler syntax, and we’ll begin with those.
 
+::: tip 翻译
+对象和数组初始化程序也是一种表达式，其值为新创建的对象或数组。这些初始化程序表达式有时候也被称为对象字面量和数组字面量。但与真正的字面量不同，它们不是主表达式，因为它们包含用于指定属性或元素值的子表达式。数组初始化程序的语法稍微简单一点，我们先来介绍它。
+:::
+
 An array initializer is a comma-separated list of expressions contained within square brackets. The value of an array initializer is a newly created array. The elements of this new array are initialized to the values of the comma-separated expressions:
 
+::: tip 翻译
+数组初始化程序是一个包含在方括号内的逗号分隔的表达式列表。数组初始化程序的值是新创建的数组。这个新数组的元素被初始化为逗号分隔的表达式的值：
+:::
+
 ```js
-[][(1 + 2, 3 + 4)]; // An empty array: no expressions inside brackets means no elements // A 2-element array. First element is 3, second is 7
+[]; // 空数组： 方括号中没有表达式意味着没有元素
+[1 + 2, 3 + 4]; // 两个元素的数组。第一个元素是3，第二个元素是7
 ```
 
 The element expressions in an array initializer can themselves be array initializers, which means that these expressions can create nested arrays:
+
+::: tip 翻译
+数组初始化程序中的元素表达式本身也可以是数组初始化程序，这意味着以下表达式可以创建嵌套数组：
+:::
 
 ```js
 let matrix = [
@@ -67,7 +122,15 @@ let matrix = [
 
 The element expressions in an array initializer are evaluated each time the array initializer is evaluated. This means that the value of an array initializer expression may be different each time it is evaluated.
 
+::: tip 翻译
+数组初始化程序中的元素表达式在每次数组初始化程序被求值时也会被求值。这意味着数组初始化程序表达式每次求值的结果可能不一样。
+:::
+
 Undefined elements can be included in an array literal by simply omitting a value between commas. For example, the following array contains five elements, including three undefined elements:
+
+::: tip 翻译
+在数组字面量中省略逗号间的值可以包含未定义元素。例如，以下数组包含 5 个元素，其中有 3 个未定义元素：
+:::
 
 ```js
 let sparseArray = [1, , , , 5];
@@ -75,16 +138,28 @@ let sparseArray = [1, , , , 5];
 
 A single trailing comma is allowed after the last expression in an array initializer and does not create an undefined element. However, any array access expression for an index after that of the last expression will necessarily evaluate to undefined.
 
+::: tip 翻译
+数组初始化程序的最后一个表达式后面可以再跟一个逗号，而且这个逗号不会创建未定义元素。不过，通过数组访问表达式访问最后一个表达式后面的索引一定会求值为 `undefined`。
+:::
+
 Object initializer expressions are like array initializer expressions, but the square brackets are replaced by curly brackets, and each subexpression is prefixed with a property name and a colon:
 
+::: tip 翻译
+对象初始化程序表达式与数组初始化程序表达式类似，但方括号变成了花括号，且每个子表达式前面多了一个属性名和一个冒号：
+:::
+
 ```js
-let p = { x: 2.3, y: -1.2 }; // An object with 2 properties
-let q = {}; // An empty object with no properties
+let p = { x: 2.3, y: -1.2 }; // 有两个属性的对象
+let q = {}; // 没有属性的空对象
 q.x = 2.3;
-q.y = -1.2; // Now q has the same properties as p
+q.y = -1.2; // 现在q拥有了跟p一样的属性
 ```
 
 In ES6, object literals have a much more feature-rich syntax (you can find details in §6.10). Object literals can be nested. For example:
+
+::: tip 翻译
+在 ES6 中，对象字面量拥有了更丰富的语法（可以参见 6.10 节）。对象字面量可以嵌套。例如：
+:::
 
 ```js
 let rectangle = {
@@ -93,24 +168,40 @@ let rectangle = {
 };
 ```
 
-We’ll see object and array initializers again in Chapters 6 and 7.
+We’ll see object and array initializers again in [Chapters 6](./Chapter-06-Objects.md) and [7](./Chapter-07-Arrays.md).
 
-## Function Definition Expression
+::: tip 翻译
+[第 6 章](./Chapter-06-Objects.md)和[第 7 章](./Chapter-07-Arrays.md)还将介绍对象和数组初始化程序。
+:::
+
+## 函数定义表达式
 
 A _function definition expression_ defines a JavaScript function, and the value of such an expression is the newly defined function. In a sense, a function definition expression is a “function literal” in the same way that an object initializer is an “object literal.” A function definition expression typically consists of the keyword `function` followed by a comma-separated list of zero or more identifiers (the parameter names) in parentheses and a block of JavaScript code (the function body) in curly braces. For example:
 
+::: tip 翻译
+函数定义表达式定义 JavaScript 函数，其值为新定义的函数。某种意义上说，函数定义表达式也是“函数字面量”，就像对象初始化程序是“对象字面量”一样。函数定义表达式通常由关键字`function`、位于括号中的逗号分隔的零或多个标识符（参数名），以及一个位于花括号中的 JavaScript 代码块（函数体）构成。例如：
+:::
+
 ```js
-// This function returns the square of the value passed to it.
+// 这个函数返回传入值的平方
 let square = function (x) {
   return x * x;
 };
 ```
 
-A function definition expression can also include a name for the function. Functions can also be defined using a function statement rather than a function expression. And in ES6 and later, function expressions can use a compact new “arrow function” syntax. Complete details on function definition are in **Chapter 8**.
+A function definition expression can also include a name for the function. Functions can also be defined using a function statement rather than a function expression. And in ES6 and later, function expressions can use a compact new “arrow function” syntax. Complete details on function definition are in [Chapter 8](./Chapter-08-Functions.md).
 
-## Property Access Expressions
+::: tip 翻译
+函数定义表达式也可以包含函数的名字。函数也可以使用函数语句而非函数表达式来定义。在 ES6 及之后的版本中，函数表达式可以使用更简洁的“箭头函数”语法。[第 8 章](./Chapter-08-Functions.md)详细讲解了函数定义。
+:::
+
+## 属性访问表达式
 
 A _property access expression_ evaluates to the value of an object property or an array element. JavaScript defines two syntaxes for property access:
+
+::: tip 翻译
+属性访问表达式求值为对象属性或数组元素的值。JavaScript 定义了两种访问属性的语法：
+:::
 
 ```js
 expression.identifier;
@@ -119,26 +210,46 @@ expression[expression];
 
 The first style of property access is an expression followed by a period and an identifier. The expression specifies the object, and the identifier specifies the name of the desired property. The second style of property access follows the first expression (the object or array) with another expression in square brackets. This second expression specifies the name of the desired property or the index of the desired array element. Here are some concrete examples:
 
+::: tip 翻译
+第一种属性访问语法是表达式后跟一个句点和一个标识符。其中，表达式指定对象，标识符指定属性名。第二种属性访问语法是表达式（对象或数组）后跟另一个位于方括号中的表达式。这第二个表达式指定属性名或数组元素的索引。下面是几个具体的例子：
+:::
+
 ```js
-let o = { x: 1, y: { z: 3 } }; // An example object
-let a = [o, 4, [5, 6]]; // An example array that contains the object
-o.x; // => 1: property x of expression o
-o.y.z; // => 3: property z of expression o.y
-o["x"]; // => 1: property x of object o
-a[1]; // => 4: element at index 1 of expression a
-a[2]["1"]; // => 6: element at index 1 of expression a[2]
-a[0].x; // => 1: property x of expression a[0]
+let o = { x: 1, y: { z: 3 } }; // 示例对象
+let a = [o, 4, [5, 6]]; // 包含前面对象的示例数组
+o.x; // => 1: 表达式o的属性x
+o.y.z; // => 3: 表达式o.y的属性z
+o["x"]; // => 1: 对象o的属性x
+a[1]; // => 4: 表达式a中索引为1的元素
+a[2]["1"]; // => 6: 表达式a[2]中索引为 1的元素
+a[0].x; // => 1: 表达式a[0]的属性x
 ```
 
 With either type of property access expression, the expression before the `.` or `[` is first evaluated. If the value is `null` or `undefined`, the expression throws a TypeError, since these are the two JavaScript values that cannot have properties. If the object expression is followed by a dot and an identifier, the value of the property named by that identifier is looked up and becomes the overall value of the expression. If the object expression is followed by another expression in square brackets, that second expression is evaluated and converted to a string. The overall value of the expression is then the value of the property named by that string. In either case, if the named property does not exist, then the value of the property access expression is `undefined`.
 
+::: tip 翻译
+无论哪种属性访问表达式，位于 `.` 或 `[` 前面的表达式都会先求值。如果求值结果为`null`或`undefined`，则表达式会抛出 TypeError，因为它们是 JavaScript 中不能有属性的两个值。如果对象表达式后跟一个点和一个标识符，则会对以该标识符为名字的属性求值，且该值会成为整个表达式的值。如果对象表达式后跟位于方括号中的另一个表达式，则第二个表达式会被求值并转换为字符串。整个表达式的值就是名字为该字符串的属性的值。任何一种情况下，如果指定名字的属性不存在，则属性访问表达式的值是`undefined`。
+:::
+
 The `.identifier` syntax is the simpler of the two property access options, but notice that it can only be used when the property you want to access has a name that is a legal identifier, and when you know the name when you write the program. If the property name includes spaces or punctuation characters, or when it is a number (for arrays), you must use the square bracket notation. Square brackets are also used when the property name is not static but is itself the result of a computation (see §6.3.1 for an example).
 
-Objects and their properties are covered in detail in **Chapter 6**, and arrays and their elements are covered in **Chapter 7**.
+::: tip 翻译
+在两种属性访问表达式中，加标识符的语法更简单，但通过它访问的属性的名字必须是合法的标识符，而且在写代码时已经知道了这个名字。如果属性名中包含空格或标点字符，或者是一个数值（对于数组而言），则必须使用方括号语法。方括号也可以用来访问非静态属性名，即属性本身是计算结果（参见 6.3.1 节的例子）。
+:::
 
-### Conditional Property Access
+Objects and their properties are covered in detail in [Chapter 6](./Chapter-06-Objects.md), and arrays and their elements are covered in [Chapter 7](./Chapter-07-Arrays.md).
+
+::: tip 翻译
+对象及其属性将在[第 6 章](./Chapter-06-Objects.md)详细介绍，数组及其元素将在[第 7 章](./Chapter-07-Arrays.md)详细介绍。
+:::
+
+### 条件式属性访问
 
 ES2020 adds two new kinds of property access expressions:
+
+::: tip 翻译
+ES2020 增加了两个新的属性访问表达式：
+:::
 
 ```js
 expression?.identifier;
@@ -147,9 +258,21 @@ expression?.[expression];
 
 In JavaScript, the values `null` and `undefined` are the only two values that do not have properties. In a regular property access expression using `.` or `[]`, you get a TypeError if the expression on the left evaluates to `null` or `undefined`. You can use `?.` and `?.[]` syntax to guard against errors of this type.
 
+::: tip 翻译
+在 JavaScript 中，`null`和`undefined`是唯一两个没有属性的值。在使用普通的属性访问表达式时，如果`.`或`[]`左侧的表达式求值为`null`或`undefined`，会报 TypeError。可以使用`?.`或`?.[]`语法防止这种错误发生。
+:::
+
 Consider the expression `a?.b`. If a is `null` or `undefined`, then the expression evaluates to `undefined` without any attempt to access the property `b`. If `a` is some other value, then `a?.b` evaluates to whatever `a.b` would evaluate to (and if a does not have a property named `b`, then the value will again be `undefined`).
 
+::: tip 翻译
+比如表达式`a?.b`，如果`a`是`null`或`undefined`，那么整个表达式求值结果为`undefined`，不会尝试访问属性`b`。如果 a 是其他值，则`a?.b`求值为`a.b`的值（如果`a`没有名为`b`的属性，则整个表达式的值还是`undefined`）。
+:::
+
 This form of property access expression is sometimes called “optional chaining” because it also works for longer “chained” property access expressions like this one:
+
+::: tip 翻译
+这种形式的属性访问表达式有时候也被称为“可选链接”，因为它也适用于下面这样更长的属性访问表达式链条：
+:::
 
 ```js
 let a = { b: null };
@@ -158,7 +281,15 @@ a.b?.c.d; // => undefined
 
 `a` is an object, so `a.b` is a valid property access expression. But the value of `a.b` is `null`, so `a.b.c` would throw a TypeError. By using `?.` instead of `.` we avoid the TypeError, and `a.b?.c` evaluates to `undefined`. This means that `(a.b?.c).d` will throw a TypeError, because that expression attempts to access a property of the value `undefined`. But—and this is a very important part of “optional chaining”—`a.b?.c.d` (without the parentheses) simply evaluates to `undefined` and does not throw an error. This is because property access with `?.` is “short-circuiting”: if the subexpression to the left of `?.` evaluates to `null` or `undefined`, then the entire expression immediately evaluates to `undefined` without any further property access attempts.
 
+::: tip 翻译
+`a`是个对象，因此`a.b`是有效的属性访问表达式。但`a.b`的值是`null`，因此`a.b.c`会抛出 TypeError。但通过使用`?.`而非`.`就可以避免这个 TypeError，最终`a.b?.c`求值为`undefined`。这意味着`(a.b?.c).d`也会抛出 TypeError，因为这个表达式尝试访问`undefined`值的属性。但如果没有括号，即`a.b?.c.d`（这种形式是“可选链接”的重要特征）就会直接求值为`undefined`而不会抛出错误。这是因为通过`?.`访问属性是“短路操作”：如果`?.`左侧的子表达式求值为`null`或`undefined`，那么整个表达式立即求值为`undefined`，不会再进一步尝试访问属性。
+:::
+
 Of course, if `a.b` is an object, and if that object has no property named `c`, then `a.b?.c.d` will again throw a TypeError, and we will want to use another conditional property access:
+
+::: tip 翻译
+当然，如果`a.b`是对象，且这个对象没有名为`c`的属性，则`a.b?.c.d`仍然会抛出 TypeError。此时应该再加一个条件式属性访问：
+:::
 
 ```js
 let a = { b: {} };
@@ -167,93 +298,148 @@ a.b?.c?.d; // => undefined
 
 Conditional property access is also possible using `?.[]` instead of `[]`. In the expression `a?.[b][c]`, if the value of a is `null` or `undefined`, then the entire expression immediately evaluates to `undefined`, and subexpressions `b` and `c` are never even evaluated. If either of those expressions has side effects, the side effect will not occur if a is not defined:
 
+::: tip 翻译
+条件式属性访问也可以让我们使用`?.[]`而非`[]`。在表达式`a?.[b][c]`中，如果`a`的值是`null`或`undefined`，则整个表达式立即求值为`undefined`，子表达式`b`和`c`不会被求值。换句话说，如果`a`没有定义，那么`b`和`c`无论谁有副效应（side effect），这个副效应都不会发生：
+:::
+
 ```js
-let a; // Oops, we forgot to initialize this variable!
+let a; // 忘记初始化这个变量了！
 let index = 0;
 try {
-  a[index++]; // Throws TypeError
+  a[index++]; // 抛出 TypeError
 } catch (e) {
-  index; // => 1: increment occurs before TypeError is thrown
+  index; // => 1: 抛出 TypeError 之前发生了递增
 }
-a?.[index++]; // => undefined: because a is undefined
-index; // => 1: not incremented because ?.[] short-circuits
-a[index++]; // !TypeError: can't index undefined.
+a?.[index++]; // => undefined: 因为a是undefined
+index; // => 1: 因为 ?.[] 短路所以没有发生递增
+a[index++]; // !TypeError: 不能索引undefined.
 ```
 
 Conditional property access with `?.` and `?.[]` is one of the newest features of JavaScript. As of early 2020, this new syntax is supported in the current or beta versions of most major browsers.
 
-## Invocation Expressions
+::: tip 翻译
+使用`?.`和`?.[]`的条件式属性访问是 JavaScript 最新的特性之一。在 2020 年初，多数主流浏览器的当前版本或预览版已经支持这个新语法。
+:::
+
+## 调用表达式
 
 An _invocation expression_ is JavaScript’s syntax for calling (or executing) a function or method. It starts with a function expression that identifies the function to be called. The function expression is followed by an open parenthesis, a comma-separated list of zero or more argument expressions, and a close parenthesis. Some examples:
 
+::: tip 翻译
+调用表达式是 JavaScript 中调用（或执行）函数或方法的一种语法。这种表达式开头是一个表示要调用函数的函数表达式。函数表达式后面跟着左圆括号、逗号分隔的零或多个参数表达式的列表和右圆括号。看几个例子：
+:::
+
 ```js
-f(0); // f is the function expression; 0 is the argument expression.
-Math.max(x, y, z); // Math.max is the function; x, y, and z are the arguments.
-a.sort(); // a.sort is the function; there are no arguments.
+f(0); // f是函数表达式，0是参数表达式
+Math.max(x, y, z); // Math.max 是函数； x, y, z是参数
+a.sort(); // a.sort 是函数，没有参数
 ```
 
-When an invocation expression is evaluated, the function expression is evaluated first, and then the argument expressions are evaluated to produce a list of argument values. If the value of the function expression is not a function, a TypeError is thrown. Next, the argument values are assigned, in order, to the parameter names specified when the function was defined, and then the body of the function is executed. If the function uses a `return` statement to return a value, then that value becomes the value of the invocation expression. Otherwise, the value of the invocation expression is `undefined`. Complete details on function invocation, including an explanation of what happens when the number of argument expressions does not match the number of parameters in the function definition, are in **Chapter 8**.
+When an invocation expression is evaluated, the function expression is evaluated first, and then the argument expressions are evaluated to produce a list of argument values. If the value of the function expression is not a function, a TypeError is thrown. Next, the argument values are assigned, in order, to the parameter names specified when the function was defined, and then the body of the function is executed. If the function uses a `return` statement to return a value, then that value becomes the value of the invocation expression. Otherwise, the value of the invocation expression is `undefined`. Complete details on function invocation, including an explanation of what happens when the number of argument expressions does not match the number of parameters in the function definition, are in [Chapter 8](./Chapter-08-Functions.md).
 
-Every invocation expression includes a pair of parentheses and an expression before the open parenthesis. If that expression is a property access expression, then the invocation is known as a _method invocation_. In method invocations, the object or array that is the subject of the property access becomes the value of the `this` keyword while the body of the function is being executed. This enables an object-oriented programming paradigm in which functions (which we call “methods” when used this way) operate on the object of which they are part. See **Chapter 9** for details.
+::: tip 翻译
+求值调用表达式时，首先求值函数表达式，然后求值参数表达式以产生参数值的列表。如果函数表达式的值不是函数，则抛出 TypeError。然后，按照函数定义时参数的顺序给参数赋值，之后再执行函数体。如果函数使用了`return`语句返回一个值，则该值就成为调用表达式的值。否则，调用表达式的值是`undefined`。关于函数调用的完整细节，包括在参数表达式个数与函数定义的参数个数不匹配时会发生什么，都会在[第 8 章](./Chapter-08-Functions.md)介绍。
+:::
 
-### Conditional Invocation
+Every invocation expression includes a pair of parentheses and an expression before the open parenthesis. If that expression is a property access expression, then the invocation is known as a _method invocation_. In method invocations, the object or array that is the subject of the property access becomes the value of the `this` keyword while the body of the function is being executed. This enables an object-oriented programming paradigm in which functions (which we call “methods” when used this way) operate on the object of which they are part. See [Chapter 9](./Chapter-09-Classes.md) for details.
+
+::: tip 翻译
+每个调用表达式都包含一对圆括号和左圆括号前面的表达式。如果该表达式是属性访问表达式，则这种调用被称为方法调用。在方法调用中，作为属性访问主体的对象或数组在执行函数体时会变成`this`关键字的值。这样就可以支持面向对象的编程范式，即函数（这样使用时我们称其为“方法”）会附着在其所属对象上来执行操作。详细内容可以参考[第 9 章](./Chapter-09-Classes.md)。
+:::
+
+### 条件式调用
 
 In ES2020, you can also invoke a function using `?.()` instead of `()`. Normally when you invoke a function, if the expression to the left of the parentheses is `null` or `undefined` or any other non-function, a TypeError is thrown. With the new `?.()` invocation syntax, if the expression to the left of the `?.` evaluates to `null` or `undefined`, then the entire invocation expression evaluates to `undefined` and no exception is thrown.
 
+::: tip 翻译
+在 ES2020 中，可以使用`?.()`而非`()`来调用函数。正常情况下，我们调用函数时，如果圆括号左侧的表达式是`null`或`undefined`或任何其他非函数值，都会抛出 TypeError。而使用`?.()`调用语法，如果`?.`左侧的表达式求值为`null`或`undefined`，则整个调用表达式求值为`undefined`，不会抛出异常。
+:::
+
 Array objects have a `sort()` method that can optionally be passed a function argument that defines the desired sorting order for the array elements. Before ES2020, if you wanted to write a method like `sort()` that takes an optional function argument, you would typically use an `if` statement to check that the function argument was defined before invoking it in the body of the `if`:
+
+::: tip 翻译
+数组对象有一个`sort()`方法，接收一个可选的函数参数，用来定义对数组元素排序的规则。在 ES2020 之前，如果想写一个类似`sort()`的这种接收可选函数参数的方法，通常需要在函数内使用`if`语句检查该函数参数是否有定义，然后再调用：
+:::
 
 ```js
 function square(x, log) {
-  // The second argument is an optional function
+  // 第二个参数是一个可选的函数
   if (log) {
-    // If the optional function is passed
-    log(x); // Invoke it
+    // 如果传入了可选的函数
+    log(x); // 调用这个函数
   }
-  return x * x; // Return the square of the argument
+  return x * x; // 返回第一个参数的平方
 }
 ```
 
 With this conditional invocation syntax of ES2020, however, you can simply write the function invocation using `?.()`, knowing that invocation will only happen if there is actually a value to be invoked:
 
+::: tip 翻译
+但有了 ES2020 的条件式调用语法，可以简单地使用`?.()`来调用这个可选的函数，只有在函数有定义时才会真正调用：
+:::
+
 ```js
 function square(x, log) {
-  // The second argument is an optional function
-  log?.(x); // Call the function if there is one
-  return x * x; // Return the square of the argument
-}
+  // 第二个参数是一个可选的函数
+  log?.(x); // 如果有定义则调用
+  return x * x; // 返回第一个参数的平方
 ```
 
-Note, however, that `?.()` only checks whether the lefthand side is `null` or `undefined`. It does not verify that the value is actually a function. So the `square()` function in this example would still throw an exception if you passed two numbers to it, for example.
+Note, however, that `?.()` only checks whether the left hand side is `null` or `undefined`. It does not verify that the value is actually a function. So the `square()` function in this example would still throw an exception if you passed two numbers to it, for example.
+
+::: tip 翻译
+不过要注意，`?.()`只会检查左侧的值是不是`null`或`undefined`，不会验证该值是不是函数。因此，这个例子中的`square()`函数在接收到两个数值时仍然会抛出异常。
+:::
 
 Like conditional property access expressions (§4.4.1), function invocation with `?.()` is short-circuiting: if the value to the left of `?.` is `null` or `undefined`, then none of the argument expressions within the parentheses are evaluated:
+
+::: tip 翻译
+与条件式属性访问表达式（参见 4.4.1 节）类似，使用`?.()`进行函数调用也是短路操作：如果`?.`左侧的值是`null`或`undefined`，则圆括号中的任何参数表达式都不会被求值：
+:::
 
 ```js
 let f = null,
   x = 0;
 try {
-  f(x++); // Throws TypeError because f is null
+  f(x++); // 因为f是null，所以抛出TypeError
 } catch (e) {
-  x; // => 1: x gets incremented before the exception is thrown
+  x; // => 1: 抛出异常前x发生了递增
 }
-f?.(x++); // => undefined: f is null, but no exception thrown
-x; // => 1: increment is skipped because of short-circuiting
+f?.(x++); // => undefined:f是null，但不会抛出异常
+x; // => 1: 因为短路，递增不会发生
 ```
 
 Conditional invocation expressions with `?.()` work just as well for methods as they do for functions. But because method invocation also involves property access, it is worth taking a moment to be sure you understand the differences between the following expressions:
 
+::: tip 翻译
+使用`?.()`的条件式调用表达式既适用于函数调用，也适用于方法调用。因为方法调用又涉及属性访问，所以有必要花时间确认一下自己是否理解下列表达式的区别：
+:::
+
 ```js
-o.m(); // Regular property access, regular invocation
-o?.m(); // Conditional property access, regular invocation
-o.m?.(); // Regular property access, conditional invocation
+o.m(); // 常规属性访问，常规调用
+o?.m(); // 条件式属性访问，常规调用
+o.m?.(); // 常规属性访问，条件式调用
 ```
 
 In the first expression, `o` must be an object with a property `m` and the value of that property must be a function. In the second expression, if `o` is `null` or `undefined`, then the expression evaluates to `undefined`. But if `o` has any other value, then it must have a property `m` whose value is a function. And in the third expression, `o` must not be `null` or `undefined`. If it does not have a property `m`, or if the value of that property is `null`, then the entire expression evaluates to `undefined`.
 
+::: tip 翻译
+第一个表达式中，`o`必须是一个对象且必须有一个`m`属性，且该属性的值必须是函数。第二个表达式中，如果`o`是`null`或`undefined`，则表达式求值为`undefined`。但如果`o`是任何其他值，则它必须有一个值为函数的属性`m`。第三个表达式中，`o`必须不是`null`或`undefined`。如果它没有属性`m`或属性`m`的值是`null`，则整个表达式求值为`undefined`。
+:::
+
 Conditional invocation with `?.()` is one of the newest features of JavaScript. As of the first months of 2020, this new syntax is supported in the current or beta versions of most major browsers.
 
-## Object Creation Expressions
+::: tip 翻译
+使用`?.()`的条件式调用是 JavaScript 最新的特性之一。在 2020 年初，多数主流浏览器的当前版本或预览版已经支持这个新语法。
+:::
+
+## 对象创建表达式
 
 An _object creation expression_ creates a new object and invokes a function (called a constructor) to initialize the properties of that object. Object creation expressions are like invocation expressions except that they are prefixed with the keyword `new`:
+
+::: tip 翻译
+对象创建表达式创建一个新对象并调用一个函数（称为构造函数）来初始化这个新对象。对象创建表达式类似于调用表达式，区别在于前面多了一个关键字 `new`：
+:::
 
 ```js
 new Object();
@@ -262,6 +448,10 @@ new Point(2, 3);
 
 If no arguments are passed to the constructor function in an object creation expression, the empty pair of parentheses can be omitted:
 
+::: tip 翻译
+如果在对象创建表达式中不会给构造函数传参，则可以省略圆括号：
+:::
+
 ```js
 new Object();
 new Date();
@@ -269,13 +459,29 @@ new Date();
 
 The value of an object creation expression is the newly created object. Constructors are explained in more detail in **Chapter 9**.
 
-## Operator Overview
+::: tip 翻译
+对象创建表达式的值是新创建的对象。第 9 章将更详细地解释构造函数。
+:::
+
+## 操作符概述
 
 Operators are used for JavaScript’s arithmetic expressions, comparison expressions, logical expressions, assignment expressions, and more. Table 4-1 summarizes the operators and serves as a convenient reference.
 
+::: tip 翻译
+操作符在 JavaScript 中用于算术表达式、比较表达式、逻辑表达式、赋值表达式等。表 4-1 总结了所有操作符，可以作为一个参考。
+:::
+
 Note that most operators are represented by punctuation characters such as `+` and `=`. Some, however, are represented by keywords such as `delete` and `instanceof`. Keyword operators are regular operators, just like those expressed with punctuation; they simply have a less succinct syntax.
 
+::: tip 翻译
+注意，多数操作符都以`+`和`=`这样的标点符号表示。不过，有一些也以`delete`和`instanceof`这样的关键字表示。关键字操作符也是常规操作符，与标点符号表示的操作符一样，只不过它们的语法没那么简短而已。
+:::
+
 Table 4-1 is organized by operator precedence. The operators listed first have higher precedence than those listed last. Operators separated by a horizontal line have different precedence levels. The column labeled A gives the operator associativity, which can be L (left-to-right) or R (right-to-left), and the column N specifies the number of operands. The column labeled Types lists the expected types of the operands and (after the → symbol) the result type for the operator. The subsections that follow the table explain the concepts of precedence, associativity, and operand type. The operators themselves are individually documented following that discussion.
+
+::: tip 翻译
+表 4-1 按操作符优先级组织。换句话说，表格前面的操作符比后面的操作符优先级更高。横线分隔的操作符具有不同优先级。“结合性”中的“左”表示“从左到右”，“右”表示“从右到左”。“操作数”表示操作数的个数。“类型”表示操作数的类型，以及操作符的结果类型（→ 后面）。表格后面的几节解释优先级、结合性和操作数类型的概念。介绍完这些概念后，我们将详细介绍每一个操作符。
+:::
 
 _Table 4-1. JavaScript operators_
 
@@ -316,25 +522,53 @@ _Table 4-1. JavaScript operators_
 | \*_=, _=, /=, %=, +=, -=, &=, ^=, | =, <<=, >>=, >>>=                | Operate and assign | R                  | 2                | lval,any→any |
 | ,                                 | Discard 1st operand, return 2nd  | L                  | 2                  | any,any→any      |
 
-### Number of Operands
+### 操作数个数
 
 Operators can be categorized based on the number of operands they expect (their _arity_). Most JavaScript operators, like the `*` multiplication operator, are _binary operators_ that combine two expressions into a single, more complex expression. That is, they expect two operands. JavaScript also supports a number of _unary operators_, which convert a single expression into a single, more complex expression. The `−` operator in the expression `−x` is a unary operator that performs the operation of negation on the operand `x`. Finally, JavaScript supports one _ternary operator_, the conditional operator `?:`, which combines three expressions into a single expression.
 
-### Operand and Result Type
+::: tip 翻译
+操作符可以按照它们期待的操作数个数（参数数量）来分类。多数 JavaScript 操作符（如乘法操作符`*`）都是二元操作符，可以将两个表达式组合成一个更复杂的表达式。换句话说，这些操作符期待两个操作数。JavaScript 也支持一些一元操作符，这些操作符将一个表达式转换为另一个更复杂的表达式。表达式`-x`中的操作符`-`就是一元操作符，用于对操作数`x`进行求负值操作。最后，JavaScript 也支持一个三元操作符，即条件操作符`?:`，用于将三个表达式组合为一个表达式。
+:::
+
+### 操作数与结果类型
 
 Some operators work on values of any type, but most expect their operands to be of a specific type, and most operators return (or evaluate to) a value of a specific type. The Types column in Table 4-1 specifies operand types (before the arrow) and result type (after the arrow) for the operators.
 
+::: tip 翻译
+有些操作符适用于任何类型的值，但多数操作符期待自己的操作数是某种特定类型，而且多数操作符也返回（或求值为）特定类型的值。表 4-1 的“类型”列标明了操作数类型（箭头前）和结果类型（箭头后）。
+:::
+
 JavaScript operators usually convert the type (see §3.9) of their operands as needed. The multiplication operator `*` expects numeric operands, but the expression "3" `*` "5" is legal because JavaScript can convert the operands to numbers. The value of this expression is the number 15, not the string “15”, of course. Remember also that every JavaScript value is either “truthy” or “falsy,” so operators that expect boolean operands will work with an operand of any type.
+
+::: tip 翻译
+JavaScript 操作符通常会按照需要转换操作数的类型（参见 3.9 节）。比如，乘法操作符`*`期待数值参数，而表达式"3" `*` "5"之所以合法，是因为 JavaScript 可以把操作数转换为数值。因此这个表达式的值是数值 15，而非字符串"15"。也要记住，每个 JavaScript 值要么是“真值”要么是“假值”，因此期待布尔值操作数的操作符可以用于任何类型的操作数。
+:::
 
 Some operators behave differently depending on the type of the operands used with them. Most notably, the `+` operator adds numeric operands but concatenates string operands. Similarly, the comparison operators such as `<` perform comparison in numerical or alphabetical order depending on the type of the operands. The descriptions of individual operators explain their type-dependencies and specify what type conversions they perform.
 
+::: tip 翻译
+有些操作符的行为会因为操作数类型的不同而不同。最明显的，`+`操作符可以把数值加起来，也可以拼接字符串。类似地，比较操作符（如`<`）根据操作数类型会按照数值顺序或字母表顺序比较。后面对每个操作符都有详细介绍，包括它们的类型依赖，以及它们执行的类型转换。
+:::
+
 Notice that the assignment operators and a few of the other operators listed in Table 4-1 expect an operand of type `lval`. _lvalue_ is a historical term that means “an expression that can legally appear on the left side of an assignment expression.” In JavaScript, variables, properties of objects, and elements of arrays are lvalues.
 
-### Operator Side Effects
+::: tip 翻译
+注意，表 4-1 中列出的赋值操作符和少数其他操作符期待操作数类型为`lval`。`lval`即`lvalue`（左值），是一个历史悠久的术语，意思是“一个可以合法地出现在赋值表达式左侧的表达式”。在 JavaScript 中，变量、对象属性和数组元素都是“左值”。
+:::
+
+### 操作符副效应
 
 Evaluating a simple expression like `2 * 3` never affects the state of your program, and any future computation your program performs will be unaffected by that evaluation. Some expressions, however, have _side effects_, and their evaluation may affect the result of future evaluations. The assignment operators are the most obvious example: if you assign a value to a variable or property, that changes the value of any expression that uses that variable or property. The `++` and `--` increment and decrement operators are similar, since they perform an implicit assignment. The `delete` operator also has side effects: deleting a property is like (but not the same as) assigning undefined to the property.
 
+::: tip 翻译
+对类似`2 * 3`这样的简单表达式求值不会影响程序状态，程序后续的任何计算也不会被这个求值所影响。但有些表达式是有副效应的，即对它们求值可能影响将来求值的结果。赋值操作符就是明显的例子：把一个值赋给变量或属性，会改变后续使用该变量或属性的表达式的值。类似地，递增和递减操作符`++`和`--`也有副效应，因为它们会执行隐式赋值。同样，`delete`操作符也有副效应，因为删除属性类似于（但不同于）给属性赋值`undefined`。
+:::
+
 No other JavaScript operators have side effects, but function invocation and object creation expressions will have side effects if any of the operators used in the function or constructor body have side effects.
+
+::: tip 翻译
+其他 JavaScript 操作符都没有副效应，但函数调用和对象创建表达式是否有副效应，取决于函数或构造函数体内是否使用了有副效应的操作符。
+:::
 
 ### Operator Precedence
 
