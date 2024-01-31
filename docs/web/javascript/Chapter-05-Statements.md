@@ -125,9 +125,13 @@ Note that each line of code in each of these examples is terminated with a semic
 注意，这些例子中的每行代码都以分号结尾。
 :::
 
-## Compound and Empty Statements
+## 复合语句与空语句
 
 Just as the comma operator (§4.13.7) combines multiple expressions into a single expression, a _statement block_ combines multiple statements into a single _compound statement_. A statement block is simply a sequence of statements enclosed within curly braces. Thus, the following lines act as a single statement and can be used anywhere that JavaScript expects a single statement:
+
+::: tip 翻译
+与逗号操作符（参见 4.13.7 节）将多个表达式组合为一个表达式一样，语句块将多个语句组合为一个复合语句。语句块其实就是一系列语句，可以放在任何期待一个语句的地方：
+:::
 
 ```js
 {
@@ -139,31 +143,59 @@ Just as the comma operator (§4.13.7) combines multiple expressions into a singl
 
 There are a few things to note about this statement block. First, it does not end with a semicolon. The primitive statements within the block end in semicolons, but the block itself does not. Second, the lines inside the block are indented relative to the curly braces that enclose them. This is optional, but it makes the code easier to read and understand.
 
+::: tip 翻译
+关于这个语句块，我们需要说明几点。第一，它没有以分号结尾。块中的单条语句都以分号结尾，但块本身没有。第二，块中的代码相对于包含它们的花括号缩进。这不是必需的，但可以让代码更清晰易读。
+:::
+
 Just as expressions often contain subexpressions, many JavaScript statements contain substatements. Formally, JavaScript syntax usually allows a single substatement. For example, the `while` loop syntax includes a single statement that serves as the body of the loop. Using a statement block, you can place any number of statements within this single allowed substatement.
+
+::: tip 翻译
+就像表达式经常会包含子表达式，很多 JavaScript 语句也包含子语句。例如，`while`循环语法只包含一个作为循环体的语句。而使用语句块，可以在这个唯一的子语句中添加任意多个语句。
+:::
 
 A compound statement allows you to use multiple statements where JavaScript syntax expects a single statement. The _empty statement_ is the opposite: it allows you to include no statements where one is expected. The empty statement looks like this:
 
-```js
+::: tip 翻译
+复合语句允许我们在 JavaScript 语法期待一个语句时使用多个语句。空语句正好相反，它让我们在期待一条语句的地方不包含任何语句。空语句是这样的：
+:::
 
 ```
+;
+```
 
-The JavaScript interpreter takes no action when it executes an empty statement. The empty statement is occasionally useful when you want to create a loop that has an empty body. Consider the following for loop (for loops will be covered in §5.4.3):
+The JavaScript interpreter takes no action when it executes an empty statement. The empty statement is occasionally useful when you want to create a loop that has an empty body. Consider the following `for` loop (`for` loops will be covered in §5.4.3):
+
+::: tip 翻译
+JavaScript 解释器在执行空语句时什么也不会做。空语句偶尔会有用，比如创建一个空循环体的循环。比如下面的`for`循环（`for`循环将在 5.4.3 节介绍）：
+:::
 
 ```js
-// Initialize an array a
+// 初始化一个数组a
 for (let i = 0; i < a.length; a[i++] = 0);
 ```
 
 In this loop, all the work is done by the expression `a[i++] = 0`, and no loop body is necessary. JavaScript syntax requires a statement as a loop body, however, so an empty statement—just a bare semicolon—is used.
 
+::: tip 翻译
+在这个循环中，所有工作都是通过表达式`a[i++] = 0`完成的，不需要循环体。但 JavaScript 语法要求有一条语句作为循环体，此时空语句（就一个分号）可以派上用场。
+:::
+
 Note that the accidental inclusion of a semicolon after the right parenthesis of a `for` loop, `while` loop, or `if` statement can cause frustrating bugs that are difficult to detect. For example, the following code probably does not do what the author intended:
 
+::: tip 翻译
+注意，意外地在`for`、`while`循环或`if`语句的右括号后面加上分号会导致难以发现的隐患。例如，下面的代码可能并不是作者想要的：
+:::
+
 ```js
-if (a === 0 || b === 0); // Oops! This line does nothing...
-o = null; // and this line is always executed.
+if (a === 0 || b === 0); // 这行什么也不做
+o = null; // 而这行始终都会执行
 ```
 
 When you intentionally use the empty statement, it is a good idea to comment your code in a way that makes it clear that you are doing it on purpose. For example:
+
+::: tip 翻译
+如果你有意使用空语句，最好通过注释说明一下你的用意。比如：
+:::
 
 ```js
 for (let i = 0; i < a.length; a[i++] = 0 /* empty */);
