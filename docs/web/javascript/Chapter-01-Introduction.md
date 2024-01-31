@@ -61,7 +61,7 @@ Since 2010, another host environment has been available for JavaScript code. Ins
 Most of this book is focused on the JavaScript language itself. [Chapter 11](./Chapter-11-Standard_Library.md) documents the JavaScript standard library, [Chapter 15](./Chapter-15-Web_Browsers.md) introduces the web browser host environment, and [Chapter 16](./Chapter-16-Server_side.md) introduces the Node host environment.
 
 ::: tip 翻译
-本书大部分内容聚焦 JavaScript 语言本书。[第 11 章](./Chapter-11-Standard_Library.md)讲述 JavaScript 标准库，[第 15 章](./Chapter-15-Web_Browsers.md)介绍浏览器宿主环境，[第 16 章](./Chapter-16-Server_side.md)介绍 Node 宿主环境。
+本书大部分内容聚焦 JavaScript 语言本身。[第 11 章](./Chapter-11-Standard_Library.md)讲述 JavaScript 标准库，[第 15 章](./Chapter-15-Web_Browsers.md)介绍浏览器宿主环境，[第 16 章](./Chapter-16-Server_side.md)介绍 Node 宿主环境。
 :::
 
 This book covers low-level fundamentals first, and then builds on those to more advanced and higher-level abstractions. The chapters are intended to be read more or less in order. But learning a new programming language is never a linear process, and describing a language is not linear either: each language feature is related to other features, and this book is full of cross-references—sometimes backward and sometimes forward—to related material. This introductory chapter makes a quick first pass through the language, introducing key features that will make it easier to understand the in-depth treatment in the chapters that follow. If you are already a practicing JavaScript programmer, you can probably skip this chapter. (Although you might enjoy reading Example 1-1 at the end of the chapter before you move on.)

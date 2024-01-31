@@ -55,9 +55,13 @@ The sections that follow describe the various statements in JavaScript and expla
 本章各节将依次介绍 JavaScript 中的各种语句，以及它们的语法。本章末尾的表 5-1 总结了这些语法。JavaScript 程序就是一系列语句，以分号作为分隔符。因此只要熟悉 JavaScript 的语句，就可以上手写 JavaScript 程序。
 :::
 
-## Expression Statements
+## 表达式语句
 
-The simplest kinds of statements in JavaScript are expressions that have side effects. This sort of statement was shown in **Chapter 4**. Assignment statements are one major category of expression statements. For example:
+The simplest kinds of statements in JavaScript are expressions that have side effects. This sort of statement was shown in [Chapter 4](./Chapter-04-Expressions_Operators.md). Assignment statements are one major category of expression statements. For example:
+
+::: tip 翻译
+JavaScript 中最简单的一种语句就是有副效应的表达式。这种语句在[第 4 章](./Chapter-04-Expressions_Operators.md)已经展示过了。赋值语句是一种主要的表达式语句。例如：
+:::
 
 ```js
 greeting = "Hello " + name;
@@ -66,17 +70,29 @@ i *= 3;
 
 The increment and decrement operators, `++` and `--`, are related to assignment statements. These have the side effect of changing a variable value, just as if an assignment had been performed:
 
+::: tip 翻译
+递增操作符`++`和递减操作符`--`都跟赋值语句有关。它们都有修改变量值的副效应，就好像执行了赋值语句一样：
+:::
+
 ```js
 counter++;
 ```
 
 The `delete` operator has the important side effect of deleting an object property. Thus, it is almost always used as a statement, rather than as part of a larger expression:
 
+::: tip 翻译
+`delete`操作符有删除对象属性的重要副效应。因此，一般都把它作为一个语句使用，而不是放在某个大的表达式中：
+:::
+
 ```js
 delete o.x;
 ```
 
 Function calls are another major category of expression statements. For example:
+
+::: tip 翻译
+函数调用是另一类主要的表达式语句。例如：
+:::
 
 ```js
 console.log(debugMessage);
@@ -85,17 +101,29 @@ displaySpinner(); // A hypothetical function to display a spinner in a web app.
 
 These function calls are expressions, but they have side effects that affect the host environment or program state, and they are used here as statements. If a function does not have any side effects, there is no sense in calling it, unless it is part of a larger expression or an assignment statement. For example, you wouldn’t just compute a cosine and discard the result:
 
+::: tip 翻译
+这些函数调用都是表达式，但它们有影响宿主环境或程序状态的副效应，因此在这里作为语句使用。如果是没有副效应的函数，那像这样调用就没有什么意义了，除非它在一个更大的表达式中，或者在赋值语句中。例如，谁也不会像这样计算一次余弦，然后丢掉结果：
+:::
+
 ```js
 Math.cos(x);
 ```
 
 But you might well compute the value and assign it to a variable for future use:
 
+::: tip 翻译
+但很可能计算这个值之后把它赋给一个变量，以便将来使用：
+:::
+
 ```js
 cx = Math.cos(x);
 ```
 
 Note that each line of code in each of these examples is terminated with a semicolon.
+
+::: tip 翻译
+注意，这些例子中的每行代码都以分号结尾。
+:::
 
 ## Compound and Empty Statements
 
