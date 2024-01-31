@@ -201,15 +201,27 @@ When you intentionally use the empty statement, it is a good idea to comment you
 for (let i = 0; i < a.length; a[i++] = 0 /* empty */);
 ```
 
-## Conditionals
+## 条件语句
 
 Conditional statements execute or skip other statements depending on the value of a specified expression. These statements are the decision points of your code, and they are also sometimes known as “branches.” If you imagine a JavaScript interpreter following a path through your code, the conditional statements are the places where the code branches into two or more paths and the interpreter must choose which path to follow.
 
-The following subsections explain JavaScript’s basic conditional, the `if/else` statement, and also cover `switch`, a more complicated, multiway branch statement.
+::: tip 翻译
+条件语句根据指定表达式的值执行或跳过执行某些语句，因此条件语句是代码中需要决策的地方，有时候也被称为“分支”。想象一下，JavaScript 解释器沿一条路径执行代码，条件语句表示代码要分成两条或更多条路径，而解释器必须选择其中一条。
+:::
+
+The following subsections explain JavaScript’s basic conditional, the `if/else` statement, and also cover `switch`, a more complicated, multi-way branch statement.
+
+::: tip 翻译
+接下来几节介绍 JavaScript 的基本条件语句`if/else`，以及较复杂的`switch`多分支语句。
+:::
 
 ### if
 
 The `if` statement is the fundamental control statement that allows JavaScript to make decisions, or, more precisely, to execute statements conditionally. This statement has two forms. The first is:
+
+::: tip 翻译
+if 语句是最基本的控制语句，可以让 JavaScript 做出决策，更精确地说，是有条件地执行语句。这个语句有两种形式，第一种是：
+:::
 
 ```js
 if (expression) statement;
@@ -217,22 +229,38 @@ if (expression) statement;
 
 In this form, _expression_ is evaluated. If the resulting value is truthy, _statement_ is executed. If _expression_ is falsy, statement is not executed. (See §3.4 for a definition of truthy and falsy values.) For example:
 
+::: tip 翻译
+在这个形式中，expression（表达式）会被求值。如果结果值是真值，statement（语句）会执行；如果表达式是假值，语句不会执行（参见 3.4 节中关于真值和假值的定义）。例如：
+:::
+
 ```js
 if (username == null)
-  // If username is null or undefined,
-  username = "John Doe"; // define it
+  // 如果username时null或undefined
+  username = "John Doe"; // 定义这个变量
 ```
 
 Or similarly:
 
+::: tip 翻译
+或类似地：
+:::
+
 ```js
-// If username is null, undefined, false, 0, "", or NaN, give it a new value
+// 如果 username 是 null, undefined, false, 0, "", 或 NaN, 给它一个新值
 if (!username) username = "John Doe";
 ```
 
 Note that the parentheses around the _expression_ are a required part of the syntax for the if statement.
 
-JavaScript syntax requires a single statement after the if keyword and parenthesized expression, but you can use a statement block to combine multiple statements into one. So the `if` statement might also look like this:
+::: tip 翻译
+注意，表达式两边的圆括号是 if 语句的语法必需的。
+:::
+
+JavaScript syntax requires a single statement after the `if` keyword and parenthesized expression, but you can use a statement block to combine multiple statements into one. So the `if` statement might also look like this:
+
+::: tip 翻译
+JavaScript 语法要求在`if`关键字和带括号的表达式后面必须只跟一个语句，但我们可以使用语句块把多个语句组合成一个语句。因此`if`语句也可以是类似这样的：
+:::
 
 ```js
 if (!address) {
@@ -243,6 +271,10 @@ if (!address) {
 
 The second form of the `if` statement introduces an `else` clause that is executed when _expression_ is `false`. Its syntax is:
 
+::: tip 翻译
+`if`语句的第二种形式会包含一个`else`子句，会在表达式为`false`时执行。其语法为：
+:::
+
 ```js
 if (expression) statement1;
 else statement2;
@@ -250,12 +282,20 @@ else statement2;
 
 This form of the statement executes `statement1` if _expression_ is truthy and executes `statement2` if _expression_ is falsy. For example:
 
+::: tip 翻译
+这种形式在表达式为真值时执行语句 1，在表达式为假值时执行语句 2。例如：
+:::
+
 ```js
 if (n === 1) console.log("You have 1 new message.");
 else console.log(`You have ${n} new messages.`);
 ```
 
 When you have nested `if` statements with `else` clauses, some caution is required to ensure that the else clause goes with the appropriate `if` statement. Consider the following lines:
+
+::: tip 翻译
+如果在嵌套的`if`语句中包含`else`子句，那么就要留心让`else`子句与相应的`if`语句对应。来看下面这个例子：
+:::
 
 ```js
 i = j = 1;
@@ -267,6 +307,10 @@ if (i === j)
 
 In this example, the inner `if` statement forms the single statement allowed by the syntax of the outer `if` statement. Unfortunately, it is not clear (except from the hint given by the indentation) which `if` the `else` goes with. And in this example, the indentation is wrong, because a JavaScript interpreter actually interprets the previous example as:
 
+::: tip 翻译
+在这个例子中，内部的`if`语句构成了外部`if`语句语法所需的那条语句。而`else`语句对应哪个`if`并不清楚（除了缩进有所暗示之外）。但在这个例子中，缩进是错误的，因为 JavaScript 解释器实际上会把前面的例子解释为：
+:::
+
 ```js
 if (i === j) {
   if (j === k) console.log("i equals k");
@@ -276,48 +320,64 @@ if (i === j) {
 
 The rule in JavaScript (as in most programming languages) is that by default an `else` clause is part of the nearest `if` statement. To make this example less ambiguous and easier to read, understand, maintain, and debug, you should use curly braces:
 
+::: tip 翻译
+JavaScript 的规则（与多数编程语言一样）是，默认情况下`else`子句属于最近的`if`语句。为了让这个例子更清晰、易读、易理解、易维护、易调试，应该使用花括号：
+:::
+
 ```js
 if (i === j) {
   if (j === k) {
     console.log("i equals k");
   }
 } else {
-  // What a difference the location of a curly brace makes!
+  // 花括号的位置起了决定性作用！
   console.log("i doesn't equal j");
 }
 ```
 
 Many programmers make a habit of enclosing the bodies of `if` and `else` statements (as well as other compound statements, such as `while` loops) within curly braces, even when the body consists of only a single statement. Doing so consistently can prevent the sort of problem just shown, and I advise you to adopt this practice. In this printed book, I place a premium on keeping example code vertically compact, and I do not always follow my own advice on this matter.
 
+::: tip 翻译
+很多程序员都有使用花括号包装`if`和`else`语句（以及其他复合语句，如`while`循环）的习惯，即使语句体只有一个语句。始终这么做可以避免刚才的问题，建议读者也这么做。在本书中，我始终在设法减少代码行数，因此不一定处处遵循这个建议。
+:::
+
 ### else if
 
 The `if/else` statement evaluates an expression and executes one of two pieces of code, depending on the outcome. But what about when you need to execute one of many pieces of code? One way to do this is with an `else if` statement. `else if` is not really a JavaScript statement, but simply a frequently used programming idiom that results when repeated `if/else` statements are used:
 
+::: tip 翻译
+`if/else`语句求值一个表达式并根据结果执行两段代码中的一段。但如果你想执行多段代码中的一段呢？一种思路是使用`else if`语句。`else if`并不是真正的 JavaScript 语句，而是一个在使用`if/else`时被频繁用到的编程惯例：
+:::
+
 ```js
 if (n === 1) {
-  // Execute code block #1
+  // 执行第一个代码块
 } else if (n === 2) {
-  // Execute code block #2
+  // 执行第二个代码块
 } else if (n === 3) {
-  // Execute code block #3
+  // 执行第三个代码块
 } else {
-  // If all else fails, execute block #4
+  // 如果前面都失败，则执行第四个代码块
 }
 ```
 
 There is nothing special about this code. It is just a series of `if` statements, where each following `if` is part of the `else` clause of the previous statement. Using the `else if` idiom is preferable to, and more legible than, writing these statements out in their syntactically equivalent, fully nested form:
 
+::: tip 翻译
+这段代码没有什么特别的，就是一系列`if`语句，每个`if`语句后面都有一个`else`子句。使用`else if`更好，也更容易理解，不推荐使用下面这样的完整嵌套形式：
+:::
+
 ```js
 if (n === 1) {
-  // Execute code block #1
+  // 执行第一个代码块
 } else {
   if (n === 2) {
-    // Execute code block #2
+    // 执行第二个代码块
   } else {
     if (n === 3) {
-      // Execute code block #3
+      // 执行第三个代码块
     } else {
-      // If all else fails, execute block #4
+      // 如果前面都失败，执行第四个代码块
     }
   }
 }
@@ -325,9 +385,17 @@ if (n === 1) {
 
 ### switch
 
-An `if` statement causes a branch in the flow of a program’s execution, and you can use the `else if` idiom to perform a multiway branch. This is not the best solution, however, when all of the branches depend on the value of the same expression. In this case, it is wasteful to repeatedly evaluate that expression in multiple `if` statements.
+An `if` statement causes a branch in the flow of a program’s execution, and you can use the `else if` idiom to perform a multi-way branch. This is not the best solution, however, when all of the branches depend on the value of the same expression. In this case, it is wasteful to repeatedly evaluate that expression in multiple `if` statements.
+
+::: tip 翻译
+`if`语句在程序执行流中会创建一个分支，而使用多个`else if`可以实现多个分支。但是，在所有分析都依赖同一个表达式的值时这并不是最好的办法。因为多个`if`语句重复对一个表达式进行求值太浪费了。
+:::
 
 The `switch` statement handles exactly this situation. The `switch` keyword is followed by an expression in parentheses and a block of code in curly braces:
+
+::: tip 翻译
+此时最合适的语句是`switch`语句。`switch`关键字后面跟着一个带括号的表达式和一个包含在花括号中的代码块：
+:::
 
 ```js
 switch(expression) {
@@ -337,49 +405,81 @@ switch(expression) {
 
 However, the full syntax of a `switch` statement is more complex than this. Various locations in the block of code are labeled with the `case` keyword followed by an expression and a colon. When a `switch` executes, it computes the value of _expression_ and then looks for a `case` label whose expression evaluates to the same value (where sameness is determined by the `===` operator). If it finds one, it starts executing the block of code at the statement labeled by the `case`. If it does not find a `case` with a matching value, it looks for a statement labeled `default:`. If there is no `default:` label, the `switch` statement skips the block of code altogether.
 
+::: tip 翻译
+不过，`switch`语句的完整语法比这里展示的要复杂得多。比如，其中代码块的不同位置会有`case`关键字开头的标签，后跟一个表达式和一个冒号。当`switch`执行时，它会计算表达式的值，然后对比`case`标签，看哪个表达式会求值为相同的值（这时的相同意味着`===`操作符返回`true`）。如果找到了相同的值，则执行相应`case`语句的代码块。如果没有找到，则再找标签为`default:`的语句。如果没有`default:`标签，`switch`语句就跳过整个代码块。
+:::
+
 `switch` is a confusing statement to explain; its operation becomes much clearer with an example. The following `switch` statement is equivalent to the repeated `if/else` statements shown in the previous section:
+
+::: tip 翻译
+`switch`语句不太好用文字来解释，看个例子更容易明白。下面这个`switch`语句与前面多个`if/else`语句的例子是等价的：
+:::
 
 ```js
 switch (n) {
-  case 1: // Start here if n === 1
-    // Execute code block #1.
-    break; // Stop here
-  case 2: // Start here if n === 2
-    // Execute code block #2.
-    break; // Stop here
-  case 3: // Start here if n === 3
-    // Execute code block #3.
-    break; // Stop here
-  default: // If all else fails...
-    // Execute code block #4.
-    break; // Stop here
+  case 1: // 如果 n === 1, 从这里开始执行
+    // 执行第一个代码块
+    break; // 到这里停止
+  case 2: // 如果 n === 2, 从这里开始执行
+    // 执行第二个代码块
+    break; // 到这里停止
+  case 3: // 如果 n === 3, 从这里开始执行
+    // 执行第三个代码块
+    break; // 到这里停止
+  default: // 如果前面都失败
+    // 执行第四个代码块
+    break; // 到这里停止
 }
 ```
 
 Note the `break` keyword used at the end of each `case` in this code. The `break` statement, described later in this chapter, causes the interpreter to jump to the end (or “break out”) of the `switch` statement and continue with the statement that follows it. The `case` clauses in a `switch` statement specify only the _starting point_ of the desired code; they do not specify any ending point. In the absence of `break` statements, a `switch` statement begins executing its block of code at the `case` label that matches the value of its _expression_ and continues executing statements until it reaches the end of the block. On rare occasions, it is useful to write code like this that “falls through” from one case label to the next, but 99% of the time you should be careful to end every `case` with a `break` statement. (When using `switch` inside a function, however, you may use a `return` statement instead of a `break` statement. Both serve to terminate the `switch` statement and prevent execution from falling through to the next `case`.)
 
+::: tip 翻译
+注意代码中每个`case`末尾的`break`关键字。这个`break`语句（本章后面会介绍）将导致解释器跳到`switch`语句末尾（或“跑出”`switch`语句），继续执行后面的语句。`switch`语句中的`case`子句只指定了预期代码的起点，并没有指定终点。在没有`break`语句的情况下，`switch`语句从匹配其表达式值的`case`代码块开始执行，一直执行到代码块结束。这种情况偶尔是有用的，比如让代码执行流从某个`case`标签直接“穿透”到下一个`case`标签。但 99%的时候还是需要注意用`break`语句来结束每个`case`（不过在函数中使用`switch`时，可以使用 return 语句而非`break`语句。这两个关键字都可以终止`switch`语句，阻止执行流进入下一个`case`）。
+:::
+
 Here is a more realistic example of the `switch` statement; it converts a value to a string in a way that depends on the type of the value:
+
+::: tip 翻译
+下面看一个关于`switch`语句的更实际的例子，这个`switch`语句会根据值的类型决定怎么把它转换成字符串：
+:::
 
 ```js
 function convert(x) {
   switch (typeof x) {
-    case "number": // Convert the number to a hexadecimal integer
+    case "number": // 把数值转换为16进制整数
       return x.toString(16);
-    case "string": // Return the string enclosed in quotes
+    case "string": // 返回加了引号的字符串
       return '"' + x + '"';
-    default: // Convert any other type in the usual way
+    default: // 其他类型值按常规方式转换
       return String(x);
   }
 }
 ```
 
-Note that in the two previous examples, the case keywords are followed by number and string literals, respectively. This is how the `switch` statement is most often used in practice, but note that the ECMAScript standard allows each `case` to be followed by an arbitrary expression.
+Note that in the two previous examples, the `case` keywords are followed by number and string literals, respectively. This is how the `switch` statement is most often used in practice, but note that the ECMAScript standard allows each `case` to be followed by an arbitrary expression.
+
+::: tip 翻译
+注意在前面两个例子中，`case`关键字后面分别是数值和字符串字面量。这是实践中使用`switch`语句的常见方式，但要注意 ECMAScript 标准允许每个`case`后面跟任意表达式。
+:::
 
 The `switch` statement first evaluates the expression that follows the `switch` keyword and then evaluates the `case` expressions, in the order in which they appear, until it finds a value that matches. The matching case is determined using the `===` identity operator, not the `==` equality operator, so the expressions must match without any type conversion.
 
-Because not all of the case expressions are evaluated each time the `switch` statement is executed, you should avoid using case expressions that contain side effects such as function calls or assignments. The safest course is simply to limit your case expressions to constant expressions.
+::: tip 翻译
+`switch`语句首先对跟在`switch`关键字后面的表达式求值，然后再按照顺序求值`case`表达式，直至遇到匹配的值。这里的匹配使用`===`全等操作符，而不是`==`相等操作符，因此表达式必须在没有类型转换的情况下匹配。
+:::
+
+Because not all of the `case` expressions are evaluated each time the `switch` statement is executed, you should avoid using `case` expressions that contain side effects such as function calls or assignments. The safest course is simply to limit your `case` expressions to constant expressions.
+
+::: tip 翻译
+考虑到在`switch`语句执行时，并不是所有`case`表达式都会被求值，所以应该避免使用包含副效应的`case`表达式，比如函数调用或赋值表达式。最可靠的做法是在`case`后面只写常量表达式。
+:::
 
 As explained earlier, if none of the `case` expressions match the `switch` expression, the `switch` statement begins executing its body at the statement labeled `default:`. If there is no `default:` label, the `switch` statement skips its body altogether. Note that in the examples shown, the `default:` label appears at the end of the switch body, following all the `case` labels. This is a logical and common place for it, but it can actually appear anywhere within the body of the statement.
+
+::: tip 翻译
+正如前面解释的，如果没有与`switch`表达式匹配的`case`表达式，则`switch`语句就会执行标签为`default:`的语句。如果没有`default:`标签，`switch`语句会跳过自己的代码体。注意在前面的例子中，`default:`标签出现在`switch`体的末尾，在所有`case`标签后面。这个位置是符合逻辑的，也是它最常出现的位置。但事实上，`default:`标签可以出现在`switch`语句体的任何位置。
+:::
 
 ## Loops
 
