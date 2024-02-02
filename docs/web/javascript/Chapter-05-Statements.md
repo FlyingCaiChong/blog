@@ -1413,13 +1413,21 @@ Note, however, that a _body_ that contains a `break` statement behaves slightly 
 > }
 > ```
 
-## Miscellaneous Statements
+## 其他语句
 
 This section describes the remaining three JavaScript statements—`with`, `debugger`, and "`use strict`".
+
+::: tip 翻译
+本节介绍剩下的三个 JavaScript 语句：`with`、`debugger`和"`use strict`"。
+:::
 
 ### with
 
 The `with` statement runs a block of code as if the properties of a specified object were variables in scope for that code. It has the following syntax:
+
+::: tip 翻译
+`with`会运行一个代码块，就好像指定对象的属性是该代码块作用域中的变量一样。它有如下语法：
+:::
 
 ```js
 with (object) statement;
@@ -1427,9 +1435,21 @@ with (object) statement;
 
 This statement creates a temporary scope with the properties of _object_ as variables and then executes _statement_ within that scope.
 
+::: tip 翻译
+这个语句创建了一个临时作用域，以 _object_ 的属性作为变量，然后在这个作用域中执行 _statement_。
+:::
+
 The `with` statement is forbidden in strict mode (see §5.6.3) and should be considered deprecated in non-strict mode: avoid using it whenever possible. JavaScript code that uses `with` is difficult to optimize and is likely to run significantly more slowly than the equivalent code written without the `with` statement.
 
+::: tip 翻译
+`with`在严格模式（参见 5.6.3 节）下是被禁用的，在非严格模式下也应该认为已经废弃了。换句话说，尽可能不使用它。使用`with`的 JavaScript 代码很难优化，与不使用`with`的等价代码相比运行速度明显慢得多。
+:::
+
 The common use of the `with` statement is to make it easier to work with deeply nested object hierarchies. In client-side JavaScript, for example, you may have to type expressions like this one to access elements of an HTML form:
+
+::: tip 翻译
+使用`with`语句主要是为了更方便地使用深度嵌套的对象。例如，在客户端 JavaScript 中，要访问某个 HTML 表单的元素可能要这样写：
+:::
 
 ```js
 document.forms[0].address.value;
@@ -1437,9 +1457,13 @@ document.forms[0].address.value;
 
 If you need to write expressions like this a number of times, you can use the `with` statement to treat the properties of the form object like variables:
 
+::: tip 翻译
+如果需要写很多次这样的表达式，则可以使用`with`语句让使用表单对象的属性像使用变量一样：
+:::
+
 ```js
 with (document.forms[0]) {
-  // Access form elements directly here. For example:
+  //在这里直接访问表单元素。例如：
   name.value = "";
   address.value = "";
   email.value = "";
@@ -1447,6 +1471,10 @@ with (document.forms[0]) {
 ```
 
 This reduces the amount of typing you have to do: you no longer need to prefix each form property name with `document.forms[0]`. It is just as simple, of course, to avoid the `with` statement and write the preceding code like this:
+
+::: tip 翻译
+这样可以减少键盘输入，因为不用每次都写`document.forms[0]`了。当然，前面的代码不用`with`语句也很容易写成这样：
+:::
 
 ```js
 let f = document.forms[0];
@@ -1457,20 +1485,36 @@ f.email.value = "";
 
 Note that if you use `const` or `let` or `var` to declare a variable or constant within the body of a `with` statement, it creates an ordinary variable and does not define a new property within the specified object.
 
+::: tip 翻译
+注意，如果在`with`语句体中使用`const`、`let`或`var`声明一个变量或常量，那么只会创建一个普通变量，不会在指定的对象上定义新属性。
+:::
+
 ### debugger
 
 The `debugger` statement normally does nothing. If, however, a debugger program is available and is running, then an implementation may (but is not required to) perform some kind of debugging action. In practice, this statement acts like a breakpoint: execution of JavaScript code stops, and you can use the debugger to print variables’ values, examine the call stack, and so on. Suppose, for example, that you are getting an exception in your function `f()` because it is being called with an undefined argument, and you can’t figure out where this call is coming from. To help you in debugging this problem, you might alter `f()` so that it begins like this:
 
+::: tip 翻译
+`debugger`语句一般什么也不做。不过，包含`debugger`的程序在运行时，实现可以（但不是必需）执行某种调试操作。实践中，这个语句就像一个断点，执行中的 JavaScript 会停止，我们可以使用调试器打印变量的值、检查调用栈，等等。例如，假设你在调用函数`f()`时没有传参数，函数就会抛出异常，而你不知道这个调用来自何处。为了调试这个问题，可以修改`f()`，像下面这样为它加上`debugger`语句：
+:::
+
 ```js
 function f(o) {
-    if (o === undefined) debugger; // Temporary line for debugging purposes
-    ... // The rest of the function goes here.
+    if (o === undefined) debugger; // 仅为调试才添加的
+    ... // 这里是函数中的其他代码
 }
 ```
 
 Now, when `f()` is called with no argument, execution will stop, and you can use the debugger to inspect the call stack and find out where this incorrect call is coming from.
 
+::: tip 翻译
+现在，再次调用`f()`而不传参数，执行就会停止，你可以使用调试器检查调用栈，找到这个错误的调用来自何处。
+:::
+
 Note that it is not enough to have a debugger available: the `debugger` statement won’t start the debugger for you. If you’re using a web browser and have the developer tools console open, however, this statement will cause a breakpoint.
+
+::: tip 翻译
+注意，只有调试器还不行，`debugger`语句并不为你打开调试器。如果你使用浏览器并且打开了开发者控制台，这个语句就会导致断点。
+:::
 
 ### "use strict"
 
@@ -1479,12 +1523,23 @@ Note that it is not enough to have a debugger available: the `debugger` statemen
 - It does not include any language keywords: the directive is just an expression statement that consists of a special string literal (in single or double quotes).
 - It can appear only at the start of a script or at the start of a function body, before any real statements have appeared.
 
-The purpose of a "`use strict`" directive is to indicate that the code that follows (in the script or function) is _strict code_. The top-level (nonfunction) code of a script is strict code if the script has a "`use strict`" directive. A function body is strict code if it is defined within strict code or if it has a "`use strict`" directive. Code passed to the `eval()` method is strict code if `eval()` is called from strict code or if the string of code includes a "`use strict`" directive. In addition to code explicitly declared to be strict, any code in a class body (**Chapter 9**) or in an ES6 module (§10.3) is automatically strict code. This means that if all of your JavaScript code is written as modules, then it is all automatically strict, and you will never need to use an explicit "`use strict`" directive.
+::: tip 翻译
+"`use strict`"是 ES5 引入的一个指令。指令不是语句（但非常近似，所以在这里介绍"`use strict`"）。"`use strict`"与常规语句有两个重要的区别:
+
+- 不包含任何语言关键字：指令是由（包含在单引号或双引号中的）特殊字符串字面量构成的表达式语句。
+- 只能出现在脚本或函数体的开头，位于所有其他真正的语句之前。
+  :::
+
+The purpose of a "`use strict`" directive is to indicate that the code that follows (in the script or function) is _strict code_. The top-level (nonfunction) code of a script is strict code if the script has a "`use strict`" directive. A function body is strict code if it is defined within strict code or if it has a "`use strict`" directive. Code passed to the `eval()` method is strict code if `eval()` is called from strict code or if the string of code includes a "`use strict`" directive. In addition to code explicitly declared to be strict, any code in a class body ([Chapter 9](./Chapter-09-Classes.md)) or in an ES6 module (§10.3) is automatically strict code. This means that if all of your JavaScript code is written as modules, then it is all automatically strict, and you will never need to use an explicit "`use strict`" directive.
+
+::: tip 翻译
+"`use strict`"指令的目的是表示（在脚本或函数中）它后面的代码是严格代码。如果脚本中有"`use strict`"指令，则脚本的顶级（非函数）代码是严格代码。如果函数体是在严格代码中定义的，或者函数体中有一个"`use strict`"指令，那么它就是严格代码。如果严格代码中调用了`eval()`，那么传给`eval()`的代码也是严格代码；如果传给`eval()`的字符串包含"`use strict`"指令，那么相应的代码也是严格代码。除了显式声明为严格的代码，任何位于 class 体（参见[第 9 章](./Chapter-09-Classes.md)）或 ES6 模块（参见 10.3 节）中的代码全部默认为严格代码，而无须把"`use strict`"指令显式地写出来。
+:::
 
 Strict code is executed in _strict mode_. Strict mode is a restricted subset of the language that fixes important language deficiencies and provides stronger error checking and increased security. Because strict mode is not the default, old JavaScript code that still uses the deficient legacy features of the language will continue to run correctly. The differences between strict mode and non-strict mode are the following (the first three are particularly important):
 
 - The `with` statement is not allowed in strict mode.
-- In strict mode, all variables must be declared: a ReferenceError is thrown if you assign a value to an identifier that is not a declared variable, function, function parameter, `catch` clause parameter, or property of the global object. (In nonstrict mode, this implicitly declares a global variable by adding a new property to the global object.)
+- In strict mode, all variables must be declared: a ReferenceError is thrown if you assign a value to an identifier that is not a declared variable, function, function parameter, `catch` clause parameter, or property of the global object. (In non strict mode, this implicitly declares a global variable by adding a new property to the global object.)
 - In strict mode, functions invoked as functions (rather than as methods) have a `this` value of `undefined`. (In non-strict mode, functions invoked as functions are always passed the global object as their `this` value.) Also, in strict mode, when a function is invoked with `call()` or `apply()` (§8.7.4), the `this` value is exactly the value passed as the first argument to `call()` or `apply()`. (In non-strict mode, `null` and `undefined` values are replaced with the global object and nonobject values are converted to objects.)
 - In strict mode, assignments to nonwritable properties and attempts to create new properties on non-extensible objects throw a TypeError. (In non-strict mode, these attempts fail silently.)
 - In strict mode, code passed to `eval()` cannot declare variables or define functions in the caller’s scope as it can in non-strict mode. Instead, variable and function definitions live in a new scope created for the `eval()`. This scope is discarded when the `eval()` returns.
@@ -1496,6 +1551,24 @@ Strict code is executed in _strict mode_. Strict mode is a restricted subset of 
 - In strict mode, octal integer literals (beginning with a 0 that is not followed by an x) are not allowed. (In non-strict mode, some implementations allow octal literals.)
 - In strict mode, the identifiers `eval` and `arguments` are treated like keywords, and you are not allowed to change their value. You cannot assign a value to these identifiers, declare them as variables, use them as function names, use them as function parameter names, or use them as the identifier of a `catch` block.
 - In strict mode, the ability to examine the call stack is restricted. `arguments.caller` and `arguments.callee` both throw a TypeError within a strict mode function. Strict mode functions also have caller and `arguments` properties that throw TypeError when read. (Some implementations define these nonstandard properties on non-strict functions.)
+
+::: tip 翻译
+严格代码在严格模式下执行。严格模式是 JavaScript 的一个受限制的子集，这个子集修复了重要的语言缺陷，提供了更强的错误检查，也增强了安全性。因为严格模式并不是默认的，那些使用语言中有缺陷的遗留特性的旧代码依然可以正确运行。严格模式与非严格模式的区别如下（前三个特别重要）：
+
+- 严格模式下不允许使用`with`语句。
+- 在严格模式下，所有变量都必须声明。如果把值赋给一个标识符，而这个标识符是没有声明的变量、函数、函数参数、`catch`子句参数或全局对象的属性，都会导致抛出一个 ReferenceError（在非严格模式下，给全局对象的属性赋值会隐式声明一个全局变量，即给全局对象添加一个新属性）。
+- 在严格模式下，函数如果作为函数（而非方法）被调用，其`this`值为`undefined`（在非严格模式，作为函数调用的函数始终以全局对象作为`this`的值）。另外，在严格模式下，如果函数通过`call()`或`apply()`（参见 8.7.4 节）调用，则`this`值就是作为第一个参数传给`call()`或`apply()`的值（在非严格模式下，`null`和`undefined`值会被替换为全局对象，而非对象值会被转换为对象）。
+- 在严格模式下，给不可写的属性赋值或尝试在不可扩展的对象上创建新属性会抛出 TypeError（在非严格模式下，这些尝试会静默失败）。
+- 在严格模式下，传给`eval()`的代码不能像在非严格模式下那样在调用者的作用域中声明变量或定义函数。这种情况下定义的变量和函数会存在于一个为`eval()`创建的新作用域中。这个作用域在`eval()`返回时就会被销毁。
+- 在严格模式下，函数中的`Arguments`对象（参见 8.3.3 节）保存着一份传给函数的值的静态副本。在非严格模式下，这个`Arguments`对象具有“魔法”行为，即这个数组中的元素与函数的命名参数引用相同的值。
+- 在严格模式下，如果`delete`操作符后面跟一个未限定的标识符，比如变量、函数或函数参数，则会导致抛出 SyntaxError（在非严格模式下，这样的`delete`表达式什么也不做，且返回`false`）。
+- 在严格模式下，尝试删除一个不可配置的属性会导致抛出 TypeError（在非严格模式下，这个尝试会失败，且`delete`表达式会求值为`false`）。
+- 在严格模式下，对象字面量定义两个或多个同名属性是语法错误（在非严格模式下，不会发生错误）。
+- 在严格模式下，函数声明中有两个或多个同名参数是语法错误（在非严格模式下，不会发生错误）。
+- 在严格模式下，不允许使用八进制整数字面量（以`0`开头后面没有`x`）（在非严格模式下，某些实现允许使用八进制字面量）。
+- 在严格模式下，标识符`eval`和`arguments`被当作关键字，不允许修改它们的值。不能给这些标识符赋值，不能把它们声明为变量，不能把它们用作函数名或者函数参数名，也不能把它们作为`catch`块的标识符使用。
+- 在严格模式下，检查调用栈的能力是受限制的。`arguments.caller`和`arguments.callee`在严格模式函数中都会抛出 TypeError。严格模式函数也有`caller`和`arguments`属性，但读取它们会抛出 TypeError（某些实现在非严格函数中定义了这些非标准属性）。
+  :::
 
 ## Declarations
 
