@@ -1570,19 +1570,39 @@ Strict code is executed in _strict mode_. Strict mode is a restricted subset of 
 - 在严格模式下，检查调用栈的能力是受限制的。`arguments.caller`和`arguments.callee`在严格模式函数中都会抛出 TypeError。严格模式函数也有`caller`和`arguments`属性，但读取它们会抛出 TypeError（某些实现在非严格函数中定义了这些非标准属性）。
   :::
 
-## Declarations
+## 声明
 
 The keywords `const`, `let`, `var`, `function`, `class`, `import`, and `export` are not technically statements, but they look a lot like statements, and this book refers informally to them as statements, so they deserve a mention in this chapter.
 
+::: tip 翻译
+关键字`const`、`let`、`var`、`function`、`class`、`import`和`export`严格来讲并不是语句，只是看起来很像语句，本书非正式地称它们为语句，因此本章也一并在这里介绍。
+:::
+
 These keywords are more accurately described as _declarations_ rather than statements. We said at the start of this chapter that statements “make something happen.” Declarations serve to define new values and give them names that we can use to refer to those values. They don’t make much happen themselves, but by providing names for values they, in an important sense, define the meaning of the other statements in your program.
+
+::: tip 翻译
+这些关键字更准确地讲应该叫作声明而非语句。我们在本章开始时说过，语句会导致“某些事件发生”。声明可以定义新值并给它们命名，以便将来通过这个名字引用相应的值。声明本身不会导致太多事件发生，但通过为值提供名字，它们会为程序中的其他语句定义相应的含义，这一点非常重要。
+:::
 
 When a program runs, it is the program’s expressions that are being evaluated and the program’s statements that are being executed. The declarations in a program don’t “run” in the same way: instead, they define the structure of the program itself. Loosely, you can think of declarations as the parts of the program that are processed before the code starts running.
 
+::: tip 翻译
+当程序运行时，解释器会对程序中的表达式求值，而且会执行程序的语句。程序中的声明并不以同样的方式“运行”，但它们定义程序本身的结构。宽泛地说，可以把声明看成程序的一部分，这一部分会在代码运行前预先处理。
+:::
+
 JavaScript declarations are used to define constants, variables, functions, and classes and for importing and exporting values between modules. The next subsections give examples of all of these declarations. They are all covered in much more detail elsewhere in this book.
+
+::: tip 翻译
+JavaScript 声明用于定义常量、变量、函数和类，也用于在模块间导入和导出值。接下来几小节将给出所有这些声明的例子。本书其他地方也有对它们更详细的介绍。
+:::
 
 ### const, let, and var
 
 The `const`, `let`, and `var` declarations are covered in §3.10. In ES6 and later, `const` declares constants, and `let` declares variables. Prior to ES6, the `var` keyword was the only way to declare variables and there was no way to declare constants. Variables declared with var are scoped to the containing function rather than the containing block. This can be a source of bugs, and in modern JavaScript there is really no reason to use var instead of `let`.
+
+::: tip 翻译
+本书在 3.10 节详细介绍了`const`、`let`和`var`。在 ES6 及之后的版本中，`const`声明常量而`let`声明变量。在 ES6 之前，使用`var`是唯一一个声明变量的方式，无法声明常量。使用`var`声明的变量，其作用域为包含函数，而非包含块。这可能会导致隐含的错误，但在现代 JavaScript 中，没有任何理由再使用`var`而不是`let`。
+:::
 
 ```js
 const TAU = 2 * Math.PI;
@@ -1594,6 +1614,10 @@ var circumference = TAU * radius;
 
 The `function` declaration is used to define functions, which are covered in detail in **Chapter 8**. (We also saw function in §4.3, where it was used as part of a function expression rather than a function declaration.) A function declaration looks like this:
 
+::: tip 翻译
+`function`声明用于定义函数，第 8 章中有详尽的介绍（我们在 4.3 节也看到过`function`，但当时是将其作为函数表达式而不是函数声明）。下面是一个函数声明的例子：
+:::
+
 ```js
 function area(radius) {
   return Math.PI * radius * radius;
@@ -1602,11 +1626,23 @@ function area(radius) {
 
 A function declaration creates a function object and assigns it to the specified name--`area` in this example. Elsewhere in our program, we can refer to the function—and run the code inside it—by using this name. The function declarations in any block of JavaScript code are processed before that code runs, and the function names are bound to the function objects throughout the block. We say that function declarations are “hoisted” because it is as if they had all been moved up to the top of whatever scope they are defined within. The upshot is that code that invokes a function can exist in your program before the code that declares the function.
 
+::: tip 翻译
+函数声明会创建一个函数对象，并把这个函数对象赋值给指定的名字（在这里是`area`）。然后在程序的任何地方都可以通过这个名字来引用这个函数，以及运行其中的代码。位于任何 JavaScript 代码块中的函数声明都会在代码运行之前被处理，而在整个代码块中函数名都会绑定到相应的函数对象。无论在作用域中的什么地方声明函数，这些函数都会被“提升”，就好像它们是在该作用域顶部定义的一样。于是在程序中，调用函数的代码可能位于声明函数的代码之前。
+:::
+
 §12.3 describes a special kind of function known as a _generator_. Generator declarations use the `function` keyword but follow it with an asterisk. §13.3 describes asynchronous functions, which are also declared using the `function` keyword but are prefixed with the `async` keyword.
+
+::: tip 翻译
+12.3 节描述一种特殊的函数，叫作生成器。生成器声明使用`function`关键字后跟一个星号。13.3 节介绍了异步函数，同样也是使用`function`关键字声明的，但前面要加一个`async`关键字。
+:::
 
 ### class
 
-In ES6 and later, the `class` declaration creates a new class and gives it a name that we can use to refer to it. Classes are described in detail in **Chapter 9**. A simple class declaration might look like this:
+In ES6 and later, the `class` declaration creates a new class and gives it a name that we can use to refer to it. Classes are described in detail in [Chapter 9](./Chapter-09-Classes.md). A simple class declaration might look like this:
+
+::: tip 翻译
+在 ES6 及之后的版本中，class 声明会创建一个新类并为其赋予一个名字，以便将来引用。[第 9 章](./Chapter-09-Classes.md)详细地介绍了类。下面是一个简单的类声明：
+:::
 
 ```js
 class Circle {
@@ -1624,11 +1660,23 @@ class Circle {
 
 Unlike functions, class declarations are not hoisted, and you cannot use a class declared this way in code that appears before the declaration.
 
-### import and export
+::: tip 翻译
+与函数不同，类声明不会被提升。因此在代码中，不能在还没有声明类之前就使用类。
+:::
 
-The `import` and `export` declarations are used together to make values defined in one module of JavaScript code available in another module. A module is a file of JavaScript code with its own global namespace, completely independent of all other modules. The only way that a value (such as function or class) defined in one module can be used in another module is if the defining module exports it with `export` and the using module imports it with `import`. Modules are the subject of **Chapter 10**, and `import` and `export` are covered in detail in §10.3.
+### import 和 export
+
+The `import` and `export` declarations are used together to make values defined in one module of JavaScript code available in another module. A module is a file of JavaScript code with its own global namespace, completely independent of all other modules. The only way that a value (such as function or class) defined in one module can be used in another module is if the defining module exports it with `export` and the using module imports it with `import`. Modules are the subject of [Chapter 10](./Chapter-10-Modules.md), and `import` and `export` are covered in detail in §10.3.
+
+::: tip 翻译
+`import`和`export`声明共同用于让一个 JavaScript 模块中定义的值可以在另一个模块中使用。一个模块就是一个 JavaScript 代码文件，有自己的全局作用域，完全与其他模块无关。如果要在一个模块中使用另一个模块中定义的值（如函数或类），唯一的方式就是在定义值的模块中使用`export`导出值，在使用值的模块中使用`import`导入值。模块是[第 10 章](./Chapter-10-Modules.md)的主题，`import`和`export`在 10.3 节有详细介绍。
+:::
 
 `import` directives are used to import one or more values from another file of JavaScript code and give them names within the current module. `import` directives come in a few different forms. Here are some examples:
+
+::: tip 翻译
+`import`指令用于从另一个 JavaScript 代码文件中导入一个或多个值，并在当前模块中为这些值指定名字。`import`指令有几种不同的形式。下面是几个例子：
+:::
 
 ```js
 import Circle from "./geometry/circle.js";
@@ -1638,6 +1686,10 @@ import { magnitude as hypotenuse } from "./vectors/utils.js";
 
 Values within a JavaScript module are private and cannot be imported into other modules unless they have been explicitly exported. The `export` directive does this: it declares that one or more values defined in the current module are exported and therefore available for import by other modules. The `export` directive has more variants than the import directive does. Here is one of them:
 
+::: tip 翻译
+JavaScript 模块中的值是私有的，除非被显式导出，否则其他模块都无法导入。`export`指令就是为此而生的，它声明把当前模块中定义的一个或多个值导出，因而其他模块可以导入这些值。`export`指令相比`import`指令有更多变体，下面是其中一种：
+:::
+
 ```js
 // geometry/constants.js
 const PI = Math.PI;
@@ -1645,7 +1697,11 @@ const TAU = 2 * PI;
 export { PI, TAU };
 ```
 
-The `export` keyword is sometimes used as a modifier on other declarations, resulting in a kind of compound declaration that defines a constant, variable, function, or class and exports it at the same time. And when a module exports only a single value, this is typically done with the special form export `default`:
+The `export` keyword is sometimes used as a modifier on other declarations, resulting in a kind of compound declaration that defines a constant, variable, function, or class and exports it at the same time. And when a module exports only a single value, this is typically done with the special form `export default`:
+
+::: tip 翻译
+`export`关键字有时候也用作其他声明的标识符，从而构成一种复合声明，在定义常量、变量、函数或类的同时又导出它们。如果一个模块只导出一个值，通常会使用特殊的`export default`形式：
+:::
 
 ```js
 export const TAU = 2 * Math.PI;
@@ -1657,9 +1713,13 @@ export default class Circle {
 }
 ```
 
-## Summary of JavaScript Statements
+## 总结
 
 This chapter introduced each of the JavaScript language’s statements, which are summarized in Table 5-1.
+
+::: tip 翻译
+本章介绍了 JavaScript 语言的所有语句，它们的语法全部列举在表 5-1 中。
+:::
 
 _Table 5-1. JavaScript statement syntax_
 
@@ -1692,3 +1752,33 @@ _Table 5-1. JavaScript statement syntax_
 | while             | A basic loop construct                                                   |
 | with              | Extend the scope chain (deprecated and forbidden in strict mode)         |
 | yield             | Provide a value to be iterated; only used in generator functions         |
+
+| Statement         | Purpose                                           |
+| ----------------- | ------------------------------------------------- |
+| break             | 推出最内部循环、switch 或有名字的闭合语句         |
+| case              | 在 switch 中标记一条语句                          |
+| class             | 声明一个类                                        |
+| const             | 声明并初始化一个或多个常量                        |
+| continue          | 开始最内部循环或命名循环的下一次迭代              |
+| debugger          | 调试器断点                                        |
+| default           | 在 switch 中标记默认语句                          |
+| do/while          | 替代 while 循环的一种结构                         |
+| export            | 声明可以被导入其他模块的值                        |
+| for               | 一种方便好用的循环                                |
+| for/await         | 异步迭代异步迭代器的值                            |
+| for/in            | 枚举对象的属性名                                  |
+| for/of            | 枚举可迭代对象（如数组）的值                      |
+| function          | 声明一个函数                                      |
+| if/else           | 根据某个条件执行一个或另一个语句                  |
+| import            | 为在其他模块中定义的值声明名字                    |
+| label             | 为语句起个名字，以便与 break 和 continue 一起使用 |
+| let               | 声明并初始化一个或多个块作用域的变量（新语法）    |
+| return            | 从函数中返回一个值                                |
+| switch            | 包含 case 或 default: 标签的多分枝结构            |
+| throw             | 抛出一个异常                                      |
+| try/catch/finally | 处理异常和代码清理                                |
+| "use strict"      | 对脚本或函数应用严格模式                          |
+| var               | 声明并初始化一个或多个变量（老语法）              |
+| while             | 一种基本的循环结构                                |
+| with              | 扩展作用域链（在严格模式下被废弃并禁止）          |
+| yield             | 提供一个被迭代的值；只用在生成器函数中            |
