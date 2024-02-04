@@ -488,50 +488,74 @@ The rules that specify when a property assignment succeeds and when it fails are
 - `o`没有自有属性`p`，`o`没有继承通过设置方法定义的属性`p`，`o`的`extensible`特性（参见 14.2 节）是`false`。因为`p`在`o`上并不存在，如果没有要调用的设置方法，那么`p`必须要添加到`o`上。但如果`o`不可扩展（`extensible`为`false`），则不能在它上面定义新属性。
   :::
 
-## Deleting Properties
+## 删除属性
 
 The `delete` operator (§4.13.4) removes a property from an object. Its single operand should be a property access expression. Surprisingly, `delete` does not operate on the value of the property but on the property itself:
 
+::: tip 翻译
+`delete`操作符（参见 4.13.4 节）用于从对象中移除属性。它唯一的操作数应该是一个属性访问表达式。令人惊讶的是，`delete`并不操作属性的值，而是操作属性本身：
+:::
+
 ```js
-delete book.author; // The book object now has no author property.
-delete book["main title"]; // Now it doesn't have "main title", either.
+delete book.author; // book 对象现在没有author属性了
+delete book["main title"]; // 现在它也没有 "main title" 属性了。
 ```
 
 The `delete` operator only deletes own properties, not inherited ones. (To delete an inherited property, you must delete it from the prototype object in which it is defined. Doing this affects every object that inherits from that prototype.)
 
+::: tip 翻译
+`delete`操作符只删除自有属性，不删除继承属性（要删除继承属性，必须从定义属性的原型对象上删除。这样做会影响继承该原型的所有对象）。
+:::
+
 A `delete` expression evaluates to `true` if the delete succeeded or if the delete had no effect (such as deleting a nonexistent property). `delete` also evaluates to `true` when used (meaninglessly) with an expression that is not a property access expression:
 
+::: tip 翻译
+如果`delete`操作成功或没有影响（如删除不存在的属性），则`delete`表达式求值为`true`。对非属性访问表达式（无意义地）使用`delete`，同样也会求值为`true`：
+:::
+
 ```js
-let o = { x: 1 }; // o has own property x and inherits property toString
-delete o.x; // => true: deletes property x
-delete o.x; // => true: does nothing (x doesn't exist) but true anyway
-delete o.toString; // => true: does nothing (toString isn't an own property)
-delete 1; // => true: nonsense, but true anyway
+let o = { x: 1 }; // o 有自有属性x和继承属性 toString
+delete o.x; // => true: 删除属性 x
+delete o.x; // => true: 什么也不做（x不存在）但仍然返回true
+delete o.toString; // => true: 什么也不做（toString 不是自有属性）
+delete 1; // => true: 无意义，但仍然返回true
 ```
 
 `delete` does not remove properties that have a configurable attribute of `false`. Certain properties of built-in objects are non-configurable, as are properties of the global object created by variable declaration and function declaration. In strict mode, attempting to delete a non-configurable property causes a TypeError. In non-strict mode, delete simply evaluates to `false` in this case:
 
+::: tip 翻译
+`delete`不会删除`configurable`特性为`false`的属性。与通过变量声明或函数声明创建的全局对象的属性一样，某些内置对象的属性也是不可配置的。在严格模式下，尝试删除不可配置的属性会导致 TypeError。在非严格模式下，`delete`直接求值为`false`：
+:::
+
 ```js
-// In strict mode, all these deletions throw TypeError instead of returning false
-delete Object.prototype; // => false: property is non-configurable
-var x = 1; // Declare a global variable
-delete globalThis.x; // => false: can't delete this property
-function f() {} // Declare a global function
-delete globalThis.f; // => false: can't delete this property either
+// 在严格模式下，以下所有删除操作都会抛出TypeError,而不是返回false
+delete Object.prototype; // => false: 属性不可配置
+var x = 1; // 声明一个全局变量
+delete globalThis.x; // => false: 不能删除这个属性
+function f() {} // 声明一个全局函数
+delete globalThis.f; // => false: 也不能删除这个属性
 ```
 
 When deleting configurable properties of the global object in non-strict mode, you can omit the reference to the global object and simply follow the `delete` operator with the property name:
 
+::: tip 翻译
+在非严格模式下删除全局对象可配置的属性时，可以省略对全局对象的引用，只在`delete`操作符后面加上属性名：
+:::
+
 ```js
-globalThis.x = 1; // Create a configurable global property (no let or var)
-delete x; // => true: this property can be deleted
+globalThis.x = 1; // 创建可配置的全局属性（没有let 或var）
+delete x; // => true: 这个属性可以删除
 ```
 
 In strict mode, however, `delete` raises a SyntaxError if its operand is an unqualified identifier like x, and you have to be explicit about the property access:
 
+::: tip 翻译
+在严格模式下，如果操作数是一个像`x`这样的非限定标识符，`delete`会抛出 SyntaxError，即必须写出完整的属性访问表达式：
+:::
+
 ```js
-delete x; // SyntaxError in strict mode
-delete globalThis.x; // This works
+delete x; // 在严格模式下报 SyntaxError
+delete globalThis.x; // 这样可以
 ```
 
 ## Testing Properties
