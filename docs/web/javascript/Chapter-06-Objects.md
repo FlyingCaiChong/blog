@@ -2,25 +2,59 @@
 title: 第六章 对象
 ---
 
-# Chapter 6 Objects
+# 对象
+
+[[toc]]
 
 Objects are JavaScript’s most fundamental datatype, and you have already seen them many times in the chapters that precede this one. Because objects are so important to the JavaScript language, it is important that you understand how they work in detail, and this chapter provides that detail. It begins with a formal overview of objects, then dives into practical sections about creating objects and querying, setting, deleting, testing, and enumerating the properties of objects. These property-focused sections are followed by sections that explain how to extend, serialize, and define important methods on objects. Finally, the chapter concludes with a long section about new object literal syntax in ES6 and more recent versions of the language.
 
-## Introduction to Objects
+::: tip 翻译
+对象是 JavaScript 最基本的数据类型，前几章我们已经多次看到它了。因为对 JavaScript 语言来说对象实在太重要了，所以理解对象的详细工作机制也非常重要，本章就来详尽地讲解对象。一开始我们先正式地介绍一下对象，接下来几节将结合实践讨论创建对象和查询、设置、删除、测试以及枚举对象的属性。在关注属性的几节之后，接着会讨论如何扩展、序列化对象，以及在对象上定义重要方法。本章最后一节比较长，主要讲解 ES6 和这门语言的新近版本新增的对象字面量语法。
+:::
+
+## 对象简介
 
 An object is a composite value: it aggregates multiple values (primitive values or other objects) and allows you to store and retrieve those values by name. An object is an unordered collection of properties, each of which has a name and a value. Property names are usually strings (although, as we’ll see in §6.10.3, property names can also be Symbols), so we can say that objects map strings to values. This string-to-value mapping goes by various names—you are probably already familiar with the fundamental data structure under the name “hash,” “hashtable,” “dictionary,” or “associative array.” An object is more than a simple string-to-value map, however. In addition to maintaining its own set of properties, a JavaScript object also inherits the properties of another object, known as its “prototype.” The methods of an object are typically inherited properties, and this “prototypal inheritance” is a key feature of JavaScript.
 
+::: tip 翻译
+对象是一种复合值，它汇聚多个值（原始值或其他对象）并允许我们按名字存储和获取这些值。对象是一个属性的无序集合，每个属性都有名字和值。属性名通常是字符串（也可以是符号，参见 6.10.3 节），因此可以说对象把字符串映射为值。这种字符串到值的映射曾经有很多种叫法，包括“散列”“散列表”“字典”或“关联数组”等熟悉的基本数据结构。不过，对象不仅仅是简单的字符串到值的映射。除了维持自己的属性之外，JavaScript 对象也可以从其他对象继承属性，这个其他对象称为其“原型”。对象的方法通常是继承来的属性，而这种“原型式继承”也是 JavaScript 的主要特性。
+:::
+
 JavaScript objects are dynamic—properties can usually be added and deleted—but they can be used to simulate the static objects and “structs” of statically typed languages. They can also be used (by ignoring the value part of the string-to-value mapping) to represent sets of strings.
+
+::: tip 翻译
+JavaScript 对象是动态的，即可以动态添加和删除属性。不过，可以用对象来模拟静态类型语言中的静态对象和“结构体”。对象也可以用于表示一组字符串（忽略字符串到值的映射中的值）。
+:::
 
 Any value in JavaScript that is not a string, a number, a Symbol, or `true`, `false`, `null`, or `undefined` is an object. And even though strings, numbers, and booleans are not objects, they can behave like immutable objects.
 
+::: tip 翻译
+在 JavaScript 中，任何不是字符串、数值、符号或`true`、`false`、`null`、`undefined`的值都是对象。即使字符串、数值和布尔值不是对象，它们的行为也类似不可修改的对象。
+:::
+
 Recall from §3.8 that objects are _mutable_ and manipulated by reference rather than by value. If the variable `x` refers to an object and the code `let y = x`; is executed, the variable `y` holds a reference to the same object, not a copy of that object. Any modifications made to the object through the variable `y` are also visible through the variable `x`.
+
+::: tip 翻译
+我们在 3.8 节介绍过对象是可修改的，是按引用操作而不是按值操作的。如果变量`x`指向一个对象，则代码`let y = x;`执行后，变量`y`保存的是同一个对象的引用，而不是该对象的副本。通过变量`y`对这个对象所做的任何修改，在变量`x`上都是可见的。
+:::
 
 The most common things to do with objects are to create them and set, query, delete, test, and enumerate their properties. These fundamental operations are described in the opening sections of this chapter. The sections after that cover more advanced topics.
 
+::: tip 翻译
+与对象相关的最常见的操作包括创建对象，以及设置、查询、删除、测试和枚举它们的值。这些基本操作将在本章开头几节介绍。之后几节将讨论更高级的主题。
+:::
+
 A _property_ has a name and a value. A property name may be any string, including the empty string (or any Symbol), but no object may have two properties with the same name. The value may be any JavaScript value, or it may be a getter or setter function (or both). We’ll learn about getter and setter functions in §6.10.6.
 
+::: tip 翻译
+属性有一个名字和一个值。属性名可以是任意字符串，包括空字符串（或任意符号），但对象不能包含两个同名的属性。值可以是任意 JavaScript 值，或者是设置函数或获取函数（或两个函数同时存在）。6.10.6 节将学习设置函数和获取函数。
+:::
+
 It is sometimes important to be able to distinguish between properties defined directly on an object and those that are inherited from a prototype object. JavaScript uses the term _own property_ to refer to non-inherited properties.
+
+::: tip 翻译
+有时候，区分直接定义在对象上的属性和那些从原型对象上继承的属性很重要。JavaScript 使用术语“自有属性”指代非继承属性。
+:::
 
 In addition to its name and value, each property has three _property attributes_:
 
@@ -28,7 +62,19 @@ In addition to its name and value, each property has three _property attributes_
 - The _enumerable_ attribute specifies whether the property name is returned by a `for/in` loop.
 - The _configurable_ attribute specifies whether the property can be deleted and whether its attributes can be altered.
 
-Many of JavaScript’s built-in objects have properties that are read-only, nonenumerable, or non-configurable. By default, however, all properties of the objects you create are writable, enumerable, and configurable. §14.1 explains techniques for specifying non-default property attribute values for your objects.
+::: tip 翻译
+除了名字和值之外，每个属性还有 3 个属性特性（`property attribute`）：
+
+- `writable`（可写）特性指定是否可以设置属性的值。
+- `enumerable`（可枚举）特性指定是否可以在`for/in`循环中返回属性的名字。
+- `configurable`（可配置）特性指定是否可以删除属性，以及是否可修改其特性。
+  :::
+
+Many of JavaScript’s built-in objects have properties that are read-only, non-enumerable, or non-configurable. By default, however, all properties of the objects you create are writable, enumerable, and configurable. §14.1 explains techniques for specifying non-default property attribute values for your objects.
+
+::: tip 翻译
+很多 JavaScript 内置对象拥有只读、不可枚举或不可配置的属性。不过，默认情况下，我们所创建对象的所有属性都是可写、可枚举和可配置的。14.1 节将介绍为对象指定非默认的属性特性值的技术。
+:::
 
 ## Creating Objects
 

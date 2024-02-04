@@ -2,7 +2,9 @@
 title: 第五章 语句
 ---
 
-# Chapter 5 语句
+# 语句
+
+[[toc]]
 
 [Chapter 4](./Chapter-04-Expressions_Operators.md) described expressions as JavaScript phrases. By that analogy, statements are JavaScript sentences or commands. Just as English sentences are terminated and separated from one another with periods, JavaScript statements are terminated with semicolons (§2.6). Expressions are evaluated to produce a value, but statements are executed to make something happen.
 
