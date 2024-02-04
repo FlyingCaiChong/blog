@@ -229,28 +229,44 @@ To understand why this works, you need to know how properties are queried and se
 要理解其中的原理，需要知道 JavaScript 中属性查询和设置的过程。这些都是下一节的内容。
 :::
 
-## Querying and Setting Properties
+## 查询和设置属性
 
 To obtain the value of a property, use the dot (`.`) or square bracket (`[]`) operators described in §4.4. The lefthand side should be an expression whose value is an object. If using the dot operator, the righthand side must be a simple identifier that names the property. If using square brackets, the value within the brackets must be an expression that evaluates to a string that contains the desired property name:
 
+::: tip 翻译
+要获得一个属性的值，可以使用 4.4 节介绍的点（`.`）或方括号（`[]`）操作符。左边应该是一个表达式，其值为一个对象。如果使用点操作符，右边必须是一个命名属性的简单标识符。如果使用方括号，方括号中的值必须是一个表达式，其结果为包含目的属性名的字符串：
+:::
+
 ```js
-let author = book.author; // Get the "author" property of the book.
-let name = author.surname; // Get the "surname" property of the author.
-let title = book["main title"]; // Get the "main title" property of the book.
+let author = book.author; // 取得book的"author"属性.
+let name = author.surname; // 取得author的"surname"属性。
+let title = book["main title"]; // 取得book的"main title"属性
 ```
 
 To create or set a property, use a dot or square brackets as you would to query the property, but put them on the lefthand side of an assignment expression:
 
+::: tip 翻译
+要创建或设置属性，与查询属性一样，可以使用点或方括号，只是要把它们放到赋值表达式的左边：
+:::
+
 ```js
-book.edition = 7; // Create an "edition" property of book.
-book["main title"] = "ECMAScript"; // Change the "main title" property.
+book.edition = 7; // 为book创建一个"edition"属性.
+book["main title"] = "ECMAScript"; // 修改 "main title" 属性.
 ```
 
-When using square bracket notation, we’ve said that the expression inside the square brackets must evaluate to a string. A more precise statement is that the expression must evaluate to a string or a value that can be converted to a string or to a Symbol (§6.10.3). In **Chapter 7**, for example, we’ll see that it is common to use numbers inside the square brackets.
+When using square bracket notation, we’ve said that the expression inside the square brackets must evaluate to a string. A more precise statement is that the expression must evaluate to a string or a value that can be converted to a string or to a Symbol (§6.10.3). In [Chapter 7](./Chapter-07-Arrays.md), for example, we’ll see that it is common to use numbers inside the square brackets.
 
-### Objects As Associative Arrays
+::: tip 翻译
+使用方括号时，我们说过其中的表达式必须求值为一个字符串。更准确的说法是，该表达式必须求值为一个字符串或一个可以转换为字符串或符号的值（参见 6.10.3）。例如，我们会在[第 7 章](./Chapter-07-Arrays.md)看到在方括号中使用数字是很常见的。
+:::
+
+### 作为关联数组的对象
 
 As explained in the preceding section, the following two JavaScript expressions have the same value:
+
+::: tip 翻译
+如前所述，下面两个 JavaScript 表达式的值相同：
+:::
 
 ```js
 object.property;
@@ -259,9 +275,21 @@ object["property"];
 
 The first syntax, using the dot and an identifier, is like the syntax used to access a static field of a struct or object in C or Java. The second syntax, using square brackets and a string, looks like array access, but to an array indexed by strings rather than by numbers. This kind of array is known as an associative array (or hash or map or dictionary). JavaScript objects are associative arrays, and this section explains why that is important.
 
+::: tip 翻译
+第一种语法使用点和标识符，与在 C 或 Java 中访问结构体或对象的静态字段的语法类似。第二种语法使用方括号和字符串，看起来像访问数组，只不过是以字符串而非数值作为索引的数组。这种数组也被称为关联数组（或散列、映射、字典）。JavaScript 对象是关联数组，本节解释为什么这一点很重要。
+:::
+
 In C, C++, Java, and similar strongly typed languages, an object can have only a fixed number of properties, and the names of these properties must be defined in advance. Since JavaScript is a loosely typed language, this rule does not apply: a program can create any number of properties in any object. When you use the `.` operator to access a property of an object, however, the name of the property is expressed as an identifier. Identifiers must be typed literally into your JavaScript program; they are not a datatype, so they cannot be manipulated by the program.
 
+::: tip 翻译
+在 C、C++、Java 及类似的强类型语言中，对象只有固定数量的属性，且这些属性的名字必须事先定义。JavaScript 是松散类型语言，并没有遵守这个规则，即 JavaScript 程序可以为任意对象创建任意数量的属性。不过，在使用`.`操作符访问对象的属性时，属性名是通过标识符来表示的。标识符必须直接书写在 JavaScript 程序中，它们不是一种数据类型，因此不能被程序操作。
+:::
+
 On the other hand, when you access a property of an object with the `[]` array notation, the name of the property is expressed as a string. Strings are JavaScript datatypes, so they can be manipulated and created while a program is running. So, for example, you can write the following code in JavaScript:
+
+::: tip 翻译
+在通过方括号（`[]`）这种数组表示法访问对象属性时，属性名是通过字符串来表示的。字符串是一种 JavaScript 数组类型，因此可以在程序运行期间修改和创建。例如，可以在 JavaScript 中这样写：
+:::
 
 ```js
 let addr = "";
@@ -272,10 +300,21 @@ for (let i = 0; i < 4; i++) {
 
 This code reads and concatenates the `address0`, `address1`, `address2`, and `address3` properties of the customer object.
 
-This brief example demonstrates the flexibility of using array notation to access properties of an object with string expressions. This code could be rewritten using the dot notation, but there are cases in which only the array notation will do. Suppose, for example, that you are writing a program that uses network resources to compute the current value of the user’s stock market investments. The program allows the user to type in the name of each stock they own as well as the number of shares of each stock. You might use an object named portfolio to hold this information. The object has one property for each stock. The name of the property is the name of the stock, and
-the property value is the number of shares of that stock. So, for example, if a user holds 50 shares of stock in IBM, the `portfolio.ibm` property has the value 50.
+::: tip 翻译
+这段代码读取并拼接了`customer`对象的属性`address0`、`address1`、`address2`和`address3`。
+:::
+
+This brief example demonstrates the flexibility of using array notation to access properties of an object with string expressions. This code could be rewritten using the dot notation, but there are cases in which only the array notation will do. Suppose, for example, that you are writing a program that uses network resources to compute the current value of the user’s stock market investments. The program allows the user to type in the name of each stock they own as well as the number of shares of each stock. You might use an object named portfolio to hold this information. The object has one property for each stock. The name of the property is the name of the stock, and the property value is the number of shares of that stock. So, for example, if a user holds 50 shares of stock in IBM, the `portfolio.ibm` property has the value 50.
+
+::: tip 翻译
+这个简单的示例演示了使用数组表示法通过字符串表达式访问对象属性的灵活性。这段代码也可以使用点表示法重写，但某些场景只有使用数组表示法才行得通。例如，假设你在写一个程序，利用网络资源计算用户在股市上投资的价值。这个程序允许用户填写自己持有的每只股票的名字和数量。假设使用名为`portfolio`的对象来保存这些信息，该对象对每只股票都有一个属性，其每个属性名都是股票的名字，而属性值是该股票的数量。因此如果一个用户持有 50 股 IBM 股票，则 `portfolio.ibm` 属性的值就是 50。
+:::
 
 Part of this program might be a function for adding a new stock to the portfolio:
+
+::: tip 翻译
+这个程序可能包含一个函数，用于为投资组合（portfolio）添加新股票：
+:::
 
 ```js
 function addstock(portfolio, stockname, shares) {
@@ -285,75 +324,123 @@ function addstock(portfolio, stockname, shares) {
 
 Since the user enters stock names at runtime, there is no way that you can know the property names ahead of time. Since you can’t know the property names when you write the program, there is no way you can use the `.` operator to access the properties of the portfolio object. You can use the `[]` operator, however, because it uses a string value (which is dynamic and can change at runtime) rather than an identifier (which is static and must be hardcoded in the program) to name the property.
 
-In **Chapter 5**, we introduced the `for/in` loop (and we’ll see it again shortly, in §6.6). The power of this JavaScript statement becomes clear when you consider its use with associative arrays. Here is how you would use it when computing the total value of a portfolio:
+::: tip 翻译
+由于用户是在运行时输入股票名字，不可能提前知道属性名。既然不可能在写程序时就知道属性名，那就没办法使用`.`操作符访问`portfolio`对象的属性。不过，可以使用`[]`操作符，因为它使用字符串值（字符串是动态的，可以在运行时修改）而不是标识符（标识符是静态的，必须硬编码到程序中）来命名属性。
+:::
+
+In [Chapter 5](./Chapter-05-Statements.md), we introduced the `for/in` loop (and we’ll see it again shortly, in §6.6). The power of this JavaScript statement becomes clear when you consider its use with associative arrays. Here is how you would use it when computing the total value of a portfolio:
+
+::: tip 翻译
+[第 5 章](./Chapter-05-Statements.md)曾介绍过 `for/in` 循环（稍后在 6.6 节还会看到）。这个 JavaScript 语句的威力在结合关联数组一起使用时可以明显地体现出来。以下代码演示了如何计算投资组合的总价值：
+:::
 
 ```js
 function computeValue(portfolio) {
   let total = 0.0;
   for (let stock in portfolio) {
-    // For each stock in the portfolio:
-    let shares = portfolio[stock]; // get the number of shares
-    let price = getQuote(stock); // look up share price
-    total += shares * price; // add stock value to total value
+    // 对于投资组合中的每只股票
+    let shares = portfolio[stock]; // 取得股票数量
+    let price = getQuote(stock); // 查询股价
+    total += shares * price; // 把单只股票价值加到总价值上
   }
-  return total; // Return total value.
+  return total; // 返回总价值
 }
 ```
 
 JavaScript objects are commonly used as associative arrays as shown here, and it is important to understand how this works. In ES6 and later, however, the Map class described in §11.1.2 is often a better choice than using a plain object.
 
-### Inheritance
+::: tip 翻译
+JavaScript 对象经常像这样作为关联数组使用，理解其原理非常重要。不过，在 ES6 及之后的版本中，使用 Map 类（将在 11.1.2 节介绍）通常比使用普通对象更好。
+:::
 
-JavaScript objects have a set of “own properties,” and they also inherit a set of properties from their prototype object. To understand this, we must consider property access in more detail. The examples in this section use the `Object.create()` function to create objects with specified prototypes. We’ll see in **Chapter 9**, however, that every time you create an instance of a class with new, you are creating an object that inherits properties from a prototype object.
+### 继承
+
+JavaScript objects have a set of “own properties,” and they also inherit a set of properties from their prototype object. To understand this, we must consider property access in more detail. The examples in this section use the `Object.create()` function to create objects with specified prototypes. We’ll see in [Chapter 9](./Chapter-09-Classes.md), however, that every time you create an instance of a class with new, you are creating an object that inherits properties from a prototype object.
+
+::: tip 翻译
+JavaScript 对象有一组“自有属性”，同时也从它们的原型对象继承一组属性。要理解这一点，必须更详细地分析属性存取。本节的示例将使用`Object.create()`函数以指定原型来创建对象。不过在[第 9 章](./Chapter-09-Classes.md)我们将看到，每次通过`new`创建一个类的实例，都会创建从某个原型对象继承属性的对象。
+:::
 
 Suppose you query the property `x` in the object `o`. If `o` does not have an own property with that name, the prototype object of `o` is queried for the property `x`. If the prototype object does not have an own property by that name, but has a prototype itself, the query is performed on the prototype of the prototype. This continues until the property `x` is found or until an object with a `null` prototype is searched. As you can see, the prototype attribute of an object creates a chain or linked list from which properties are inherited:
 
+::: tip 翻译
+假设要从对象`o`中查询属性`x`。如果`o`没有叫这个名字的自有属性，则会从`o`的原型对象查询属性`x`。如果原型对象也没有叫这个名字的自有属性，但它有自己的原型，则会继续查询这个原型的原型。这个过程一直持续，直至找到属性`x`或者查询到一个原型为`null`的对象。可见，对象通过其`prototype`属性创建了一个用于继承属性的链条或链表：
+:::
+
 ```js
-let o = {}; // o inherits object methods from Object.prototype
-o.x = 1; // and it now has an own property x.
-let p = Object.create(o); // p inherits properties from o and Object.prototype
-p.y = 2; // and has an own property y.
-let q = Object.create(p); // q inherits properties from p, o, and...
-q.z = 3; // ...Object.prototype and has an own property z.
-let f = q.toString(); // toString is inherited from Object.prototype
-q.x + q.y; // => 3; x and y are inherited from o and p
+let o = {}; // o 从 Object.prototype 继承对象方法
+o.x = 1; // 现在它有了自有属性 x.
+let p = Object.create(o); // p 从 o 和 Object.prototype 继承属性
+p.y = 2; // 而且有一个自有属性y.
+let q = Object.create(p); // q 从 p, o, 和 Object.prototype 继承属性
+q.z = 3; // 且有一个自有属性 z.
+let f = q.toString(); // toString 继承自 Object.prototype
+q.x + q.y; // => 3; x 和 y 分别继承自 o 和 p
 ```
 
 Now suppose you assign to the property `x` of the object `o`. If `o` already has an own (non-inherited) property named `x`, then the assignment simply changes the value of this existing property. Otherwise, the assignment creates a new property named `x` on the object `o`. If `o` previously inherited the property `x`, that inherited property is now hidden by the newly created own property with the same name.
 
+::: tip 翻译
+现在假设你为对象`o`的`x`属性赋值。如果`o`有一个名为`x`的自有（非继承）属性，这次赋值就会修改已有`x`属性的值。否则，这次赋值会在对象`o`上创建一个名为`x`的新属性。如果`o`之前继承了属性`x`，那么现在这个继承的属性会被新创建的同名属性隐藏。
+:::
+
 Property assignment examines the prototype chain only to determine whether the assignment is allowed. If `o` inherits a read-only property named `x`, for example, then the assignment is not allowed. (Details about when a property may be set are in §6.3.3.) If the assignment is allowed, however, it always creates or sets a property in the original object and never modifies objects in the prototype chain. The fact that inheritance occurs when querying properties but not when setting them is a key feature of JavaScript because it allows us to selectively override inherited properties:
 
+::: tip 翻译
+属性赋值查询原型链只为确定是否允许赋值。如果`o`继承了一个名为`x`的只读属性，则不允许赋值（关于什么情况下可以设置属性可以参考 6.3.3 节）。不过，如果允许赋值，则只会在原始对象上创建或设置属性，而不会修改原型链中的对象。查询属性时会用到原型链，而设置属性时不影响原型链是一个重要的 JavaScript 特性，利用这一点，可以选择性地覆盖继承的属性：
+:::
+
 ```js
-let unitcircle = { r: 1 }; // An object to inherit from
-let c = Object.create(unitcircle); // c inherits the property r
+let unitcircle = { r: 1 }; // c 继承自的对象
+let c = Object.create(unitcircle); // c 继承了属性 r
 c.x = 1;
-c.y = 1; // c defines two properties of its own
-c.r = 2; // c overrides its inherited property
-unitcircle.r; // => 1: the prototype is not affected
+c.y = 1; // c 定义了两个自有属性
+c.r = 2; // c 覆盖了它继承的属性
+unitcircle.r; // => 1: 原型不受影响
 ```
 
 There is one exception to the rule that a property assignment either fails or creates or sets a property in the original object. If `o` inherits the property `x`, and that property is an accessor property with a setter method (see §6.10.6), then that setter method is called rather than creating a new property `x` in `o`. Note, however, that the setter method is called on the object `o`, not on the prototype object that defines the property, so if the setter method defines any properties, it will do so on `o`, and it will again leave the prototype chain unmodified.
 
-### Property Access Errors
+::: tip 翻译
+属性赋值要么失败要么在原始对象上创建或设置属性的规则有一个例外。如果`o`继承了属性`x`，而该属性是一个通过设置方法定义的访问器属性（参见 6.10.6），那么就会调用该设置方法而不会在`o`上创建新属性`x`。要注意，此时会在对象`o`上而不是在定义该属性的原型对象上调用设置方法。因此如果这个设置方法定义了别的属性，那也会在`o`上定义同样的属性，但仍然不会修改原型链。
+:::
+
+### 属性访问错误
 
 Property access expressions do not always return or set a value. This section explains the things that can go wrong when you query or set a property.
 
+::: tip 翻译
+属性访问表达式并不总是会返回或设置值。本节解释查询或设置属性时可能出错的情况。
+:::
+
 It is not an error to query a property that does not exist. If the property `x` is not found as an own property or an inherited property of `o`, the property access expression `o.x` evaluates to `undefined`. Recall that our book object has a “sub-title” property, but not a “subtitle” property:
 
+::: tip 翻译
+查询不存在的属性不是错误。如果在`o`的自有属性和继承属性中都没找到属性`x`，则属性访问表达式`o.x`的求值结果为`undefined`。例如，`book`对象有一个“sub-title”属性，没有“subtitle”属性：
+:::
+
 ```js
-book.subtitle; // => undefined: property doesn't exist
+book.subtitle; // => undefined: 属性不存在
 ```
 
 It is an error, however, to attempt to query a property of an object that does not exist. The `null` and `undefined` values have no properties, and it is an error to query properties of these values. Continuing the preceding example:
 
+::: tip 翻译
+然而，查询不存在对象的属性则是错误。因为`null`和`undefined`值没有属性，查询这两个值的属性是错误。继续前面的示例：
+:::
+
 ```js
-let len = book.subtitle.length; // !TypeError: undefined doesn't have length
+let len = book.subtitle.length; // !TypeError: undefined 没有 length 属性
 ```
 
 Property access expressions will fail if the lefthand side of the `.` is `null` or `undefined`. So when writing an expression like `book.author.surname`, you should be careful if you are not certain that book and `book.author` are actually defined. Here are two ways to guard against this kind of problem:
 
+::: tip 翻译
+如果`.`的左边是`null`或`undefined`，则属性访问表达式会失败。因此在写类似`book.author.surname`这样的表达式时，要确保`book`和`book.author`是有定义的。以下是两种防止这类问题的写法：
+:::
+
 ```js
-// A verbose and explicit technique
+// 简单但麻烦的技术
 let surname = undefined;
 if (book) {
   if (book.author) {
@@ -361,13 +448,21 @@ if (book) {
   }
 }
 
-// A concise and idiomatic alternative to get surname or null or undefined
+// 取得surname、null或undefined的简洁的惯用技术
 surname = book && book.author && book.author.surname;
 ```
 
 To understand why this idiomatic expression works to prevent TypeError exceptions, you might want to review the short-circuiting behavior of the `&&` operator in §4.10.1.
 
+::: tip 翻译
+如果不理解这个惯用表达式为什么可以防止 TypeError 异常，可能需要回头看一看 4.10.1 节中关于`&&`操作符短路行为的解释。
+:::
+
 As described in §4.4.1, ES2020 supports conditional property access with `?.`, which allows us to rewrite the previous assignment expression as:
+
+::: tip 翻译
+正如 4.4.1 节介绍的，ES2020 通过`?.`支持条件式属性访问，用它可以把前面的赋值表达式改写成：
+:::
 
 ```js
 let surname = book?.author?.surname;
@@ -375,11 +470,23 @@ let surname = book?.author?.surname;
 
 Attempting to set a property on `null` or `undefined` also causes a TypeError. Attempts to set properties on other values do not always succeed, either: some properties are read-only and cannot be set, and some objects do not allow the addition of new properties. In strict mode (§5.6.3), a TypeError is thrown whenever an attempt to set a property fails. Outside of strict mode, these failures are usually silent.
 
+::: tip 翻译
+尝试在`null`或`undefined`上设置属性也会导致 TypeError。而且，尝试在其他值上设置属性也不总是会成功，因为有些属性是只读的，不能设置，而有些对象不允许添加新属性。在严格模式下（见 5.6.3 节），只要尝试设置属性失败就会抛出 TypeError。在非严格模式下，这些失败通常是静默失败。
+:::
+
 The rules that specify when a property assignment succeeds and when it fails are intuitive but difficult to express concisely. An attempt to set a property `p` of an object `o` fails in these circumstances:
 
 - `o` has an own property `p` that is read-only: it is not possible to set read-only properties.
 - `o` has an inherited property `p` that is read-only: it is not possible to hide an inherited read-only property with an own property of the same name.
 - `o` does not have an own property `p`; `o` does not inherit a property `p` with a setter method, and `o`’s extensible attribute (see §14.2) is `false`. Since `p` does not already exist in `o`, and if there is no setter method to call, then `p` must be added to `o`. But if `o` is not extensible, then no new properties can be defined on it.
+
+::: tip 翻译
+关于属性赋值什么时候成功、什么时候失败的规则很容易理解，但却不容易只用简单几句话说清楚。尝试在对象`o`上设置属性`p`在以下情况下会失败：
+
+- `o`有一个只读自有属性`p`：不可能设置只读属性。
+- `o`有一个只读继承属性`p`：不可能用同名自有属性隐藏只读继承属性。
+- `o`没有自有属性`p`，`o`没有继承通过设置方法定义的属性`p`，`o`的`extensible`特性（参见 14.2 节）是`false`。因为`p`在`o`上并不存在，如果没有要调用的设置方法，那么`p`必须要添加到`o`上。但如果`o`不可扩展（`extensible`为`false`），则不能在它上面定义新属性。
+  :::
 
 ## Deleting Properties
 
