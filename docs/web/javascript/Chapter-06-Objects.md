@@ -832,21 +832,37 @@ JSON syntax is a _subset_ of JavaScript syntax, and it cannot represent all Java
 JSON 语法是 JavaScript 语法的子集，不能表示所有 JavaScript 的值。可以序列化和恢复的值包括对象、数组、字符串、有限数值、`true`、`false`和`null`。`NaN`、`Infinity`和`-Infinity`会被序列化为`null`。日期对象会被序列化为 ISO 格式的日期字符串（参见`Date.toJSON()`函数），但`JSON.parse()`会保持其字符串形式，不会恢复原始的日期对象。函数、RegExp 和 Error 对象以及`undefined`值不能被序列化或恢复。`JSON.stringify()`只序列化对象的可枚举自有属性。如果属性值无法序列化，则该属性会从输出的字符串中删除。`JSON.stringify()`和`JSON.parse()`都接收可选的第二个参数，用于自定义序列化及恢复操作。例如，可以通过这个参数指定要序列化哪些属性，或者在序列化或字符串化过程中如何转换某些值。11.6 节包含这两个函数的完整介绍。
 :::
 
-## Object Methods
+## 对象方法
 
-As discussed earlier, all JavaScript objects (except those explicitly created without a prototype) inherit properties from `Object.prototype`. These inherited properties are primarily methods, and because they are universally available, they are of particular interest to JavaScript programmers. We’ve already seen the `hasOwnProperty()` and `propertyIsEnumerable()` methods, for example. (And we’ve also already covered quite a few static functions defined on the Object constructor, such as `Object.create()` and `Object.keys()`.) This section explains a handful of universal object methods that are defined on Object.prototype, but which are intended to be replaced by other, more specialized implementations. In the sections that follow, we show examples of defining these methods on a single object. In **Chapter 9**, you’ll learn how to define these methods more generally for an entire class of objects.
+As discussed earlier, all JavaScript objects (except those explicitly created without a prototype) inherit properties from `Object.prototype`. These inherited properties are primarily methods, and because they are universally available, they are of particular interest to JavaScript programmers. We’ve already seen the `hasOwnProperty()` and `propertyIsEnumerable()` methods, for example. (And we’ve also already covered quite a few static functions defined on the Object constructor, such as `Object.create()` and `Object.keys()`.) This section explains a handful of universal object methods that are defined on Object.prototype, but which are intended to be replaced by other, more specialized implementations. In the sections that follow, we show examples of defining these methods on a single object. In [Chapter 9](./Chapter-09-Classes.md), you’ll learn how to define these methods more generally for an entire class of objects.
 
-### The toString() Method
+::: tip 翻译
+如前所述，所有 JavaScript 对象（除了那些显式创建为没有原型的）都从`Object.prototype`继承属性。这些继承的属性主要是方法，因为它们几乎无处不在，所以对 JavaScript 程序而言特别重要。例如，前面我们已经看到过`hasOwnProperty()`和`propertyIsEnumerable()`方法了（而且我们也介绍了几个定义在 Object 构造函数上的静态方法，例如`Object.create()`和`Object.keys()`）。本节讲解`Object.prototype`上定义的几个通用方法，但这些方法很有可能被更特定的实现所取代。后面几节我们将展示在同一个对象上定义这些方法的示例。在[第 9 章](./Chapter-09-Classes.md)，我们还会学习如何为整个对象的类定义更通用的方法。
+:::
+
+### toString() 方法
 
 The `toString()` method takes no arguments; it returns a string that somehow represents the value of the object on which it is invoked. JavaScript invokes this method of an object whenever it needs to convert the object to a string. This occurs, for example, when you use the `+` operator to concatenate a string with an object or when you pass an object to a method that expects a string.
 
+::: tip 翻译
+`toString()`方法不接收参数，返回表示调用它的对象的值的字符串。每当需要把一个对象转换为字符串时，JavaScript 就会调用该对象的这个方法。例如，在使用`+`操作符拼接一个字符串和一个对象时，或者把一个对象传入期望字符串参数的方法时。
+:::
+
 The default `toString()` method is not very informative (though it is useful for determining the class of an object, as we will see in §14.4.3). For example, the following line of code simply evaluates to the string “[object Object]”:
+
+::: tip 翻译
+默认的`toString()`方法并不能提供太多信息（但可以用于确定对象的类，如 14.4.3 节所示）。例如，下面这行代码只会得到字符串“[object Object]”：
+:::
 
 ```js
 let s = { x: 1, y: 1 }.toString(); // s == "[object Object]"
 ```
 
 Because this default method does not display much useful information, many classes define their own versions of `toString()`. For example, when an array is converted to a string, you obtain a list of the array elements, themselves each converted to a string, and when a function is converted to a string, you obtain the source code for the function. You might define your own `toString()` method like this:
+
+::: tip 翻译
+由于这个默认方法不会显示太有用的信息，很多类都会重新定义自己的`toString()`方法。例如，在把数组转换为字符串时，可以得到数组元素的一个列表，每个元素也都会转换为字符串。而把函数转换为字符串时，可以得到函数的源代码。可以像下面这样定义自己的`toString()`方法：
+:::
 
 ```js
 let point = {
@@ -856,12 +872,16 @@ let point = {
     return `(${this.x}, ${this.y})`;
   },
 };
-String(point); // => "(1, 2)": toString() is used for string conversions
+String(point); // => "(1, 2)": toString() 用于转换为字符串
 ```
 
-### The toLocaleString() Method
+### toLocaleString() 方法
 
 In addition to the basic `toString()` method, objects all have a `toLocaleString()`. The purpose of this method is to return a localized string representation of the object. The default `toLocaleString()` method defined by Object doesn’t do any localization itself: it simply calls `toString()` and returns that value. The Date and Number classes define customized versions of `toLocaleString()` that attempt to format numbers, dates, and times according to local conventions. Array defines a `toLocaleString()` method that works like `toString()` except that it formats array elements by calling their `toLocaleString()` methods instead of their `toString()` methods. You might do the same thing with a point object like this:
+
+::: tip 翻译
+除了基本的`toString()`方法之外，对象也都有一个`toLocaleString()`方法。这个方法的用途是返回对象的本地化字符串表示。Object 定义的默认`toLocaleString()`方法本身没有实现任何本地化，而是简单地调用`toString()`并返回该值。Date 和 Number 类定义了自己的`toLocaleString()`方法，尝试根据本地惯例格式化数值、日期和时间。数组也定义了一个与`toString()`类似的`toLocaleString()`方法，只不过它会调用每个数组元素的`toLocaleString()`方法，而不是调用它们的`toString()`方法。对于前面的`point`对象，我们也可以如法炮制：
+:::
 
 ```js
 let point = {
@@ -875,14 +895,22 @@ let point = {
   },
 };
 point.toString(); // => "(1000, 2000)"
-point.toLocaleString(); // => "(1,000, 2,000)": note thousands separators
+point.toLocaleString(); // => "(1,000, 2,000)": 注意千分位分隔符
 ```
 
 The internationalization classes documented in §11.7 can be useful when implementing a `toLocaleString()` method.
 
-### The valueOf() Method
+::: tip 翻译
+11.7 节介绍的国际化类可以用于实现`toLocaleString()`方法。
+:::
+
+### valueOf() 方法
 
 The `valueOf()` method is much like the `toString()` method, but it is called when JavaScript needs to convert an object to some primitive type other than a string-typically, a number. JavaScript calls this method automatically if an object is used in a context where a primitive value is required. The default `valueOf()` method does nothing interesting, but some of the built-in classes define their own `valueOf()` method. The Date class defines `valueOf()` to convert dates to numbers, and this allows Date objects to be chronologically compared with `<` and `>`. You could do something similar with a point object, defining a `valueOf()` method that returns the distance from the origin to the point:
+
+::: tip 翻译
+`valueOf()`方法与`toString()`方法很相似，但会在 JavaScript 需要把对象转换为某些非字符串原始值（通常是数值）时被调用。如果在需要原始值的上下文中使用了对象，JavaScript 会自动调用这个对象的`valueOf()`方法。默认的`valueOf()`方法并没有做什么，因此一些内置类定义了自己的`valueOf()`方法。Date 类定义的`valueOf()`方法可以将日期转换为数值，这样就让日期对象可以通过`<`和`>`操作符来进行比较。类似地，对于`point`对象，我们也可以定义一个返回原点与当前点之间距离的`valueOf()`：
+:::
 
 ```js
 let point = {
@@ -892,15 +920,19 @@ let point = {
     return Math.hypot(this.x, this.y);
   },
 };
-Number(point); // => 5: valueOf() is used for conversions to numbers
+Number(point); // => 5: valueOf() 用于转换为数值
 point > 4; // => true
 point > 5; // => false
 point < 6; // => true
 ```
 
-### The toJSON() Method
+### toJSON() 方法
 
 `Object.prototype` does not actually define a `toJSON()` method, but the `JSON.stringify()` method (see §6.8) looks for a `toJSON()` method on any object it is asked to serialize. If this method exists on the object to be serialized, it is invoked, and the return value is serialized, instead of the original object. The Date class (§11.4) defines a `toJSON()` method that returns a serializable string representation of the date. We could do the same for our Point object like this:
+
+::: tip 翻译
+`Object.prototype` 实际上并未定义 `toJSON()`方法，但`JSON.stringify()`方法（参见 6.8 节）会从要序列化的对象上寻找`toJSON()`方法。如果要序列化的对象上存在这个方法，就会调用它，然后序列化该方法的返回值，而不是原始对象。Date 类（参见 11.4 节）定义了自己的 `toJSON()`方法，返回一个表示日期的序列化字符串。同样，我们也可以给 `point` 对象定义这个方法：
+:::
 
 ```js
 let point = {
