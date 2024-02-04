@@ -558,56 +558,80 @@ delete x; // 在严格模式下报 SyntaxError
 delete globalThis.x; // 这样可以
 ```
 
-## Testing Properties
+## 测试属性
 
 JavaScript objects can be thought of as sets of properties, and it is often useful to be able to test for membership in the set—to check whether an object has a property with a given name. You can do this with the in operator, with the `hasOwnProperty()` and `propertyIsEnumerable()` methods, or simply by querying the property. The examples shown here all use strings as property names, but they also work with Symbols (§6.10.3).
 
+::: tip 翻译
+JavaScript 对象可以被想象成一组属性，实际开发中经常需要测试这组属性的成员关系，即检查对象是否有一个给定名字的属性。为此，可以使用`in`操作符，或者`hasOwnProperty()`、`propertyIsEnumerable()`方法，或者直接查询相应属性。下面的示例都使用字符串作为属性名，但这些示例也适用于符号属性（参见 6.10.3 节）。
+:::
+
 The `in` operator expects a property name on its left side and an object on its right. It returns true if the object has an own property or an inherited property by that name:
+
+::: tip 翻译
+`in`操作符要求左边是一个属性名，右边是一个对象。如果对象有包含相应名字的自有属性或继承属性，将返回`true`：
+:::
 
 ```js
 let o = { x: 1 };
-"x" in o; // => true: o has an own property "x"
-"y" in o; // => false: o doesn't have a property "y"
-"toString" in o; // => true: o inherits a toString property
+"x" in o; // => true: o 有自有属性 "x"
+"y" in o; // => false: o 没有属性 "y"
+"toString" in o; // => true: o 继承了 toString 属性
 ```
 
 The `hasOwnProperty()` method of an object tests whether that object has an own property with the given name. It returns `false` for inherited properties:
 
+::: tip 翻译
+对象的`hasOwnProperty()`方法用于测试对象是否有给定名字的属性。对继承的属性，它返回`false`：
+:::
+
 ```js
 let o = { x: 1 };
-o.hasOwnProperty("x"); // => true: o has an own property x
-o.hasOwnProperty("y"); // => false: o doesn't have a property y
-o.hasOwnProperty("toString"); // => false: toString is an inherited property
+o.hasOwnProperty("x"); // => true: o 有自有属性 x
+o.hasOwnProperty("y"); // => false: o 没有属性 y
+o.hasOwnProperty("toString"); // => false: toString 是继承属性
 ```
 
 The `propertyIsEnumerable()` refines the `hasOwnProperty()` test. It returns `true` only if the `named` property is an own property and its enumerable attribute is true. Certain built-in properties are not enumerable. Properties created by normal JavaScript code are enumerable unless you’ve used one of the techniques shown in §14.1 to make them non-enumerable.
 
+::: tip 翻译
+`propertyIsEnumerable()`方法细化了`hasOwnProperty()`测试。如果传入的命名属性是自有属性且这个属性的`enumerable`特性为`true`，这个方法会返回`true`。某些内置属性是不可枚举的。使用常规 JavaScript 代码创建的属性都是可枚举的，除非使用 14.1 节的技术将它们限制为不可枚举：
+:::
+
 ```js
 let o = { x: 1 };
-o.propertyIsEnumerable("x"); // => true: o has an own enumerable property x
-o.propertyIsEnumerable("toString"); // => false: not an own property
-Object.prototype.propertyIsEnumerable("toString"); // => false: not enumerable
+o.propertyIsEnumerable("x"); // => true: o 有一个可枚举属性 x
+o.propertyIsEnumerable("toString"); // => false: toString不是自有属性
+Object.prototype.propertyIsEnumerable("toString"); // => false: 不可枚举
 ```
 
-Instead of using the in operator, it is often sufficient to simply query the property and use `!==` to make sure it is not undefined:
+Instead of using the `in` operator, it is often sufficient to simply query the property and use `!==` to make sure it is not undefined:
+
+::: tip 翻译
+除了使用`in`操作符，通常简单的属性查询配合`!==`确保其不是未定义的就可以了：
+:::
 
 ```js
 let o = { x: 1 };
-o.x !== undefined; // => true: o has a property x
-o.y !== undefined; // => false: o doesn't have a property y
-o.toString !== undefined; // => true: o inherits a toString property
+o.x !== undefined; // => true: o 有属性 x
+o.y !== undefined; // => false: o 没有属性 y
+o.toString !== undefined; // => true: o 继承了 toString 属性
 ```
 
 There is one thing the in operator can do that the simple property access technique shown here cannot do. in can distinguish between properties that do not exist and properties that exist but have been set to `undefined`. Consider this code:
 
+::: tip 翻译
+但有一件事`in`操作符可以做，而简单的属性访问技术做不到。`in`可以区分不存在的属性和存在但被设置为`undefined`的属性。来看下面的代码：
+:::
+
 ```js
-let o = { x: undefined }; // Property is explicitly set to undefined
-o.x !== undefined; // => false: property exists but is undefined
-o.y !== undefined; // => false: property doesn't even exist
-"x" in o; // => true: the property exists
-"y" in o; // => false: the property doesn't exist
-delete o.x; // Delete the property x
-"x" in o; // => false: it doesn't exist anymore
+let o = { x: undefined }; // 把属性显示设置为 undefined
+o.x !== undefined; // => false: 属性存在但值是 undefined
+o.y !== undefined; // => false: 属性不存在
+"x" in o; // => true: 属性存在
+"y" in o; // => false: 属性不存在
+delete o.x; // 删除属性 x
+"x" in o; // => false: 属性x不存在了
 ```
 
 ## Enumerating Properties
