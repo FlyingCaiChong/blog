@@ -717,9 +717,13 @@ The enumeration order for the `for/in` loop is not as tightly specified as it is
 `for/in`循环的枚举顺序并不像上述枚举函数那么严格，但实现通常会按照上面描述的顺序枚举自有属性，然后再沿原型链上溯，以同样的顺序枚举每个原型对象的属性。不过要注意，如果已经有同名属性被枚举过了，甚至如果有一个同名属性是不可枚举的，那这个属性就不会枚举了。
 :::
 
-## Extending Objects
+## 扩展对象
 
 A common operation in JavaScript programs is needing to copy the properties of one object to another object. It is easy to do that with code like this:
+
+::: tip 翻译
+在 JavaScript 程序中，把一个对象的属性复制到另一个对象上是很常见的。使用下面的代码很容易做到：
+:::
 
 ```js
 let target = { x: 1 },
@@ -732,17 +736,37 @@ target; // => {x: 1, y: 2, z: 3}
 
 But because this is a common operation, various JavaScript frameworks have defined utility functions, often named `extend()`, to perform this copying operation. Finally, in ES6, this ability comes to the core JavaScript language in the form of `Object.assign()`.
 
+::: tip 翻译
+但因为这是个常见操作，各种 JavaScript 框架纷纷为此定义了辅助函数，通常会命名为`extend()`。最终，在 ES6 中，这个能力以`Object.assign()`的形式进入了核心 JavaScript 语言。
+:::
+
 `Object.assign()` expects two or more objects as its arguments. It modifies and returns the first argument, which is the target object, but does not alter the second or any subsequent arguments, which are the source objects. For each source object, it copies the enumerable own properties of that object (including those whose names are Symbols) into the target object. It processes the source objects in argument list order so that properties in the first source object override properties by the same name in the target object and properties in the second source object (if there is one) override properties with the same name in the first source object.
+
+::: tip 翻译
+`Object.assign()`接收两个或多个对象作为其参数。它会修改并返回第一个参数，第一个参数是目标对象，但不会修改第二个及后续参数，那些都是来源对象。对于每个来源对象，它会把该对象的可枚举自有属性（包括名字为符号的属性）复制到目标对象。它按照参数列表顺序逐个处理来源对象，第一个来源对象的属性会覆盖目标对象的同名属性，而第二个来源对象（如果有）的属性会覆盖第一个来源对象的同名属性。
+:::
 
 `Object.assign()` copies properties with ordinary property get and set operations, so if a source object has a getter method or the target object has a setter method, they will be invoked during the copy, but they will not themselves be copied.
 
+::: tip 翻译
+`Object.assign()`以普通的属性获取和设置方式复制属性，因此如果一个来源对象有获取方法或目标对象有设置方法，则它们会在复制期间被调用，但这些方法本身不会被复制。
+:::
+
 One reason to assign properties from one object into another is when you have an object that defines default values for many properties and you want to copy those default properties into another object if a property by that name does not already exist in that object. Using `Object.assign()` naively will not do what you want:
 
+::: tip 翻译
+将属性从一个对象分配到另一个对象的一个原因是，如果有一个默认对象为很多属性定义了默认值，并且如果该对象中不存在同名属性，可以将这些默认属性复制到另一个对象中。但是，像下面这样简单地使用`Object.assign()`不会达到目的：
+:::
+
 ```js
-Object.assign(o, defaults); // overwrites everything in o with defaults
+Object.assign(o, defaults); // 用defaults覆盖o的所有属性
 ```
 
 Instead, what you can do is to create a new object, copy the defaults into it, and then override those defaults with the properties in `o`:
+
+::: tip 翻译
+此时，需要创建一个新对象，先把默认值复制到新对象中，然后再使用`o`的属性覆盖那些默认值：
+:::
 
 ```js
 o = Object.assign({}, defaults, o);
@@ -750,20 +774,28 @@ o = Object.assign({}, defaults, o);
 
 We’ll see in §6.10.4 that you can also express this object copy-and-override operation using the `...` spread operator like this:
 
+::: tip 翻译
+在后面 6.10.4 节我们会看到，使用扩展操作符`...`也可以表达这种对象复制和覆盖操作：
+:::
+
 ```js
 o = { ...defaults, ...o };
 ```
 
 We could also avoid the overhead of the extra object creation and copying by writing a version of `Object.assign()` that copies properties only if they are missing:
 
+::: tip 翻译
+为了避免额外的对象创建和复制，也可以重写一版`Object.assign()`，只复制那些不存在的属性：
+:::
+
 ```js
-// Like Object.assign() but doesn't override existing properties
-// (and also doesn't handle Symbol properties)
+// 与 Object.assign() 类似，但不覆盖已经存在的属性
+// (同时也不处理符号属性)
 function merge(target, ...sources) {
   for (let source of sources) {
     for (let key of Object.keys(source)) {
       if (!(key in target)) {
-        // This is different than Object.assign()
+        // 这里跟 Object.assign() 不同
         target[key] = source[key];
       }
     }
@@ -775,6 +807,10 @@ merge({ x: 1 }, { x: 2, y: 2 }, { y: 3, z: 4 }); // => {x: 1, y: 2, z: 4}
 ```
 
 It is straightforward to write other property manipulation utilities like this `merge()` function. A `restrict()` function could delete properties of an object if they do not appear in another template object, for example. Or a `subtract()` function could remove all of the properties of one object from another object.
+
+::: tip 翻译
+编写类似`merge()`的属性操作辅助方法很简单。例如，可以写一个`restrict()`函数，用于从一个对象中删除另一个模板对象没有的属性。或者写一个`subtract()`函数，用于从一个对象中删除另一个对象包含的所有属性。
+:::
 
 ## Serializing Objects
 
