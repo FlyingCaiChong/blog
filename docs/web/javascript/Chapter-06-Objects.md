@@ -634,30 +634,42 @@ delete o.x; // 删除属性 x
 "x" in o; // => false: 属性x不存在了
 ```
 
-## Enumerating Properties
+## 枚举属性
 
 Instead of testing for the existence of individual properties, we sometimes want to iterate through or obtain a list of all the properties of an object. There are a few different ways to do this.
 
+::: tip 翻译
+除了测试属性是否存在，有时候也需要遍历或获取对象的所有属性。为此有几种不同的实现方式。
+:::
+
 The `for/in` loop was covered in §5.4.5. It runs the body of the loop once for each enumerable property (own or inherited) of the specified object, assigning the name of the property to the loop variable. Built-in methods that objects inherit are not enumerable, but the properties that your code adds to objects are enumerable by default. For example:
 
+::: tip 翻译
+5.4.5 节介绍的`for/in`循环对指定对象的每个可枚举（自有或继承）属性都会运行一次循环体，将属性的名字赋给循环变量。对象继承的内置方法是不可枚举的，但你的代码添加给对象的属性默认是可枚举的。例如：
+:::
+
 ```js
-let o = { x: 1, y: 2, z: 3 }; // Three enumerable own properties
-o.propertyIsEnumerable("toString"); // => false: not enumerable
+let o = { x: 1, y: 2, z: 3 }; // 3个可枚举自有属性
+o.propertyIsEnumerable("toString"); // => false: 不可枚举
 for (let p in o) {
-  // Loop through the properties
-  console.log(p); // Prints x, y, and z, but not toString
+  // 循环遍历属性
+  console.log(p); // 打印 x, y, 和 z, 但没有 toString
 }
 ```
 
 To guard against enumerating inherited properties with `for/in`, you can add an explicit check inside the loop body:
 
+::: tip 翻译
+为防止通过`for/in`枚举继承的属性，可以在循环体内添加一个显式测试：
+:::
+
 ```js
 for (let p in o) {
-  if (!o.hasOwnProperty(p)) continue; // Skip inherited properties
+  if (!o.hasOwnProperty(p)) continue; // 跳过继承的属性
 }
 
 for (let p in o) {
-  if (typeof o[p] === "function") continue; // Skip all methods
+  if (typeof o[p] === "function") continue; // 跳过所有方法
 }
 ```
 
@@ -666,11 +678,24 @@ As an alternative to using a `for/in` loop, it is often easier to get an array o
 - `Object.keys()` returns an array of the names of the enumerable own properties of an object. It does not include non-enumerable properties, inherited properties, or properties whose name is a Symbol (see §6.10.3).
 - `Object.getOwnPropertyNames()` works like `Object.keys()` but returns an array of the names of non-enumerable own properties as well, as long as their names are strings.
 - `Object.getOwnPropertySymbols()` returns own properties whose names are Symbols, whether or not they are enumerable.
-- `Reflect.ownKeys()` returns all own property names, both enumerable and nonenumerable, and both string and Symbol. (See §14.6.)
+- `Reflect.ownKeys()` returns all own property names, both enumerable and non-enumerable, and both string and Symbol. (See §14.6.)
+
+::: tip 翻译
+除了使用`for/in`循环，有时候可以先获取对象所有属性名的数组，然后再通过`for/of`循环遍历该数组。有 4 个函数可以用来取得属性名数组：
+
+- `Object.keys()`返回对象可枚举自有属性名的数组。不包含不可枚举属性、继承属性或名字是符号的属性（参见 6.10.3 节）。
+- `Object.getOwnPropertyNames()`与`Object.keys()`类似，但也会返回不可枚举自有属性名的数组，只要它们的名字是字符串。
+- `Object.getOwnPropertySymbols()`返回名字是符号的自有属性，无论是否可枚举。
+- `Reflect.ownKeys()`返回所有属性名，包括可枚举和不可枚举属性，以及字符串属性和符号属性（参见 14.6 节）。
+  :::
 
 There are examples of the use of `Object.keys()` with a `for/of` loop in §6.7.
 
-### Property Enumeration Order
+::: tip 翻译
+6.7 节给出了使用`Object.keys()`和`for/of`循环的示例。
+:::
+
+### 属性枚举顺序
 
 ES6 formally defines the order in which the own properties of an object are enumerated. `Object.keys()`, `Object.getOwnPropertyNames()`, `Object.getOwnPropertySymbols()`, `Reflect.ownKeys()`, and related methods such as `JSON.stringify()` all list properties in the following order, subject to their own additional constraints about whether they list non-enumerable properties or properties whose names are strings or Symbols:
 
@@ -678,7 +703,19 @@ ES6 formally defines the order in which the own properties of an object are enum
 - After all properties that look like array indexes are listed, all remaining properties with string names are listed (including properties that look like negative numbers or floating-point numbers). These properties are listed in the order in which they were added to the object. For properties defined in an object literal, this order is the same order they appear in the literal.
 - Finally, the properties whose names are Symbol objects are listed in the order in which they were added to the object.
 
+::: tip 翻译
+ES6 正式定义了枚举对象自有属性的顺序。`Object.keys()`、`Object.getOwnPropertyNames()`、`Object.getOwnPropertySymbols()`、`Reflect.onwKeys()`及`JSON.stringify()`等相关方法都按照下面的顺序列出属性，另外也受限于它们要列出不可枚举属性还是列出字符串属性或符号属性：
+
+- 先列出名字为非负整数的字符串属性，按照数值顺序从最小到最大。这条规则意味着数组和类数组对象的属性会按照顺序被枚举。
+- 在列出类数组索引的所有属性之后，再列出所有剩下的字符串名字（包括看起来像负数或浮点数的名字）的属性。这些属性按照它们添加到对象的先后顺序列出。对于在对象字面量中定义的属性，按照它们在字面量中出现的顺序列出。
+- 最后，名字为符号对象的属性按照它们添加到对象的先后顺序列出。
+  :::
+
 The enumeration order for the `for/in` loop is not as tightly specified as it is for these enumeration functions, but implementations typically enumerate own properties in the order just described, then travel up the prototype chain enumerating properties in the same order for each prototype object. Note, however, that a property will not be enumerated if a property by that same name has already been enumerated, or even if a non-enumerable property by the same name has already been considered.
+
+::: tip 翻译
+`for/in`循环的枚举顺序并不像上述枚举函数那么严格，但实现通常会按照上面描述的顺序枚举自有属性，然后再沿原型链上溯，以同样的顺序枚举每个原型对象的属性。不过要注意，如果已经有同名属性被枚举过了，甚至如果有一个同名属性是不可枚举的，那这个属性就不会枚举了。
+:::
 
 ## Extending Objects
 
