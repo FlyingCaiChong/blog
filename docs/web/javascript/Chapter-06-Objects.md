@@ -948,13 +948,21 @@ let point = {
 JSON.stringify([point]); // => '["(1, 2)"]'
 ```
 
-## Extended Object Literal Syntax
+## 对象字面量扩展语法
 
 Recent versions of JavaScript have extended the syntax for object literals in a number of useful ways. The following subsections explain these extensions.
 
-### Shorthand Properties
+::: tip 翻译
+最近的 JavaScript 版本从几个方面扩展了对象字面量语法。下面将讲解这些扩展。
+:::
+
+### 简写属性
 
 Suppose you have values stored in variables `x` and `y` and want to create an object with properties named `x` and `y` that hold those values. With basic object literal syntax, you’d end up repeating each identifier twice:
+
+::: tip 翻译
+假设变量`x`和`y`中保存着值，而你想创建一个具有属性`x`和`y`且值分别为相应变量值的对象。如果使用基本的对象字面量语法，需要把每个标识符重复两次：
+:::
 
 ```js
 let x = 1,
@@ -967,6 +975,10 @@ let o = {
 
 In ES6 and later, you can drop the colon and one copy of the identifier and end up with much simpler code:
 
+::: tip 翻译
+在 ES6 及之后，可以删掉其中的分号和一份标识符，得到非常简洁的代码：
+:::
+
 ```js
 let x = 1,
   y = 2;
@@ -974,9 +986,13 @@ let o = { x, y };
 o.x + o.y; // => 3
 ```
 
-### Computed Property Names
+### 计算的属性名
 
 Sometimes you need to create an object with a specific property, but the name of that property is not a compile-time constant that you can type literally in your source code. Instead, the property name you need is stored in a variable or is the return value of a function that you invoke. You can’t use a basic object literal for this kind of property. Instead, you have to create an object and then add the desired properties as an extra step:
+
+::: tip 翻译
+有时候，我们需要创建一个具有特定属性的对象，但该属性的名字不是编译时可以直接写在源代码中的常量。相反，你需要的这个属性名保存在一个变量里，或者是调用的某个函数的返回值。不能对这种属性使用基本对象字面量。为此，必须先创建一个对象，然后再为它添加想要的属性：
+:::
 
 ```js
 const PROPERTY_NAME = "p1";
@@ -990,6 +1006,10 @@ o[computePropertyName()] = 2;
 ```
 
 It is much simpler to set up an object like this with an ES6 feature known as _computed properties_ that lets you take the square brackets from the preceding code and move them directly into the object literal:
+
+::: tip 翻译
+而使用 ES6 称为计算属性的特性可以更简单地创建类似对象，这个特性可以让你直接把前面代码中的方括号放在对象字面量中：
+:::
 
 ```js
 const PROPERTY_NAME = "p1";
@@ -1007,29 +1027,53 @@ p.p1 + p.p2; // => 3
 
 With this new syntax, the square brackets delimit an arbitrary JavaScript expression. That expression is evaluated, and the resulting value (converted to a string, if necessary) is used as the property name.
 
+::: tip 翻译
+有了这个语法，就可以在方括号中加入任意 JavaScript 表达式。对这个表达式求值得到的结果（必要时转换为字符串）会用作属性的名字。
+:::
+
 One situation where you might want to use computed properties is when you have a library of JavaScript code that expects to be passed objects with a particular set of properties, and the names of those properties are defined as constants in that library. If you are writing code to create the objects that will be passed to that library, you could hardcode the property names, but you’d risk bugs if you type the property name wrong anywhere, and you’d risk version mismatch issues if a new version of the library changes the required property names. Instead, you might find that it makes your code more robust to use computed property syntax with the property name constants defined by the library.
 
-### Symbols as Property Names
+::: tip 翻译
+一个可能需要计算属性的场景是，有一个 JavaScript 代码库，需要给这个库传入一个包含一组特定属性的对象，而这组属性的名字在该库中是以常量形式定义的。如果通过代码来创建要传给该库的这个对象，可以硬编码它的属性名，但是这样有可能把属性名写错，同时也存在因为库版本升级而修改了属性名导致的错配问题。此时，使用库自身定义的属性名常量，通过计算属性语法来创建这个对象会让你的代码更可靠。
+:::
+
+### 符号作为属性名
 
 The computed property syntax enables one other very important object literal feature. In ES6 and later, property names can be strings or symbols. If you assign a symbol to a variable or constant, then you can use that symbol as a property name using the computed property syntax:
+
+::: tip 翻译
+计算属性语法也让另一个非常重要的对象字面量特性成为可能。在 ES6 及之后，属性名可以是字符串或符号。如果把符号赋值给一个变量或常量，那么可以使用计算属性语法将该符号作为属性名：
+:::
 
 ```js
 const extension = Symbol("my extension symbol");
 let o = {
   [extension]: {
-    /* extension data stored in this object */
+    /* 这个对象中存储扩展数据 */
   },
 };
-o[extension].x = 0; // This won't conflict with other properties of o
+o[extension].x = 0; // 这个属性不会与o的其他属性冲突
 ```
 
 As explained in §3.6, Symbols are opaque values. You can’t do anything with them other than use them as property names. Every Symbol is different from every other Symbol, however, which means that Symbols are good for creating unique property names. Create a new Symbol by calling the `Symbol()` factory function. (Symbols are primitive values, not objects, so `Symbol()` is not a constructor function that you invoke with new.) The value returned by `Symbol()` is not equal to any other Symbol or other value. You can pass a string to `Symbol()`, and this string is used when your Symbol is converted to a string. But this is a debugging aid only: two Symbols created with the same string argument are still different from one another.
 
+::: tip 翻译
+如 3.6 节所解释的，符号是不透明值。除了用作属性名之外，不能用它们做任何事情。不过，每个符号都与其他符号不同，这意味着符号非常适合用于创建唯一属性名。创建新符号需要调用`Symbol()`工厂函数（符号是原始值，不是对象，因此`Symbol()`不是构造函数，不能使用`new`调用）。`Symbol()`返回的值不等于任何其他符号或其他值。可以给`Symbol()`传一个字符串，在把符号转换为字符串时会用到这个字符串。但这个字符串的作用仅限于辅助调试，使用相同字符串参数创建的两个符号依旧是不同的符号。
+:::
+
 The point of Symbols is not security, but to define a safe extension mechanism for JavaScript objects. If you get an object from third-party code that you do not control and need to add some of your own properties to that object but want to be sure that your properties will not conflict with any properties that may already exist on the object, you can safely use Symbols as your property names. If you do this, you can also be confident that the third-party code will not accidentally alter your symbolically named properties. (That third-party code could, of course, use `Object.getOwnPropertySymbols()` to discover the Symbols you’re using and could then alter or delete your properties. This is why Symbols are not a security mechanism.)
 
-### Spread Operator
+::: tip 翻译
+使用符号不是为了安全，而是为 JavaScript 对象定义安全的扩展机制。如果你从不受控的第三方代码得到一个对象，然后需要为该对象添加一些自己的属性，但又不希望你的属性与该对象原有的任何属性冲突，那就可以放心地使用符号作为属性名。而且，这样一来，你也不必担心第三方代码会意外修改你以符号命名的属性（当然，第三方代码可以使用`Object.getOwnPropertySymbols()`找到你使用的符号，然后修改或删除你的属性。这也是符号不是一种安全机制的原因）。
+:::
+
+### 扩展操作符
 
 In ES2018 and later, you can copy the properties of an existing object into a new object using the “spread operator” `...` inside an object literal:
+
+::: tip 翻译
+在 ES2018 及之后，可以在对象字面量中使用“扩展操作符”`...`把已有对象的属性复制到新对象中：
+:::
 
 ```js
 let position = { x: 0, y: 0 };
@@ -1040,29 +1084,49 @@ rect.x + rect.y + rect.width + rect.height; // => 175
 
 In this code, the properties of the position and dimensions objects are “spread out” into the `rect` object literal as if they had been written literally inside those curly braces. Note that this `...` syntax is often called a spread operator but is not a true JavaScript operator in any sense. Instead, it is a special-case syntax available only within object literals. (Three dots are used for other purposes in other JavaScript contexts, but object literals are the only context where the three dots cause this kind of interpolation of one object into another one.)
 
+::: tip 翻译
+这段代码把`position`和`dimensions`对象的属性“扩展”到了`rect`对象字面量中，就像直接把它们的属性写在了花括号中一样。注意，这个`...`语法经常被称为扩展操作符，但却不是真正意义上的 JavaScript 操作符。实际上，它是仅在对象字面量中有效的一种特殊语法（在其他 JavaScript 上下文中，三个点有其他用途。只有在对象字面量中，三个点才会产生这种把一个对象的属性复制到另一个对象中的插值行为）。
+:::
+
 If the object that is spread and the object it is being spread into both have a property with the same name, then the value of that property will be the one that comes last:
+
+::: tip 翻译
+如果扩展对象和被扩展对象有一个同名属性，那么这个属性的值由后面的对象决定：
+:::
 
 ```js
 let o = { x: 1 };
 let p = { x: 0, ...o };
-p.x; // => 1: the value from object o overrides the initial value
+p.x; // => 1: 对象o的值覆盖了初始值
 let q = { ...o, x: 2 };
-q.x; // => 2: the value 2 overrides the previous value from o.
+q.x; // => 2: 值2覆盖了前面对象o的值
 ```
 
 Also note that the spread operator only spreads the own properties of an object, not any inherited ones:
 
+::: tip 翻译
+另外要注意，扩展操作符只扩展对象的自有属性，不扩展任何继承属性：
+:::
+
 ```js
-let o = Object.create({ x: 1 }); // o inherits the property x
+let o = Object.create({ x: 1 }); // o 继承属性 x
 let p = { ...o };
 p.x; // => undefined
 ```
 
 Finally, it is worth noting that, although the spread operator is just three little dots in your code, it can represent a substantial amount of work to the JavaScript interpreter. If an object has n properties, the process of spreading those properties into another object is likely to be an `O(n)` operation. This means that if you find yourself using `...` within a loop or recursive function as a way to accumulate data into one large object, you may be writing an inefficient `O(n^2)` algorithm that will not scale well as `n` gets larger.
 
-### Shorthand Methods
+::: tip 翻译
+最后，还有一点需要注意，虽然扩展操作符在你的代码中只是三个小圆点，但它可能给 JavaScript 解释器带来巨大的工作量。如果对象有`n`个属性，把这个属性扩展到另一个对象可能是一种`O(n)`操作。这意味着，如果在循环或递归函数中通过`...`向一个大对象不断追加属性，则很可能你是在写一个低效的`O(n2)`算法。随着`n`越来越大，这个算法可能会成为性能瓶颈。
+:::
 
-When a function is defined as a property of an object, we call that function a _method_ (we’ll have a lot more to say about methods in Chapters 8 and 9). Prior to ES6, you would define a method in an object literal using a function definition expression just as you would define any other property of an object:
+### 简写方法
+
+When a function is defined as a property of an object, we call that function a _method_ (we’ll have a lot more to say about methods in [Chapters 8](./Chapter-08-Functions.md) and [9](./Chapter-09-Classes.md)). Prior to ES6, you would define a method in an object literal using a function definition expression just as you would define any other property of an object:
+
+::: tip 翻译
+在把函数定义为对象属性时，我们称该函数为方法。（[第 8 章](./Chapter-08-Functions.md)和[第 9 章](./Chapter-09-Classes.md)包含更多关于方法的内容）。在 ES6 以前，需要像定义对象的其他属性一样，通过函数定义表达式在对象字面量中定义一个方法：
+:::
 
 ```js
 let square = {
@@ -1074,7 +1138,11 @@ let square = {
 square.area(); // => 100
 ```
 
-In ES6, however, the object literal syntax (and also the class definition syntax we’ll see in **Chapter 9**) has been extended to allow a shortcut where the `function` keyword and the colon are omitted, resulting in code like this:
+In ES6, however, the object literal syntax (and also the class definition syntax we’ll see in [Chapter 9](./Chapter-09-Classes.md)) has been extended to allow a shortcut where the `function` keyword and the colon are omitted, resulting in code like this:
+
+::: tip 翻译
+但在 ES6 中，对象字面量语法（也包括[第 9 章](./Chapter-09-Classes.md)将介绍的类定义语法）经过扩展，允许一种省略`function`关键字和冒号的简写方法，结果代码如下：
+:::
 
 ```js
 let square = {
@@ -1088,7 +1156,15 @@ square.area(); // => 100
 
 Both forms of the code are equivalent: both add a property named `area` to the object literal, and both set the value of that property to the specified function. The shorthand syntax makes it clearer that `area()` is a method and not a data property like `side`.
 
+::: tip 翻译
+这两段代码是等价的，都会给对象字面量添加一个名为`area`的属性，都会把该属性的值设置为指定函数。这种简写语法让人一看便知`area()`是方法，而不是像`side`一样的数据属性。
+:::
+
 When you write a method using this shorthand syntax, the property name can take any of the forms that are legal in an object literal: in addition to a regular JavaScript identifier like the name area above, you can also use string literals and computed property names, which can include Symbol property names:
+
+::: tip 翻译
+在使用这种简写语法来写方法时，属性名可以是对象字面量允许的任何形式。除了像上面的`area`一样的常规 JavaScript 标识符之外，也可以使用字符串字面量和计算的属性名，包括符号属性名：
+:::
 
 ```js
 const METHOD_NAME = "m";
@@ -1109,24 +1185,44 @@ weirdMethods[METHOD_NAME](1); // => 3
 weirdMethods[symbol](1); // => 4
 ```
 
-Using a Symbol as a method name is not as strange as it seems. In order to make an object iterable (so it can be used with a `for/of` loop), you must define a method with the symbolic name `Symbol.iterator`, and there are examples of doing exactly that in **Chapter 12**.
+Using a Symbol as a method name is not as strange as it seems. In order to make an object iterable (so it can be used with a `for/of` loop), you must define a method with the symbolic name `Symbol.iterator`, and there are examples of doing exactly that in [Chapter 12](./Chapter-12-Iterators_Generators.md).
 
-### Property Getters and Setters
+::: tip 翻译
+使用符号作为方法名并没有看起来那么稀罕。为了让对象可迭代（以便在`for/of`循环中使用），必须以符号名`Symbol.iterator`为它定义一个方法，[第 12 章](./Chapter-12-Iterators_Generators.md)将给出定义这个方法的示例。
+:::
+
+### 属性的获取方法与设置方法
 
 All of the object properties we’ve discussed so far in this chapter have been _data properties_ with a name and an ordinary value. JavaScript also supports _accessor properties_, which do not have a single value but instead have one or two accessor methods: a _getter_ and/or a _setter_.
 
+::: tip 翻译
+到目前为止，本章讨论的所有对象属性都是数据属性，即有一个名字和一个普通的值。除了数据属性之外，JavaScript 还支持为对象定义访问器属性（accessor property），这种属性不是一个值，而是一个或两个访问器方法：一个获取方法（getter）和一个设置方法（setter）。
+:::
+
 When a program queries the value of an accessor property, JavaScript invokes the getter method (passing no arguments). The return value of this method becomes the value of the property access expression. When a program sets the value of an accessor property, JavaScript invokes the setter method, passing the value of the righthand side of the assignment. This method is responsible for “setting,” in some sense, the property value. The return value of the setter method is ignored.
+
+::: tip 翻译
+当程序查询一个访问器属性的值时，JavaScript 会调用获取方法（不传参数）。这个方法的返回值就是属性访问表达式的值。当程序设置一个访问器属性的值时，JavaScript 会调用设置方法，传入赋值语句右边的值。从某种意义上说，这个方法负责“设置”属性的值。设置方法的返回值会被忽略。
+:::
 
 If a property has both a getter and a setter method, it is a read/write property. If it has only a getter method, it is a read-only property. And if it has only a setter method, it is a write-only property (something that is not possible with data properties), and attempts to read it always evaluate to `undefined`.
 
+::: tip 翻译
+如果一个属性既有获取方法也有设置方法，则该属性是一个可读写属性。如果只有一个获取方法，那它就是只读属性。如果只有一个设置方法，那它就是只写属性（这种属性通过数据属性是无法实现的），读取这种属性始终会得到`undefined`。
+:::
+
 Accessor properties can be defined with an extension to the object literal syntax (unlike the other ES6 extensions we’ve seen here, getters and setters were introduced in ES5):
+
+::: tip 翻译
+访问器属性可以通过对象字面量的一个扩展语法来定义（与我们前面看到的其他 ES6 扩展不同，获取方法和设置方法是在 ES5 中引入的）：
+:::
 
 ```js
 let o = {
-  // An ordinary data property
+  // 一个普通的数据属性
   dataProp: value,
 
-  // An accessor property defined as a pair of functions.
+  // 通过一对函数定义的一个访问器属性
   get accessorProp() {
     return this.dataProp;
   },
@@ -1138,16 +1234,24 @@ let o = {
 
 Accessor properties are defined as one or two methods whose name is the same as the property name. These look like ordinary methods defined using the ES6 shorthand except that getter and setter definitions are prefixed with `get` or `set`. (In ES6, you can also use computed property names when defining getters and setters. Simply replace the property name after `get` or `set` with an expression in square brackets.)
 
+::: tip 翻译
+访问器属性是通过一个或两个方法来定义的，方法名就是属性名。除了前缀是`get`和`set`之外，这两个方法看起来就像用 ES6 简写语法定义的普通方法一样（在 ES6 中，也可以使用计算的属性名来定义获取方法和设置方法。只要把`get`和`set`后面的属性名替换为用方括号包含的表达式即可）。
+:::
+
 The accessor methods defined above simply get and set the value of a data property, and there is no reason to prefer the accessor property over the data property. But as a more interesting example, consider the following object that represents a 2D Cartesian point. It has ordinary data properties to represent the x and y coordinates of the point, and it has accessor properties that give the equivalent polar coordinates of the point:
+
+::: tip 翻译
+上面定义的访问器方法只是简单地获取和设置了一个数据属性的值，这种情况使用数据属性或访问器属性都是可以的。不过我们可以看一个有趣的示例，例如下面这个表示 2D 笛卡儿坐标点的对象。这个对象用普通数据属性保存点的 x 和 y 坐标，用访问器属性给出与这个点等价的极坐标：
+:::
 
 ```js
 let p = {
-  // x and y are regular read-write data properties.
+  // x 和 y 是常规的可读写数据属性
   x: 1.0,
   y: 1.0,
 
-  // r is a read-write accessor property with getter and setter.
-  // Don't forget to put a comma after accessor methods.
+  // r 是由获取方法和设置方法定义的可读写访问器属性
+  // 不要忘了访问器方法后面的逗号。
   get r() {
     return Math.hypot(this.x, this.y);
   },
@@ -1158,7 +1262,7 @@ let p = {
     this.y *= ratio;
   },
 
-  // theta is a read-only accessor property with getter only.
+  // theta 是一个只定义了获取方法的只读访问器属性
   get theta() {
     return Math.atan2(this.y, this.x);
   },
@@ -1169,31 +1273,43 @@ p.theta; // => Math.PI / 4
 
 Note the use of the keyword `this` in the getters and setter in this example. JavaScript invokes these functions as methods of the object on which they are defined, which means that within the body of the function, this refers to the point object `p`. So the getter method for the `r` property can refer to the `x` and `y` properties as `this.x` and `this.y`. Methods and the `this` keyword are covered in more detail in §8.2.2.
 
+::: tip 翻译
+注意这个示例的获取和设置方法中使用了关键字`this`。JavaScript 会将这些函数作为定义它们的对象的方法来调用。这意味着在这些函数体内，`this`引用的是表示坐标点的对象`p`。因此访问器属性`r`的获取方法可以通过`this.x`和`this.y`来引用坐标点的`x`和`y`属性。方法和`this`关键字将在 8.2.2 节中详细介绍。
+:::
+
 Accessor properties are inherited, just as data properties are, so you can use the object `p` defined above as a prototype for other points. You can give the new objects their own `x` and `y` properties, and they’ll inherit the `r` and `theta` properties:
 
+::: tip 翻译
+与数据属性一样，访问器属性也是可以继承的。因此，可以把上面定义的对象`p`作为其他点的原型。可以给新对象定义自己的`x`和`y`属性，而它们将继承`r`和`theta`属性：
+:::
+
 ```js
-let q = Object.create(p); // A new object that inherits getters and setters
+let q = Object.create(p); // 一个继承获取和设置方法的新对象
 q.x = 3;
-q.y = 4; // Create q's own data properties
-q.r; // => 5: the inherited accessor properties work
+q.y = 4; // 创建q的自有数据属性
+q.r; // => 5: 可以使用继承的访问器属性
 q.theta; // => Math.atan2(4, 3)
 ```
 
 The code above uses accessor properties to define an API that provides two representations (Cartesian coordinates and polar coordinates) of a single set of data. Other reasons to use accessor properties include sanity checking of property writes and returning different values on each property read:
 
+::: tip 翻译
+以上代码使用访问器属性定义了一个 API，提供了一个数据集的两种表示（笛卡儿坐标和极坐标）。使用访问器属性的其他场景还有写入属性时进行合理性检查，以及每次读取属性时返回不同的值：
+:::
+
 ```js
-// This object generates strictly increasing serial numbers
+// 这个对象保证序列严格递增
 const serialnum = {
-  // This data property holds the next serial number
-  // The _ in the property name hints that it is for internal use only.
+  // 这个数据属性保存下一个序号
+  // 属性名中的_提示它仅在内部使用
   _n: 0,
 
-  // Return the current value and increment it
+  // 返回当前值并递增
   get next() {
     return this._n++;
   },
 
-  // Set a new value of n, but only if it is larger than current
+  // 把新值设置为n，但n必须大于当前值
   set next(n) {
     if (n > this._n) {
       this._n = n;
@@ -1202,17 +1318,21 @@ const serialnum = {
     }
   },
 };
-serialnum.next = 10; // Set the starting serial number
+serialnum.next = 10; // 设置起始序号
 serialnum.next; // => 10
-serialnum.next; // => 11: different value each time we get next
+serialnum.next; // => 11: 每次读取next都得到不同的值
 ```
 
 Finally, here is one more example that uses a getter method to implement a property with “magical” behavior:
 
+::: tip 翻译
+最后，再看一个通过获取方法实现“魔法”属性的示例：
+:::
+
 ```js
-// This object has accessor properties that return random numbers.
-// The expression "random.octet", for example, yields a random number
-// between 0 and 255 each time it is evaluated.
+// 这个对象的访问器属性返回随机数值
+// 例如，表达式 "random.octet" 在被求值时
+// 会给出一个0和255之间的随机值
 const random = {
   get octet() {
     return Math.floor(Math.random() * 256);
@@ -1226,7 +1346,7 @@ const random = {
 };
 ```
 
-## Summary
+## 总结
 
 This chapter has documented JavaScript objects in great detail, covering topics that include:
 
@@ -1235,5 +1355,17 @@ This chapter has documented JavaScript objects in great detail, covering topics 
 - How to read, write, delete, enumerate, and check for the presence of the properties of an object.
 - How prototype-based inheritance works in JavaScript and how to create an object that inherits from another object with `Object.create()`.
 - How to copy properties from one object into another with `Object.assign()`.
+- All JavaScript values that are not primitive values are objects. This includes both arrays and functions, which are the topics of the next two chapters.
 
-All JavaScript values that are not primitive values are objects. This includes both arrays and functions, which are the topics of the next two chapters.
+::: tip 翻译
+本章非常详尽地讲解了 JavaScript 对象，主要包括以下内容：
+
+- 与对象相关的基本概念，例如可枚举和自有属性。
+- 对象字面量语法，包括 ES6 及之后增加的很多新特性。
+- 如何读取、写入、删除、枚举和检查对象属性的存在。
+- JavaScript 如何实现基于原型的继承，以及如何通过 `Object.create()`创建继承其他对象的对象。
+- 如何通过 `Object.assign()`从一个对象向另一个对象复制属性。
+- JavaScript中所有不是原始值的值都是对象。其中包括接下来两章会讨论的数组和函数。
+  :::
+
+
