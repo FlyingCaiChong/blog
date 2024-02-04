@@ -812,17 +812,25 @@ It is straightforward to write other property manipulation utilities like this `
 编写类似`merge()`的属性操作辅助方法很简单。例如，可以写一个`restrict()`函数，用于从一个对象中删除另一个模板对象没有的属性。或者写一个`subtract()`函数，用于从一个对象中删除另一个对象包含的所有属性。
 :::
 
-## Serializing Objects
+## 序列化对象
 
 Object _serialization_ is the process of converting an object’s state to a string from which it can later be restored. The functions `JSON.stringify()` and `JSON.parse()` serialize and restore JavaScript objects. These functions use the JSON data interchange format. JSON stands for “JavaScript Object Notation,” and its syntax is very similar to that of JavaScript object and array literals:
 
+::: tip 翻译
+对象序列化（serialization）是把对象的状态转换为字符串的过程，之后可以从中恢复对象的状态。函数`JSON.stringify()`和`JSON.parse()`用于序列化和恢复 JavaScript 对象。这两个函数使用 JSON 数据交换格式。JSON 表示"JavaScript Object Notation"（JavaScript 对象表示法），其语法与 JavaScript 对象和数组字面量非常类似：
+:::
+
 ```js
-let o = { x: 1, y: { z: [false, null, ""] } }; // Define a test object
+let o = { x: 1, y: { z: [false, null, ""] } }; // 定义一个测试对象
 let s = JSON.stringify(o); // s == '{"x":1,"y":{"z":[false,null,""]}}'
 let p = JSON.parse(s); // p == {x: 1, y: {z: [false, null, ""]}}
 ```
 
 JSON syntax is a _subset_ of JavaScript syntax, and it cannot represent all JavaScript values. Objects, arrays, strings, finite numbers, `true`, `false`, and `null` are supported and can be serialized and restored. `NaN`, `Infinity`, and `-Infinity` are serialized to `null`. `Date` objects are serialized to ISO-formatted date strings (see the `Date.toJSON()` function), but `JSON.parse()` leaves these in string form and does not restore the original `Date` object. Function, RegExp, and Error objects and the `undefined` value cannot be serialized or restored. `JSON.stringify()` serializes only the enumerable own properties of an object. If a property value cannot be serialized, that property is simply omitted from the stringified output. Both `JSON.stringify()` and `JSON.parse()` accept optional second arguments that can be used to customize the serialization and/or restoration process by specifying a list of properties to be serialized, for example, or by converting certain values during the serialization or stringification process. Complete documentation for these functions is in §11.6.
+
+::: tip 翻译
+JSON 语法是 JavaScript 语法的子集，不能表示所有 JavaScript 的值。可以序列化和恢复的值包括对象、数组、字符串、有限数值、`true`、`false`和`null`。`NaN`、`Infinity`和`-Infinity`会被序列化为`null`。日期对象会被序列化为 ISO 格式的日期字符串（参见`Date.toJSON()`函数），但`JSON.parse()`会保持其字符串形式，不会恢复原始的日期对象。函数、RegExp 和 Error 对象以及`undefined`值不能被序列化或恢复。`JSON.stringify()`只序列化对象的可枚举自有属性。如果属性值无法序列化，则该属性会从输出的字符串中删除。`JSON.stringify()`和`JSON.parse()`都接收可选的第二个参数，用于自定义序列化及恢复操作。例如，可以通过这个参数指定要序列化哪些属性，或者在序列化或字符串化过程中如何转换某些值。11.6 节包含这两个函数的完整介绍。
+:::
 
 ## Object Methods
 
