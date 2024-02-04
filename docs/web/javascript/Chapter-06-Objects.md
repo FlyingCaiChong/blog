@@ -76,25 +76,33 @@ Many of JavaScript’s built-in objects have properties that are read-only, non-
 很多 JavaScript 内置对象拥有只读、不可枚举或不可配置的属性。不过，默认情况下，我们所创建对象的所有属性都是可写、可枚举和可配置的。14.1 节将介绍为对象指定非默认的属性特性值的技术。
 :::
 
-## Creating Objects
+## 创建对象
 
 Objects can be created with object literals, with the `new` keyword, and with the `Object.create()` function. The subsections below describe each technique.
 
-### Object Literals
+::: tip 翻译
+对象可以通过对象字面量、`new`关键字和`Object.create()`函数来创建。接下来分别介绍这几种技术。
+:::
 
-The easiest way to create an object is to include an object literal in your JavaScript code. In its simplest form, an _object literal_ is a comma-separated list of colonseparated name:value pairs, enclosed within curly braces. A property name is a JavaScript identifier or a string literal (the empty string is allowed). A property value is any JavaScript expression; the value of the expression (it may be a primitive value or an object value) becomes the value of the property. Here are some examples:
+### 对象字面量
+
+The easiest way to create an object is to include an object literal in your JavaScript code. In its simplest form, an _object literal_ is a comma-separated list of colon-separated name:value pairs, enclosed within curly braces. A property name is a JavaScript identifier or a string literal (the empty string is allowed). A property value is any JavaScript expression; the value of the expression (it may be a primitive value or an object value) becomes the value of the property. Here are some examples:
+
+::: tip 翻译
+创建对象最简单的方式是在 JavaScript 代码中直接包含对象字面量。对象字面量的最简单形式是包含在一对花括号中的一组逗号分隔的“名:值”对。属性名是 JavaScript 标识符或字符串字面量（允许空字符串）。属性值是任何 JavaScript 表达式，这个表达式的值（可以是原始值或对象值）会变成属性的值。下面看几个示例：
+:::
 
 ```js
-let empty = {}; // An object with no properties
-let point = { x: 0, y: 0 }; // Two numeric properties
-let p2 = { x: point.x, y: point.y + 1 }; // More complex values
+let empty = {}; // 没有属性的对象
+let point = { x: 0, y: 0 }; // 包含两个数值属性
+let p2 = { x: point.x, y: point.y + 1 }; // 值比较复杂
 let book = {
-  "main title": "JavaScript", // These property names include spaces,
-  "sub-title": "The Definitive Guide", // and hyphens, so use string literals.
-  for: "all audiences", // for is reserved, but no quotes.
+  "main title": "JavaScript", // 属性名包含空格
+  "sub-title": "The Definitive Guide", // 和连字符，因此使用字符串字面量
+  for: "all audiences", // for时保留字，但没有引号
   author: {
-    // The value of this property is
-    firstname: "David", // itself an object.
+    // 这个属性的值本身是
+    firstname: "David", // 一个对象
     surname: "Flanagan",
   },
 };
@@ -102,64 +110,124 @@ let book = {
 
 A trailing comma following the last property in an object literal is legal, and some programming styles encourage the use of these trailing commas so you’re less likely to cause a syntax error if you add a new property at the end of the object literal at some later time.
 
+::: tip 翻译
+对象字面量最后一个属性后面的逗号是合法的，有些编程风格指南鼓励添加这些逗号，以便将来在对象字面量末尾再增加新属性时不会导致语法错误。
+:::
+
 An object literal is an expression that creates and initializes a new and distinct object each time it is evaluated. The value of each property is evaluated each time the literal is evaluated. This means that a single object literal can create many new objects if it appears within the body of a loop or in a function that is called repeatedly, and that the property values of these objects may differ from each other.
+
+::: tip 翻译
+对象字面量是一个表达式，每次求值都会创建并初始化一个新的、不一样的对象。字面量每次被求值的时候，它的每个属性的值也会被求值。这意味着同一个对象字面量如果出现在循环体中，或出现在被重复调用的函数体内，可以创建很多新对象，且这些对象属性的值可能不同。
+:::
 
 The object literals shown here use simple syntax that has been legal since the earliest versions of JavaScript. Recent versions of the language have introduced a number of new object literal features, which are covered in §6.10.
 
-### Creating Objects with new
+::: tip 翻译
+前面展示的对象字面量使用了简单的语法，这种语法是在 JavaScript 最初始的版本中规定的。这门语言最近的版本新增了很多新的对象字面量特性，将在 6.10 节介绍。
+:::
+
+### 使用 new 创建对象
 
 The `new` operator creates and initializes a new object. The new keyword must be followed by a function invocation. A function used in this way is called a _constructor_ and serves to initialize a newly created object. JavaScript includes constructors for its built-in types. For example:
 
+::: tip 翻译
+`new`操作符用于创建和初始化一个新对象。`new`关键字后面必须跟一个函数调用。以这种方式使用的函数被称为构造函数（constructor），目的是初始化新创建的对象。JavaScript 为内置的类型提供了构造函数。例如：
+:::
+
 ```js
-let o = new Object(); // Create an empty object: same as {}.
-let a = new Array(); // Create an empty array: same as [].
-let d = new Date(); // Create a Date object representing the current time
-let r = new Map(); // Create a Map object for key/value mapping
+let o = new Object(); // 创建一个空对象，与 {} 相同.
+let a = new Array(); // 创建一个空数组，与 [] 相同.
+let d = new Date(); // 创建一个表示当前时间的日期对象
+let r = new Map(); //创建一个映射对象，用于存储键/值映射
 ```
 
-In addition to these built-in constructors, it is common to define your own constructor functions to initialize newly created objects. Doing so is covered in Chapter 9.
+In addition to these built-in constructors, it is common to define your own constructor functions to initialize newly created objects. Doing so is covered in [Chapter 9](./Chapter-09-Classes.md).
 
-### Prototypes
+::: tip 翻译
+除了内置的构造函数，我们经常需要定义自己的构造函数来初始化新创建的对象。相关内容将在[第 9 章](./Chapter-09-Classes.md)介绍。
+:::
+
+### 原型
 
 Before we can cover the third object creation technique, we must pause for a moment to explain prototypes. Almost every JavaScript object has a second JavaScript object associated with it. This second object is known as a _prototype_, and the first object inherits properties from the prototype.
 
+::: tip 翻译
+在介绍第三种创建对象的技术之前，必须暂停一下，先介绍原型。几乎每个 JavaScript 对象都有另一个与之关联的对象。这另一个对象被称为原型（prototype），第一个对象从这个原型继承属性。
+:::
+
 All objects created by object literals have the same prototype object, and we can refer to this prototype object in JavaScript code as `Object.prototype`. Objects created using the `new` keyword and a constructor invocation use the value of the `prototype` property of the constructor function as their prototype. So the object created by `new Object()` inherits from `Object.prototype`, just as the object created by `{}` does. Similarly, the object created by `new Array()` uses `Array.prototype` as its prototype, and the object created by `new Date()` uses `Date.prototype` as its prototype. This can be confusing when first learning JavaScript. Remember: almost all objects have a _prototype_, but only a relatively small number of objects have a `prototype` property. It is these objects with `prototype` properties that define the _prototypes_ for all the other objects.
+
+::: tip 翻译
+通过对象字面量创建的所有对象都有相同的原型对象，在 JavaScript 代码中可以通过`Object.prototype`引用这个原型对象。使用`new`关键字和构造函数调用创建的对象，使用构造函数`prototype`属性的值作为它们的原型。换句话说，使用`new Object()`创建的对象继承自`Object.prototype`，与通过`{}`创建的对象一样。类似地，通过`new Array()`创建的对象以`Array.prototype`为原型，通过`new Date()`创建的对象以`Date.prototype`为原型。对于 JavaScript 初学者，这一块很容易迷惑。记住：几乎所有对象都有原型，但只有少数对象有`prototype`属性。正是这些有`prototype`属性的对象为所有其他对象定义了原型。
+:::
 
 `Object.prototype` is one of the rare objects that has no prototype: it does not inherit any properties. Other prototype objects are normal objects that do have a prototype. Most built-in constructors (and most user-defined constructors) have a prototype that inherits from `Object.prototype`. For example, Date.prototype inherits properties from `Object.prototype`, so a Date object created by new `Date()` inherits properties from both `Date.prototype` and `Object.prototype`. This linked series of prototype objects is known as a _prototype chain_.
 
-An explanation of how property inheritance works is in §6.3.2. **Chapter 9** explains the connection between prototypes and constructors in more detail: it shows how to define new “classes” of objects by writing a constructor function and setting its prototype property to the prototype object to be used by the “instances” created with that constructor. And we’ll learn how to query (and even change) the prototype of an object in §14.3.
+::: tip 翻译
+`Object.prototype`是为数不多的没有原型的对象，因为它不继承任何属性。其他原型对象都是常规对象，都有自己的原型。多数内置构造函数（和多数用户定义的构造函数）的原型都继承自`Object.prototype`。例如，`Date.prototype`从`Object.prototype`继承属性，因此通过`new Date()`创建的日期对象从`Date.prototype`和`Object.prototype`继承属性。这种原型对象链接起来的序列被称为原型链。
+:::
+
+An explanation of how property inheritance works is in §6.3.2. [Chapter 9](./Chapter-09-Classes.md) explains the connection between prototypes and constructors in more detail: it shows how to define new “classes” of objects by writing a constructor function and setting its prototype property to the prototype object to be used by the “instances” created with that constructor. And we’ll learn how to query (and even change) the prototype of an object in §14.3.
+
+::: tip 翻译
+6.3.2 节将介绍属性继承的原理。[第 9 章](./Chapter-09-Classes.md)会更详细地解释原型与构造函数之间的联系，将展示如何定义新的对象“类”，包括编写构造函数以及将其 prototype 属性设置为一个原型对象，让通过该构造函数创建的“实例”继承这个原型对象的属性。另外，14.3 节还将介绍如何查询（甚至修改）一个对象的原型。
+:::
 
 ### Object.create()
 
 `Object.create()` creates a new object, using its first argument as the prototype of that object:
 
+::: tip 翻译
+`Object.create()`用于创建一个新对象，使用其第一个参数作为新对象的原型：
+:::
+
 ```js
-let o1 = Object.create({ x: 1, y: 2 }); // o1 inherits properties x and y.
+let o1 = Object.create({ x: 1, y: 2 }); // o1 继承属性 x 和 y.
 o1.x + o1.y; // => 3
 ```
 
 You can pass `null` to create a new object that does not have a prototype, but if you do this, the newly created object will not inherit anything, not even basic methods like `toString()` (which means it won’t work with the `+` operator either):
 
+::: tip 翻译
+传入`null`可以创建一个没有原型的新对象。不过，这样创建的新对象不会继承任何东西，连`toString()`这种基本方法都没有（意味着不能对该对象应用`+`操作符）：
+:::
+
 ```js
-let o2 = Object.create(null); // o2 inherits no props or methods.
+let o2 = Object.create(null); // o2 不继承任何属性或方法
 ```
 
 If you want to create an ordinary empty object (like the object returned by `{}` or `new Object()`), pass `Object.prototype`:
 
+::: tip 翻译
+如果想创建一个普通的空对象（类似`{}`或`new Object()`返回的对象），传入`Object.prototype`：
+:::
+
 ```js
-let o3 = Object.create(Object.prototype); // o3 is like {} or new Object().
+let o3 = Object.create(Object.prototype); // o3 与 {} 或 new Object() 类似.
 ```
 
 The ability to create a new object with an arbitrary prototype is a powerful one, and we’ll use `Object.create()` in a number of places throughout this chapter. (`Object.create()` also takes an optional second argument that describes the properties of the new object. This second argument is an advanced feature covered in §14.1.)
 
+::: tip 翻译
+能够以任意原型创建新对象是一种非常强大的技术，本章多处都会使用`Object.create()`（`Object.create()`还可接收可选的第二个参数，用于描述新对象的属性。这个参数属于高级特性，将在 14.1 节介绍）。
+:::
+
 One use for `Object.create()` is when you want to guard against unintended (but nonmalicious) modification of an object by a library function that you don’t have control over. Instead of passing the object directly to the function, you can pass an object that inherits from it. If the function reads properties of that object, it will see the inherited values. If it sets properties, however, those writes will not affect the original object.
+
+::: tip 翻译
+`Object.create()`的一个用途是防止对象被某个第三方库函数意外（但非恶意）修改。这种情况下，不要直接把对象传给库函数，而要传入一个继承自它的对象。如果函数读取这个对象的属性，可以读到继承的值。而如果它设置这个对象的属性，则修改不会影响原始对象。
+:::
 
 ```js
 let o = { x: "don't change this value" };
-library.function(Object.create(o)); // Guard against accidental modifications
+library.function(Object.create(o)); // 防止意外修改
 ```
 
 To understand why this works, you need to know how properties are queried and set in JavaScript. These are the topics of the next section.
+
+::: tip 翻译
+要理解其中的原理，需要知道 JavaScript 中属性查询和设置的过程。这些都是下一节的内容。
+:::
 
 ## Querying and Setting Properties
 
