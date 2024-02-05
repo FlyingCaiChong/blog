@@ -1310,25 +1310,46 @@ Array.isArray([]); // => true
 Array.isArray({}); // => false
 ```
 
-## Array-Like Objects
+## 类数组对象
 
 As we’ve seen, JavaScript arrays have some special features that other objects do not have:
 
 - The `length` property is automatically updated as new elements are added to the list.
 - Setting `length` to a smaller value truncates the array.
 - Arrays inherit useful methods from `Array.prototype`.
-- `Array.isArray()` returns true for arrays.
+- `Array.isArray()` returns `true` for arrays.
+
+::: tip 翻译
+如前所见，JavaScript 数组具有一些其他对象不具备的特殊特性：
+
+- 数组的`length`属性会在新元素加入时自动更新。
+- 设置`length`为更小的值会截断数组。
+- 数组从`Array.prototype`继承有用的方法。
+- `Array.isArray()`对数组返回`true`。
+  :::
 
 These are the features that make JavaScript arrays distinct from regular objects. But they are not the essential features that define an array. It is often perfectly reasonable to treat any object with a numeric length property and corresponding non-negative integer properties as a kind of array.
 
-These “array-like” objects actually do occasionally appear in practice, and although you cannot directly invoke array methods on them or expect special behavior from the length property, you can still iterate through them with the same code you’d use for a true array. It turns out that many array algorithms work just as well with arraylike objects as they do with real arrays. This is especially true if your algorithms treat the array as read-only or if they at least leave the array length unchanged.
+::: tip 翻译
+这些特性让 JavaScript 数组与常规对象有了明显区别。但是，这些特性并非定义数组的本质特性。事实上，只要对象有一个数值属性`length`，而且有相应的非负整数属性，那就完全可以视同为数组。
+:::
+
+These “array-like” objects actually do occasionally appear in practice, and although you cannot directly invoke array methods on them or expect special behavior from the length property, you can still iterate through them with the same code you’d use for a true array. It turns out that many array algorithms work just as well with array like objects as they do with real arrays. This is especially true if your algorithms treat the array as read-only or if they at least leave the array length unchanged.
+
+::: tip 翻译
+实践当中，我们偶尔会碰到“类数组”对象。虽然不能直接在它们上面调用数组方法或期待`length`属性的特殊行为，但仍然可以通过写给真正数组的代码来遍历它们。说到底，就是因为很多数组算法既适用于真正的数组，也适用于类数组对象。特别是在将数组视为只读或者至少不会修改数组长度的情况下，就更是这样了。
+:::
 
 The following code takes a regular object, adds properties to make it an array-like object, and then iterates through the “elements” of the resulting pseudo-array:
 
-```js
-let a = {}; // Start with a regular empty object
+::: tip 翻译
+下面的代码会为一个常规对象添加属性，让它成为一个类数组对象，然后再遍历得到的伪数组的“元素”：
+:::
 
-// Add properties to make it "array-like"
+```js
+let a = {}; // 创建一个常规的空对象
+
+// 添加属性让它变成“类数组”对象
 let i = 0;
 while (i < 10) {
   a[i] = i * i;
@@ -1336,7 +1357,7 @@ while (i < 10) {
 }
 a.length = i;
 
-// Now iterate through it as if it were a real array
+// 像遍历真正的数组一样遍历这个对象
 let total = 0;
 for (let j = 0; j < a.length; j++) {
   total += a[j];
@@ -1345,45 +1366,65 @@ for (let j = 0; j < a.length; j++) {
 
 In client-side JavaScript, a number of methods for working with HTML documents (such as `document.querySelectorAll()`, for example) return array-like objects. Here’s a function you might use to test for objects that work like arrays:
 
+::: tip 翻译
+在客户端 JavaScript 中，很多操作 HTML 文档的方法（比如`document.querySelectorAll()`）都返回类数组对象。下面的函数可以用来测试对象是不是类数组对象：
+:::
+
 ```js
-// Determine if o is an array-like object.
-// Strings and functions have numeric length properties, but are
-// excluded by the typeof test. In client-side JavaScript, DOM text
-// nodes have a numeric length property, and may need to be excluded
-// with an additional o.nodeType !== 3 test.
+// 确定o是不是类数组对象
+// 字符串和函数有数值length属性，但是通过
+// typeof 测试可以排除。在客户端JavaScript中
+// DOM文本节点有数值length属性，可能需要加上
+// o.nodeType !== 3测试来排除
 function isArrayLike(o) {
   if (
-    o && // o is not null, undefined, etc.
-    typeof o === "object" && // o is an object
-    Number.isFinite(o.length) && // o.length is a finite number
-    o.length >= 0 && // o.length is non-negative
-    Number.isInteger(o.length) && // o.length is an integer
+    o && // o 不是null、undefined等假值
+    typeof o === "object" && // o 是一个对象
+    Number.isFinite(o.length) && // o.length 是有限数值
+    o.length >= 0 && // o.length 是非负数值
+    Number.isInteger(o.length) && // o.length 是整数
     o.length < 4294967295 // o.length < 2^32 - 1
   ) {
-    return true; // then o is array-like
+    return true; // 那么o是类数组对象
   } else {
-    return false; // Otherwise it is not.
+    return false; // 否则不是类数组对象
   }
 }
 ```
 
 We’ll see in a later section that strings behave like arrays. Nevertheless, tests like this one for array-like objects typically return `false` for strings—they are usually best handled as strings, not as arrays.
 
+::: tip 翻译
+下一节会介绍字符串的行为也与数组类似。但无论如何，上面对类数组对象的测试对字符串会返回`false`，字符串最好还是作为字符串而非数组来处理。
+:::
+
 Most JavaScript array methods are purposely defined to be generic so that they work correctly when applied to array-like objects in addition to true arrays. Since array-like objects do not inherit from `Array.prototype`, you cannot invoke array methods on them directly. You can invoke them indirectly using the `Function.call` method, however (see §8.7.4 for details):
 
+::: tip 翻译
+多数 JavaScript 数组方法有意地设计成了泛型方法，因此除了真正的数组，同样也可以用于类数组对象。但由于类数组对象不会继承`Array.prototype`，所以无法直接在它们上面调用数组方法。为此，可以使用`Function.call()`方法（详见 8.7.4 节）来调用：
+:::
+
 ```js
-let a = { 0: "a", 1: "b", 2: "c", length: 3 }; // An array-like object
+let a = { 0: "a", 1: "b", 2: "c", length: 3 }; // 类数组对象
 Array.prototype.join.call(a, "+"); // => "a+b+c"
 Array.prototype.map.call(a, (x) => x.toUpperCase()); // => ["A","B","C"]
-Array.prototype.slice.call(a, 0); // => ["a","b","c"]: true array copy
-Array.from(a); // => ["a","b","c"]: easier array copy
+Array.prototype.slice.call(a, 0); // => ["a","b","c"]: 真正的数组副本
+Array.from(a); // => ["a","b","c"]: 更容易的数组复制
 ```
 
-The second-to-last line of this code invokes the Array `slice()` method on an arraylike object in order to copy the elements of that object into a true array object. This is an idiomatic trick that exists in much legacy code, but is now much easier to do with `Array.from()`.
+The second-to-last line of this code invokes the Array `slice()` method on an array-like object in order to copy the elements of that object into a true array object. This is an idiomatic trick that exists in much legacy code, but is now much easier to do with `Array.from()`.
 
-## Strings as Arrays
+::: tip 翻译
+倒数第二行代码在类数组对象上调用了 Array 的`slice()`方法，把该对象的元素复制到一个真正的数组对象中。在很多遗留代码中这都是常见的习惯做法，但现在使用`Array.from()`会更容易。
+:::
+
+## 作为数组的字符串
 
 JavaScript strings behave like read-only arrays of UTF-16 Unicode characters. Instead of accessing individual characters with the `charAt()` method, you can use square brackets:
+
+::: tip 翻译
+JavaScript 字符串的行为类似于 UTF-16 Unicode 字符的只读数组。除了使用`charAt()`方法访问个别字符，还可以使用方括号语法：
+:::
 
 ```js
 let s = "test";
@@ -1393,13 +1434,25 @@ s[1]; // => "e"
 
 The `typeof` operator still returns “string” for strings, of course, and the `Array.isArray()` method returns `false` if you pass it a string.
 
+::: tip 翻译
+当然对字符串来说，`typeof`操作符仍然返回“string”，把字符串传给`Array.isArray()`方法仍然返回`false`。
+:::
+
 The primary benefit of indexable strings is simply that we can replace calls to `charAt()` with square brackets, which are more concise and readable, and potentially more efficient. The fact that strings behave like arrays also means, however, that we can apply generic array methods to them. For example:
+
+::: tip 翻译
+可以通过索引访问字符串的好处，简单来说就是可以用方括号代替`charAt()`调用，这样更简洁也更容易理解，可能效率也更高。不过，字符串与数组的行为类似也意味着我们可以对字符串使用泛型的字符串方法。比如：
+:::
 
 ```js
 Array.prototype.join.call("JavaScript", " "); // => "J a v a S c r i p t"
 ```
 
 Keep in mind that strings are immutable values, so when they are treated as arrays, they are read-only arrays. Array methods like `push()`, `sort()`, `reverse()`, and `splice()` modify an array in place and do not work on strings. Attempting to modify a string using an array method does not, however, cause an error: it simply fails silently.
+
+::: tip 翻译
+一定要记住，字符串是不可修改的值，因此在把它们当成数组来使用时，它们是只读数组。像`push()`、`sort()`、`reverse()`和`splice()`这些就地修改数组的数组方法，对字符串都不起作用。但尝试用数组方法修改字符串并不会导致错误，只会静默失败。
+:::
 
 ## Summary
 
