@@ -592,9 +592,13 @@ for (let row = 0; row < table.length; row++) {
 table[5][7]; // => 35
 ```
 
-## Array Methods
+## 数组方法
 
 The preceding sections have focused on basic JavaScript syntax for working with arrays. In general, though, it is the methods defined by the Array class that are the most powerful. The next sections document these methods. While reading about these methods, keep in mind that some of them modify the array they are called on and some of them leave the array unchanged. A number of the methods return an array: sometimes, this is a new array, and the original is unchanged. Other times, a method will modify the array in place and will also return a reference to the modified array.
+
+::: tip 翻译
+前几节主要介绍 JavaScript 操作数组的基本语法。但一般来说，还是 Array 类定义的方法用处最大。接下来几节将分别讨论这些方法。在学习这些方法时，要记住其中有的方法会修改调用它们的数组，而有些则不会。另外也有几个方法返回数组：有时候返回的这个数组是新数组，原始数组保持不变；而有时候原始数组会被修改，返回的是被修改后的数组的引用。
+:::
 
 Each of the subsections that follows covers a group of related array methods:
 
@@ -603,31 +607,64 @@ Each of the subsections that follows covers a group of related array methods:
 - Subarray methods are for extracting, deleting, inserting, filling, and copying contiguous regions of a larger array.
 - Searching and sorting methods are for locating elements within an array and for sorting the elements of an array.
 
+::: tip 翻译
+接下来会集中介绍几个相关的数组方法:
+
+- 迭代器方法用于遍历数组元素，通常会对每个元素调用一次我们指定的函数。
+- 栈和队列方法用于在开头或末尾向数组中添加元素或从数组中删除元素。
+- 子数组方法用于提取、删除、插入、填充和复制更大数组的连续区域。
+- 搜索和排序方法用于在数组中查找元素和对数组元素排序。
+  :::
+
 The following subsections also cover the static methods of the Array class and a few miscellaneous methods for concatenating arrays and converting arrays to strings.
 
-### Array Iterator Methods
+::: tip 翻译
+下面几节也会介绍 Array 类的静态方法，以及拼接数组和把数组转换为字符串的方法。
+:::
+
+### 数组迭代器方法
 
 The methods described in this section iterate over arrays by passing array elements, in order, to a function you supply, and they provide convenient ways to iterate, map, filter, test, and reduce arrays.
 
+::: tip 翻译
+本节介绍的方法用于迭代数组元素，它们会按照顺序把数组的每个元素传给我们提供的函数，可便于对数组进行迭代、映射、过滤、测试和归并。
+:::
+
 Before we explain the methods in detail, however, it is worth making some generalizations about them. First, all of these methods accept a function as their first argument and invoke that function once for each element (or some elements) of the array. If the array is sparse, the function you pass is not invoked for nonexistent elements. In most cases, the function you supply is invoked with three arguments: the value of the array element, the index of the array element, and the array itself. Often, you only need the first of these argument values and can ignore the second and third values.
+
+::: tip 翻译
+但在讲解这些方法前，有必要从整体上介绍一下这组方法。首先，所有这些方法都接收一个函数作为第一个参数，并且对数组的每个元素（或某些元素）都调用一次这个函数。如果数组是稀疏的，则不会对不存在的数组元素调用传入的这个函数。多数情况下，我们提供的这个函数被调用时都会收到 3 个参数，分别是数组元素的值、数组元素的索引和数组本身。通常，我们只需要这几个参数中的第一个，可以忽略第二和第三个值。
+:::
 
 Most of the iterator methods described in the following subsections accept an optional second argument. If specified, the function is invoked as if it is a method of this second argument. That is, the second argument you pass becomes the value of the `this` keyword inside of the function you pass as the first argument. The return value of the function you pass is usually important, but different methods handle the return value in different ways. None of the methods described here modify the array on which they are invoked (though the function you pass can modify the array, of course).
 
+::: tip 翻译
+接下来要介绍的多数迭代器方法都接收可选的第二个参数。如果指定这个参数，则第一个函数在被调用时就好像它是第二个参数的方法一样。换句话说，我们传入的第二个参数会成为作为第一个参数传入的函数内部的`this`值。传入函数的返回值通常不重要，但不同的方法会以不同的方式处理这个返回值。本节介绍的所有方法都不会修改调用它们的数组（当然，传入的函数可能会修改这个数组）。
+:::
+
 Each of these functions is invoked with a function as its first argument, and it is very common to define that function inline as part of the method invocation expression instead of using an existing function that is defined elsewhere. Arrow function syntax (see §8.1.3) works particularly well with these methods, and we will use it in the examples that follow.
+
+::: tip 翻译
+所有这些方法在被调用时第一个参数都是函数，因此在方法调用表达式中直接定义这个函数参数是很常见的，相对而言，使用在其他地方已经定义好的函数倒不常见。箭头函数（参见 8.1.3 节）特别适合在这些方法中使用，接下来的例子中也会使用。
+:::
 
 #### forEach()
 
 The `forEach()` method iterates through an array, invoking a function you specify for each element. As we’ve described, you pass the function as the first argument to `forEach()`. `forEach()` then invokes your function with three arguments: the value of the array element, the index of the array element, and the array itself. If you only care about the value of the array element, you can write a function with only one parameter—the additional arguments will be ignored:
 
+::: tip 翻译
+`forEach()`方法迭代数组的每个元素，并对每个元素都调用一次我们指定的函数。如前所述，传统`forEach()`方法的第一个参数是函数。`forEach()`在调用这个函数时会给它传 3 个参数：数组元素的值、数组元素的索引和数组本身。如果只关心数组元素的值，可以把函数写成只接收一个参数，即忽略其他参数：
+:::
+
 ```js
 let data = [1, 2, 3, 4, 5],
   sum = 0;
-// Compute the sum of the elements of the array
+// 计算数组元素之和
 data.forEach((value) => {
   sum += value;
 }); // sum == 15
 
-// Now increment each array element
+// 递增每个元素的值
 data.forEach(function (v, i, a) {
   a[i] = v + 1;
 }); // data == [2,3,4,5,6]
@@ -635,28 +672,48 @@ data.forEach(function (v, i, a) {
 
 Note that `forEach()` does not provide a way to terminate iteration before all elements have been passed to the function. That is, there is no equivalent of the `break` statement you can use with a regular for loop.
 
+::: tip 翻译
+注意，`forEach()`并未提供一种提前终止迭代的方式。换句话说，在这里没有与常规`for`循环中的`break`语句对等的机制。
+:::
+
 #### map()
 
 The `map()` method passes each element of the array on which it is invoked to the function you specify and returns an array containing the values returned by your function. For example:
 
+::: tip 翻译
+`map()`方法把调用它的数组的每个元素分别传给我们指定的函数，返回这个函数的返回值构成的数组。例如：
+:::
+
 ```js
 let a = [1, 2, 3];
-a.map((x) => x * x); // => [1, 4, 9]: the function takes input x and returns x*x
+a.map((x) => x * x); // => [1, 4, 9]: 这个函数接受x并返回 x*x
 ```
 
 The function you pass to `map()` is invoked in the same way as a function passed to `forEach()`. For the `map()` method, however, the function you pass should return a value. Note that `map()` returns a new array: it does not modify the array it is invoked on. If that array is sparse, your function will not be called for the missing elements, but the returned array will be sparse in the same way as the original array: it will have the same length and the same missing elements.
+
+::: tip 翻译
+传给`map()`的函数与传给`forEach()`的函数会以同样的方式被调用。但对于`map()`方法来说，我们传入的函数应该返回值。注意，`map()`返回一个新数组，并不修改调用它的数组。如果数组是稀疏的，则缺失元素不会调用我们的函数，但返回的数组也会与原始数组一样稀疏：长度相同，缺失的元素也相同。
+:::
 
 #### filter()
 
 The `filter()` method returns an array containing a subset of the elements of the array on which it is invoked. The function you pass to it should be predicate: a function that returns `true` or `false`. The predicate is invoked just as for `forEach()` and `map()`. If the return value is `true`, or a value that converts to `true`, then the element passed to the predicate is a member of the subset and is added to the array that will become the return value. Examples:
 
+::: tip 翻译
+`filter()`方法返回一个数组，该数组包含调用它的数组的子数组。传给这个方法的函数应该是个断言函数，即返回`true`或`false`的函数。这个函数与传给`forEach()`和`map()`的函数一样被调用。如果函数返回`true`或返回的值转换为`true`，则传给这个函数的元素就是`filter()`最终返回的子数组的成员。看例子：
+:::
+
 ```js
 let a = [5, 4, 3, 2, 1];
-a.filter((x) => x < 3); // => [2, 1]; values less than 3
-a.filter((x, i) => i % 2 === 0); // => [5, 3, 1]; every other value
+a.filter((x) => x < 3); // => [2, 1]; 小于 3 的值
+a.filter((x, i) => i % 2 === 0); // => [5, 3, 1]; 隔一个选一个
 ```
 
 Note that `filter()` skips missing elements in sparse arrays and that its return value is always dense. To close the gaps in a sparse array, you can do this:
+
+::: tip 翻译
+注意，`filter()`会跳过稀疏数组中缺失的元素，它返回的数组始终是稠密的。因此可以使用`filter()`方法像下面这样清理掉稀疏数组中的空隙：
+:::
 
 ```js
 let dense = sparse.filter(() => true);
@@ -664,86 +721,149 @@ let dense = sparse.filter(() => true);
 
 And to close gaps and remove undefined and null elements, you can use `filter`, like this:
 
+::: tip 翻译
+如果既想清理空隙，又想删除值为`undefined`和`null`的元素，则可以这样写：
+:::
+
 ```js
 a = a.filter((x) => x !== undefined && x !== null);
 ```
 
-#### find() and findIndex()
+#### find() 与 findIndex()
 
 The `find()` and `findIndex()` methods are like `filter()` in that they iterate through your array looking for elements for which your predicate function returns a truthy value. Unlike `filter()`, however, these two methods stop iterating the first time the predicate finds an element. When that happens, `find()` returns the matching element, and `findIndex()` returns the `index` of the matching element. If no matching element is found, `find()` returns `undefined` and `findIndex()` returns `-1`:
 
+::: tip 翻译
+`find()`和`findIndex()`方法与`filter()`类似，表现在它们都遍历数组，寻找断言函数返回真值的元素。但与`filter()`不同的是，这两个方法会在断言函数找到第一个元素时停止迭代。此时，`find()`返回匹配的元素，`findIndex()`返回匹配元素的索引。如果没有找到匹配的元素，则`find()`返回`undefined`，而`findIndex()`返回-1：
+:::
+
 ```js
 let a = [1, 2, 3, 4, 5];
-a.findIndex((x) => x === 3); // => 2; the value 3 appears at index 2
-a.findIndex((x) => x < 0); // => -1; no negative numbers in the array
-a.find((x) => x % 5 === 0); // => 5: this is a multiple of 5
-a.find((x) => x % 7 === 0); // => undefined: no multiples of 7 in the array
+a.findIndex((x) => x === 3); // => 2; 值3的索引是2
+a.findIndex((x) => x < 0); // => -1; 数组中没有负数
+a.find((x) => x % 5 === 0); // => 5: 5的倍数
+a.find((x) => x % 7 === 0); // => undefined: 数组中没有7的倍数
 ```
 
-#### every() and some()
+#### every() 与 some()
 
 The `every()` and `some()` methods are array predicates: they apply a predicate function you specify to the elements of the array, then return `true` or `false`.
 
+::: tip 翻译
+`every()`和`some()`方法是数组断言方法，即它们会对数组元素调用我们传入的断言函数，最后返回`true`或`false`。
+:::
+
 The `every()` method is like the mathematical “for all” quantifier ∀: it returns `true` if and only if your predicate function returns `true` for all elements in the array:
+
+::: tip 翻译
+`every()`方法与数学上的“全称”量词类似，它在且只在断言函数对数组的所有元素都返回`true`时才返回`true`：
+:::
 
 ```js
 let a = [1, 2, 3, 4, 5];
-a.every((x) => x < 10); // => true: all values are < 10.
-a.every((x) => x % 2 === 0); // => false: not all values are even.
+a.every((x) => x < 10); // => true: 所有值都小于10
+a.every((x) => x % 2 === 0); // => false: 并非所有值都是偶数
 ```
 
 The `some()` method is like the mathematical “there exists” quantifier ∃: it returns true if there exists at least one element in the array for which the predicate returns `true` and returns `false` if and only if the predicate returns `false` for all elements of the array:
 
+::: tip 翻译
+`some()`方法类似于数学上的“存在”量词，只要数组元素中有一个让断言函数返回`true`它就返回`true`，但必须数组的所有元素对断言函数都返回`false`才返回`false`：
+:::
+
 ```js
 let a = [1, 2, 3, 4, 5];
-a.some((x) => x % 2 === 0); // => true; a has some even numbers.
-a.some(isNaN); // => false; a has no non-numbers.
+a.some((x) => x % 2 === 0); // => true; a 包含偶数
+a.some(isNaN); // => false; a没有非数值
 ```
 
 Note that both `every()` and `some()` stop iterating array elements as soon as they know what value to return. `some()` returns `true` the first time your predicate returns `<code>true</code>` and only iterates through the entire array if your predicate always returns `false`. `every()` is the opposite: it returns `false` the first time your predicate returns `false` and only iterates all elements if your predicate always returns `true`. Note also that, by mathematical convention, `every()` returns `true` and some returns `false` when invoked on an empty array.
 
-#### reduce() and reduceRight()
+::: tip 翻译
+注意，`every()`和`some()`都会在它们知道要返回什么值时停止迭代数组。`some()`在断言函数第一次返回`true`时返回`true`，只有全部断言都返回`false`时才会遍历数组。`every()`正好相反，它在断言函数第一次返回`false`时返回`false`，只有全部断言都返回`true`时才会遍历数组。同样也要注意，如果在空数组上调用它们，按照数学的传统，`every()`返回`true`，`some()`返回`false`。
+:::
+
+#### reduce() 与 reduceRight()
 
 The `reduce()` and `reduceRight()` methods combine the elements of an array, using the function you specify, to produce a single value. This is a common operation in functional programming and also goes by the names “inject” and “fold.” Examples help illustrate how it works:
 
+::: tip 翻译
+`reduce()`和`reduceRight()`方法使用我们指定的函数归并数组元素，最终产生一个值。在函数编程中，归并是一个常见操作，有时候也称为注入（inject）或折叠（fold）。看例子更容易理解：
+:::
+
 ```js
 let a = [1, 2, 3, 4, 5];
-a.reduce((x, y) => x + y, 0); // => 15; the sum of the values
-a.reduce((x, y) => x * y, 1); // => 120; the product of the values
-a.reduce((x, y) => (x > y ? x : y)); // => 5; the largest of the values
+a.reduce((x, y) => x + y, 0); // => 15; 所有值之和
+a.reduce((x, y) => x * y, 1); // => 120; 所有值之积
+a.reduce((x, y) => (x > y ? x : y)); // => 5; 最大值
 ```
 
 `reduce()` takes two arguments. The first is the function that performs the reduction operation. The task of this reduction function is to somehow combine or reduce two values into a single value and to return that reduced value. In the examples we’ve shown here, the functions combine two values by adding them, multiplying them, and choosing the largest. The second (optional) argument is an initial value to pass to the function.
 
+::: tip 翻译
+`reduce()`接收两个参数。第一个参数是执行归并操作的函数。这个归并函数的任务就是把两个值归并或组合为一个值并返回这个值。在上面的例子中，归并函数通过把两个值相加、相乘和选择最大值来合并两个值。第二个参数是可选的，是传给归并函数的初始值。
+:::
+
 Functions used with `reduce()` are different than the functions used with `forEach()` and `map()`. The familiar `value`, `index`, and `array` values are passed as the second, third, and fourth arguments. The first argument is the accumulated result of the reduction so far. On the first call to the function, this first argument is the initial value you passed as the second argument to `reduce()`. On subsequent calls, it is the value returned by the previous invocation of the function. In the first example, the reduction function is first called with arguments 0 and 1. It adds these and returns 1. It is then called again with arguments 1 and 2 and returns 3. Next, it computes 3+3=6, then 6+4=10, and finally 10+5=15. This final value, 15, becomes the return value of `reduce()`.
+
+::: tip 翻译
+在`reduce()`中使用的函数与在`forEach()`和`map()`中使用的函数不同。我们熟悉的值、索引和数组本身在这里作为第二、第三和第四个参数。第一个参数是目前为止归并操作的累计结果。在第一次调用这个函数时，第一个参数作为`reduce()`的第二个参数的初始值。在后续调用中，第一个参数则是上一次调用这个函数的返回值。在第一个例子中，初次调用归并函数传入的是 0 和 1，归并函数把它们相加后返回 1。然后再以参数 1 和 2 调用它并返回 3。接着计算`3+4=6`、`6+4=10`，最后`10+5=15`。最终值`15`成为`reduce()`的返回值。
+:::
 
 You may have noticed that the third call to `reduce()` in this example has only a single argument: there is no initial value specified. When you invoke `reduce()` like this with no initial value, it uses the first element of the array as the initial value. This means that the first call to the reduction function will have the first and second array elements as its first and second arguments. In the sum and product examples, we could have omitted the initial value argument.
 
+::: tip 翻译
+有人可能注意到了，上面例子中第三次调用`reduce()`只传了一个参数，即并未指定初始值。在像这样不指定初始值调用时，`reduce()`会使用数组的第一个元素作为初始值。这意味着首次调用归并函数将以数组的第一和第二个元素作为其第一和第二个参数。在求和与求积的例子中，也可以省略这个初始值参数。
+:::
+
 Calling `reduce()` on an empty array with no initial value argument causes a TypeError. If you call it with only one value--either an array with one element and no initial value or an empty array and an initial value--it simply returns that one value without ever calling the reduction function.
+
+::: tip 翻译
+如果不传初始值参数，在空数组上调用`reduce()`会导致 TypeError。如果调用它时只有一个值，比如用只包含一个元素的数组调用且不传初始值，或者用空数组调用但传了初始值，则`reduce()`直接返回这个值，不会调用归并函数。
+:::
 
 `reduceRight()` works just like `reduce()`, except that it processes the array from highest index to lowest (right-to-left), rather than from lowest to highest. You might want to do this if the reduction operation has right-to-left associativity, for example:
 
+::: tip 翻译
+`reduceRight()`与`reduce()`类似，只不过是从高索引向低索引（从右到左）处理数组，而不是从低到高。如果归并操作具有从右到左的结合性，那可能要考虑使用`reduceRight()`。比如：
+:::
+
 ```js
-// Compute 2^(3^4). Exponentiation has right-to-left precedence
+// 计算 2^(3^4). 求幂具有从右到左的优先级
 let a = [2, 3, 4];
 a.reduceRight((acc, val) => Math.pow(val, acc)); // => 2.4178516392292583e+24
 ```
 
 Note that neither `reduce()` nor `reduceRight()` accepts an optional argument that specifies the `this` value on which the reduction function is to be invoked. The optional initial value argument takes its place. See the `Function.bind()` method (§8.7.5) if you need your reduction function invoked as a method of a particular object.
 
+::: tip 翻译
+注意，无论`reduce()`还是`reduceRight()`都不接收用于指定归并函数`this`值的可选参数。它们用可选的初始值参数取代了这个值。如果需要把归并函数作为特定对象的方法调用，可以考虑 8.7.5 节介绍的`Function.bind()`方法。
+:::
+
 The examples shown so far have been numeric for simplicity, but `reduce()` and `reduceRight()` are not intended solely for mathematical computations. Any function that can combine two values (such as two objects) into one value of the same type can be used as a reduction function. On the other hand, algorithms expressed using array reductions can quickly become complex and hard to understand, and you may find that it is easier to read, write, and reason about your code if you use regular looping constructs to process your arrays.
 
-### Flattening arrays with flat() and flatMap()
+::: tip 翻译
+出于简单考虑，目前为止我们看到的例子都只涉及数值。但`reduce()`和`reduceRight()`并不是专门为数学计算而设计的。只要是能够把两个值（比如两个对象）组合成一个同类型值的函数，都可以用作归并函数。另一方面，使用数组归并表达的算法很容易复杂化，因而难以理解。此时可能使用常规循环逻辑处理数组反倒更容易阅读、编写和分析。
+:::
+
+### 使用 flat()和 flatMap()打平数组
 
 In ES2019, the `flat()` method creates and returns a new array that contains the same elements as the array it is called on, except that any elements that are themselves arrays are “flattened” into the returned array. For example:
 
+::: tip 翻译
+在 ES2019 中，`flat()`方法用于创建并返回一个新数组，这个新数组包含与它调用`flat()`的数组相同的元素，只不过其中任何本身也是数组的元素会被“打平”填充到返回的数组中。例如：
+:::
+
 ```js
-[1, [2, 3]]
-  .flat() // => [1, 2, 3]
-  [(1, [2, [3]])].flat(); // => [1, 2, [3]]
+[1, [2, 3]].flat(); // => [1, 2, 3]
+[(1, [2, [3]])].flat(); // => [1, 2, [3]]
 ```
 
 When called with no arguments, `flat()` flattens one level of nesting. Elements of the original array that are themselves arrays are flattened, but array elements of those arrays are not flattened. If you want to flatten more levels, pass a number to `flat()`:
+
+::: tip 翻译
+在不传参调用时，`flat()`会打平一级嵌套。原始数组中本身也是数组的元素会被打平，但打平后的元素如果还是数组则不会再打平。如果想打平更多层级，需要给`flat()`传一个数值参数：
+:::
 
 ```js
 let a = [1, [2, [3, [4]]]];
@@ -755,6 +875,10 @@ a.flat(4); // => [1, 2, 3, 4]
 
 The `flatMap()` method works just like the `map()` method (see “`map()`” on page 166) except that the returned array is automatically flattened as if passed to `flat()`. That is, calling `a.flatMap(f)` is the same as (but more efficient than) `a.map(f).flat()`:
 
+::: tip 翻译
+`flatMap()`方法与`map()`方法相似，只不过返回的数组会自动被打平，就像传给了`flat()`一样。换句话说，调用`a.flatMap(f)`等同于（但效率远高于）`a.map(f).flat()`：
+:::
+
 ```js
 let phrases = ["hello world", "the definitive guide"];
 let words = phrases.flatMap((phrase) => phrase.split(" "));
@@ -763,28 +887,44 @@ words; // => ["hello", "world", "the", "definitive", "guide"];
 
 You can think of `flatMap()` as a generalization of `map()` that allows each element of the input array to map to any number of elements of the output array. In particular, `flatMap()` allows you to map input elements to an empty array, which flattens to nothing in the output array:
 
+::: tip 翻译
+可以把`flatMap()`想象为一个通用版的`map()`，可以把输入数组中的一个元素映射为输出数组中的多个元素。特别地，`flatMap()`允许把输入元素映射为空数组，这样打平后并不会有元素出现在输出数组中：
+:::
+
 ```js
-// Map non-negative numbers to their square roots
+// 将非负数映射为他们的平方根
 [-2, -1, 1, 2].flatMap((x) => (x < 0 ? [] : Math.sqrt(x))); // => [1, 2**0.5]
 ```
 
-### Adding arrays with concat()
+### 使用 concat() 添加数组
 
 The `concat()` method creates and returns a new array that contains the elements of the original array on which `concat()` was invoked, followed by each of the arguments to `concat()`. If any of these arguments is itself an array, then it is the array elements that are concatenated, not the array itself. Note, however, that `concat()` does not recursively flatten arrays of arrays. `concat()` does not modify the array on which it is invoked:
+
+::: tip 翻译
+`concat()`方法创建并返回一个新数组，新数组包含调用`concat()`方法的数组的元素，以及传给`concat()`的参数。如果这些参数中有数组，则拼接的是它们的元素而非数组本身。但要注意，`concat()`不会递归打平数组的数组。`concat()`并不修改调用它的数组：
+:::
 
 ```js
 let a = [1, 2, 3];
 a.concat(4, 5); // => [1,2,3,4,5]
-a.concat([4, 5], [6, 7]); // => [1,2,3,4,5,6,7]; arrays are flattened
-a.concat(4, [5, [6, 7]]); // => [1,2,3,4,5,[6,7]]; but not nested arrays
-a; // => [1,2,3]; the original array is unmodified
+a.concat([4, 5], [6, 7]); // => [1,2,3,4,5,6,7]; 数组被打平了
+a.concat(4, [5, [6, 7]]); // => [1,2,3,4,5,[6,7]]; 但不会打平嵌套的数组
+a; // => [1,2,3]; 原始数组没有改变
 ```
 
 Note that `concat()` makes a new copy of the array it is called on. In many cases, this is the right thing to do, but it is an expensive operation. If you find yourself writing code like `a = a.concat(x)`, then you should think about modifying your array in place with `push()` or `splice()` instead of creating a new one.
 
-### Stacks and Queues with push(), pop(), shift(), and unshift()
+::: tip 翻译
+注意，`concat()`会创建调用它的数组的副本。很多情况下，这样做都是正确的，只不过操作代价有点大。如果你发现自己正在写类似`a = a.concat(x)`这样的代码，那应该考虑使用`push()`或`splice()`就地修改数组，就不要再创建新数组了。
+:::
+
+### 通过 push(), pop(), shift(), 和 unshift() 实现栈和队列操作
 
 The `push()` and `pop()` methods allow you to work with arrays as if they were stacks. The `push()` method appends one or more new elements to the end of an array and returns the new length of the array. Unlike `concat()`, `push()` does not flatten array arguments. The `pop()` method does the reverse: it deletes the last element of an array decrements the array length, and returns the value that it removed. Note that both methods modify the array in place. The combination of `push()` and `pop()` allows you to use a JavaScript array to implement a first-in, last-out stack. For example:
+
+::: tip 翻译
+`push()`和`pop()`方法可以把数组作为栈来操作。其中，`push()`方法用于在数组末尾添加一个或多个新元素，并返回数组的新长度。与`concat()`不同，`push()`不会打平数组参数。`pop()`方法恰好相反，它用于删除数组最后面的元素，减少数组长度，并返回删除的值。注意，这两个方法都会就地修改数组。组合使用`push()`和`pop()`可以使用 JavaScript 数组实现先进后出的栈。例如：
+:::
 
 ```js
 let stack = []; // stack == []
@@ -799,11 +939,19 @@ stack.pop(); // stack == []; returns 1
 
 The `push()` method does not flatten an array you pass to it, but if you want to push all of the elements from one array onto another array, you can use the spread operator (§8.3.4) to flatten it explicitly:
 
+::: tip 翻译
+`push()`方法不会打平传入的数组，如果想把一个数组中的所有元素都推送到另一个数组中，可以使用扩展操作符（参见 8.3.4 节）显式打平它：
+:::
+
 ```js
 a.push(...values);
 ```
 
 The `unshift()` and `shift()` methods behave much like `push()` and `pop()`, except that they insert and remove elements from the beginning of an array rather than from the end. `unshift()` adds an element or elements to the beginning of the array, shifts the existing array elements up to higher indexes to make room, and returns the new length of the array. `shift()` removes and returns the first element of the array, shifting all subsequent elements down one place to occupy the newly vacant space at the start of the array. You could use `unshift()` and `shift()` to implement a stack, but it would be less efficient than using `push()` and `pop()` because the array elements need to be shifted up or down every time an element is added or removed at the start of the array. Instead, though, you can implement a queue data structure by using `push()` to add elements at the end of an array and `shift()` to remove them from the start of the array:
+
+::: tip 翻译
+`unshift()`和`shift()`方法与`push()`和`pop()`很类似，只不过它们是从数组开头而非末尾插入和删除元素。`unshift()`用于在数组开头添加一个或多个元素，已有元素的索引会相应向更高索引移动，并返回数组的新长度。`shift()`删除并返回数组的第一个元素，所有后续元素都会向下移动一个位置，以占据数组开头空出的位置。使用`unshift()`和`shift()`可以实现栈，但效率不如使用`push()`和`pop()`，因为每次在数组开头添加或删除元素都要向上或向下移动元素。不过，倒是可以使用`push()`在数组末尾添加元素，使用`shift()`在数组开头删除元素来实现队列：
+:::
 
 ```js
 let q = []; // q == []
@@ -816,6 +964,10 @@ q.shift(); // q == []; returns 3
 
 There is one feature of `unshift()` that is worth calling out because you may find it surprising. When passing multiple arguments to `unshift()`, they are inserted all at once, which means that they end up in the array in a different order than they would be if you inserted them one at a time:
 
+::: tip 翻译
+`unshift()`还有一个特性值得特别说一下。在给`unshift()`传多个参数时，这些参数会一次性插入数组。这意味着一次插入与多次插入之后的数组顺序不一样：
+:::
+
 ```js
 let a = []; // a == []
 a.unshift(1); // a == [1]
@@ -824,13 +976,21 @@ a = []; // a == []
 a.unshift(1, 2); // a == [1, 2]
 ```
 
-### Subarrays with slice(), splice(), fill(), and copyWithin()
+### 使用 slice(), splice(), fill(), 和 copyWithin()
 
 Arrays define a number of methods that work on contiguous regions, or subarrays or “slices” of an array. The following sections describe methods for extracting, replacing, filling, and copying slices.
+
+::: tip 翻译
+数组定义了几个处理连续区域（或子数组，或数组“切片”）的方法。接下来几节将介绍提取、替换、填充和复制切片的方法。
+:::
 
 #### slice()
 
 The `slice()` method returns a _slice_, or subarray, of the specified array. Its two arguments specify the start and end of the slice to be returned. The returned array contains the element specified by the first argument and all subsequent elements up to, but not including, the element specified by the second argument. If only one argument is specified, the returned array contains all elements from the start position to the end of the array. If either argument is negative, it specifies an array element relative to the length of the array. An argument of –1, for example, specifies the last element in the array, and an argument of –2 specifies the element before that one. Note that `slice()` does not modify the array on which it is invoked. Here are some examples:
+
+::: tip 翻译
+`slice()`方法返回一个数组的切片（slice）或者子数组。这个方法接收两个参数，分别用于指定要返回切片的起止位置。返回的数组包含第一个参数指定的元素，以及所有后续元素，直到（但不包含）第二个参数指定的元素。如果只指定一个参数，返回的数组将包含从该起点开始直到数组末尾的所有元素。如果任何一个参数是负值，则这个值相对于数组长度指定数组元素。比如，参数-1 指定数组的最后一个元素，参数-2 指定倒数第二个元素。注意，`slice()`不会修改调用它的数组。下面看几个例子：
+:::
 
 ```js
 let a = [1, 2, 3, 4, 5];
@@ -844,7 +1004,15 @@ a.slice(-3, -2); // Returns [3]
 
 `splice()` is a general-purpose method for inserting or removing elements from an array. Unlike `slice()` and `concat()`, `splice()` modifies the array on which it is invoked. Note that `splice()` and `slice()` have very similar names but perform substantially different operations.
 
+::: tip 翻译
+`splice()`是一个对数组进行插入和删除的通用方法。与`slice()`和`concat()`不同，`splice()`会修改调用它的数组。注意，`splice()`和`slice()`的名字非常相似，但执行的操作截然不同。
+:::
+
 `splice()` can delete elements from an array, insert new elements into an array, or perform both operations at the same time. Elements of the array that come after the insertion or deletion point have their indexes increased or decreased as necessary so that they remain contiguous with the rest of the array. The first argument to `splice()` specifies the array position at which the insertion and/or deletion is to begin. The second argument specifies the number of elements that should be deleted from (spliced out of) the array. (Note that this is another difference between these two methods. The second argument to `slice()` is an end position. The second argument to `splice()` is a length.) If this second argument is omitted, all array elements from the start element to the end of the array are removed. `splice()` returns an array of the deleted elements, or an empty array if no elements were deleted. For example:
+
+::: tip 翻译
+`splice()`可以从数组中删除元素，可以向数组中插入新元素，也可以同时执行这两种操作。位于插入点或删除点之后的元素的索引会按照需要增大或减少，从而与数组剩余部分保持连续。`splice()`的第一个参数指定插入或删除操作的起点位置。第二个参数指定要从数组中删除（切割出来）的元素个数（注意，这里是两个方法的另一个不同之处。`slice()`的第二个参数是终点。而`splice()`的第二个参数是长度）。如果省略第二个参数，从起点元素开始的所有数组元素都将被删除。`splice()`返回被删除元素的数组，如果没有删除元素返回空数组。例如：
+:::
 
 ```js
 let a = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -855,6 +1023,10 @@ a.splice(1, 1); // => [4]; a is now [1]
 
 The first two arguments to `splice()` specify which array elements are to be deleted. These arguments may be followed by any number of additional arguments that specify elements to be inserted into the array, starting at the position specified by the first argument. For example:
 
+::: tip 翻译
+`splice()`的前两个参数指定要删除哪些元素。这两个参数后面还可以跟任意多个参数，表示要在第一个参数指定的位置插入到数组中的元素。例如：
+:::
+
 ```js
 let a = [1, 2, 3, 4, 5];
 a.splice(2, 0, "a", "b"); // => []; a is now [1,2,"a","b",3,4,5]
@@ -863,39 +1035,67 @@ a.splice(2, 2, [1, 2], 3); // => ["a","b"]; a is now [1,2,[1,2],3,3,4,5]
 
 Note that, unlike `concat()`, `splice()` inserts arrays themselves, not the elements of those arrays.
 
+::: tip 翻译
+注意，与`concat()`不同，`splice()`插入数组本身，而不是数组的元素。
+:::
+
 #### fill()
 
 The `fill()` method sets the elements of an array, or a slice of an array, to a specified value. It mutates the array it is called on, and also returns the modified array:
 
+::: tip 翻译
+`fill()`方法将数组的元素或切片设置为指定的值。它会修改调用它的数组，也返回修改后的数组：
+:::
+
 ```js
-let a = new Array(5); // Start with no elements and length 5
-a.fill(0); // => [0,0,0,0,0]; fill the array with zeros
-a.fill(9, 1); // => [0,9,9,9,9]; fill with 9 starting at index 1
-a.fill(8, 2, -1); // => [0,9,8,8,9]; fill with 8 at indexes 2, 3
+let a = new Array(5); // 创建一个长度为5的没有元素的数组
+a.fill(0); // => [0,0,0,0,0]; 用0天冲数组
+a.fill(9, 1); // => [0,9,9,9,9]; 从索引1开始填充9
+a.fill(8, 2, -1); // => [0,9,8,8,9]; 在索引2、3填充8
 ```
 
 The first argument to `fill()` is the value to set array elements to. The optional second argument specifies the starting index. If omitted, filling starts at index 0. The optional third argument specifies the ending index—array elements up to, but not including, this index will be filled. If this argument is omitted, then the array is filled from the start index to the end. You can specify indexes relative to the end of the array by passing negative numbers, just as you can for `slice()`.
+
+::: tip 翻译
+`fill()`的第一个参数是要把数组元素设置成的值。可选的第二个参数指定起始索引，如果省略则从索引 0 开始填充。可选的第三个参数指定终止索引，到这个索引为止（但不包含）的数组元素会被填充。如果省略第三个参数，则从起始索引开始一直填充到数组末尾。与使用`slice()`一样，也可以传入负值相对于数组末尾指定索引。
+:::
 
 #### copyWithin()
 
 `copyWithin()` copies a slice of an array to a new position within the array. It modifies the array in place and returns the modified array, but it will not change the length of the array. The first argument specifies the destination index to which the first element will be copied. The second argument specifies the index of the first element to be copied. If this second argument is omitted, 0 is used. The third argument specifies the end of the slice of elements to be copied. If omitted, the length of the array is used. Elements from the start index up to, but not including, the end index will be copied. You can specify indexes relative to the end of the array by passing negative numbers, just as you can for `slice()`:
 
+::: tip 翻译
+`copyWithin()`把数组切片复制到数组中的新位置。它会就地修改数组并返回修改后的数组，但不会改变数组的长度。第一个参数指定要把第一个元素复制到的目的索引。第二个参数指定要复制的第一个元素的索引。如果省略第二个参数，则默认值为 0。第三个参数指定要复制的元素切片的终止索引。如果省略，则使用数组的长度。从起始索引到（但不包含）终止索引的元素会被复制。与使用`slice()`一样，也可以传入负值相对于数组末尾指定索引：
+:::
+
 ```js
 let a = [1, 2, 3, 4, 5];
-a.copyWithin(1); // => [1,1,2,3,4]: copy array elements up one
-a.copyWithin(2, 3, 5); // => [1,1,3,4,4]: copy last 2 elements to index 2
-a.copyWithin(0, -2); // => [4,4,3,4,4]: negative offsets work, too
+a.copyWithin(1); // => [1,1,2,3,4]: 把数组元素复制到索引1及之后
+a.copyWithin(2, 3, 5); // => [1,1,3,4,4]: 把最后两个元素复制到索引2
+a.copyWithin(0, -2); // => [4,4,3,4,4]: 负偏移量也可以
 ```
 
 `copyWithin()` is intended as a high-performance method that is particularly useful with typed arrays (see §11.2). It is modeled after the `memmove()` function from the C standard library. Note that the copy will work correctly even if there is overlap between the source and destination regions.
 
-### Array Searching and Sorting Methods
+::: tip 翻译
+`copyWithin()`本意是作为一个高性能方法，尤其对定型数组（参见 11.2 节）特别有用。它模仿的是 C 标准库的`memmove()`函数。注意，即使来源和目标区域有重叠，复制也是正确的。
+:::
+
+### 数组索引与排序方法
 
 Arrays implement `indexOf()`, `lastIndexOf()`, and `includes()` methods that are similar to the same-named methods of strings. There are also `sort()` and `reverse()` methods for reordering the elements of an array. These methods are described in the subsections that follow.
 
-#### indexOf() and lastIndexOf()
+::: tip 翻译
+数组实现与字符串的同名方法类似的`indexOf()`、`lastIndexOf()`和`includes()`方法。此外还有`sort()`和`reverse()`方法用于对数组元素重新排序。下面介绍这些方法。
+:::
+
+#### indexOf() 和 lastIndexOf()
 
 `indexOf()` and `lastIndexOf()` search an array for an element with a specified value and return the index of the first such element found, or -1 if none is found. `indexOf()` searches the array from beginning to end, and `lastIndexOf()` searches from end to beginning:
+
+::: tip 翻译
+`indexOf()`和`lastIndexOf()`从数组中搜索指定的值并返回第一个找到的元素的索引，如果没找到则返回-1。`indexOf()`从前到后（或从头到尾）搜索数组，而`lastIndexOf()`从后向前搜索数组：
+:::
 
 ```js
 let a = [0, 1, 2, 1, 0];
@@ -906,39 +1106,62 @@ a.indexOf(3); // => -1: no element has value 3
 
 `indexOf()` and `lastIndexOf()` compare their argument to the array elements using the equivalent of the `===` operator. If your array contains objects instead of primitive values, these methods check to see if two references both refer to exactly the same object. If you want to actually look at the content of an object, try using the `find()` method with your own custom predicate function instead.
 
+::: tip 翻译
+`indexOf()`和`lastIndexOf()`使用`===`操作符比较它们的参数和数组元素。如果数组包含对象而非原始值，这些方法检查两个引用是否引用同一个对象。如果想查找对象的内容，可以使用`find()`方法并传入自定义的断言函数。
+:::
+
 `indexOf()` and `lastIndexOf()` take an optional second argument that specifies the array index at which to begin the search. If this argument is omitted, `indexOf()` starts at the beginning and `lastIndexOf()` starts at the end. Negative values are allowed for the second argument and are treated as an offset from the end of the array, as they are for the `slice()` method: a value of –1, for example, specifies the last element of the array.
+
+::: tip 翻译
+`indexOf()`和`lastIndexOf()`都接收第二个可选的参数，指定从哪个位置开始搜索。如果省略这个参数，`indexOf()`会从头开始搜索，`lastIndexOf()`会从尾开始搜索。第二个参数可以是负值，相对于数组末尾偏移，与`slice()`方法一样。比如，-1 指定数组的最后一个元素。
+:::
 
 The following function searches an array for a specified value and returns an array of all matching indexes. This demonstrates how the second argument to `indexOf()` can be used to find matches beyond the first.
 
+::: tip 翻译
+下面这个函数从指定的数组中搜索指定的值，并返回所有匹配元素的索引。这个例子演示了`indexOf()`的第二个参数可以用来找到除第一个之外的匹配值。
+:::
+
 ```js
-// Find all occurrences of a value x in an array a and return an array
-// of matching indexes
+// 从数组a中找到所有值x,返回匹配索引的数组
 function findall(a, x) {
-  let results = [], // The array of indexes we'll return
-    len = a.length, // The length of the array to be searched
-    pos = 0; // The position to search from
+  let results = [], // 要返回的索引数组
+    len = a.length, // 要搜索的数组长度
+    pos = 0; // 搜索的起始位置
 
   while (pos < len) {
-    // While more elements to search...
-    pos = a.indexOf(x, pos); // Search
+    // 如果还有元素没有搜索到...
+    pos = a.indexOf(x, pos); // 搜索
     if (pos === -1) {
-      // If nothing found, We're done.
+      // 如果没找到，结束
       break;
     }
-    results.push(pos); // Otherwise, store index in array
-    pos = pos + 1; // And start next search at next element
+    results.push(pos); // 否则，把索引保存在数组中
+    pos = pos + 1; // 从下一个元素开始搜索
   }
-  return results; // Return array of indexes.
+  return results; // 返回索引数组
 }
 ```
 
 Note that strings have `indexOf()` and `lastIndexOf()` methods that work like these array methods, except that a negative second argument is treated as zero.
 
+::: tip 翻译
+注意，字符串也有`indexOf()`和`lastIndexOf()`方法，跟这两个数组方法类似，区别在于第二个参数如果是负值会被当成 0。
+:::
+
 #### includes()
 
 The ES2016 `includes()` method takes a single argument and returns true if the array contains that value or false otherwise. It does not tell you the index of the value, only whether it exists. The `includes()` method is effectively a set membership test for arrays. Note, however, that arrays are not an efficient representation for sets, and if you are working with more than a few elements, you should use a real Set object (§11.1.1).
 
+::: tip 翻译
+ES2016 的`includes()`方法接收一个参数，如果数组包含该值则返回`true`，否则返回`false`。它并不告诉你值的索引，只告诉你是否存在。`includes()`方法实际上是测试数组的成员是否属于某个集合。不过要注意，数组并非集合的有效表示方式，如果元素数量庞大，应该选择真正的 Set 对象（参见 11.1.1 节）。
+:::
+
 The `includes()` method is slightly different than the `indexOf()` method in one important way. `indexOf()` tests equality using the same algorithm that the `===` operator does, and that equality algorithm considers the not-a-number value to be different from every other value, including itself. `includes()` uses a slightly different version of equality that does consider NaN to be equal to itself. This means that `indexOf()` will not detect the `NaN` value in an array, but `includes()` will:
+
+::: tip 翻译
+`includes()`方法与`indexOf()`方法有一个重要区别。`indexOf()`使用与`===`操作符同样的算法测试相等性，而该相等算法将非数值的值看成与其他值都不一样，包括与其自身也不一样。`includes()`使用稍微不同的相等测试，认为 NaN 与自身相等。这意味着`indexOf()`无法检测数组中的 NaN 值，但`includes()`可以：
+:::
 
 ```js
 let a = [1, true, 3, NaN];
@@ -952,6 +1175,10 @@ a.indexOf(NaN); // => -1; indexOf can't find NaN
 
 `sort()` sorts the elements of an array in place and returns the sorted array. When `sort()` is called with no arguments, it sorts the array elements in alphabetical order (temporarily converting them to strings to perform the comparison, if necessary):
 
+::: tip 翻译
+`sort()`对数组元素就地排序并返回排序后的数组。在不传参调用时，`sort()`按字母顺序对数组元素排序（如有必要，临时把它们转换为字符串再比较）：
+:::
+
 ```js
 let a = ["banana", "cherry", "apple"];
 a.sort(); // a == ["apple", "banana", "cherry"]
@@ -959,19 +1186,31 @@ a.sort(); // a == ["apple", "banana", "cherry"]
 
 If an array contains undefined elements, they are sorted to the end of the array.
 
+::: tip 翻译
+如果数组包含未定义的元素，它们会被排到数组末尾。
+:::
+
 To sort an array into some order other than alphabetical, you must pass a comparison function as an argument to `sort()`. This function decides which of its two arguments should appear first in the sorted array. If the first argument should appear before the second, the comparison function should return a number less than zero. If the first argument should appear after the second in the sorted array, the function should return a number greater than zero. And if the two values are equivalent (i.e., if their order is irrelevant), the comparison function should return 0. So, for example, to sort array elements into numerical rather than alphabetical order, you might do this:
+
+::: tip 翻译
+要对数组元素执行非字母顺序的排序，必须给`sort()`传一个比较函数作为参数。这个函数决定它的两个参数哪一个在排序后的数组中应该出现在前面。如果第一个参数应该出现在第二个参数前面，比较函数应该返回一个小于 0 的数值。如果第一个参数应该出现在第二个参数后面，比较函数应该返回一个大于 0 的数值。如果两个值相等（也就是它们的顺序不重要），则比较函数应该返回 0。因此，要对数组元素按照数值而非字母顺序排序，应该这样做：
+:::
 
 ```js
 let a = [33, 4, 1111, 222];
-a.sort(); // a == [1111, 222, 33, 4]; alphabetical order
+a.sort(); // a == [1111, 222, 33, 4]; 字母顺序
 a.sort(function (a, b) {
-  // Pass a comparator function
-  return a - b; // Returns < 0, 0, or > 0, depending on order
-}); // a == [4, 33, 222, 1111]; numerical order
-a.sort((a, b) => b - a); // a == [1111, 222, 33, 4]; reverse numerical order
+  // 传入一个比较函数
+  return a - b; // 返回 < 0, 0, 或 > 0, 取决于顺序
+}); // a == [4, 33, 222, 1111]; 数值顺序
+a.sort((a, b) => b - a); // a == [1111, 222, 33, 4]; 相反的数值顺序
 ```
 
 As another example of sorting array items, you might perform a case-insensitive alphabetical sort on an array of strings by passing a comparison function that converts both of its arguments to lowercase (with the `toLowerCase()` method) before comparing them:
+
+::: tip 翻译
+再来看一个排序数组元素的例子。如果想对字符串数组做不区分大小写的字母序排序，传入的比较函数应该（使用`toLowerCase()`方法）将其两个参数都转换为小写，然后再比较：
+:::
 
 ```js
 let a = ["ant", "Bug", "cat", "Dog"];
@@ -989,29 +1228,49 @@ a.sort(function (s, t) {
 
 The `reverse()` method reverses the order of the elements of an array and returns the reversed array. It does this in place; in other words, it doesn’t create a new array with the elements rearranged but instead rearranges them in the already existing array:
 
+::: tip 翻译
+`reverse()`方法反转数组元素的顺序，并返回反序后的数组。这个反序是就地反序，换句话说，不会用重新排序后的元素创建新数组，而是直接对已经存在的数组重新排序：
+:::
+
 ```js
 let a = [1, 2, 3];
 a.reverse(); // a == [3,2,1]
 ```
 
-### Array to String Conversions
+### 数组到字符串的转换
 
 The Array class defines three methods that can convert arrays to strings, which is generally something you might do when creating log and error messages. (If you want to save the contents of an array in textual form for later reuse, serialize the array with `JSON.stringify()` [§6.8] instead of using the methods described here.)
 
+::: tip 翻译
+Array 类定义了 3 个把数组转换为字符串的方法，通常可以用在记录日志或错误消息的时候（如果想把数组的文本内容保存起来以备后用，可以使用`JSON.stringify()`[参见 6.8 节]方法对数组执行序列化，而不是使用这里介绍的方法）。
+:::
+
 The `join()` method converts all the elements of an array to strings and concatenates them, returning the resulting string. You can specify an optional string that separates the elements in the resulting string. If no separator string is specified, a comma is used:
+
+::: tip 翻译
+`join()`方法把数组的所有元素转换为字符串，然后把它们拼接起来并返回结果字符串。可以指定一个可选的字符串参数，用于分隔结果字符串中的元素。如果不指定分隔符，则默认使用逗号：
+:::
 
 ```js
 let a = [1, 2, 3];
 a.join(); // => "1,2,3"
 a.join(" "); // => "1 2 3"
 a.join(""); // => "123"
-let b = new Array(10); // An array of length 10 with no elements
-b.join("-"); // => "---------": a string of 9 hyphens
+let b = new Array(10); // 长度为10但没有元素的数组
+b.join("-"); // => "---------": 包含9个连字符的字符串
 ```
 
 The `join()` method is the inverse of the `String.split()` method, which creates an array by breaking a string into pieces.
 
+::: tip 翻译
+`join()`方法执行的是`String.split()`方法的反向操作，后者通过把字符串分割为多个片段来创建数组。
+:::
+
 Arrays, like all JavaScript objects, have a `toString()` method. For an array, this method works just like the `join()` method with no arguments:
+
+::: tip 翻译
+与任何 JavaScript 对象一样，数组也有`toString()`方法。对于数组而言，这个方法的逻辑与没有参数的`join()`方法一样：
+:::
 
 ```js
 [1, 2, 3]
@@ -1022,13 +1281,29 @@ Arrays, like all JavaScript objects, have a `toString()` method. For an array, t
 
 Note that the output does not include square brackets or any other sort of delimiter around the array value.
 
-`toLocaleString()` is the localized version of `toString()`. It converts each array element to a string by calling the `toLocaleString()` method of the element, and then it concatenates the resulting strings using a locale-specific (and implementationdefined) separator string.
+::: tip 翻译
+注意，输出中不包含方括号或者数组值的定界符。
+:::
 
-### Static Array Functions
+`toLocaleString()` is the localized version of `toString()`. It converts each array element to a string by calling the `toLocaleString()` method of the element, and then it concatenates the resulting strings using a locale-specific (and implementation defined) separator string.
+
+::: tip 翻译
+`toLocaleString()`是`toString()`的本地化版本。它调用`toLocaleString()`方法将每个数组元素转换为字符串，然后再使用（实现定义的）当地分隔符字符串来拼接结果字符串。
+:::
+
+### 静态数组函数
 
 In addition to the array methods we’ve already documented, the Array class also defines three static functions that you can invoke through the `Array` constructor rather than on arrays. `Array.of()` and `Array.from()` are factory methods for creating new arrays. They were documented in §7.1.4 and §7.1.5.
 
+::: tip 翻译
+除了前面介绍的数组方法，Array 类也定义了 3 个静态函数，可以通过 Array 构造函数而非数组调用。`Array.of()`和`Array.from()`是创建新数组的工厂方法，分别在 7.1.4 节和 7.1.5 节介绍过了。
+:::
+
 The one other static array function is `Array.isArray()`, which is useful for determining whether an unknown value is an array or not:
+
+::: tip 翻译
+另一个静态数组函数是`Array.isArray()`，用于确定一个未知值是不是数组：
+:::
 
 ```js
 Array.isArray([]); // => true
