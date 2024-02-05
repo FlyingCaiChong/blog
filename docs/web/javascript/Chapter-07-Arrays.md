@@ -387,40 +387,68 @@ You can also set the `length` property of an array to a value larger than its cu
 也可以把数组的`length`属性设置为一个大于其当前值的值。这样做并不会向数组中添加新元素，只会在数组末尾创建一个稀疏的区域。
 :::
 
-## Adding and Deleting Array Elements
+## 添加和删除数组元素
 
 We’ve already seen the simplest way to add elements to an array: just assign values to new indexes:
 
+::: tip 翻译
+我们已经看到过为数组添加元素的最简单方式了，就是给它的一个新索引赋值：
+:::
+
 ```js
-let a = []; // Start with an empty array.
-a[0] = "zero"; // And add elements to it.
+let a = []; // 创建一个空数组
+a[0] = "zero"; // 添加一个元素
 a[1] = "one";
 ```
 
 You can also use the `push()` method to add one or more values to the end of an array:
 
+::: tip 翻译
+也可以使用`push()`方法在数组末尾添加一个或多个元素：
+:::
+
 ```js
-let a = []; // Start with an empty array
-a.push("zero"); // Add a value at the end. a = ["zero"]
-a.push("one", "two"); // Add two more values. a = ["zero", "one", "two"]
+let a = []; // 创建一个空数组
+a.push("zero"); // 在末尾添加一个值. a = ["zero"]
+a.push("one", "two"); // 再再末尾添加两个值. a = ["zero", "one", "two"]
 ```
 
 Pushing a value onto an array a is the same as assigning the value to `a[a.length]`. You can use the `unshift()` method (described in §7.8) to insert a value at the beginning of an array, shifting the existing array elements to higher indexes. The `pop()` method is the opposite of `push()`: it removes the last element of the array and returns it, reducing the length of an array by 1. Similarly, the `shift()` method removes and returns the first element of the array, reducing the length by 1 and shifting all elements down to an index one lower than their current index. See §7.8 for more on these methods.
 
+::: tip 翻译
+向数组`a`中推入一个值等同于把这个值赋给`a[a.length]`。要在数组开头插入值，可以使用`unshift()`方法（参见 7.8 节），这个方法将已有数组元素移动到更高索引位。与`push()`执行相反操作的是`pop()`方法，它删除数组最后一个元素并返回该元素，同时导致数组长度减 1。类似地，`shift()`方法删除并返回数组的第一个元素，让数组长度减 1 并将所有元素移动到低一位的索引。7.8 节有对这些方法的更多介绍。
+:::
+
 You can delete array elements with the `delete` operator, just as you can delete object properties:
+
+::: tip 翻译
+可以使用`delete`操作符删除数组元素：
+:::
 
 ```js
 let a = [1, 2, 3];
-delete a[2]; // a now has no element at index 2
-2 in a; // => false: no array index 2 is defined
-a.length; // => 3: delete does not affect array length
+delete a[2]; // 现在索引2没有元素了
+2 in a; // => false: 数组索引2没有定义
+a.length; // => 3: 删除元素不影响数组长度
 ```
 
 Deleting an array element is similar to (but subtly different than) assigning `undefined` to that element. Note that using `delete` on an array element does not alter the `length` property and does not shift elements with higher indexes down to fill in the gap that is left by the `deleted` property. If you delete an element from an array, the array becomes sparse.
 
+::: tip 翻译
+删除数组元素类似于（但不完全等同于）给该元素赋`undefined`值。注意，对数组元素使用`delete`操作符不会修改`length`属性，也不会把高索引位的元素向下移动来填充被删除属性的空隙。从数组中删除元素后，数组会变稀疏。
+:::
+
 As we saw above, you can also remove elements from the end of an array simply by setting the `length` property to the new desired length.
 
+::: tip 翻译
+如前所述，把数组`length`属性设置成一个新长度值，也可以从数组末尾删除元素。
+:::
+
 Finally, `splice()` is the general-purpose method for inserting, deleting, or replacing array elements. It alters the `length` property and shifts array elements to higher or lower indexes as needed. See §7.8 for details.
+
+::: tip 翻译
+`splice()`是一个可以插入、删除或替换数组元素的通用方法。这个方法修改`length`属性并按照需要向更高索引或更低索引移动数组元素。详细介绍可参见 7.8 节。
+:::
 
 ## Iterating Arrays
 
