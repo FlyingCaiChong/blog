@@ -304,30 +304,50 @@ a[2]; // => undefined; 这个索引没有元素
 a[-1]; // => undefined; 这个名字没有属性
 ```
 
-## Sparse Arrays
+## 稀疏数组
 
 A _sparse_ array is one in which the elements do not have contiguous indexes starting at 0. Normally, the `length` property of an array specifies the number of elements in the array. If the array is sparse, the value of the `length` property is greater than the number of elements. Sparse arrays can be created with the `Array()` constructor or simply by assigning to an array index larger than the current array `length`.
 
+::: tip 翻译
+稀疏数组就是其元素没有从 0 开始的索引的数组。正常情况下，数组的`length`属性表明数组中元素的个数。如果数组是稀疏的，则`length`属性的值会大于元素个数。可以使用`Array()`构造函数创建稀疏数组，或者直接给大于当前数组`length`的数组索引赋值。
+:::
+
 ```js
-let a = new Array(5); // No elements, but a.length is 5.
-a = []; // Create an array with no elements and length = 0.
-a[1000] = 0; // Assignment adds one element but sets length to 1001.
+let a = new Array(5); // 没有元素，但a.length是5
+a = []; // 创建一个空数组，此时length = 0
+a[1000] = 0; // 赋值增加了一个元素，但length变成了1001
 ```
 
 We’ll see later that you can also make an array sparse with the `delete` operator.
 
+::: tip 翻译
+后面还会看到，使用`delete`操作符也可以创建稀疏数组。
+:::
+
 Arrays that are sufficiently sparse are typically implemented in a slower, more memory-efficient way than dense arrays are, and looking up elements in such an array will take about as much time as regular object property lookup.
+
+::: tip 翻译
+足够稀疏的数组通常是以较稠密数组慢、但内存占用少的方式实现的，查询这种数组的元素与查询常规对象属性的时间相当。
+:::
 
 Note that when you omit a value in an array literal (using repeated commas as in `[1,,3]`), the resulting array is sparse, and the omitted elements simply do not exist:
 
+::: tip 翻译
+注意，如果省略数组字面量中的一个值（像`[1,,3]`这样重复逗号两次），也会得到稀疏数组，被省略的元素是不存在的：
+:::
+
 ```js
-let a1 = [,]; // This array has no elements and length 1
-let a2 = [undefined]; // This array has one undefined element
-0 in a1; // => false: a1 has no element with index 0
-0 in a2; // => true: a2 has the undefined value at index 0
+let a1 = [,]; // 这个数组没有元素，但length是1
+let a2 = [undefined]; // 这个数组有一个undefined元素
+0 in a1; // => false: a1 在索引0没有元素
+0 in a2; // => true: a2 在索引0有undefined值
 ```
 
 Understanding sparse arrays is an important part of understanding the true nature of JavaScript arrays. In practice, however, most JavaScript arrays you will work with will not be sparse. And, if you do have to work with a sparse array, your code will probably treat it just as it would treat a nonsparse array with `undefined` elements.
+
+::: tip 翻译
+理解稀疏数组是真正理解 JavaScript 数组的重要一环。但在实践中，我们碰到的多数 JavaScript 数组都不是稀疏的。如果真的碰到了稀疏数组，可以把稀疏数组当成包含 undefined 元素的非稀疏数组。
+:::
 
 ## Array Length
 
