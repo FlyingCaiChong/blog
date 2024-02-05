@@ -349,26 +349,43 @@ Understanding sparse arrays is an important part of understanding the true natur
 理解稀疏数组是真正理解 JavaScript 数组的重要一环。但在实践中，我们碰到的多数 JavaScript 数组都不是稀疏的。如果真的碰到了稀疏数组，可以把稀疏数组当成包含 undefined 元素的非稀疏数组。
 :::
 
-## Array Length
+## 数组长度
 
 Every array has a `length` property, and it is this property that makes arrays different from regular JavaScript objects. For arrays that are dense (i.e., not sparse), the `length` property specifies the number of elements in the array. Its value is one more than the highest index in the array:
 
+::: tip 翻译
+每个数组都有`length`属性，正是这个属性让数组有别于常规的 JavaScript 对象。对于稠密数组（即非稀疏数组），`length`属性就是数组中元素的个数。这个值比数组的最高索引大 1：
+:::
+
 ```js
-[].length[("a", "b", "c")].length; // => 0: the array has no elements // => 3: highest index is 2, length is 3
+[].length; // => 0: 数组没有元素
+[("a", "b", "c")].length; // => 3: 最高索引为2，length值为3
 ```
 
 When an array is sparse, the length property is greater than the number of elements, and all we can say about it is that length is guaranteed to be larger than the index of every element in the array. Or, put another way, an array (sparse or not) will never have an element whose index is greater than or equal to its length. In order to maintain this invariant, arrays have two special behaviors. The first we described above: if you assign a value to an array element whose index `i` is greater than or equal to the array’s current `length`, the value of the `length` property is set to `i+1`.
 
+::: tip 翻译
+对于稀疏数组，`length`属性会大于元素个数，也可以说稀疏数组的`length`值一定大于数组中任何元素的索引。从另一个角度说，数组（无论稀疏与否）中任何元素的索引都不会大于或等于数组的`length`。为了维护这种不变式（invariant），数组有两个特殊行为。第一个前面已经提到了，即如果给一个索引为`i`的数组元素赋值，而`i`大于或等于数组当前的`length`，则数组的`length`属性会被设置为`i+1`。
+:::
+
 The second special behavior that arrays implement in order to maintain the length invariant is that, if you set the `length` property to a non-negative integer `n` smaller than its current value, any array elements whose index is greater than or equal to `n` are deleted from the array:
 
+::: tip 翻译
+数组实现以维护长度不变式的第二个特殊行为，就是如果将`length`属性设置为一个小于其当前值的非负整数`n`，则任何索引大于或等于`n`的数组元素都会从数组中被删除：
+:::
+
 ```js
-a = [1, 2, 3, 4, 5]; // Start with a 5-element array.
-a.length = 3; // a is now [1,2,3].
-a.length = 0; // Delete all elements. a is [].
-a.length = 5; // Length is 5, but no elements, like new Array(5)
+a = [1, 2, 3, 4, 5]; // 先定义一个包含5个元素的数组
+a.length = 3; // a变成[1,2,3].
+a.length = 0; // 删除所有元素，a是 [].
+a.length = 5; // 长度为5，但没有元素，类似 new Array(5)
 ```
 
 You can also set the `length` property of an array to a value larger than its current value. Doing this does not actually add any new elements to the array; it simply creates a sparse area at the end of the array.
+
+::: tip 翻译
+也可以把数组的`length`属性设置为一个大于其当前值的值。这样做并不会向数组中添加新元素，只会在数组末尾创建一个稀疏的区域。
+:::
 
 ## Adding and Deleting Array Elements
 
