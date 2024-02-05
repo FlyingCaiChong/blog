@@ -450,9 +450,13 @@ Finally, `splice()` is the general-purpose method for inserting, deleting, or re
 `splice()`是一个可以插入、删除或替换数组元素的通用方法。这个方法修改`length`属性并按照需要向更高索引或更低索引移动数组元素。详细介绍可参见 7.8 节。
 :::
 
-## Iterating Arrays
+## 迭代数组
 
 As of ES6, the easiest way to loop through each of the elements of an array (or any iterable object) is with the `for/of` loop, which was covered in detail in §5.4.4:
+
+::: tip 翻译
+到 ES6 为止，遍历一个数组（或任何可迭代对象）的最简单方式就是使用`for/of`循环，5.5.4 节介绍过：
+:::
 
 ```js
 let letters = [..."Hello world"]; // An array of letters
@@ -460,18 +464,26 @@ let string = "";
 for (let letter of letters) {
   string += letter;
 }
-string; // => 'Hello world'; we reassembled the original text
+string; // => 'Hello world'; 我们重新组装了原始文本
 ```
 
 The built-in array iterator that the `for/of` loop uses returns the elements of an array in ascending order. It has no special behavior for sparse arrays and simply returns `undefined` for any array elements that do not exist.
 
+::: tip 翻译
+`for/of`循环使用的内置数组迭代器按照升序返回数组的元素。对于稀疏数组，这个循环没有特殊行为，凡是不存在的元素都返回`undefined`。
+:::
+
 If you want to use a `for/of` loop for an array and need to know the index of each array element, use the `entries()` method of the array, along with destructuring assignment, like this:
+
+::: tip 翻译
+如果要对数组使用`for/of`循环，并且想知道每个数组元素的索引，可以使用数组的`entries()`方法和解构赋值：
+:::
 
 ```js
 let everyother = "";
 for (let [index, letter] of letters.entries()) {
   if (index % 2 === 0) {
-    everyother += letter; // letters at even indexes
+    everyother += letter; // 偶数索引的字母
   }
 }
 everyother; // => 'Hlowrd'
@@ -479,10 +491,14 @@ everyother; // => 'Hlowrd'
 
 Another good way to iterate arrays is with `forEach()`. This is not a new form of the for loop, but an array method that offers a functional approach to array iteration. You pass a function to the `forEach()` method of an array, and `forEach()` invokes your function once on each element of the array:
 
+::: tip 翻译
+另一种迭代数组的推荐方式是使用`forEach()`。它并不是一种新的`for`循环，而是数组提供的一种用于自身迭代的函数式方法。因此需要给`forEach()`传一个函数，然后`forEach()`会用数组的每个元素调用一次这个函数：
+:::
+
 ```js
 let uppercase = "";
 letters.forEach((letter) => {
-  // Note arrow function syntax here
+  // 注意这里使用的是箭头函数
   uppercase += letter.toUpperCase();
 });
 uppercase; // => 'HELLO WORLD'
@@ -490,18 +506,30 @@ uppercase; // => 'HELLO WORLD'
 
 As you would expect, `forEach()` iterates the array in order, and it actually passes the array index to your function as a second argument, which is occasionally useful. Unlike the `for/of` loop, the `forEach()` is aware of sparse arrays and does not invoke your function for elements that are not there.
 
+::: tip 翻译
+正如我们预期的，`forEach()`按顺序迭代数组，而且会将索引作为第二个参数传给函数。与`for/of`循环不同，`forEach()`能够感知稀疏数组，不会对没有的元素数组调用函数。
+:::
+
 §7.8.1 documents the `forEach()` method in more detail. That section also covers related methods such as `map()` and `filter()` that perform specialized kinds of array iteration.
 
+::: tip 翻译
+7.8.1 节会更详细地解释`forEach()`方法，该节也将介绍另外两个与数组迭代有关的方法：`map()`和`filter()`。
+:::
+
 You can also loop through the elements of an array with a good old-fashioned for loop (§5.4.3):
+
+::: tip 翻译
+当然，使用老式的`for`循环（参见 5.4.3 节）也可以遍历数组：
+:::
 
 ```js
 let vowels = "";
 for (let i = 0; i < letters.length; i++) {
-  // For each index in the array
-  let letter = letters[i]; // Get the element at that index
+  // 对数组中的每个索引
+  let letter = letters[i]; // 取得改索引处的元素
   if (/[aeiou]/.test(letter)) {
-    // Use a regular expression test
-    vowels += letter; // If it is a vowel, remember it
+    // 使用正则表达式测试
+    vowels += letter; // 如果是元音，就记住它
   }
 }
 vowels; // => 'eoo'
@@ -509,24 +537,32 @@ vowels; // => 'eoo'
 
 In nested loops, or other contexts where performance is critical, you may sometimes see this basic array iteration loop written so that the array length is only looked up once rather than on each iteration. Both of the following for loop forms are idiomatic, though not particularly common, and with modern JavaScript interpreters, it is not at all clear that they have any performance impact:
 
+::: tip 翻译
+在嵌套循环中，或其他性能攸关的场合，有时候会看到这种简单的数组迭代循环，但只会读取一次数组长度，而不是在每个迭代中都读取一次。下面展示的两种 for 循环形式都是比较推荐的：
+:::
+
 ```js
-// Save the array length into a local variable
+// 把数组长度保存到局部变量中
 for (let i = 0, len = letters.length; i < len; i++) {
-  // loop body remains the same
+  // 循环体不变
 }
 
-// Iterate backwards from the end of the array to the start
+// 从后向前迭代数组
 for (let i = letters.length - 1; i >= 0; i--) {
-  // loop body remains the same
+  // 循环体不变
 }
 ```
 
 These examples assume that the array is dense and that all elements contain valid data. If this is not the case, you should test the array elements before using them. If you want to skip undefined and nonexistent elements, you might write:
 
+::: tip 翻译
+这两个例子假定数组是稠密的，即所有元素都包含有效数据。如果不是这种情况，那应该在使用每个元素前先进行测试。如果想跳过未定义或不存在的元素，可以这样写：
+:::
+
 ```js
 for (let i = 0; i < a.length; i++) {
-  if (a[i] === undefined) continue; // Skip undefined + nonexistent elements
-  // loop body here
+  if (a[i] === undefined) continue; // 跳过未定义及不存在的元素
+  // 这里的循环体
 }
 ```
 
