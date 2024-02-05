@@ -234,21 +234,29 @@ let truearray = Array.from(arraylike);
 `Array.from()`也接受可选的第二个参数。如果给第二个参数传入了一个函数，那么在构建新数组时，源对象的每个元素都会传入这个函数，这个函数的返回值将代替原始值成为新数组的元素（这一点与本章后面要介绍的数组的`map()`方法很像，但在构建数组期间执行映射的效率要高于先构建一个数组再把它映射为另一个新数组）。
 :::
 
-## Reading and Writing Array Elements
+## 读取数组元素
 
-You access an element of an array using the `[]` operator. A reference to the array should appear to the left of the brackets. An arbitrary expression that has a nonnegative integer value should be inside the brackets. You can use this syntax to both read and write the value of an element of an array. Thus, the following are all legal JavaScript statements:
+You access an element of an array using the `[]` operator. A reference to the array should appear to the left of the brackets. An arbitrary expression that has a non-negative integer value should be inside the brackets. You can use this syntax to both read and write the value of an element of an array. Thus, the following are all legal JavaScript statements:
+
+::: tip 翻译
+可以使用`[]`操作符访问数组元素，方括号左侧应该是一个对数组的引用，方括号内应该是一个具有非负整数值的表达式。这个语法可以读和写数组元素的值。因此，下面都是合法的 JavaScript 语句：
+:::
 
 ```js
-let a = ["world"]; // Start with a one-element array
-let value = a[0]; // Read element 0
-a[1] = 3.14; // Write element 1
+let a = ["world"]; // 先创建包含一个元素的数组
+let value = a[0]; // 读取元素 0
+a[1] = 3.14; // 写入元素 1
 let i = 2;
-a[i] = 3; // Write element 2
-a[i + 1] = "hello"; // Write element 3
-a[a[i]] = a[0]; // Read elements 0 and 2, write element 3
+a[i] = 3; // 写入元素 2
+a[i + 1] = "hello"; // 写入元素 3
+a[a[i]] = a[0]; // 读取元素 0 和 2, 写入元素 3
 ```
 
-What is special about arrays is that when you use property names that are nonnegative integers less than 2^32–1, the array automatically maintains the value of the `length` property for you. In the preceding, for example, we created an array a with a single element. We then assigned values at indexes 1, 2, and 3. The length property of the array changed as we did, so:
+What is special about arrays is that when you use property names that are non-negative integers less than 2^32–1, the array automatically maintains the value of the `length` property for you. In the preceding, for example, we created an array a with a single element. We then assigned values at indexes 1, 2, and 3. The length property of the array changed as we did, so:
+
+::: tip 翻译
+数组特殊的地方在于，只要你使用小于 2^32-1 的非负整数作为属性名，数组就会自动为你维护`length`属性的值。比如在前面的例子中，我们先创建了一个只有一个元素的数组。而在给它的索引 1、2、3 赋值之后，数组的`length`属性也会相应改变，因此：
+:::
 
 ```js
 a.length; // => 4
@@ -256,28 +264,44 @@ a.length; // => 4
 
 Remember that arrays are a specialized kind of object. The square brackets used to access array elements work just like the square brackets used to access object properties. JavaScript converts the numeric array index you specify to a string—the index 1 becomes the string "1"—then uses that string as a property name. There is nothing special about the conversion of the index from a number to a string: you can do that with regular objects, too:
 
+::: tip 翻译
+记住，数组是一种特殊的对象。用于访问数组元素的方括号与用于访问对象属性的方括号是类似的。JavaScript 会将数值数组索引转换为字符串，即索引 1 会变成字符串“1”，然后再将这个字符串作为属性名。这个从数值到字符串的转换没什么特别的，使用普通对象也一样：
+:::
+
 ```js
-let o = {}; // Create a plain object
-o[1] = "one"; // Index it with an integer
-o["1"]; // => "one"; numeric and string property names are the same
+let o = {}; // 创建一个普通对象
+o[1] = "one"; // 通过整数索引一个值
+o["1"]; // => "one"; 数值和字符串属性名是同一个
 ```
 
 It is helpful to clearly distinguish an array index from an object property name. All indexes are property names, but only property names that are integers between 0 and 2^32–2 are indexes. All arrays are objects, and you can create properties of any name on them. If you use properties that are array indexes, however, arrays have the special behavior of updating their `length` property as needed.
 
+::: tip 翻译
+明确区分数组索引和对象属性名是非常有帮助的。所有索引都是属性名，但只有介于 0 和 2^32-2 之间的整数属性名才是索引。所有数组都是对象，可以在数组上以任意名字创建属性。只不过，如果这个属性是数组索引，数组会有特殊的行为，即自动按需更新其`length`属性。
+:::
+
 Note that you can index an array using numbers that are negative or that are not integers. When you do this, the number is converted to a string, and that string is used as the property name. Since the name is not a non-negative integer, it is treated as a regular object property, not an array index. Also, if you index an array with a string that happens to be a non-negative integer, it behaves as an array index, not an object property. The same is true if you use a floating-point number that is the same as an integer:
 
+::: tip 翻译
+注意，可以使用负数或非整数值来索引数组。此时，数值会转换为字符串，而这个字符串会作为属性名。因为这个名字是非负整数，所以会被当成常规的对象属性，而不是数组索引。另外，如果你碰巧使用了非负整数的字符串来索引数组，那这个值会成为数组索引，而不是对象属性。同样，如果使用了与整数相等的浮点值也是如此：
+:::
+
 ```js
-a[-1.23] = true; // This creates a property named "-1.23"
-a["1000"] = 0; // This the 1001st element of the array
-a[1.0] = 1; // Array index 1. Same as a[1] = 1;
+a[-1.23] = true; // 这样会创建一个属性 "-1.23"
+a["1000"] = 0; // 这是数组中第1001个元素
+a[1.0] = 1; // 数组索引1，相当于 a[1] = 1;
 ```
 
 The fact that array indexes are simply a special type of object property name means that JavaScript arrays have no notion of an “out of bounds” error. When you try to query a nonexistent property of any object, you don’t get an error; you simply get `undefined`. This is just as true for arrays as it is for objects:
 
+::: tip 翻译
+由于数组索引其实就是一种特殊的对象属性，所以 JavaScript 数组没有所谓“越界”错误。查询任何对象中不存在的属性都不会导致错误，只会返回`undefined`。数组作为一种特殊对象也是如此：
+:::
+
 ```js
-let a = [true, false]; // This array has elements at indexes 0 and 1
-a[2]; // => undefined; no element at this index.
-a[-1]; // => undefined; no property with this name.
+let a = [true, false]; // 数组的索引0和1有元素
+a[2]; // => undefined; 这个索引没有元素
+a[-1]; // => undefined; 这个名字没有属性
 ```
 
 ## Sparse Arrays
