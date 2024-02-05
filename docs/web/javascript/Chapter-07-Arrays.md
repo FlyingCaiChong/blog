@@ -566,25 +566,29 @@ for (let i = 0; i < a.length; i++) {
 }
 ```
 
-## Multidimensional Arrays
+## 多维数组
 
 JavaScript does not support true multidimensional arrays, but you can approximate them with arrays of arrays. To access a value in an array of arrays, simply use the `[]` operator twice. For example, suppose the variable `matrix` is an array of arrays of numbers. Every element in `matrix[x]` is an array of numbers. To access a particular number within this array, you would write `matrix[x][y]`. Here is a concrete example that uses a two-dimensional array as a multiplication table:
 
+::: tip 翻译
+JavaScript 并不支持真正的多维数组，但我们可以使用数组的数组来模拟。要访问数组的数组的值，使用两个`[]`即可。比如，假设变量`matrix`是一个数值数组的数组，则`matrix[x]`的每个元素都是一个数值数组。要访问这个数组中的某个数值，就要使用`matrix[x][y]`这种形式。下面这个例子利用二维数组生成了乘法表：
+:::
+
 ```js
-// Create a multidimensional array
-let table = new Array(10); // 10 rows of the table
+// 创建一个多维数组
+let table = new Array(10); // 表格的10行
 for (let i = 0; i < table.length; i++) {
-  table[i] = new Array(10); // Each row has 10 columns
+  table[i] = new Array(10); // 每行有10列
 }
 
-// Initialize the array
+// 初始化数组
 for (let row = 0; row < table.length; row++) {
   for (let col = 0; col < table[row].length; col++) {
     table[row][col] = row * col;
   }
 }
 
-// Use the multidimensional array to compute 5*7
+// 从这个多维数组中获得 5*7 的值
 table[5][7]; // => 35
 ```
 
