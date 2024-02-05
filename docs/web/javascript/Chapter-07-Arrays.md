@@ -4,6 +4,8 @@ title: 第七章 数组
 
 # 数组
 
+[[toc]]
+
 This chapter documents arrays, a fundamental datatype in JavaScript and in most other programming languages. An _array_ is an ordered collection of values. Each value is called an _element_, and each element has a numeric position in the array, known as its _index_. JavaScript arrays are _untyped_: an array element may be of any type, and different elements of the same array may be of different types. Array elements may even be objects or other arrays, which allows you to create complex data structures, such as arrays of objects and arrays of arrays. JavaScript arrays are _zero-based_ and use 32-bit indexes: the index of the first element is 0, and the highest possible index is 4294967294 (2^32−2), for a maximum array size of 4,294,967,295 elements. JavaScript arrays are _dynamic_: they grow or shrink as needed, and there is no need to declare a fixed size for the array when you create it or to reallocate it when the size changes. JavaScript arrays may be _sparse_: the elements need not have contiguous indexes, and there may be gaps. Every JavaScript array has a length property. For nonsparse arrays, this property specifies the number of elements in the array. For sparse arrays, length is larger than the highest index of any element.
 
 ::: tip 翻译
@@ -1454,7 +1456,7 @@ Keep in mind that strings are immutable values, so when they are treated as arra
 一定要记住，字符串是不可修改的值，因此在把它们当成数组来使用时，它们是只读数组。像`push()`、`sort()`、`reverse()`和`splice()`这些就地修改数组的数组方法，对字符串都不起作用。但尝试用数组方法修改字符串并不会导致错误，只会静默失败。
 :::
 
-## Summary
+## 总结
 
 This chapter has covered JavaScript arrays in depth, including esoteric details about sparse arrays and array-like objects. The main points to take from this chapter are:
 
@@ -1462,3 +1464,12 @@ This chapter has covered JavaScript arrays in depth, including esoteric details 
 - Individual array elements are accessed by specifying the desired array index within square brackets.
 - The `for/of` loop and `...` spread operator introduced in ES6 are particularly useful ways to iterate arrays.
 - The Array class defines a rich set of methods for manipulating arrays, and you should be sure to familiarize yourself with the Array API.
+
+::: tip 翻译
+本章深入探讨了 JavaScript 数组，包括稀疏数组和类数组对象的相关细节。通过本章主要应该掌握如下知识点。
+
+- 数组字面量是写在方括号中的逗号分隔的值列表。
+- 访问数组元素只要在方括号中指定期待的索引即可。
+- ES6 新增的`for/of`循环和`...`扩展操作符对迭代数组特别有用。
+- Array 类定义了操作数组的很多方法，应该熟练掌握这些数组 API。
+  :::
