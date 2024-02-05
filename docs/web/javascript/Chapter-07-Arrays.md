@@ -2,17 +2,33 @@
 title: 第七章 数组
 ---
 
-# Chapter 7 Arrays
+# 数组
 
 This chapter documents arrays, a fundamental datatype in JavaScript and in most other programming languages. An _array_ is an ordered collection of values. Each value is called an _element_, and each element has a numeric position in the array, known as its _index_. JavaScript arrays are _untyped_: an array element may be of any type, and different elements of the same array may be of different types. Array elements may even be objects or other arrays, which allows you to create complex data structures, such as arrays of objects and arrays of arrays. JavaScript arrays are _zero-based_ and use 32-bit indexes: the index of the first element is 0, and the highest possible index is 4294967294 (2^32−2), for a maximum array size of 4,294,967,295 elements. JavaScript arrays are _dynamic_: they grow or shrink as needed, and there is no need to declare a fixed size for the array when you create it or to reallocate it when the size changes. JavaScript arrays may be _sparse_: the elements need not have contiguous indexes, and there may be gaps. Every JavaScript array has a length property. For nonsparse arrays, this property specifies the number of elements in the array. For sparse arrays, length is larger than the highest index of any element.
 
+::: tip 翻译
+本章讲解数组。数组是 JavaScript 以及多数其他编程语言的一种基础数据类型。数组是值的有序集合，其中的值叫作元素，每个元素有一个数值表示的位置，叫作索引。JavaScript 数组是无类型限制的，即数组中的元素可以是任意类型，同一数组的不同元素也可以是不同的类型。数组元素甚至可以对象或其他数组，从而可以创建复杂的数据结构，比如对象的数组或者数组的数组。JavaScript 数组是基于零且使用 32 位数值索引的，第一个元素的索引为 0，最大可能的索引值是 4 294 967 294（232-2），即数组最大包含 4 294 967 295 个元素。JavaScript 数组是动态的，它们会按需增大或缩小，因此创建数组时无须声明一个固定大小，也无须在大小变化时重新为它们分配空间。JavaScript 数组可以是稀疏的，即元素不一定具有连续的索引，中间可能有间隙。每个 JavaScript 数组都有 length 属性。对于非稀疏数组，这个属性保存数组中元素的个数。对于稀疏数组，length 大于所有元素的最高索引。
+:::
+
 JavaScript arrays are a specialized form of JavaScript object, and array indexes are really little more than property names that happen to be integers. We’ll talk more about the specializations of arrays elsewhere in this chapter. Implementations typically optimize arrays so that access to numerically indexed array elements is generally significantly faster than access to regular object properties.
+
+::: tip 翻译
+JavaScript 数组是一种特殊的 JavaScript 对象，因此数组索引更像是属性名，只不过碰巧是整数而已。本章经常会谈到数组的这种特殊性。实现通常对数组会进行特别优化，从而让访问数值索引的数组元素明显快于访问常规的对象属性。
+:::
 
 Arrays inherit properties from `Array.prototype`, which defines a rich set of array manipulation methods, covered in §7.8. Most of these methods are _generic_, which means that they work correctly not only for true arrays, but for any “array-like object.” We’ll discuss array-like objects in §7.9. Finally, JavaScript strings behave like arrays of characters, and we’ll discuss this in §7.10.
 
+::: tip 翻译
+数组从`Array.prototype`继承属性，这个原型上定义了很多数组操作方法，7.8 节将介绍。其中很多方法都是泛型的，这意味着它们不仅可以用于真正的数组，也可以用于任何“类数组对象”。7.9 节将讨论类数组对象。最后，JavaScript 字符串的行为类似字母数组，将在 7.10 节讨论。
+:::
+
 ES6 introduces a set of new array classes known collectively as “typed arrays.” Unlike regular JavaScript arrays, typed arrays have a fixed length and a fixed numeric element type. They offer high performance and byte-level access to binary data and are covered in §11.2.
 
-## Creating Arrays
+::: tip 翻译
+ES6 增加了一批新的数组类，统称为“定型数组”（typed array）。与常规 JavaScript 数组不同，定型数组具有固定长度和固定的数值元素类型。定型数组具有极高的性能，支持对二进制数据的字节级访问，将在 11.2 节介绍。
+:::
+
+## 创建数组
 
 There are several ways to create arrays. The subsections that follow explain how to create arrays with:
 
@@ -21,17 +37,34 @@ There are several ways to create arrays. The subsections that follow explain how
 - The `Array()` constructor
 - The `Array.of()` and `Array.from()` factory methods
 
-### Array Literals
+::: tip 翻译
+创建数组有几种方式。接下来几节将分别介绍：
+
+- 数组字面量
+- 对可迭代对象使用`...`扩展操作符
+- `Array()`构造函数
+- 工厂方法`Array.of()`和`Array.from()`
+  :::
+
+### 数组字面量
 
 By far the simplest way to create an array is with an array literal, which is simply a comma-separated list of array elements within square brackets. For example:
 
+::: tip 翻译
+迄今为止，创建数组最简单的方式就是使用数组字面量。数组字面量其实就是一对方括号中逗号分隔的数组元素的列表。例如：
+:::
+
 ```js
-let empty = []; // An array with no elements
-let primes = [2, 3, 5, 7, 11]; // An array with 5 numeric elements
-let misc = [1.1, true, "a"]; // 3 elements of various types + trailing comma
+let empty = []; // 没有元素的数组
+let primes = [2, 3, 5, 7, 11]; // 有5个数值元素的数组
+let misc = [1.1, true, "a"]; // 3 中不同类型的元素，最后还有一个逗号
 ```
 
 The values in an array literal need not be constants; they may be arbitrary expressions:
+
+::: tip 翻译
+数组字面量中的值不需要是常量，可以是任意表达式：
+:::
 
 ```js
 let base = 1024;
@@ -40,6 +73,10 @@ let table = [base, base + 1, base + 2, base + 3];
 
 Array literals can contain object literals or other array literals:
 
+::: tip 翻译
+数组字面量可以包含对象字面量或其他数组字面量：
+:::
+
 ```js
 let b = [
   [1, { x: 1, y: 2 }],
@@ -47,18 +84,30 @@ let b = [
 ];
 ```
 
-If an array literal contains multiple commas in a row, with no value between, the array is sparse (see §7.3). Array elements for which values are omitted do not exist but appear to be undefined if you query them:
+If an array literal contains multiple commas in a row, with no value between, the array is sparse (see §7.3). Array elements for which values are omitted do not exist but appear to be `undefined` if you query them:
+
+::: tip 翻译
+如果数组字面量中连续包含多个逗号，且逗号之间没有值，则这个数组就是稀疏的（参见 7.3 节）。这些省略了值的数组元素并不存在，但按照索引查询它们时又会返回`undefined`：
+:::
 
 ```js
-let count = [1, , 3]; // Elements at indexes 0 and 2. No element at index 1
-let undefs = [, ,]; // An array with no elements but a length of 2
+let count = [1, , 3]; // 索引0和2有元素，索引1没有元素
+let undefs = [, ,]; // 这个数组没有元素，但长度为2
 ```
 
 Array literal syntax allows an optional trailing comma, so `[,,]` has a length of 2, not 3.
 
-### The Spread Operator
+::: tip 翻译
+数组字面量语法允许末尾出现逗号，因此`[,,]`的长度是 2 不是 3。
+:::
+
+### 扩展操作符
 
 In ES6 and later, you can use the “spread operator,” `...`, to include the elements of one array within an array literal:
+
+::: tip 翻译
+在 ES6 及之后的版本中，可以使用扩展操作符`...`在一个数组字面量中包含另一个数组的元素：
+:::
 
 ```js
 let a = [1, 2, 3];
@@ -67,16 +116,28 @@ let b = [0, ...a, 4]; // b == [0, 1, 2, 3, 4]
 
 The three dots “spread” the array a so that its elements become elements within the array literal that is being created. It is as if the `...a` was replaced by the elements of the array a, listed literally as part of the enclosing array literal. (Note that, although we call these three dots a spread operator, this is not a true operator because it can only be used in array literals and, as we’ll see later in the book, function invocations.)
 
+::: tip 翻译
+这里的三个点会“扩展”数组`a`，因而它的元素变成了要创建的数组字面量的元素。可以把`...a`想象成代表数组`a`的所有元素，这些元素依次出现在了包含它们的数组字面量中（注意，虽然我们把这个三个点称作扩展操作符，但它们实际上并不是操作符，因为只能在数组字面量和本书后面介绍的函数调用中使用它们）。
+:::
+
 The spread operator is a convenient way to create a (shallow) copy of an array:
+
+::: tip 翻译
+扩展操作符是创建数组（浅）副本的一种便捷方式：
+:::
 
 ```js
 let original = [1, 2, 3];
 let copy = [...original];
-copy[0] = 0; // Modifying the copy does not change the original
+copy[0] = 0; // 修改copy不会影响original
 original[0]; // => 1
 ```
 
-The spread operator works on any iterable object. (_Iterable_ objects are what the `for/of` loop iterates over; we first saw them in §5.4.4, and we’ll see much more about them in **Chapter 12**.) Strings are iterable, so you can use a spread operator to turn any string into an array of single-character strings:
+The spread operator works on any iterable object. (_Iterable_ objects are what the `for/of` loop iterates over; we first saw them in §5.4.4, and we’ll see much more about them in [Chapter 12](./Chapter-12-Iterators_Generators.md).) Strings are iterable, so you can use a spread operator to turn any string into an array of single-character strings:
+
+::: tip 翻译
+扩展操作符适用于任何可迭代对象（可迭代对象可以使用`for/of`循环遍历，5.4.4 节已经看到过，[第 12 章](./Chapter-12-Iterators_Generators.md)还将看到更多的例子）。字符串是可迭代对象，因此可以使用扩展操作符把任意字符串转换为单个字符的数组：
+:::
 
 ```js
 let digits = [..."0123456789ABCDEF"];
@@ -85,12 +146,16 @@ digits; // => ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
 
 Set objects (§11.1.1) are iterable, so an easy way to remove duplicate elements from an array is to convert the array to a set and then immediately convert the set back to an array using the spread operator:
 
+::: tip 翻译
+集合对象（参见 11.1.1 节）是可迭代的，因此要去除数组中的重复元素，一种便捷方式就是先把数组转换为集合，然后再使用扩展操作符把这个集合转换回数组：
+:::
+
 ```js
 let letters = [..."hello world"];
 [...new Set(letters)]; // => ["h","e","l","o"," ","w","r","d"]
 ```
 
-### The Array() Constructor
+### Array() 构造函数
 
 Another way to create an array is with the `Array()` constructor. You can invoke this constructor in three distinct ways:
 
@@ -110,15 +175,34 @@ Another way to create an array is with the `Array()` constructor. You can invoke
   ```
   In this form, the constructor arguments become the elements of the new array. Using an array literal is almost always simpler than this usage of the `Array()` constructor.
 
+::: tip 翻译
+另一种创建数组的方式是使用`Array()`构造函数。有三种方式可以调用这个构造函数：
+
+- 不传参数调用:
+  这样会创建一个没有元素的空数组，等价于数组字面量`[]`。
+- 传入一个数组参数，指定长度：
+  这样会创建一个指定长度的数组。如果提前知道需要多少个数组元素，可以像这样调用`Array()`构造函数来预先为数组分配空间。注意，这时的数组中不会存储任何值，数组索引属性“0”、“1”等甚至都没有定义。
+- 传入两个或更多个数组元素，或传入一个非数值元素：
+  这样调用的话，构造函数参数会成为新数组的元素。使用数组字面量永远比像这样使用`Array()`构造函数更简单。
+  :::
+
 ### Array.of()
 
 When the `Array()` constructor function is invoked with one numeric argument, it uses that argument as an array length. But when invoked with more than one numeric argument, it treats those arguments as elements for the array to be created. This means that the `Array()` constructor cannot be used to create an array with a single numeric element.
 
+::: tip 翻译
+在使用数值参数调用`Array()`构造函数时，这个参数指定的是数组长度。但在使用一个以上的数值参数时，这些参数则会成为新数组的元素。这意味着使用`Array()`构造函数无法创建只包含一个数值元素的数组。
+:::
+
 In ES6, the `Array.of()` function addresses this problem: it is a factory method that creates and returns a new array, using its argument values (regardless of how many of them there are) as the array elements:
 
+::: tip 翻译
+在 ES6 中，Array.of()函数可以解决这个问题。这是个工厂方法，可以使用其参数值（无论多少个）作为数组元素来创建并返回新数组：
+:::
+
 ```js
-Array.of(); // => []; returns empty array with no arguments
-Array.of(10); // => [10]; can create arrays with a single numeric argument
+Array.of(); // => []; 返回没有参数的空数组
+Array.of(10); // => [10]; 可以创建只有一个数值元素的数组
 Array.of(1, 2, 3); // => [1, 2, 3]
 ```
 
@@ -126,17 +210,29 @@ Array.of(1, 2, 3); // => [1, 2, 3]
 
 `Array.from` is another array factory method introduced in ES6. It expects an iterable or array-like object as its first argument and returns a new array that contains the elements of that object. With an iterable argument, `Array.from(iterable)` works like the spread operator `[...iterable]` does. It is also a simple way to make a copy of an array:
 
+::: tip 翻译
+`Array.from()`是 ES6 新增的另一个工厂方法。这个方法期待一个可迭代对象或类数组对象作为其第一个参数，并返回包含该对象元素的新数组。如果传入可迭代对象，`Array.from(iterable)`与使用扩展操作符`[...iterable]`一样。因此，它也是创建数组副本的一种简单方式：
+:::
+
 ```js
 let copy = Array.from(original);
 ```
 
 `Array.from()` is also important because it defines a way to make a true-array copy of an array-like object. Array-like objects are non-array objects that have a numeric length property and have values stored with properties whose names happen to be integers. When working with client-side JavaScript, the return values of some web browser methods are array-like, and it can be easier to work with them if you first convert them to true arrays:
 
+::: tip 翻译
+`Array.from()`确实很重要，因为它定义了一种给类数组对象创建真正的数组副本的机制。类数组对象不是数组对象，但也有一个数值`length`属性，而且每个属性的键也都是整数。在客户端 JavaScript 中，有些浏览器方法返回的值就是类数组对象，那么像这样先把它们转换成真正的数组便于后续的操作：
+:::
+
 ```js
 let truearray = Array.from(arraylike);
 ```
 
 `Array.from()` also accepts an optional second argument. If you pass a function as the second argument, then as the new array is being built, each element from the source object will be passed to the function you specify, and the return value of the function will be stored in the array instead of the original value. (This is very much like the array `map()` method that will be introduced later in the chapter, but it is more efficient to perform the mapping while the array is being built than it is to build the array and then map it to another new array.)
+
+::: tip 翻译
+`Array.from()`也接受可选的第二个参数。如果给第二个参数传入了一个函数，那么在构建新数组时，源对象的每个元素都会传入这个函数，这个函数的返回值将代替原始值成为新数组的元素（这一点与本章后面要介绍的数组的`map()`方法很像，但在构建数组期间执行映射的效率要高于先构建一个数组再把它映射为另一个新数组）。
+:::
 
 ## Reading and Writing Array Elements
 
