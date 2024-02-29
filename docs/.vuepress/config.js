@@ -11,6 +11,7 @@ module.exports = {
       lang: "zh-CN",
     },
   },
+  dest: "docs/.vuepress/blog", // 指定输出目录
   themeConfig: {
     nav,
     sidebar,
