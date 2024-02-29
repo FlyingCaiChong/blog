@@ -141,8 +141,13 @@ module.exports = {
   ],
   "/web/typescript/": [
     {
-      title: "TypeScript",
-      children: ["", "built_in_tool_type"],
+      title: "TypeScript 内置工具类型",
+      path: "/web/typescript/built_in_tool_type",
+    },
+    {
+      title: "Effective TypeScript学习",
+      collapsable: true,
+      children: ["Chapter-01"],
     },
   ],
   "/web/css/": [
