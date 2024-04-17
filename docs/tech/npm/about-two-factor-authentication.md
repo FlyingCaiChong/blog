@@ -1,1 +1,1 @@
-# about-two-factor-authentication
+# About two-factor authentication

@@ -1,1 +1,1 @@
-# try-the-latest-stable-version-of-npm
+# Try the latest stable version of npm

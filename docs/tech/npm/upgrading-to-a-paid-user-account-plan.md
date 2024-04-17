@@ -1,1 +1,1 @@
-# upgrading-to-a-paid-user-account-plan
+# Upgrading to a paid user account plan

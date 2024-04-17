@@ -1,1 +1,1 @@
-# changing-your-npm-username
+# Changing your npm username

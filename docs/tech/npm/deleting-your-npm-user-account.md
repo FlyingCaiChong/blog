@@ -1,1 +1,1 @@
-# deleting-your-npm-user-account
+# Deleting your npm user account

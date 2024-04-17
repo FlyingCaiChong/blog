@@ -1,1 +1,1 @@
-# generating-and-locating-npm-debug-files
+# Generating and locating npm-debug.log files

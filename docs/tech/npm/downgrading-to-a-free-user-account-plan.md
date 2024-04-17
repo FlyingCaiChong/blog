@@ -1,1 +1,1 @@
-# downgrading-to-a-free-user-account-plan
+# Downgrading to a free user account plan

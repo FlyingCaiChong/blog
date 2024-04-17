@@ -1,1 +1,1 @@
-# try-the-latest-stable-version-of-node
+# Try the latest stable version of node

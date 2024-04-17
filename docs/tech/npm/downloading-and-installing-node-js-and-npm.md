@@ -1,1 +1,1 @@
-# downloading-and-installing-node-js-and-npm
+# Downloading and installing Node.js and npm

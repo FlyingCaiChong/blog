@@ -1,1 +1,1 @@
-# receiving-a-one-time-password-over-email
+# Receiving a one-time password over email
