@@ -36,6 +36,7 @@ module.exports = [
       { text: "Nginx", link: "/tech/nginx/" },
       { text: "Docker", link: "/tech/docker/" },
       { text: "tar", link: "/tech/tar/" },
+      { text: "npm文档", link: "/tech/npm/" },
     ],
   },
 ];

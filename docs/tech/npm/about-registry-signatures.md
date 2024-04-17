@@ -1,0 +1,1 @@
+# About ECDSA registry signatures
