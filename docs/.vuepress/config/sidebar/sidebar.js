@@ -94,6 +94,69 @@ module.exports = {
       path: "/tech/package/pnpm",
     },
   ],
+  "/tech/npm/": [
+    {
+      title: "关于npm",
+      path: "/tech/npm/",
+    },
+    {
+      title: "起步",
+      collapsable: true,
+      children: [
+        {
+          title: "Setting up your npm user account",
+          collapsable: true,
+          children: [
+            "creating-a-new-npm-user-account",
+            "creating-a-strong-password",
+            "receiving-a-one-time-password-over-email",
+            "about-two-factor-authentication",
+            "configuring-two-factor-authentication",
+            "accessing-npm-using-2fa",
+            "recovering-your-2fa-enabled-account",
+          ],
+        },
+        {
+          title: "Managing your profile settings",
+          collapsable: true,
+          children: [
+            "managing-your-profile-settings",
+            "changing-your-npm-username",
+            "deleting-your-npm-user-account",
+            "requesting-your-data",
+          ],
+        },
+        {
+          title: "Paying for your npm user account",
+          collapsable: true,
+          children: [
+            "upgrading-to-a-paid-user-account-plan",
+            "viewing-downloading-and-emailing-receipts-for-your-user-account",
+            "updating-user-account-billing-settings",
+            "downgrading-to-a-free-user-account-plan",
+          ],
+        },
+        {
+          title: "Configuring your local environment",
+          collapsable: true,
+          children: [
+            "about-npm-versions",
+            "downloading-and-installing-node-js-and-npm",
+          ],
+        },
+        {
+          title: "Troubleshooting",
+          collapsable: true,
+          children: [
+            "generating-and-locating-npm-debug-files",
+            "common-errors",
+            "try-the-latest-stable-version-of-node",
+            "try-the-latest-stable-version-of-npm",
+          ],
+        },
+      ],
+    },
+  ],
   "/web/javascript/": [
     {
       title: "介绍",
