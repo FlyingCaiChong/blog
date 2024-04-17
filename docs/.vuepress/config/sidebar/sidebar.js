@@ -246,6 +246,65 @@ module.exports = {
         },
       ],
     },
+    {
+      title: "Organizations",
+      collapsable: true,
+      children: [
+        {
+          title: "Creating and managing organizations",
+          collapsable: true,
+          children: [
+            "creating-an-organization",
+            "converting-your-user-account-to-an-organization",
+            "requiring-two-factor-authentication-in-your-organization",
+            "renaming-an-organization",
+            "deleting-an-organization",
+          ],
+        },
+        {
+          title: "Paying for your organization",
+          collapsable: true,
+          children: [
+            "upgrading-to-a-paid-organization-plan",
+            "viewing-downloading-and-emailing-receipts-for-your-organization",
+            "updating-organization-billing-settings",
+            "downgrading-to-a-free-organization-plan",
+          ],
+        },
+        {
+          title: "Managing organization members",
+          collapsable: true,
+          children: [
+            "adding-members-to-your-organization",
+            "accepting-or-rejecting-an-organization-invitation",
+            "organization-roles-and-permissions",
+            "managing-organization-permissions",
+            "removing-members-from-your-organization",
+          ],
+        },
+        {
+          title: "Managing teams",
+          collapsable: true,
+          children: [
+            "about-developers-team",
+            "creating-teams",
+            "adding-organization-members-to-teams",
+            "removing-organization-members-from-teams",
+            "managing-team-access-to-organization-packages",
+            "removing-teams",
+          ],
+        },
+        {
+          title: "Managing organization packages",
+          collapsable: true,
+          children: [
+            "about-organization-scopes-and-packages",
+            "configuring-your-npm-client-with-your-organization-settings",
+            "creating-and-publishing-an-organization-scoped-package",
+          ],
+        },
+      ],
+    },
   ],
   "/web/javascript/": [
     {
