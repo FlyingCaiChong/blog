@@ -229,6 +229,23 @@ module.exports = {
         },
       ],
     },
+    {
+      title: "Integrations",
+      collapsable: true,
+      children: [
+        {
+          title: "Integrating npm with external services",
+          collapsable: true,
+          children: [
+            "about-access-tokens",
+            "creating-and-viewing-access-tokens",
+            "revoking-access-tokens",
+            "using-private-packages-in-a-ci-cd-workflow",
+            "docker-and-private-modules",
+          ],
+        },
+      ],
+    },
   ],
   "/web/javascript/": [
     {
